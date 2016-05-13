@@ -1,0 +1,6 @@
+framework module Pods_BringItTests {
+  umbrella header "Pods-BringItTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
