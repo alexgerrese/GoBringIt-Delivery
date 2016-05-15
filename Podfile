@@ -7,6 +7,8 @@ target 'BringIt' do
 
   # Pods for BringIt
 
+pod 'JVFloatLabeledTextField'
+
   target 'BringItTests' do
     inherit! :search_paths
     # Pods for testing

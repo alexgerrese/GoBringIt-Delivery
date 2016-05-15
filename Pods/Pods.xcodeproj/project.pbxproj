@@ -7,61 +7,104 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2BCFFEE59AD18B970E8912B1A0CD651E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		3DD84F00CFC7C0B54FF664660C5B86D4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		4773C7A903626075CC58796FF4955E19 /* Pods-BringIt-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D9607ABB0D5A75CD2034EA980C455FD6 /* Pods-BringIt-dummy.m */; };
+		0C1CA327DA48468FD2F05B869CEC735B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */; };
+		198232E4CA68917D9671AA50B66099F5 /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 790DC00DC9DFE2D1FB88C5C4CD862932 /* JVFloatLabeledTextField.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		2A6FBF1EB40F738551F66D1436AC7EDC /* Pods-BringIt-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D9607ABB0D5A75CD2034EA980C455FD6 /* Pods-BringIt-dummy.m */; };
+		2BCFFEE59AD18B970E8912B1A0CD651E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */; };
+		3260802C71D0241B23AF5BCFCCA6C0C2 /* JVFloatLabeledTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 98036F21644AC37C06E550C115FEC99B /* JVFloatLabeledTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3296BE718BD30582A8238E8D8DEDE1F0 /* Pods-BringIt-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 66518333ED28675CF03652BB7DAD5AF4 /* Pods-BringIt-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3DD84F00CFC7C0B54FF664660C5B86D4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */; };
+		6F94E159E26C1DB49F349ED2A3E21364 /* JVFloatLabeledTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C0E60531E493A45B8E765E4572700AC /* JVFloatLabeledTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		760B6C2BB2BFD840B143AC5EBB5DFDD9 /* Pods-BringItTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 22431CB9C479AC2FFB936B8DB6172AFC /* Pods-BringItTests-dummy.m */; };
-		A01D9AE861E0755BD8BA4601FD1CFA0A /* Pods-BringIt-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 66518333ED28675CF03652BB7DAD5AF4 /* Pods-BringIt-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D1A45F309D059F628184646E6ED151C3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
+		973568245D337B094D81E743E1D7AF22 /* NSString+TextDirectionality.h in Headers */ = {isa = PBXBuildFile; fileRef = E311E623462285FCAF4E567E1324009B /* NSString+TextDirectionality.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9C94C96078F783F759AECACF879B37BD /* JVFloatLabeledTextField-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0917D1054C8F105512A0218DBD145353 /* JVFloatLabeledTextField-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E215BEEA20003F82591AC99111A35600 /* JVFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A643C5429D1F3D75631928DBC63DEC /* JVFloatLabeledTextView.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		E351EA773CE0D9A0FD283E670C68E471 /* Pods-BringItUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD522F8E769F4D4E3D82B18643683DD /* Pods-BringItUITests-dummy.m */; };
+		E4D75B1B0072095A98068C68A0062559 /* JVFloatLabeledTextField-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 70C9FF99E5170D87F4310DEFBF8993CC /* JVFloatLabeledTextField-dummy.m */; };
 		E7B6476AAB9CF8B5BCA187CF6EBD2DFA /* Pods-BringItTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BE41D2BD910E0457D7289DE10AE59B /* Pods-BringItTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E8DD8380D6B4958A77EAC0DE1A6967A9 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AFAF073A73FDACE22E0E8EBD531ED8 /* NSString+TextDirectionality.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		EC740F50E3E7379CA6CD24563688AE9A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */; };
 		EEB7AF1818816A534FDCFBC003C802EE /* Pods-BringItUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 068BE9EBEEA87534D24F8ED24D350C8C /* Pods-BringItUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F475A3DCF7F63ADF1EC5339AB1835652 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E86668F20F252C440D1015B816BE59C5 /* UIKit.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5E232062FF6505C553BD90B6F57AC301 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 735882DA95E7FCCEC084FC1C5384FF8A;
+			remoteInfo = JVFloatLabeledTextField;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		068BE9EBEEA87534D24F8ED24D350C8C /* Pods-BringItUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BringItUITests-umbrella.h"; sourceTree = "<group>"; };
-		0D9A4B45169ACB4E311E03FDD85CC916 /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0917D1054C8F105512A0218DBD145353 /* JVFloatLabeledTextField-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JVFloatLabeledTextField-umbrella.h"; sourceTree = "<group>"; };
+		0EDA5279AB3F1567129BED70D70A4116 /* JVFloatLabeledTextField.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = JVFloatLabeledTextField.modulemap; sourceTree = "<group>"; };
 		117ED16BDF6732494BAD2459EF6FA0C7 /* Pods-BringItUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BringItUITests.modulemap"; sourceTree = "<group>"; };
 		1A400535BC3209E4F4BA7DBF6766F950 /* Pods-BringIt-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BringIt-resources.sh"; sourceTree = "<group>"; };
 		22431CB9C479AC2FFB936B8DB6172AFC /* Pods-BringItTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BringItTests-dummy.m"; sourceTree = "<group>"; };
 		29476631A0F01A8AFD44F43D0F516DD0 /* Pods-BringItUITests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BringItUITests-resources.sh"; sourceTree = "<group>"; };
 		31769C0170E85DEDF9FC9A49BE4BACFC /* Pods-BringItTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BringItTests-frameworks.sh"; sourceTree = "<group>"; };
-		35BB3AF00060EB413F773645A27C0B74 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		38A643C5429D1F3D75631928DBC63DEC /* JVFloatLabeledTextView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JVFloatLabeledTextView.m; path = JVFloatLabeledTextField/JVFloatLabeledTextField/JVFloatLabeledTextView.m; sourceTree = "<group>"; };
+		3C0E60531E493A45B8E765E4572700AC /* JVFloatLabeledTextView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JVFloatLabeledTextView.h; path = JVFloatLabeledTextField/JVFloatLabeledTextField/JVFloatLabeledTextView.h; sourceTree = "<group>"; };
+		3D1FB59326E2A7874EBD8445111F273E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3D25B295DFBA56061A1EBCAC88F21AC7 /* JVFloatLabeledTextField.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JVFloatLabeledTextField.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D679BE972F648610BF3A026801F0D27 /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42BE41D2BD910E0457D7289DE10AE59B /* Pods-BringItTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BringItTests-umbrella.h"; sourceTree = "<group>"; };
+		43F9BA13E9145A9BFA7F1F7E1676832D /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BDF885745B4CF87A290C9E6ACCB86F4 /* Pods-BringItUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BringItUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		4C7FAB821AC8ECE617461B2B52FE4D4D /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CD9E79F4C8A7D06614E68517D5AF5D1 /* Pods-BringItTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BringItTests.debug.xcconfig"; sourceTree = "<group>"; };
 		544A415186B3AFF1DC75DBAC992FD3F0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60FD52B290B0A2701B9750C9DD3A6F2D /* Pods-BringItTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BringItTests.modulemap"; sourceTree = "<group>"; };
 		66518333ED28675CF03652BB7DAD5AF4 /* Pods-BringIt-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BringIt-umbrella.h"; sourceTree = "<group>"; };
+		70C9FF99E5170D87F4310DEFBF8993CC /* JVFloatLabeledTextField-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "JVFloatLabeledTextField-dummy.m"; sourceTree = "<group>"; };
 		77FB7EB725733D19868790E5213ED073 /* Pods-BringItTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BringItTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		790DC00DC9DFE2D1FB88C5C4CD862932 /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JVFloatLabeledTextField.m; path = JVFloatLabeledTextField/JVFloatLabeledTextField/JVFloatLabeledTextField.m; sourceTree = "<group>"; };
+		7B4E4ADB65E35B6D8CBB77408553C841 /* JVFloatLabeledTextField-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JVFloatLabeledTextField-prefix.pch"; sourceTree = "<group>"; };
 		7C71577287BF56CC6AA7035302DAD582 /* Pods-BringIt-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BringIt-acknowledgements.markdown"; sourceTree = "<group>"; };
 		7FD522F8E769F4D4E3D82B18643683DD /* Pods-BringItUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BringItUITests-dummy.m"; sourceTree = "<group>"; };
 		8C607DA9114CDD6AB42DE0C0B0D2CBD7 /* Pods-BringIt.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BringIt.modulemap"; sourceTree = "<group>"; };
 		904BC55247D2C585283A160C87DF87C9 /* Pods-BringItUITests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BringItUITests-frameworks.sh"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		98036F21644AC37C06E550C115FEC99B /* JVFloatLabeledTextField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JVFloatLabeledTextField.h; path = JVFloatLabeledTextField/JVFloatLabeledTextField/JVFloatLabeledTextField.h; sourceTree = "<group>"; };
+		A013E631B8D8CABB86D295B0890BAE42 /* JVFloatLabeledTextField.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = JVFloatLabeledTextField.xcconfig; sourceTree = "<group>"; };
+		A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		ADBB1D74E2EEF80F57D1D30FCC5D4103 /* Pods-BringItUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BringItUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B2917B6FAF12714DCA8F4E381A65E60A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4A1B1059F9E67E857BC9F1ED415C04B /* Pods-BringItTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BringItTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		B7269B64AABBF522BDB97C64E45B980A /* Pods-BringIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BringIt.debug.xcconfig"; sourceTree = "<group>"; };
 		BB854FD9ECDC5864A847FB8693900501 /* Pods-BringIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BringIt.release.xcconfig"; sourceTree = "<group>"; };
-		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D8AFAF073A73FDACE22E0E8EBD531ED8 /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+TextDirectionality.m"; path = "JVFloatLabeledTextField/JVFloatLabeledTextField/NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		D9607ABB0D5A75CD2034EA980C455FD6 /* Pods-BringIt-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BringIt-dummy.m"; sourceTree = "<group>"; };
 		E2CACF7788C627B0FE15623739A07128 /* Pods-BringIt-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BringIt-acknowledgements.plist"; sourceTree = "<group>"; };
+		E311E623462285FCAF4E567E1324009B /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSString+TextDirectionality.h"; path = "JVFloatLabeledTextField/JVFloatLabeledTextField/NSString+TextDirectionality.h"; sourceTree = "<group>"; };
 		E35ADB6182A2180F1F1BD0D153078DD7 /* Pods-BringItUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BringItUITests-acknowledgements.plist"; sourceTree = "<group>"; };
+		E86668F20F252C440D1015B816BE59C5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		E9D067A95D6FC553964E80C1A9E58293 /* Pods-BringItTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BringItTests-resources.sh"; sourceTree = "<group>"; };
 		F09222E22ECEC2DC36CEF9DDC5CCDC16 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F40761FABD0014009059F694E5FF8BE5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F9BB7C0638CD3CCA28E890D16493F0DF /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE44DFE4491AB33C42EA3F65665E4E48 /* Pods-BringIt-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BringIt-frameworks.sh"; sourceTree = "<group>"; };
 		FF9DC1F08C5A3243E6428B1F7FAB810B /* Pods-BringItTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BringItTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E10A09169EAAD050C98C9303F30CDB1C /* Frameworks */ = {
+		0C4492024021ABE8795F0836E7097B47 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1A45F309D059F628184646E6ED151C3 /* Foundation.framework in Frameworks */,
+				0C1CA327DA48468FD2F05B869CEC735B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D82CCBF9B2CFA52EEF6D94B98301D00D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC740F50E3E7379CA6CD24563688AE9A /* Foundation.framework in Frameworks */,
+				F475A3DCF7F63ADF1EC5339AB1835652 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,12 +127,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
+		433CD3331B6C3787F473C941B61FC68F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */,
+				F302CD3B306AF1ED96B9AF31FCDBC26C /* iOS */,
 			);
-			name = iOS;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6729B5A5E2C2DE0AB4EFC9949172745B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3D25B295DFBA56061A1EBCAC88F21AC7 /* JVFloatLabeledTextField.framework */,
+				4C7FAB821AC8ECE617461B2B52FE4D4D /* Pods_BringIt.framework */,
+				3D679BE972F648610BF3A026801F0D27 /* Pods_BringItTests.framework */,
+				43F9BA13E9145A9BFA7F1F7E1676832D /* Pods_BringItUITests.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		6801C5FF98C9605D201E7F3186D7D22B /* Pods-BringItUITests */ = {
@@ -110,12 +164,27 @@
 			path = "Target Support Files/Pods-BringItUITests";
 			sourceTree = "<group>";
 		};
+		693B3603D4847BAF9D909D30519C1B2B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				3D1FB59326E2A7874EBD8445111F273E /* Info.plist */,
+				0EDA5279AB3F1567129BED70D70A4116 /* JVFloatLabeledTextField.modulemap */,
+				A013E631B8D8CABB86D295B0890BAE42 /* JVFloatLabeledTextField.xcconfig */,
+				70C9FF99E5170D87F4310DEFBF8993CC /* JVFloatLabeledTextField-dummy.m */,
+				7B4E4ADB65E35B6D8CBB77408553C841 /* JVFloatLabeledTextField-prefix.pch */,
+				0917D1054C8F105512A0218DBD145353 /* JVFloatLabeledTextField-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/JVFloatLabeledTextField";
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				A649ED63E45F27BBDB65E480FACD2914 /* Products */,
+				433CD3331B6C3787F473C941B61FC68F /* Frameworks */,
+				9FFF112B167A55FC1908E1DD44603498 /* Pods */,
+				6729B5A5E2C2DE0AB4EFC9949172745B /* Products */,
 				DFD1E8216D331BB8832218C84BC732C4 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -156,22 +225,26 @@
 			path = "Target Support Files/Pods-BringItTests";
 			sourceTree = "<group>";
 		};
-		A649ED63E45F27BBDB65E480FACD2914 /* Products */ = {
+		9FFF112B167A55FC1908E1DD44603498 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				35BB3AF00060EB413F773645A27C0B74 /* Pods_BringIt.framework */,
-				0D9A4B45169ACB4E311E03FDD85CC916 /* Pods_BringItTests.framework */,
-				F9BB7C0638CD3CCA28E890D16493F0DF /* Pods_BringItUITests.framework */,
+				DE02CD1271BD8F5006F2838F2173501B /* JVFloatLabeledTextField */,
 			);
-			name = Products;
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+		DE02CD1271BD8F5006F2838F2173501B /* JVFloatLabeledTextField */ = {
 			isa = PBXGroup;
 			children = (
-				3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */,
+				98036F21644AC37C06E550C115FEC99B /* JVFloatLabeledTextField.h */,
+				790DC00DC9DFE2D1FB88C5C4CD862932 /* JVFloatLabeledTextField.m */,
+				3C0E60531E493A45B8E765E4572700AC /* JVFloatLabeledTextView.h */,
+				38A643C5429D1F3D75631928DBC63DEC /* JVFloatLabeledTextView.m */,
+				E311E623462285FCAF4E567E1324009B /* NSString+TextDirectionality.h */,
+				D8AFAF073A73FDACE22E0E8EBD531ED8 /* NSString+TextDirectionality.m */,
+				693B3603D4847BAF9D909D30519C1B2B /* Support Files */,
 			);
-			name = Frameworks;
+			path = JVFloatLabeledTextField;
 			sourceTree = "<group>";
 		};
 		DFD1E8216D331BB8832218C84BC732C4 /* Targets Support Files */ = {
@@ -182,6 +255,15 @@
 				6801C5FF98C9605D201E7F3186D7D22B /* Pods-BringItUITests */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		F302CD3B306AF1ED96B9AF31FCDBC26C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A2A6FF208CEC4C2861F1E9D42D651453 /* Foundation.framework */,
+				E86668F20F252C440D1015B816BE59C5 /* UIKit.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +277,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2A9C429E7C809599E676D5831C2AAFB8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C94C96078F783F759AECACF879B37BD /* JVFloatLabeledTextField-umbrella.h in Headers */,
+				3260802C71D0241B23AF5BCFCCA6C0C2 /* JVFloatLabeledTextField.h in Headers */,
+				6F94E159E26C1DB49F349ED2A3E21364 /* JVFloatLabeledTextView.h in Headers */,
+				973568245D337B094D81E743E1D7AF22 /* NSString+TextDirectionality.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		603FF812F08618346D9EBD64BDE411BB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -203,11 +296,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C87068B6F8EC2856CD8E82525109F258 /* Headers */ = {
+		FA0AB8D335F645A03D71F1C8D8A72B67 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A01D9AE861E0755BD8BA4601FD1CFA0A /* Pods-BringIt-umbrella.h in Headers */,
+				3296BE718BD30582A8238E8D8DEDE1F0 /* Pods-BringIt-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,7 +321,7 @@
 			);
 			name = "Pods-BringItTests";
 			productName = "Pods-BringItTests";
-			productReference = 0D9A4B45169ACB4E311E03FDD85CC916 /* Pods_BringItTests.framework */;
+			productReference = 3D679BE972F648610BF3A026801F0D27 /* Pods_BringItTests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		425236C8907BA1C38D10174C763AB941 /* Pods-BringItUITests */ = {
@@ -245,24 +338,42 @@
 			);
 			name = "Pods-BringItUITests";
 			productName = "Pods-BringItUITests";
-			productReference = F9BB7C0638CD3CCA28E890D16493F0DF /* Pods_BringItUITests.framework */;
+			productReference = 43F9BA13E9145A9BFA7F1F7E1676832D /* Pods_BringItUITests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		66412647CA1424DF77DD5737D6C2F5D9 /* Pods-BringIt */ = {
+		4326E61A5F53DCA3D61CB22699B8929E /* Pods-BringIt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 850DEAD362C0CDE6B6AF3C198DE98520 /* Build configuration list for PBXNativeTarget "Pods-BringIt" */;
+			buildConfigurationList = 1C2F57F69DD2B64F8D4B3E33C2DFB399 /* Build configuration list for PBXNativeTarget "Pods-BringIt" */;
 			buildPhases = (
-				5EF01B45AA2FB45B1FF9FAA6F40D5F90 /* Sources */,
-				E10A09169EAAD050C98C9303F30CDB1C /* Frameworks */,
-				C87068B6F8EC2856CD8E82525109F258 /* Headers */,
+				F74478F1C81031DED85B216379E066FA /* Sources */,
+				0C4492024021ABE8795F0836E7097B47 /* Frameworks */,
+				FA0AB8D335F645A03D71F1C8D8A72B67 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8AF93FC4F8404A8EA959460C152D998C /* PBXTargetDependency */,
+			);
+			name = "Pods-BringIt";
+			productName = "Pods-BringIt";
+			productReference = 4C7FAB821AC8ECE617461B2B52FE4D4D /* Pods_BringIt.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		735882DA95E7FCCEC084FC1C5384FF8A /* JVFloatLabeledTextField */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AAA4A1EDCFEF2936F91B22E96958622 /* Build configuration list for PBXNativeTarget "JVFloatLabeledTextField" */;
+			buildPhases = (
+				E7B2A321AE4CF1B886E351E966B94039 /* Sources */,
+				D82CCBF9B2CFA52EEF6D94B98301D00D /* Frameworks */,
+				2A9C429E7C809599E676D5831C2AAFB8 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "Pods-BringIt";
-			productName = "Pods-BringIt";
-			productReference = 35BB3AF00060EB413F773645A27C0B74 /* Pods_BringIt.framework */;
+			name = JVFloatLabeledTextField;
+			productName = JVFloatLabeledTextField;
+			productReference = 3D25B295DFBA56061A1EBCAC88F21AC7 /* JVFloatLabeledTextField.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -282,11 +393,12 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = A649ED63E45F27BBDB65E480FACD2914 /* Products */;
+			productRefGroup = 6729B5A5E2C2DE0AB4EFC9949172745B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				66412647CA1424DF77DD5737D6C2F5D9 /* Pods-BringIt */,
+				735882DA95E7FCCEC084FC1C5384FF8A /* JVFloatLabeledTextField */,
+				4326E61A5F53DCA3D61CB22699B8929E /* Pods-BringIt */,
 				03C5FBDCAB805F4C49A5C385ECE378AD /* Pods-BringItTests */,
 				425236C8907BA1C38D10174C763AB941 /* Pods-BringItUITests */,
 			);
@@ -294,14 +406,6 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5EF01B45AA2FB45B1FF9FAA6F40D5F90 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4773C7A903626075CC58796FF4955E19 /* Pods-BringIt-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6F574609256CAAA7BBC84001443D7507 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -318,9 +422,66 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E7B2A321AE4CF1B886E351E966B94039 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4D75B1B0072095A98068C68A0062559 /* JVFloatLabeledTextField-dummy.m in Sources */,
+				198232E4CA68917D9671AA50B66099F5 /* JVFloatLabeledTextField.m in Sources */,
+				E215BEEA20003F82591AC99111A35600 /* JVFloatLabeledTextView.m in Sources */,
+				E8DD8380D6B4958A77EAC0DE1A6967A9 /* NSString+TextDirectionality.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F74478F1C81031DED85B216379E066FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A6FBF1EB40F738551F66D1436AC7EDC /* Pods-BringIt-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		8AF93FC4F8404A8EA959460C152D998C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JVFloatLabeledTextField;
+			target = 735882DA95E7FCCEC084FC1C5384FF8A /* JVFloatLabeledTextField */;
+			targetProxy = 5E232062FF6505C553BD90B6F57AC301 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		04AA95F0C690E294E49592C39FC3D75C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A013E631B8D8CABB86D295B0890BAE42 /* JVFloatLabeledTextField.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/JVFloatLabeledTextField/JVFloatLabeledTextField-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/JVFloatLabeledTextField/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/JVFloatLabeledTextField/JVFloatLabeledTextField.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = JVFloatLabeledTextField;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		09554D22B1374D5C4BCF8A9DD5318D39 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4CD9E79F4C8A7D06614E68517D5AF5D1 /* Pods-BringItTests.debug.xcconfig */;
@@ -354,9 +515,9 @@
 			};
 			name = Debug;
 		};
-		28537264CCA4303D2FCA83E43F90247A /* Debug */ = {
+		394D09B2004390ECBF5AD80FA06C5CF0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B7269B64AABBF522BDB97C64E45B980A /* Pods-BringIt.debug.xcconfig */;
+			baseConfigurationReference = A013E631B8D8CABB86D295B0890BAE42 /* JVFloatLabeledTextField.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -367,18 +528,14 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-BringIt/Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/JVFloatLabeledTextField/JVFloatLabeledTextField-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/JVFloatLabeledTextField/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BringIt/Pods-BringIt.modulemap";
+				MODULEMAP_FILE = "Target Support Files/JVFloatLabeledTextField/JVFloatLabeledTextField.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BringIt;
+				PRODUCT_NAME = JVFloatLabeledTextField;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -425,39 +582,6 @@
 			};
 			name = Release;
 		};
-		57C109FBE0A4C1D86750A6B2BC5B25D2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB854FD9ECDC5864A847FB8693900501 /* Pods-BringIt.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-BringIt/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BringIt/Pods-BringIt.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BringIt;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		5E62115DE8C09934BF8D2FE5D15FED1E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -497,6 +621,39 @@
 				ONLY_ACTIVE_ARCH = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		7FA7DC5230C713FF76514D252DC3671C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7269B64AABBF522BDB97C64E45B980A /* Pods-BringIt.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BringIt/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BringIt/Pods-BringIt.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BringIt;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
@@ -566,6 +723,39 @@
 			};
 			name = Release;
 		};
+		EA0D6B7B6FF96CF68D620DACB14E1AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB854FD9ECDC5864A847FB8693900501 /* Pods-BringIt.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BringIt/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BringIt/Pods-BringIt.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BringIt;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		FBB172072F81242FF88D6A1F109B8A8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F09222E22ECEC2DC36CEF9DDC5CCDC16 /* Pods-BringItUITests.release.xcconfig */;
@@ -602,6 +792,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1C2F57F69DD2B64F8D4B3E33C2DFB399 /* Build configuration list for PBXNativeTarget "Pods-BringIt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FA7DC5230C713FF76514D252DC3671C /* Debug */,
+				EA0D6B7B6FF96CF68D620DACB14E1AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -611,20 +810,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		3AAA4A1EDCFEF2936F91B22E96958622 /* Build configuration list for PBXNativeTarget "JVFloatLabeledTextField" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				394D09B2004390ECBF5AD80FA06C5CF0 /* Debug */,
+				04AA95F0C690E294E49592C39FC3D75C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4715D3CB3890389076F5CC28B459400F /* Build configuration list for PBXNativeTarget "Pods-BringItUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0C62AB2E6E855194245E44597A19F58 /* Debug */,
 				FBB172072F81242FF88D6A1F109B8A8C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		850DEAD362C0CDE6B6AF3C198DE98520 /* Build configuration list for PBXNativeTarget "Pods-BringIt" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				28537264CCA4303D2FCA83E43F90247A /* Debug */,
-				57C109FBE0A4C1D86750A6B2BC5B25D2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
