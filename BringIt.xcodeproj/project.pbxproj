@@ -15,10 +15,10 @@
 		110220021CE68A83003D82FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 110220001CE68A83003D82FB /* LaunchScreen.storyboard */; };
 		1102200D1CE68A83003D82FB /* BringItTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1102200C1CE68A83003D82FB /* BringItTests.swift */; };
 		110220181CE68A83003D82FB /* BringItUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220171CE68A83003D82FB /* BringItUITests.swift */; };
-		110220311CE7E324003D82FB /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 110220301CE7E324003D82FB /* JVFloatLabeledTextField.m */; };
 		110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220321CE7FC18003D82FB /* WalkthroughViewController.swift */; };
 		110220351CE83307003D82FB /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220341CE83307003D82FB /* PageViewController.swift */; };
 		110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220361CE83EB7003D82FB /* SignInViewController.swift */; };
+		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
 		2F60BF5113DA47831CD710EA /* Pods_BringItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */; };
 		545F366974300B6D9693022C /* Pods_BringItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */; };
 		6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
@@ -56,11 +56,10 @@
 		110220131CE68A83003D82FB /* BringItUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BringItUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		110220171CE68A83003D82FB /* BringItUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BringItUITests.swift; sourceTree = "<group>"; };
 		110220191CE68A83003D82FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1102202F1CE7E324003D82FB /* JVFloatLabeledTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JVFloatLabeledTextField.h; path = BringIt/JVFloatLabeledTextField.h; sourceTree = "<group>"; };
-		110220301CE7E324003D82FB /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JVFloatLabeledTextField.m; path = BringIt/JVFloatLabeledTextField.m; sourceTree = "<group>"; };
 		110220321CE7FC18003D82FB /* WalkthroughViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkthroughViewController.swift; sourceTree = "<group>"; };
 		110220341CE83307003D82FB /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		110220361CE83EB7003D82FB /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		360769A0669582F28FBB8124 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,12 +125,12 @@
 			isa = PBXGroup;
 			children = (
 				11021FF51CE68A83003D82FB /* AppDelegate.swift */,
+				1102203A1CE9262D003D82FB /* Walkthrough */,
+				110220361CE83EB7003D82FB /* SignInViewController.swift */,
+				114C9E561CE931BB00C45866 /* SignUpViewController.swift */,
 				11021FF71CE68A83003D82FB /* FirstViewController.swift */,
 				11021FF91CE68A83003D82FB /* SecondViewController.swift */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
-				110220321CE7FC18003D82FB /* WalkthroughViewController.swift */,
-				110220341CE83307003D82FB /* PageViewController.swift */,
-				110220361CE83EB7003D82FB /* SignInViewController.swift */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				110220031CE68A83003D82FB /* Info.plist */,
@@ -157,6 +156,15 @@
 			path = BringItUITests;
 			sourceTree = "<group>";
 		};
+		1102203A1CE9262D003D82FB /* Walkthrough */ = {
+			isa = PBXGroup;
+			children = (
+				110220321CE7FC18003D82FB /* WalkthroughViewController.swift */,
+				110220341CE83307003D82FB /* PageViewController.swift */,
+			);
+			name = Walkthrough;
+			sourceTree = "<group>";
+		};
 		172FBED42052A1B1057FB38A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,8 +178,6 @@
 		E50B8B917FC58AD69D0973C4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1102202F1CE7E324003D82FB /* JVFloatLabeledTextField.h */,
-				110220301CE7E324003D82FB /* JVFloatLabeledTextField.m */,
 				DE2BA22A3EE99C6B60B11CD9 /* Pods-BringIt.debug.xcconfig */,
 				79E26E758EB8418E7DE19F36 /* Pods-BringIt.release.xcconfig */,
 				C896AAAA9035D27AC9A5D19E /* Pods-BringItTests.debug.xcconfig */,
@@ -445,7 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
-				110220311CE7E324003D82FB /* JVFloatLabeledTextField.m in Sources */,
+				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* SecondViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,

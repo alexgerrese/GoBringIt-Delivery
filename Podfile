@@ -7,7 +7,8 @@ target 'BringIt' do
 
   # Pods for BringIt
 
-pod 'JVFloatLabeledTextField'
+pod 'B68UIFloatLabelTextField', '~> 0.1.0'
+pod 'EZSwiftExtensions', '~> 1.4'
 
   target 'BringItTests' do
     inherit! :search_paths

@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>JVFloatLabeledTextField.xcscheme</key>
+		<key>B68UIFloatLabelTextField.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>EZSwiftExtensions.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -37,17 +42,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4326E61A5F53DCA3D61CB22699B8929E</key>
+		<key>648F1E53669E1ADBB4D1BE461B1D0000</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>66412647CA1424DF77DD5737D6C2F5D9</key>
+		<key>CC2C6E66CADF0C9F76F897D03F533C69</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>735882DA95E7FCCEC084FC1C5384FF8A</key>
+		<key>CF8E8DE62CFA6449514883243FBA01D3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

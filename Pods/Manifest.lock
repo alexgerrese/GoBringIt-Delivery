@@ -1,12 +1,15 @@
 PODS:
-  - JVFloatLabeledTextField (1.1.0)
+  - B68UIFloatLabelTextField (0.1.2)
+  - EZSwiftExtensions (1.4)
 
 DEPENDENCIES:
-  - JVFloatLabeledTextField
+  - B68UIFloatLabelTextField (~> 0.1.0)
+  - EZSwiftExtensions (~> 1.4)
 
 SPEC CHECKSUMS:
-  JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
+  B68UIFloatLabelTextField: 337894ff837df84e19636c99f3f5f88c4fad60d7
+  EZSwiftExtensions: db7be0022fce8e92cdfe0fadddaf835fcd9696db
 
-PODFILE CHECKSUM: e23842d1fc465f47b246c73aa03db3e924924d32
+PODFILE CHECKSUM: 226f354d3cd81c9ef7d29d143116441bac3630c7
 
 COCOAPODS: 1.0.0
