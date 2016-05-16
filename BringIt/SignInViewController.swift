@@ -7,24 +7,36 @@
 //
 
 import UIKit
+import B68UIFloatLabelTextField
+import IQKeyboardManagerSwift
 
-class SignInViewController: UIViewController {
+class SignInViewController: UIViewController, UITextFieldDelegate {
     
-    var screenMoved = false
+    // MARK: - IBOutlets
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
+    @IBOutlet weak var passwordTextField: B68UIFloatLabelTextField!
+    
+    // Doing this and the two lines in viewDidLoad automatically handles all keyboard and textField problems!
+    var returnKeyHandler : IQKeyboardReturnKeyHandler!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        
-        // Hide keyboard when tapped around (Copy and paste this code into each viewController)
-        self.hideKeyboardWhenTappedAround()
+        returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
     }
     
     override func viewDidAppear(animated: Bool) {
         displayWalkthroughs()
     }
+    
+    /*func keyboardWillShow(notification:NSNotification) {
+        let userInfo:NSDictionary = notification.userInfo!
+        let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.CGRectValue()
+        keyboardHeight = keyboardRectangle.height
+    }*/
     
     // Check if walkthrough has been shown, then show if needed
     func displayWalkthroughs() {
@@ -38,48 +50,26 @@ class SignInViewController: UIViewController {
         }
     }
     
-    // MARK: - Keyboard Methods
-    
-    // Move the screen up with the keyboard so text fields aren't hidden
-    func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            if !screenMoved {
-                self.view.frame.origin.y -= keyboardSize.height
-                screenMoved = true
-            }
-        }
+    /*MARK: - Keyboard Methods
+    func textFieldDidBeginEditing(textField: UITextField) {
+        scrollView.setContentOffset(CGPointMake(0, keyboardHeight), animated: true)
+        print("HELLO")
     }
     
-    // Move screen back down after
-    func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.view.frame.origin.y += keyboardSize.height
-            screenMoved = false
-        }
+    func textFieldDidEndEditing(textField: UITextField) {
+        scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
+    }*/
     
     @IBAction func rewindFromSignUp(segue: UIStoryboardSegue) {
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
-// To be used in every viewcontroller with keyboards, so code doesn't need to be rewritten
+/* To be used in every viewcontroller with keyboards, so code doesn't need to be rewritten
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
@@ -91,4 +81,4 @@ extension UIViewController {
     }
     
     
-}
+}*/

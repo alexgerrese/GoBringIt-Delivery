@@ -19,6 +19,8 @@
 		110220351CE83307003D82FB /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220341CE83307003D82FB /* PageViewController.swift */; };
 		110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220361CE83EB7003D82FB /* SignInViewController.swift */; };
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
+		11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */; };
+		11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */; };
 		2F60BF5113DA47831CD710EA /* Pods_BringItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */; };
 		545F366974300B6D9693022C /* Pods_BringItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */; };
 		6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
@@ -60,6 +62,8 @@
 		110220341CE83307003D82FB /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		110220361CE83EB7003D82FB /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressInfoViewController.swift; sourceTree = "<group>"; };
+		11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
 		360769A0669582F28FBB8124 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,8 +130,7 @@
 			children = (
 				11021FF51CE68A83003D82FB /* AppDelegate.swift */,
 				1102203A1CE9262D003D82FB /* Walkthrough */,
-				110220361CE83EB7003D82FB /* SignInViewController.swift */,
-				114C9E561CE931BB00C45866 /* SignUpViewController.swift */,
+				11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */,
 				11021FF71CE68A83003D82FB /* FirstViewController.swift */,
 				11021FF91CE68A83003D82FB /* SecondViewController.swift */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
@@ -163,6 +166,17 @@
 				110220341CE83307003D82FB /* PageViewController.swift */,
 			);
 			name = Walkthrough;
+			sourceTree = "<group>";
+		};
+		11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				110220361CE83EB7003D82FB /* SignInViewController.swift */,
+				114C9E561CE931BB00C45866 /* SignUpViewController.swift */,
+				11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */,
+				11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */,
+			);
+			name = "Sign In/Sign Up";
 			sourceTree = "<group>";
 		};
 		172FBED42052A1B1057FB38A /* Frameworks */ = {
@@ -453,7 +467,9 @@
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* SecondViewController.swift in Sources */,
+				11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
+				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
 				11021FF81CE68A83003D82FB /* FirstViewController.swift in Sources */,
 				110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */,

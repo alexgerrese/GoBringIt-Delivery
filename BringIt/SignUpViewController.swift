@@ -7,58 +7,40 @@
 //
 
 import UIKit
+import B68UIFloatLabelTextField
+import IQKeyboardManagerSwift
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
     
-    var screenMoved = false
+    // MARK: - IBOutlets
+    @IBOutlet weak var fullNameTextField: B68UIFloatLabelTextField!
+    @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
+    @IBOutlet weak var passwordTextField: B68UIFloatLabelTextField!
+    @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
+    
+    // Doing this and the two lines in ViewDidLoad automatically handles all keyboard and textField problems!
+    var returnKeyHandler : IQKeyboardReturnKeyHandler!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        // Set title
+        self.title = "Sign Up"
         
-        // Hide keyboard when tapped around (Copy and paste this code into each viewController)
-        self.hideKeyboardWhenTappedAround()
+        // Set custom back button
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+
+        returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
     }
+    
     @IBAction func xButtonClicked(sender: UIBarButtonItem) {
-        self.dismissKeyboard()
-    }
-    
-    // MARK: - Keyboard Methods
-    
-    // Move the screen up with the keyboard so text fields aren't hidden
-    func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            if !screenMoved {
-                self.view.frame.origin.y -= keyboardSize.height
-                screenMoved = true
-            }
-        }
-    }
-    
-    // Move screen back down after
-    func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.view.frame.origin.y += keyboardSize.height
-            screenMoved = false
-        }
+        self.view.endEditing(true)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
