@@ -20,7 +20,7 @@ class ScheduleTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set title as current month - NEED TO MOVE THISSS
+        // Set title as current month - NEED TO MOVE THISSS SO IT'S DYNAMIC
         self.title = CVDate(date: NSDate()).globalDescription
     }
     

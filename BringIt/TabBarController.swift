@@ -13,19 +13,19 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setting GREEN color as selected tab bar item color
         for item in self.tabBar.items! as [UITabBarItem] {
             if let image = item.image {
                 if let selectedImage = item.selectedImage {
                     item.selectedImage = selectedImage.imageWithColor(GREEN).imageWithRenderingMode(.AlwaysOriginal)
                 }
+                // Uncomment if want a custom color for unselected tab bar image
                 //item.image = image.imageWithColor(UIColor.yellowColor()).imageWithRenderingMode(.AlwaysOriginal)
             }
         }
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,6 +46,7 @@ class TabBarController: UITabBarController {
 
 }
 
+// Allows us to change tab bar item color above
 extension UIImage {
     func imageWithColor(tintColor: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)

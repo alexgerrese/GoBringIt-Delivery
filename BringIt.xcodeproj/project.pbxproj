@@ -183,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				115ECC411CEABA5F0053E03F /* Home */,
-				115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */,
+				1193E72C1CEACDDD00299D8B /* Restaurant */,
 				115ECC441CEABA780053E03F /* Menu */,
 			);
 			name = "Bring It";
@@ -213,6 +213,14 @@
 				115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */,
 			);
 			name = Menu;
+			sourceTree = "<group>";
+		};
+		1193E72C1CEACDDD00299D8B /* Restaurant */ = {
+			isa = PBXGroup;
+			children = (
+				115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */,
+			);
+			name = Restaurant;
 			sourceTree = "<group>";
 		};
 		11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */ = {

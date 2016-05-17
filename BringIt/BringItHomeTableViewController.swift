@@ -24,13 +24,14 @@ class BringItHomeTableViewController: UITableViewController {
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // Set up dropdown MenuBar
+        // MARK: - Dropdown Menu Setup
+        
         var menuView: BTNavigationDropdownMenu!
         let items = ["Bring It", "Maid My Day"]
         self.navigationController?.navigationBar.translucent = false
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.darkTextColor()]
         
-        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, title: items[1], items: items)
+        menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, title: items[0], items: items)
         menuView.cellHeight = 55
         menuView.cellSeparatorColor = UIColor.lightGrayColor()
         menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
@@ -68,10 +69,10 @@ class BringItHomeTableViewController: UITableViewController {
         return coverImages.count
     }
 
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
 
+        // Set up cell properties
         cell.restaurantBannerImage.image = UIImage(named: coverImages[indexPath.row])
         cell.restaurantNameLabel.text = restaurantNames[indexPath.row]
         cell.cuisineTypeLabel.text = "CUISINE: \(cuisineTypes[indexPath.row])"

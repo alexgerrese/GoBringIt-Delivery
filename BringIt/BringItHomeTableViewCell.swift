@@ -10,6 +10,7 @@ import UIKit
 
 class BringItHomeTableViewCell: UITableViewCell {
 
+    // MARK: - IBOutlets
     @IBOutlet weak var restaurantBannerImage: UIImageView!
     @IBOutlet weak var restaurantNameLabel: UILabel!
     @IBOutlet weak var cuisineTypeLabel: UILabel!
