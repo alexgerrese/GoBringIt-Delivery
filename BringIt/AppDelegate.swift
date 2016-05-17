@@ -9,6 +9,11 @@
 import UIKit
 import IQKeyboardManagerSwift
 
+// UNIVERSAL CONSTANTS
+
+// Colors
+let GREEN = UIColor(red:0.27, green:0.79, blue:0.71, alpha:1.0)
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

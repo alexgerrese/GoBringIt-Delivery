@@ -31,13 +31,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         displayWalkthroughs()
     }
     
-    /*func keyboardWillShow(notification:NSNotification) {
-        let userInfo:NSDictionary = notification.userInfo!
-        let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
-        let keyboardRectangle = keyboardFrame.CGRectValue()
-        keyboardHeight = keyboardRectangle.height
-    }*/
-    
     // Check if walkthrough has been shown, then show if needed
     func displayWalkthroughs() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -50,35 +43,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    /*MARK: - Keyboard Methods
-    func textFieldDidBeginEditing(textField: UITextField) {
-        scrollView.setContentOffset(CGPointMake(0, keyboardHeight), animated: true)
-        print("HELLO")
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }*/
-    
     @IBAction func rewindFromSignUp(segue: UIStoryboardSegue) {
     }
 }
-
-/* To be used in every viewcontroller with keyboards, so code doesn't need to be rewritten
-extension UIViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    
-}*/

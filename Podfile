@@ -11,6 +11,9 @@ pod 'B68UIFloatLabelTextField', '~> 0.1.0'
 pod 'EZSwiftExtensions', '~> 1.4'
 pod 'DLRadioButton', '~> 1.4'
 pod 'IQKeyboardManagerSwift'
+pod 'BTNavigationDropdownMenu'
+#pod 'Material', '~> 1.41'
+pod 'CVCalendar', '~> 1.2.9'
 
   target 'BringItTests' do
     inherit! :search_paths
