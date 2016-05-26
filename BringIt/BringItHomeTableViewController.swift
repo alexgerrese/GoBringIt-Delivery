@@ -17,6 +17,13 @@ class BringItHomeTableViewController: UITableViewController {
     let cuisineTypes = ["SUSHI", "BREAKFAST", "AMERICAN"]
     let openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM"]
     let isOpen = [true, false, false]
+    
+    let rectShape = CAShapeLayer()
+    let indicatorHeight: CGFloat = 3
+    var indicatorWidth: CGFloat!
+    let indicatorBottomMargin: CGFloat = 2
+    let indicatorLeftMargin: CGFloat = 2
+    var maxY: CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +32,6 @@ class BringItHomeTableViewController: UITableViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         // MARK: - Dropdown Menu Setup
-        
         var menuView: BTNavigationDropdownMenu!
         let items = ["Bring It", "Maid My Day"]
         self.navigationController?.navigationBar.translucent = false
@@ -50,6 +56,30 @@ class BringItHomeTableViewController: UITableViewController {
         }
         
         self.navigationItem.titleView = menuView
+        
+        // setup tabbar indicator
+        rectShape.fillColor = GREEN.CGColor
+        indicatorWidth = view.bounds.maxX / 3 // count of items
+        self.tabBarController!.view.layer.addSublayer(rectShape)
+        self.tabBarController?.delegate = self
+        
+        // initial position
+        maxY = view.bounds.maxY - indicatorHeight
+        updateTabbarIndicatorBySelectedTabIndex(0)
+    }
+    
+    func updateTabbarIndicatorBySelectedTabIndex(index: Int) -> Void
+    {
+        let updatedBounds = CGRect( x: CGFloat(index) * (indicatorWidth + indicatorLeftMargin),
+                                    y: maxY,
+                                    width: indicatorWidth - indicatorLeftMargin,
+                                    height: indicatorHeight)
+        
+        print(view.bounds.maxY - indicatorHeight)
+        
+        let path = CGPathCreateMutable()
+        CGPathAddRect(path, nil, updatedBounds)
+        rectShape.path = path
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,25 +105,30 @@ class BringItHomeTableViewController: UITableViewController {
         // Set up cell properties
         cell.restaurantBannerImage.image = UIImage(named: coverImages[indexPath.row])
         cell.restaurantNameLabel.text = restaurantNames[indexPath.row]
-        cell.cuisineTypeLabel.text = "CUISINE: \(cuisineTypes[indexPath.row])"
-        cell.restaurantHoursLabel.text = "HOURS: \(openHours[indexPath.row])"
+        cell.cuisineTypeLabel.text = cuisineTypes[indexPath.row]
+        cell.restaurantHoursLabel.text = openHours[indexPath.row]
         if isOpen[indexPath.row] {
             cell.openIndicator.image = UIImage(named: "oval-green")
+            cell.openClosedLabel.text = "OPEN"
         } else {
             cell.openIndicator.image = UIImage(named: "oval-red")
+            cell.openClosedLabel.text = "CLOSED"
         }
 
         return cell
     }
 
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+     
+    @IBAction func returnHome(segue: UIStoryboardSegue) {
     }
-    */
 
+}
+
+extension BringItHomeTableViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        updateTabbarIndicatorBySelectedTabIndex(tabBarController.selectedIndex)
+    }
 }

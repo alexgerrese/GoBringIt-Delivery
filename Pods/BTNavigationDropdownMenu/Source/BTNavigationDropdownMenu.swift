@@ -520,6 +520,7 @@ class BTTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
         cell.checkmarkIcon.hidden = (indexPath.row == selectedIndexPath) ? false : true
         if self.configuration.keepSelectedCellColor == true {
             cell.contentView.backgroundColor = (indexPath.row == selectedIndexPath) ? self.configuration.cellSelectionColor : self.configuration.cellBackgroundColor
+            cell.textLabel?.textColor = (indexPath.row == selectedIndexPath) ? UIColor.whiteColor() : UIColor.darkTextColor()
         }
         
         return cell

@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>GMStepper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,7 +72,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5BFB963EEBBA10BD51FA8FB64F44D181</key>
+		<key>A2F8BDAE4BBE51F2EB1E994588EEE060</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -88,6 +93,11 @@
 			<true/>
 		</dict>
 		<key>F3990E3EAC160D4E4F89177D966FC1E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F8878A29900A25BDE9E2342E03BC8EAB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

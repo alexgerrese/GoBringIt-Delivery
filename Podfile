@@ -14,6 +14,8 @@ pod 'IQKeyboardManagerSwift'
 pod 'BTNavigationDropdownMenu'
 #pod 'Material', '~> 1.41'
 pod 'CVCalendar', '~> 1.2.9'
+#pod 'Persei', '~> 2.0.1'
+pod 'GMStepper'
 
   target 'BringItTests' do
     inherit! :search_paths

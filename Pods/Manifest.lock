@@ -4,7 +4,8 @@ PODS:
   - CVCalendar (1.2.9)
   - DLRadioButton (1.4.8)
   - EZSwiftExtensions (1.4)
-  - IQKeyboardManagerSwift (4.0.2)
+  - GMStepper (1.2.0)
+  - IQKeyboardManagerSwift (4.0.3)
 
 DEPENDENCIES:
   - B68UIFloatLabelTextField (~> 0.1.0)
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - CVCalendar (~> 1.2.9)
   - DLRadioButton (~> 1.4)
   - EZSwiftExtensions (~> 1.4)
+  - GMStepper
   - IQKeyboardManagerSwift
 
 SPEC CHECKSUMS:
@@ -20,8 +22,9 @@ SPEC CHECKSUMS:
   CVCalendar: 0799256e0bc3b43e83b7e86c0729ce9ff0624cb6
   DLRadioButton: 8fe4865b3ea8a5236e1d114dd283dd0884d3dc46
   EZSwiftExtensions: db7be0022fce8e92cdfe0fadddaf835fcd9696db
-  IQKeyboardManagerSwift: 2f2c19c509f67c4c0df2826db54033d3e090ce65
+  GMStepper: e743b5648ae5fe877e33d3b51b5aa2df432f179d
+  IQKeyboardManagerSwift: b6883b720b0e76473692fdc80828442566e1075f
 
-PODFILE CHECKSUM: 4572c8ce8ec13a5babc823f05cdfd0ecd4865e2b
+PODFILE CHECKSUM: 50fcf7dea164cd4ba90ce6492ac532244f7a9de2
 
 COCOAPODS: 1.0.0

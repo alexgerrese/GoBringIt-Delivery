@@ -10,6 +10,11 @@ import UIKit
 
 class RestaurantTableViewController: UITableViewController {
     
+    @IBOutlet weak var cuisineTypeLabel: UILabel!
+    @IBOutlet weak var restaurantHoursLabel: UILabel!
+    @IBOutlet weak var openClosedLabel: UILabel!
+    @IBOutlet weak var isOpenIndicator: UIImageView!
+    
     // SAMPLE DATA
     let menuCategories = ["Signature Chicken and Waffles", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc.", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc."]
 
@@ -19,8 +24,30 @@ class RestaurantTableViewController: UITableViewController {
         // Set SAMPLE title
         self.title = "Dames"
         
+        // Set tableView cells to custom height and automatically resize if needed
+        tableView.estimatedRowHeight = 50
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        // Make nav bar transparent
+        // BUG - If you keep scrolling, tab bar will stay over tableView content
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.translucent = true
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController!.navigationBar.titleTextAttributes =
+            ([NSFontAttributeName: UIFont(name: "Avenir", size: 17)!,
+                NSForegroundColorAttributeName: UIColor.whiteColor()])
+        
+        // Round corners of openClosedLabel and add shadow
+        openClosedLabel.layer.cornerRadius = 11
+        openClosedLabel.clipsToBounds = true
+        openClosedLabel.layer.shadowColor = UIColor.whiteColor().CGColor
+        openClosedLabel.layer.shadowOpacity = 1
+        openClosedLabel.layer.shadowOffset = CGSizeZero
+        openClosedLabel.layer.shadowRadius = 5
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,15 +75,12 @@ class RestaurantTableViewController: UITableViewController {
 
         return cell
     }
-
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    override func viewWillDisappear(animated: Bool){
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBarHidden = false
     }
-    */
 
 }
