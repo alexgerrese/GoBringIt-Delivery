@@ -9,7 +9,7 @@
 import UIKit
 import GMStepper
 
-class AddToOrderTableViewController: UITableViewController {
+class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // SAMPLE DATA
     let sectionNames = ["SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
@@ -19,10 +19,10 @@ class AddToOrderTableViewController: UITableViewController {
     let section3 = "E.g. Easy on the mayo, add bacon"
     
     // MARK: - IBOutlets
+    @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var foodDescriptionLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var stepper: GMStepper!
-    @IBOutlet weak var totalPriceLabel: UILabel!
     
     // SAMPLE Data passed from previous View Controller
     var selectedFoodName = ""
@@ -40,16 +40,21 @@ class AddToOrderTableViewController: UITableViewController {
         
         // Set custom nav bar font
         navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: UIFont(name: "Avenir", size: 17)!,
+            ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
         
+        // Display price in nav bar
+        self.navigationItem.rightBarButtonItem?.title = "10.00"
+        self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: TITLE_FONT,
+            NSForegroundColorAttributeName: GREEN], forState: .Normal)
+        
         // Set tableView cells to custom height and automatically resize if needed
-        tableView.estimatedRowHeight = 50
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        myTableView.estimatedRowHeight = 50
+        myTableView.rowHeight = UITableViewAutomaticDimension
         
         // Set stepper font
-        stepper.labelFont = UIFont(name: "Avenir-Medium", size: 18)!
-        stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 18)!
+        stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
+        stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -70,12 +75,12 @@ class AddToOrderTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return sectionNames.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return section1.count
         } else if section == 1 {
@@ -85,7 +90,7 @@ class AddToOrderTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
             
@@ -111,18 +116,17 @@ class AddToOrderTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionNames[section]
     }
     
     // Set up custom header
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         header.contentView.backgroundColor = UIColor.whiteColor()
-        header.textLabel!.textColor = GREEN
-        header.textLabel?.font = UIFont(name: "Avenir", size: 12)
-        //header.alpha = 0.5 //make the header transparent
+        header.textLabel!.textColor = UIColor.darkGrayColor()
+        header.textLabel?.font = TV_HEADER_FONT
     }
 
     /*

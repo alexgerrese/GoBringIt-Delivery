@@ -24,13 +24,7 @@ class MenuTableViewController: UITableViewController {
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // Revert nav bar to defaults
-        self.navigationController?.navigationBar.shadowImage = nil
-        //self.navigationController?.navigationBar.translucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
-        navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: UIFont(name: "Avenir", size: 17)!,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+
         
         // Set tableView cells to custom height and automatically resize if needed
         tableView.estimatedRowHeight = 75
@@ -111,7 +105,7 @@ class MenuTableViewController: UITableViewController {
         
         // Send selected food's data to AddToOrder screen
         let nav = segue.destinationViewController as! UINavigationController
-        let VC = nav.topViewController as! AddToOrderTableViewController
+        let VC = nav.topViewController as! AddToOrderViewController
         let indexPath = self.tableView.indexPathForSelectedRow!
         VC.selectedFoodName = foodNames[indexPath.row]
         VC.selectedFoodDescription = foodDescriptions[indexPath.row]

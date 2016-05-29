@@ -24,6 +24,9 @@ class TabBarController: UITabBarController {
             }
         }
         
+        // Set tab bar to be opaque
+        self.tabBar.translucent = false
+        
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
     }

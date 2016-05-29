@@ -9,10 +9,15 @@
 import UIKit
 import IQKeyboardManagerSwift
 
-// UNIVERSAL CONSTANTS
+// MARK: - UNIVERSAL CONSTANTS
 
 // Colors
 let GREEN = UIColor(red:0.27, green:0.79, blue:0.71, alpha:1.0)
+
+// Fonts
+let TITLE_FONT = UIFont(name: "Avenir-Medium", size: 17)!
+let TV_HEADER_FONT = UIFont(name: "Avenir-Medium", size: 14)!
+let BUTTON_FONT = UIFont(name: "Avenir-Medium", size: 15)!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

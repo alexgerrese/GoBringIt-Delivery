@@ -21,7 +21,7 @@ class ScheduleTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Set title as current month - NEED TO MOVE THISSS SO IT'S DYNAMIC
-        title = CVDate(date: NSDate()).globalDescription
+        self.navigationItem.title = CVDate(date: NSDate()).globalDescription
     }
     
     // Set up Calendar View

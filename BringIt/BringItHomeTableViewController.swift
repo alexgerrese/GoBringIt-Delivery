@@ -7,31 +7,27 @@
 //
 
 import UIKit
-import BTNavigationDropdownMenu
+//import BTNavigationDropdownMenu
 
 class BringItHomeTableViewController: UITableViewController {
     
     // SAMPLE DATA - REPLACE WITH BACKEND
-    let coverImages = ["sushiLove", "dunkinDonuts", "dames"]
-    let restaurantNames = ["Sushi Love", "Dunkin' Donuts", "Dames"]
-    let cuisineTypes = ["SUSHI", "BREAKFAST", "AMERICAN"]
-    let openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM"]
-    let isOpen = [true, false, false]
-    
-    let rectShape = CAShapeLayer()
-    let indicatorHeight: CGFloat = 3
-    var indicatorWidth: CGFloat!
-    let indicatorBottomMargin: CGFloat = 2
-    let indicatorLeftMargin: CGFloat = 2
-    var maxY: CGFloat!
+    let coverImages = ["Sushi Love Background", "Dunkin Donuts Background", "Dames Background", "TGIF Background", "Hungry Leaf Background", "Mediterra Background"]
+    let restaurantNames = ["Sushi Love", "Dunkin' Donuts", "Dames", "TGI Friday's", "Hungry Leaf", "Mediterra"]
+    let cuisineTypes = ["Sushi", "Breakfast", "Chicken and Waffles", "American Bar and Grill", "Salad", "Greek"]
+    let openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
+    let isOpen = [true, false, false, true, true, true]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set title
+        self.title = "BringIt"
+        
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // MARK: - Dropdown Menu Setup
+        /* MARK: - Dropdown Menu Setup
         var menuView: BTNavigationDropdownMenu!
         let items = ["Bring It", "Maid My Day"]
         self.navigationController?.navigationBar.translucent = false
@@ -44,7 +40,7 @@ class BringItHomeTableViewController: UITableViewController {
         menuView.cellSelectionColor = GREEN
         menuView.keepSelectedCellColor = true
         menuView.cellTextLabelColor = UIColor.darkTextColor()
-        menuView.cellTextLabelFont = UIFont(name: "Avenir", size: 17)
+        menuView.cellTextLabelFont = TITLE_FONT
         menuView.cellTextLabelAlignment = .Center // .Center // .Right // .Left
         menuView.arrowPadding = 15
         menuView.animationDuration = 0.5
@@ -55,32 +51,10 @@ class BringItHomeTableViewController: UITableViewController {
             print("Did select item at index: \(indexPath)")
         }
         
-        self.navigationItem.titleView = menuView
+        self.navigationItem.titleView = menuView*/
         
-        // setup tabbar indicator
-        rectShape.fillColor = GREEN.CGColor
-        indicatorWidth = view.bounds.maxX / 3 // count of items
-        self.tabBarController!.view.layer.addSublayer(rectShape)
-        self.tabBarController?.delegate = self
-        
-        // initial position
-        maxY = view.bounds.maxY - indicatorHeight
-        updateTabbarIndicatorBySelectedTabIndex(0)
     }
-    
-    func updateTabbarIndicatorBySelectedTabIndex(index: Int) -> Void
-    {
-        let updatedBounds = CGRect( x: CGFloat(index) * (indicatorWidth + indicatorLeftMargin),
-                                    y: maxY,
-                                    width: indicatorWidth - indicatorLeftMargin,
-                                    height: indicatorHeight)
-        
-        print(view.bounds.maxY - indicatorHeight)
-        
-        let path = CGPathCreateMutable()
-        CGPathAddRect(path, nil, updatedBounds)
-        rectShape.path = path
-    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -108,16 +82,25 @@ class BringItHomeTableViewController: UITableViewController {
         cell.cuisineTypeLabel.text = cuisineTypes[indexPath.row]
         cell.restaurantHoursLabel.text = openHours[indexPath.row]
         if isOpen[indexPath.row] {
-            cell.openIndicator.image = UIImage(named: "oval-green")
-            cell.openClosedLabel.text = "OPEN"
+            cell.openClosedImage.image = UIImage(named: "Open")
         } else {
-            cell.openIndicator.image = UIImage(named: "oval-red")
-            cell.openClosedLabel.text = "CLOSED"
+            cell.openClosedImage.image = UIImage(named: "Closed")
         }
 
         return cell
     }
-
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "- RESTAURANTS -"
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        header.contentView.backgroundColor = UIColor.whiteColor()
+        header.textLabel!.textColor = UIColor.darkGrayColor()
+        header.textLabel?.font = TV_HEADER_FONT
+        header.textLabel?.textAlignment = .Center
+    }
     
     // MARK: - Navigation
      
@@ -126,9 +109,4 @@ class BringItHomeTableViewController: UITableViewController {
 
 }
 
-extension BringItHomeTableViewController: UITabBarControllerDelegate {
-    
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        updateTabbarIndicatorBySelectedTabIndex(tabBarController.selectedIndex)
-    }
-}
+

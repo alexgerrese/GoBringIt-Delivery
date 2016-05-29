@@ -27,10 +27,12 @@
 		1185B9581CF55E1100EBF1CF /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsTableViewController.swift */; };
 		11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */; };
 		11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */; };
-		11F6DE3F1CF693C400662C20 /* AddToOrderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE3E1CF693C400662C20 /* AddToOrderTableViewController.swift */; };
+		11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */; };
 		11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */; };
 		11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */; };
 		11F6DE471CF6CF1A00662C20 /* CheckoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE461CF6CF1A00662C20 /* CheckoutTableViewController.swift */; };
+		11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE4C1CF9545F00662C20 /* ServicesTableViewController.swift */; };
+		11F6DE4F1CF96B5300662C20 /* ServicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE4E1CF96B5300662C20 /* ServicesTableViewCell.swift */; };
 		2F60BF5113DA47831CD710EA /* Pods_BringItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */; };
 		545F366974300B6D9693022C /* Pods_BringItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */; };
 		6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
@@ -80,10 +82,12 @@
 		1185B9571CF55E1100EBF1CF /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressInfoViewController.swift; sourceTree = "<group>"; };
 		11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
-		11F6DE3E1CF693C400662C20 /* AddToOrderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderTableViewController.swift; sourceTree = "<group>"; };
+		11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderViewController.swift; sourceTree = "<group>"; };
 		11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderTableViewCell.swift; sourceTree = "<group>"; };
 		11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderSpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
 		11F6DE461CF6CF1A00662C20 /* CheckoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutTableViewController.swift; sourceTree = "<group>"; };
+		11F6DE4C1CF9545F00662C20 /* ServicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicesTableViewController.swift; sourceTree = "<group>"; };
+		11F6DE4E1CF96B5300662C20 /* ServicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicesTableViewCell.swift; sourceTree = "<group>"; };
 		360769A0669582F28FBB8124 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,8 +156,8 @@
 				1102203A1CE9262D003D82FB /* Walkthrough */,
 				11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */,
 				115ECC371CEAA3460053E03F /* TabBarController.swift */,
+				11F6DE501CF96B5900662C20 /* Services */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
-				11F6DE461CF6CF1A00662C20 /* CheckoutTableViewController.swift */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
 				11F6DE451CF6CF0600662C20 /* Settings */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
@@ -198,6 +202,7 @@
 				1193E72C1CEACDDD00299D8B /* Restaurant */,
 				115ECC441CEABA780053E03F /* Menu */,
 				11F6DE421CF6BD9C00662C20 /* Add To Order */,
+				11F6DE461CF6CF1A00662C20 /* CheckoutTableViewController.swift */,
 			);
 			name = "Bring It";
 			sourceTree = "<group>";
@@ -250,7 +255,7 @@
 		11F6DE421CF6BD9C00662C20 /* Add To Order */ = {
 			isa = PBXGroup;
 			children = (
-				11F6DE3E1CF693C400662C20 /* AddToOrderTableViewController.swift */,
+				11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */,
 				11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */,
 				11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */,
 			);
@@ -263,6 +268,15 @@
 				1185B9571CF55E1100EBF1CF /* SettingsTableViewController.swift */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		11F6DE501CF96B5900662C20 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				11F6DE4C1CF9545F00662C20 /* ServicesTableViewController.swift */,
+				11F6DE4E1CF96B5300662C20 /* ServicesTableViewCell.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		172FBED42052A1B1057FB38A /* Frameworks */ = {
@@ -551,14 +565,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */,
+				11F6DE4F1CF96B5300662C20 /* ServicesTableViewCell.swift in Sources */,
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */,
-				11F6DE3F1CF693C400662C20 /* AddToOrderTableViewController.swift in Sources */,
+				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
+				11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */,
 				115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleTableViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,

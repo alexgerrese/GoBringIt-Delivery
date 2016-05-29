@@ -30,24 +30,6 @@ class RestaurantTableViewController: UITableViewController {
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        
-        // Make nav bar transparent
-        // BUG - If you keep scrolling, tab bar will stay over tableView content
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.translucent = true
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: UIFont(name: "Avenir", size: 17)!,
-                NSForegroundColorAttributeName: UIColor.whiteColor()])
-        
-        // Round corners of openClosedLabel and add shadow
-        openClosedLabel.layer.cornerRadius = 11
-        openClosedLabel.clipsToBounds = true
-        openClosedLabel.layer.shadowColor = UIColor.whiteColor().CGColor
-        openClosedLabel.layer.shadowOpacity = 1
-        openClosedLabel.layer.shadowOffset = CGSizeZero
-        openClosedLabel.layer.shadowRadius = 5
     }
 
     override func didReceiveMemoryWarning() {
@@ -77,10 +59,5 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-    
-    override func viewWillDisappear(animated: Bool){
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBarHidden = false
-    }
 
 }
