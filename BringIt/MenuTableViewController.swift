@@ -14,6 +14,9 @@ class MenuTableViewController: UITableViewController {
     let foodNames = ["The Carolina Cockerel", "The Buff Brahmas", "Frizzled Fowl", "The Quilted Buttercup", "Light Brown Leghorn", "Orange Speckled Chabo", "Make Your Own Waffle", "Breakfast Buttercup", "Parfait Waffle"]
     let foodDescriptions = ["Three chicken wings, two petite waffles, shmear", "Two cutlets, sweet potato waffles, whiskey cream sauce drizzle", "A panko-fried cutlet, petite classic waffles, almonds & plum sauce", "A chicken cutlet 'sandwiched' between sweet potato waffles, shmear", "Three drumsticks, classic waffles, caramel cashew drizzle", "Three chicken wings, two petite waffles, shmear", "Choose the type of waffle you'd like (classic, sweet potato, or vegan) and your shmear of choice! ", "Two waffles 'sandwiched' w/bacon, egg, shmear", ""]
     let foodPrices = ["10.00", "13.00", "10.00", "10.00", "10.00", "10.00", "8.00", "7.00", "6.00"]
+    
+    // Variables
+    var backToVC = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,18 +101,30 @@ class MenuTableViewController: UITableViewController {
     // MARK: - Navigation
      
     @IBAction func returnToMenu(segue: UIStoryboardSegue) {
+        if backToVC == "Restaurant" {
+            performSegueWithIdentifier("returnToRestaurant", sender: self)
+            backToVC = ""
+        }
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        // Send selected food's data to AddToOrder screen
-        let nav = segue.destinationViewController as! UINavigationController
-        let VC = nav.topViewController as! AddToOrderViewController
-        let indexPath = self.tableView.indexPathForSelectedRow!
-        VC.selectedFoodName = foodNames[indexPath.row]
-        VC.selectedFoodDescription = foodDescriptions[indexPath.row]
-        VC.selectedFoodPrice = foodPrices[indexPath.row]
+        if segue.identifier == "toAddToOrder" {
+            // Send selected food's data to AddToOrder screen
+            let nav = segue.destinationViewController as! UINavigationController
+            let VC = nav.topViewController as! AddToOrderViewController
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            VC.selectedFoodName = foodNames[indexPath.row]
+            VC.selectedFoodDescription = foodDescriptions[indexPath.row]
+            VC.selectedFoodPrice = foodPrices[indexPath.row]
+        } else if segue.identifier == "toCheckout" {
+            // Send selected food's data to AddToOrder screen
+            let nav = segue.destinationViewController as! UINavigationController
+            let VC = nav.topViewController as! CheckoutViewController
+            VC.cameFromVC = "Menu"
+        }
+        
     }
     
 

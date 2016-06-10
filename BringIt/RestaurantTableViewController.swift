@@ -58,6 +58,22 @@ class RestaurantTableViewController: UITableViewController {
         return cell
     }
     
+    @IBAction func returnToRestaurant(segue: UIStoryboardSegue) {
+    }
+    
     // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "toCheckout" {
+            // Send selected food's data to AddToOrder screen
+            let nav = segue.destinationViewController as! UINavigationController
+            let VC = nav.topViewController as! CheckoutViewController
+            VC.cameFromVC = "Restaurant"
+        }
+    }
+    
 
 }

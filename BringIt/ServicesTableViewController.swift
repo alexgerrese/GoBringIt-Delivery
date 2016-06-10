@@ -69,7 +69,7 @@ class ServicesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor.whiteColor()
+        //header.contentView.backgroundColor = UIColor.whiteColor()
         header.textLabel!.textColor = UIColor.darkGrayColor()
         header.textLabel?.font = TV_HEADER_FONT
         header.textLabel?.textAlignment = .Center
