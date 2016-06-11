@@ -16,19 +16,36 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var passwordTextField: B68UIFloatLabelTextField!
+    @IBOutlet weak var loginErrorMessageLabel: UILabel!
     
-    // Doing this and the two lines in viewDidLoad automatically handles all keyboard and textField problems!
+    
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Automatically handle all keyboard and textField problems!
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
     }
     
     override func viewDidAppear(animated: Bool) {
         displayWalkthroughs()
+    }
+    
+    // Sign in if credentials match with existing backend entry
+    @IBAction func signInButtonClicked(sender: UIButton) {
+        // CHAD!
+        // Here's where you put your database sign in code! You should be able to access the email with emailTextField.text and password with passwordTextField.text
+        
+        // Say that you authenticate the user with a boolean called canLogin. If true, segue to next viewcontroller. If false, show error message with no segue.
+        /* if canLogin {
+                //SOME CODE
+                loginErrorMessageLabel.hidden = true
+                performSegueWithIdentifier("toHome", sender: self)
+        } else {
+                loginErrorMessageLabel.hidden = false
+        } */
     }
     
     // Check if walkthrough has been shown, then show if needed

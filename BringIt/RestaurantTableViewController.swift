@@ -8,6 +8,8 @@
 
 import UIKit
 
+//var cameFromRestaurant =
+
 class RestaurantTableViewController: UITableViewController {
     
     @IBOutlet weak var cuisineTypeLabel: UILabel!
@@ -58,7 +60,7 @@ class RestaurantTableViewController: UITableViewController {
         return cell
     }
     
-    @IBAction func returnToRestaurant(segue: UIStoryboardSegue) {
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
     }
     
     // MARK: - Navigation

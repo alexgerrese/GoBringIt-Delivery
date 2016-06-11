@@ -53,7 +53,7 @@ extension String {
 
     /// EZSE: Trims white space and new line characters, returns a new string
     public func trimmed() -> String {
-        return self.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).joinWithSeparator("")
+        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
 
     /// EZSE: Checks if String contains Email
@@ -86,8 +86,7 @@ extension String {
         if let detector = detector {
             detector.enumerateMatchesInString(text, options: [], range: NSRange(location: 0, length: text.characters.count), usingBlock: {
                 (result: NSTextCheckingResult?, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                if let result = result,
-                    let url = result.URL {
+                if let result = result, url = result.URL {
                     urls.append(url)
                 }
             })
@@ -155,23 +154,38 @@ extension String {
     /// EZSE: Converts String to NSString
     public var toNSString: NSString { get { return self as NSString } }
 
+    #if os(iOS)
+    
     ///EZSE: Returns bold NSAttributedString
     public func bold() -> NSAttributedString {
         let boldString = NSMutableAttributedString(string: self, attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(UIFont.systemFontSize())])
         return boldString
     }
+    
+    #endif
 
     ///EZSE: Returns underlined NSAttributedString
     public func underline() -> NSAttributedString {
         let underlineString = NSAttributedString(string: self, attributes: [NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue])
         return underlineString
     }
+    
+    #if os(iOS)
 
     ///EZSE: Returns italic NSAttributedString
     public func italic() -> NSAttributedString {
         let italicString = NSMutableAttributedString(string: self, attributes: [NSFontAttributeName: UIFont.italicSystemFontOfSize(UIFont.systemFontSize())])
         return italicString
     }
+    
+    /// EZSE: Returns strikehthrough NSAttributedString
+    public func strikethrough() -> NSAttributedString {
+        let italicString = NSMutableAttributedString(string: self, attributes: [
+        NSStrikethroughStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)])
+        return italicString
+    }
+    
+    #endif
 
     ///EZSE: Returns NSAttributedString
     public func color(color: UIColor) -> NSAttributedString {

@@ -100,11 +100,14 @@ class MenuTableViewController: UITableViewController {
     
     // MARK: - Navigation
      
-    @IBAction func returnToMenu(segue: UIStoryboardSegue) {
-        if backToVC == "Restaurant" {
-            performSegueWithIdentifier("returnToRestaurant", sender: self)
-            backToVC = ""
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+    }
+    
+    override func canPerformUnwindSegueAction(action: Selector, fromViewController: UIViewController, withSender sender: AnyObject) -> Bool {
+        if backToVC == "Menu" {
+            return true
         }
+        return false
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

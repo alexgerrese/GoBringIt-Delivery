@@ -164,7 +164,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "returnToMenu" {
+        if segue.identifier == "prepareForUnwind" {
             let VC = segue.destinationViewController as! MenuTableViewController
             VC.backToVC = cameFromVC
         }

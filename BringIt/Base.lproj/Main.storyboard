@@ -155,6 +155,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="continueButtonClicked:" destination="pcs-O5-cDM" eventType="touchUpInside" id="HjS-1z-1A1"/>
                                     <action selector="startClicked:" destination="oWt-rh-6tA" eventType="touchUpInside" id="fTp-90-thK"/>
                                     <segue destination="ZeV-pK-guH" kind="show" id="Tp6-NM-hpe"/>
                                 </connections>
@@ -514,7 +515,9 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="saveAndFinishButtonClicked:" destination="ZeV-pK-guH" eventType="touchUpInside" id="Ndg-6N-nee"/>
                                     <action selector="startClicked:" destination="oWt-rh-6tA" eventType="touchUpInside" id="RA7-PP-bcM"/>
+                                    <segue destination="49e-Tb-3d3" kind="presentation" id="gGH-Qv-KeL"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will be able to edit these details later." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7B4-uM-KkV">
@@ -619,6 +622,16 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OPTIONAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gFW-0h-Aem">
+                                <rect key="frame" x="214" y="163" width="83" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="11y-cl-eqh"/>
+                                    <constraint firstAttribute="width" constant="83" id="gb8-v5-4HY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -631,6 +644,7 @@
                             <constraint firstItem="jdL-JH-qef" firstAttribute="trailing" secondItem="Gxx-Zp-Yoz" secondAttribute="trailing" id="CFb-eJ-mKb"/>
                             <constraint firstItem="F5S-88-I7m" firstAttribute="top" secondItem="tu9-xv-6Qs" secondAttribute="bottom" constant="35" id="CTR-gz-tEa"/>
                             <constraint firstItem="BKI-ON-wJL" firstAttribute="top" secondItem="8KC-9K-88C" secondAttribute="top" constant="278" id="Cu3-a3-Z1V"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gFW-0h-Aem" secondAttribute="trailing" constant="97" id="D1z-dc-Bgo"/>
                             <constraint firstItem="VPZ-d7-uDb" firstAttribute="leading" secondItem="BKI-ON-wJL" secondAttribute="leading" id="DbJ-2g-w3N"/>
                             <constraint firstItem="Gxx-Zp-Yoz" firstAttribute="bottom" secondItem="YhK-Bf-huD" secondAttribute="bottom" id="EMu-zL-C9E"/>
                             <constraint firstAttribute="bottom" secondItem="Gxx-Zp-Yoz" secondAttribute="bottom" constant="255" id="F26-ix-cAY"/>
@@ -661,6 +675,7 @@
                             <constraint firstItem="KHA-Yf-Den" firstAttribute="leading" secondItem="McG-PA-cY7" secondAttribute="leading" id="bYc-4W-dnA"/>
                             <constraint firstItem="0om-e9-YV6" firstAttribute="top" secondItem="YPd-0x-86L" secondAttribute="bottom" constant="5" id="bmq-GY-tYY"/>
                             <constraint firstItem="Bjg-uM-RNf" firstAttribute="trailing" secondItem="YPd-0x-86L" secondAttribute="trailing" id="dSt-WL-clo"/>
+                            <constraint firstItem="gFW-0h-Aem" firstAttribute="top" secondItem="Gdg-vx-8tl" secondAttribute="bottom" constant="19" id="dbf-v4-V4j"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Gdg-vx-8tl" secondAttribute="trailing" constant="25" id="eF8-5F-BDB"/>
                             <constraint firstItem="jdL-JH-qef" firstAttribute="top" secondItem="0om-e9-YV6" secondAttribute="bottom" constant="26" id="fhd-2I-lOu"/>
                             <constraint firstItem="sYv-8Z-4TN" firstAttribute="baseline" secondItem="McG-PA-cY7" secondAttribute="firstBaseline" id="hPR-cM-8xY"/>
@@ -691,7 +706,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXY-b9-m3V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1209" y="-729"/>
+            <point key="canvasLocation" x="1211" y="-729"/>
         </scene>
         <!--Bring It Home Table View Controller-->
         <scene sceneID="L1t-F2-IYV">
@@ -1498,9 +1513,11 @@ Sat - Sun: 2PM - 11PM</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="2Ru-DK-XdD">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="Lw9-cW-fYy">
+                        <barButtonItem key="leftBarButtonItem" image="X" id="Lw9-cW-fYy">
+                            <inset key="imageInsets" minX="-3" minY="8" maxX="17" maxY="6"/>
                             <connections>
                                 <action selector="xButtonPressed:" destination="9Tx-Ga-KEe" id="eoC-Jn-e66"/>
+                                <segue destination="AkB-bX-oop" kind="unwind" unwindAction="prepareForUnwind:" id="Ceh-y6-ddF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1514,6 +1531,7 @@ Sat - Sun: 2PM - 11PM</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b8v-uy-L3U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="AkB-bX-oop" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3445" y="933"/>
         </scene>
@@ -2058,8 +2076,8 @@ Sat - Sun: 2PM - 11PM</string>
                                             <color key="titleColor" red="0.27058823529999998" green="0.79215686269999996" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
+                                            <action selector="signInButtonClicked:" destination="LvX-L9-bjx" eventType="touchUpInside" id="aVg-qC-9p0"/>
                                             <action selector="startClicked:" destination="oWt-rh-6tA" eventType="touchUpInside" id="BhR-aB-0qB"/>
-                                            <segue destination="49e-Tb-3d3" kind="show" id="cg4-4w-9e1"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DON'T HAVE AN ACCOUNT?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AOJ-1l-Sl1">
@@ -2090,6 +2108,15 @@ Sat - Sun: 2PM - 11PM</string>
                                             <constraint firstAttribute="height" constant="128" id="bJW-UX-ZbX"/>
                                         </constraints>
                                     </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your login information was incorrect. Please try again." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gg6-qd-twh">
+                                        <rect key="frame" x="55" y="555" width="304" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="37" id="awP-0V-Op8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="AOJ-1l-Sl1" firstAttribute="centerY" secondItem="E7K-bB-aRS" secondAttribute="centerY" id="02a-a5-2B9"/>
@@ -2106,12 +2133,15 @@ Sat - Sun: 2PM - 11PM</string>
                                     <constraint firstItem="GOc-fm-wmj" firstAttribute="top" secondItem="0FD-Ym-LtS" secondAttribute="bottom" constant="28" id="QmR-Yi-FiF"/>
                                     <constraint firstItem="g5O-dL-thU" firstAttribute="top" secondItem="GOc-fm-wmj" secondAttribute="bottom" constant="4" id="TZP-p4-MxR"/>
                                     <constraint firstItem="BtW-52-PiA" firstAttribute="centerY" secondItem="563-KB-IKe" secondAttribute="centerY" id="TvN-37-jHG"/>
+                                    <constraint firstItem="gg6-qd-twh" firstAttribute="leading" secondItem="563-KB-IKe" secondAttribute="leading" constant="55" id="VTT-Ao-1k1"/>
                                     <constraint firstItem="BtW-52-PiA" firstAttribute="centerX" secondItem="g5O-dL-thU" secondAttribute="centerX" id="XDC-bl-zbp"/>
                                     <constraint firstItem="GOc-fm-wmj" firstAttribute="leading" secondItem="g5O-dL-thU" secondAttribute="leading" id="Z4T-26-OfA"/>
                                     <constraint firstItem="c4u-bF-e6O" firstAttribute="leading" secondItem="563-KB-IKe" secondAttribute="leading" constant="87" id="Zpa-af-yx0"/>
                                     <constraint firstItem="0FD-Ym-LtS" firstAttribute="top" secondItem="xco-gE-hgq" secondAttribute="bottom" constant="4" id="aYn-ws-d01"/>
+                                    <constraint firstItem="ypW-VQ-qTs" firstAttribute="top" secondItem="gg6-qd-twh" secondAttribute="bottom" constant="3" id="bEq-qH-vtf"/>
                                     <constraint firstItem="BtW-52-PiA" firstAttribute="leading" secondItem="563-KB-IKe" secondAttribute="leading" id="c3a-Qo-ujn"/>
                                     <constraint firstAttribute="bottom" secondItem="E7K-bB-aRS" secondAttribute="bottom" constant="32" id="fcg-SD-vvU"/>
+                                    <constraint firstItem="gg6-qd-twh" firstAttribute="centerX" secondItem="g5O-dL-thU" secondAttribute="centerX" id="h75-ej-qb0"/>
                                     <constraint firstAttribute="bottom" secondItem="BtW-52-PiA" secondAttribute="bottom" id="j6k-LC-s9O"/>
                                     <constraint firstItem="AOJ-1l-Sl1" firstAttribute="top" secondItem="ypW-VQ-qTs" secondAttribute="bottom" constant="33" id="jF3-GW-mM1"/>
                                     <constraint firstItem="ypW-VQ-qTs" firstAttribute="top" secondItem="g5O-dL-thU" secondAttribute="bottom" constant="66" id="pLF-Zg-FE1"/>
@@ -2136,8 +2166,10 @@ Sat - Sun: 2PM - 11PM</string>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="emailTextField" destination="xco-gE-hgq" id="NeJ-EM-bA6"/>
+                        <outlet property="loginErrorMessageLabel" destination="gg6-qd-twh" id="EAW-0C-E4m"/>
                         <outlet property="passwordTextField" destination="GOc-fm-wmj" id="h0q-Qa-82t"/>
                         <outlet property="scrollView" destination="563-KB-IKe" id="3q0-jy-iNg"/>
+                        <segue destination="49e-Tb-3d3" kind="show" identifier="toHome" id="FW6-2I-gdP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gkF-10-jeP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2156,7 +2188,7 @@ Sat - Sun: 2PM - 11PM</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Screen Shot 2014-10-11 at 11.48.11 PM" translatesAutoresizingMaskIntoConstraints="NO" id="Usn-Yb-lQa">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Profile" translatesAutoresizingMaskIntoConstraints="NO" id="Usn-Yb-lQa">
                                 <rect key="frame" x="157" y="99" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="HaA-ML-efz"/>
@@ -2298,7 +2330,7 @@ Sat - Sun: 2PM - 11PM</string>
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="startClicked:" destination="oWt-rh-6tA" eventType="touchUpInside" id="zzw-KW-P29"/>
+                                    <action selector="createButtonClicked:" destination="CRK-7W-0xt" eventType="touchUpInside" id="grK-2m-kGY"/>
                                     <segue destination="pcs-O5-cDM" kind="show" id="YB8-aM-9yI"/>
                                 </connections>
                             </button>
@@ -2319,6 +2351,12 @@ Sat - Sun: 2PM - 11PM</string>
                                 </constraints>
                                 <state key="normal" title="Button" image="add"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYW-4c-PMb">
+                                <rect key="frame" x="157" y="99" width="100" height="100"/>
+                                <connections>
+                                    <action selector="chooseImageClicked:" destination="CRK-7W-0xt" eventType="touchUpInside" id="DZp-Oc-HHV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -2330,6 +2368,7 @@ Sat - Sun: 2PM - 11PM</string>
                             <constraint firstAttribute="trailing" secondItem="LNK-Sf-bwu" secondAttribute="trailing" id="64B-IX-Ou3"/>
                             <constraint firstItem="e7R-4a-Xtc" firstAttribute="trailing" secondItem="WhS-eW-c1c" secondAttribute="trailing" id="8ED-CU-khA"/>
                             <constraint firstItem="jq3-Me-6Cm" firstAttribute="trailing" secondItem="Usn-Yb-lQa" secondAttribute="trailing" id="8JO-Xr-R3v"/>
+                            <constraint firstItem="KYW-4c-PMb" firstAttribute="bottom" secondItem="Usn-Yb-lQa" secondAttribute="bottom" id="AEQ-FM-Se1"/>
                             <constraint firstItem="e7R-4a-Xtc" firstAttribute="leading" secondItem="WhS-eW-c1c" secondAttribute="leading" id="Ail-4B-Lng"/>
                             <constraint firstItem="zgP-nu-XtZ" firstAttribute="top" secondItem="Ng6-xE-bFs" secondAttribute="bottom" constant="26" id="CCf-Nu-ii5"/>
                             <constraint firstItem="Ng6-xE-bFs" firstAttribute="leading" secondItem="zgP-nu-XtZ" secondAttribute="leading" id="CCz-NZ-LJL"/>
@@ -2348,11 +2387,14 @@ Sat - Sun: 2PM - 11PM</string>
                             <constraint firstItem="zXj-pz-QUD" firstAttribute="leading" secondItem="IaT-DT-irc" secondAttribute="leadingMargin" constant="30" id="TSu-oU-YEY"/>
                             <constraint firstItem="kOd-5z-Dkq" firstAttribute="leading" secondItem="5gn-jX-W74" secondAttribute="leading" id="WGp-uE-J0c"/>
                             <constraint firstItem="WhS-eW-c1c" firstAttribute="top" secondItem="e7R-4a-Xtc" secondAttribute="bottom" constant="26" id="Xjx-aD-FMH"/>
+                            <constraint firstItem="KYW-4c-PMb" firstAttribute="trailing" secondItem="Usn-Yb-lQa" secondAttribute="trailing" id="Zhw-oe-Ldi"/>
                             <constraint firstItem="PC5-05-2cq" firstAttribute="top" secondItem="Usn-Yb-lQa" secondAttribute="bottom" constant="51" id="aG5-7x-PuI"/>
                             <constraint firstItem="5gn-jX-W74" firstAttribute="leading" secondItem="e7R-4a-Xtc" secondAttribute="leading" id="g2Q-l0-eG9"/>
                             <constraint firstItem="zXj-pz-QUD" firstAttribute="centerX" secondItem="LNK-Sf-bwu" secondAttribute="centerX" id="gSH-Y7-nTd"/>
                             <constraint firstItem="H9Y-v3-4pA" firstAttribute="top" secondItem="IaT-DT-irc" secondAttribute="top" constant="531" id="h5U-q3-OTE"/>
                             <constraint firstItem="PC5-05-2cq" firstAttribute="leading" secondItem="IaT-DT-irc" secondAttribute="leadingMargin" constant="13" id="iDp-rL-NTz"/>
+                            <constraint firstItem="KYW-4c-PMb" firstAttribute="leading" secondItem="Usn-Yb-lQa" secondAttribute="leading" id="jnb-0z-GML"/>
+                            <constraint firstItem="KYW-4c-PMb" firstAttribute="top" secondItem="jq3-Me-6Cm" secondAttribute="top" id="kWx-ph-A9t"/>
                             <constraint firstItem="H9Y-v3-4pA" firstAttribute="top" secondItem="zgP-nu-XtZ" secondAttribute="bottom" constant="5" id="kaP-8Q-67p"/>
                             <constraint firstItem="Ng6-xE-bFs" firstAttribute="trailing" secondItem="zgP-nu-XtZ" secondAttribute="trailing" id="nQB-Pu-ONB"/>
                             <constraint firstItem="WhS-eW-c1c" firstAttribute="leading" secondItem="Ng6-xE-bFs" secondAttribute="leading" id="oLg-Ax-L5Z"/>
@@ -2374,10 +2416,12 @@ Sat - Sun: 2PM - 11PM</string>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
+                        <outlet property="chooseImageButton" destination="KYW-4c-PMb" id="pjH-Qa-QxO"/>
                         <outlet property="emailTextField" destination="5gn-jX-W74" id="aFU-Wb-gS2"/>
                         <outlet property="fullNameTextField" destination="PC5-05-2cq" id="cvN-Ns-8gc"/>
                         <outlet property="passwordTextField" destination="WhS-eW-c1c" id="3jE-Vg-FPX"/>
                         <outlet property="phoneNumberTextField" destination="zgP-nu-XtZ" id="VQx-lt-zaT"/>
+                        <outlet property="profilePicImage" destination="Usn-Yb-lQa" id="faX-mP-vLk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nlT-wj-GxU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2404,7 +2448,7 @@ Sat - Sun: 2PM - 11PM</string>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-82" y="974"/>
+            <point key="canvasLocation" x="-237" y="974"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2fv-1Y-vmR">
@@ -2571,7 +2615,7 @@ Sat - Sun: 2PM - 11PM</string>
         <image name="Logo" width="354" height="211"/>
         <image name="Maid My Day Background" width="750" height="300"/>
         <image name="Open" width="77" height="25"/>
-        <image name="Screen Shot 2014-10-11 at 11.48.11 PM" width="199" height="200"/>
+        <image name="Profile" width="272" height="273"/>
         <image name="SleepEasy Background" width="750" height="300"/>
         <image name="Sushi Love Background" width="750" height="302"/>
         <image name="WT 1" width="750" height="685"/>
@@ -2584,8 +2628,9 @@ Sat - Sun: 2PM - 11PM</string>
         <image name="settings" width="21" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="v0k-Br-ddb"/>
+        <segue reference="MIb-bQ-wH3"/>
         <segue reference="gs5-5B-2gF"/>
-        <segue reference="bSP-Mp-njt"/>
+        <segue reference="v0k-Br-ddb"/>
+        <segue reference="gGH-Qv-KeL"/>
     </inferredMetricsTieBreakers>
 </document>

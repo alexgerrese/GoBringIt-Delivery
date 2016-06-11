@@ -10,8 +10,9 @@ import UIKit
 import DLRadioButton
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
+import Stripe
 
-class PaymentInfoViewController: UIViewController {
+class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet weak var creditRadioButton: DLRadioButton!
@@ -20,8 +21,9 @@ class PaymentInfoViewController: UIViewController {
     @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var CVCTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var expirationDateTextField: B68UIFloatLabelTextField!
+
     
-    // Doing this and the two lines in viewDidLoad automatically handles all keyboard and textField problems!
+    // Doing this and the two lines in viewDidLoad automaticaly handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
 
     override func viewDidLoad() {
@@ -35,6 +37,12 @@ class PaymentInfoViewController: UIViewController {
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+    }
+    
+    // MARK: - IBActions
+    
+    @IBAction func saveAndFinishButtonClicked(sender: UIButton) {
+        // CHAD THIS IS WHERE YOU CAN SET UP THE DATABASE DUMMY VARIABLES AND CREATE THE NEW USER ENTITY
     }
 
     override func didReceiveMemoryWarning() {
