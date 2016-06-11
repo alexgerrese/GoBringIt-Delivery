@@ -27,6 +27,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         // Automatically handle all keyboard and textField problems!
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        loginErrorMessageLabel.hidden = true
     }
     
     override func viewDidAppear(animated: Bool) {
