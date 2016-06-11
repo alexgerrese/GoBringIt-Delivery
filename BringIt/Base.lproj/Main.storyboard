@@ -2117,6 +2117,9 @@ Sat - Sun: 2PM - 11PM</string>
                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="flr-tB-fm5">
+                                        <rect key="frame" x="189" y="349" width="37" height="37"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="AOJ-1l-Sl1" firstAttribute="centerY" secondItem="E7K-bB-aRS" secondAttribute="centerY" id="02a-a5-2B9"/>
@@ -2124,6 +2127,7 @@ Sat - Sun: 2PM - 11PM</string>
                                     <constraint firstItem="xco-gE-hgq" firstAttribute="leading" secondItem="0FD-Ym-LtS" secondAttribute="leading" id="4KH-r7-L0a"/>
                                     <constraint firstItem="xco-gE-hgq" firstAttribute="trailing" secondItem="0FD-Ym-LtS" secondAttribute="trailing" id="6RW-ed-MS2"/>
                                     <constraint firstItem="E7K-bB-aRS" firstAttribute="leading" secondItem="AOJ-1l-Sl1" secondAttribute="trailing" constant="8" symbolic="YES" id="930-g6-5Qm"/>
+                                    <constraint firstItem="flr-tB-fm5" firstAttribute="centerX" secondItem="xco-gE-hgq" secondAttribute="centerX" id="AYk-XE-ofT"/>
                                     <constraint firstItem="GOc-fm-wmj" firstAttribute="trailing" secondItem="g5O-dL-thU" secondAttribute="trailing" id="Abm-CN-CYf"/>
                                     <constraint firstAttribute="trailing" secondItem="BtW-52-PiA" secondAttribute="trailing" id="B4V-I3-r1e"/>
                                     <constraint firstItem="c4u-bF-e6O" firstAttribute="centerX" secondItem="xco-gE-hgq" secondAttribute="centerX" id="BWy-Bj-j8N"/>
@@ -2144,6 +2148,7 @@ Sat - Sun: 2PM - 11PM</string>
                                     <constraint firstItem="gg6-qd-twh" firstAttribute="centerX" secondItem="g5O-dL-thU" secondAttribute="centerX" id="h75-ej-qb0"/>
                                     <constraint firstAttribute="bottom" secondItem="BtW-52-PiA" secondAttribute="bottom" id="j6k-LC-s9O"/>
                                     <constraint firstItem="AOJ-1l-Sl1" firstAttribute="top" secondItem="ypW-VQ-qTs" secondAttribute="bottom" constant="33" id="jF3-GW-mM1"/>
+                                    <constraint firstItem="flr-tB-fm5" firstAttribute="centerY" secondItem="BtW-52-PiA" secondAttribute="centerY" id="nFx-s6-9F2"/>
                                     <constraint firstItem="ypW-VQ-qTs" firstAttribute="top" secondItem="g5O-dL-thU" secondAttribute="bottom" constant="66" id="pLF-Zg-FE1"/>
                                     <constraint firstItem="c4u-bF-e6O" firstAttribute="top" secondItem="563-KB-IKe" secondAttribute="top" constant="173" id="qFd-JR-iax"/>
                                     <constraint firstItem="BtW-52-PiA" firstAttribute="centerX" secondItem="563-KB-IKe" secondAttribute="centerX" id="r1R-Fx-eKY"/>
@@ -2163,10 +2168,12 @@ Sat - Sun: 2PM - 11PM</string>
                             <constraint firstAttribute="trailing" secondItem="563-KB-IKe" secondAttribute="trailing" id="Q52-pa-Rp0"/>
                         </constraints>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="emailTextField" destination="xco-gE-hgq" id="NeJ-EM-bA6"/>
                         <outlet property="loginErrorMessageLabel" destination="gg6-qd-twh" id="EAW-0C-E4m"/>
+                        <outlet property="myActivityIndicator" destination="flr-tB-fm5" id="DcC-yB-KRF"/>
                         <outlet property="passwordTextField" destination="GOc-fm-wmj" id="h0q-Qa-82t"/>
                         <outlet property="scrollView" destination="563-KB-IKe" id="3q0-jy-iNg"/>
                         <segue destination="49e-Tb-3d3" kind="show" identifier="toHome" id="FW6-2I-gdP"/>
@@ -2628,9 +2635,9 @@ Sat - Sun: 2PM - 11PM</string>
         <image name="settings" width="21" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MIb-bQ-wH3"/>
-        <segue reference="gs5-5B-2gF"/>
+        <segue reference="FW6-2I-gdP"/>
         <segue reference="v0k-Br-ddb"/>
-        <segue reference="gGH-Qv-KeL"/>
+        <segue reference="gs5-5B-2gF"/>
+        <segue reference="MIb-bQ-wH3"/>
     </inferredMetricsTieBreakers>
 </document>

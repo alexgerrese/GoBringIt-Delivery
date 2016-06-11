@@ -6,8 +6,6 @@
 //  Copyright © 2016 Campus Enterprises. All rights reserved.
 //
 
-
-
 import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
@@ -29,7 +27,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var passwordTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var loginErrorMessageLabel: UILabel!
-    
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
@@ -39,7 +37,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         // Automatically handle all keyboard and textField problems!
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        
+        // Initially hide error label
         loginErrorMessageLabel.hidden = true
+        
+        myActivityIndicator.stopAnimating()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -48,8 +50,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     
     // Sign in if credentials match with existing backend entry
     @IBAction func signInButtonClicked(sender: UIButton) {
+    
+        myActivityIndicator.startAnimating()
         
         var canLogin = false
+        //customActivityIndicator.startAnimation()
         
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
@@ -80,6 +85,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                 canLogin = true
                                 NSOperationQueue.mainQueue().addOperationWithBlock {
                                     self.loginErrorMessageLabel.hidden = true
+                                    self.myActivityIndicator.stopAnimating()
                                     self.performSegueWithIdentifier("toHome", sender: self)
                                 }
                                 
@@ -91,6 +97,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                     if (canLogin == false) {
                         NSOperationQueue.mainQueue().addOperationWithBlock {
                             self.loginErrorMessageLabel.hidden = false
+                            self.myActivityIndicator.stopAnimating()
                         }
                     }
                     
@@ -101,14 +108,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         }
         
         task.resume()
-        // Say that you authenticate the user with a boolean called canLogin. If true, segue to next viewcontroller. If false, show error message with no segue.
-        /*if canLogin {
-         //SOME CODE
-         loginErrorMessageLabel.hidden = true
-         performSegueWithIdentifier("toHome", sender: self)
-         } else {
-         loginErrorMessageLabel.hidden = false
-         }*/
     }
     
     // Check if walkthrough has been shown, then show if needed
