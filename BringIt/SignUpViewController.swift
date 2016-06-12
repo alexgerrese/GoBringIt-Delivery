@@ -220,27 +220,70 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             invalidPhoneNumberLabel.hidden = true
         }
         
-        // CHAD - Add check for existing email here!
-        /*if emailAlreadyExists {
-            invalidEmailLabel.hidden = false
-            invalidEmailLabel.text = "This email is already associated with an account."
-            canContinue = false
-        }*/
-        
-        // End activity indicator animation
-        myActivityIndicator.stopAnimating()
-        
-        if canContinue {
-            // Hide error messages
-            invalidNameLabel.hidden = true
-            invalidEmailLabel.hidden = true
-            invalidPasswordLabel.hidden = true
-            invalidPhoneNumberLabel.hidden = true
-            
-            // Reset canContinue variable
-            canContinue = false
-            
-            performSegueWithIdentifier("toAddressInfo", sender: self)
+        // Check for existing email here
+        if (canContinue) {
+            // Open Connection to PHP Service
+            let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
+            let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+            let session = NSURLSession.sharedSession()
+             let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+                print("Task completed")
+                if let data = data {
+                    do {
+                        let httpResponse = response as! NSHTTPURLResponse
+                        let statusCode = httpResponse.statusCode
+                        
+                        // Check HTTP Response
+                        if (statusCode == 200) {
+                            
+                            do{
+                                // Parse JSON
+                                let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                                
+                                for User in json as! [Dictionary<String, AnyObject>] {
+                                    let emailID = User["email"] as! String
+                                    print(emailID)
+                                    print("Input: " + self.emailTextField.text!)
+                                    
+                                    
+                                    // Verify email
+                                    if (emailID == self.emailTextField.text) {
+                                        NSOperationQueue.mainQueue().addOperationWithBlock {
+                                        self.invalidEmailLabel.hidden = false
+                                        self.invalidEmailLabel.text = "This email is already associated with an account."
+                                        canContinue = false
+                                        }
+                                    }
+                                }
+                                
+                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // End activity indicator animation
+                                self.myActivityIndicator.stopAnimating()
+                                
+                                if canContinue {
+                                    // Hide error messages
+                                    self.invalidNameLabel.hidden = true
+                                    self.invalidEmailLabel.hidden = true
+                                    self.invalidPasswordLabel.hidden = true
+                                    self.invalidPhoneNumberLabel.hidden = true
+                                    
+                                    // Reset canContinue variable
+                                    canContinue = false
+                                    
+                                    self.performSegueWithIdentifier("toAddressInfo", sender: self)
+                                    }
+                                }
+                            }
+
+                        }
+                    } catch let error as NSError {
+                        print(error.localizedDescription)
+                    }
+                } else if let error = error {
+                    print(error.localizedDescription)
+                }
+            }
+            task.resume()
         }
     }
     
