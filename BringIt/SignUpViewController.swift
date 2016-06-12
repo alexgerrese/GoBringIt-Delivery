@@ -19,6 +19,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var passwordTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    
+    // Error messages
+    @IBOutlet weak var invalidNameLabel: UILabel!
+    @IBOutlet weak var invalidEmailLabel: UILabel!
+    @IBOutlet weak var invalidPasswordLabel: UILabel!
+    @IBOutlet weak var invalidPhoneNumberLabel: UILabel!
     
     // Variables to choose profile pic
     var picker: UIImagePickerController? = UIImagePickerController()
@@ -44,6 +51,16 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
 
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        
+        // Hide error messages
+        invalidNameLabel.hidden = true
+        invalidEmailLabel.hidden = true
+        invalidPasswordLabel.hidden = true
+        invalidPhoneNumberLabel.hidden = true
+        phoneNumberTextField.delegate = self
+        
+        // Hide activity indicator
+        myActivityIndicator.stopAnimating()
     }
     
     // MARK: - Image Picker Methods
@@ -123,12 +140,121 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == phoneNumberTextField {
+            let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            
+            let decimalString : String = components.joinWithSeparator("")
+            let length = decimalString.characters.count
+            let decimalStr = decimalString as NSString
+            let hasLeadingOne = length > 0 && decimalStr.characterAtIndex(0) == (1 as unichar)
+            
+            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
+            {
+                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
+                
+                return (newLength > 10) ? false : true
+            }
+            var index = 0 as Int
+            let formattedString = NSMutableString()
+            
+            if hasLeadingOne
+            {
+                formattedString.appendString("1 ")
+                index += 1
+            }
+            if (length - index) > 3
+            {
+                let areaCode = decimalStr.substringWithRange(NSMakeRange(index, 3))
+                formattedString.appendFormat("(%@) ", areaCode)
+                index += 3
+            }
+            if length - index > 3
+            {
+                let prefix = decimalStr.substringWithRange(NSMakeRange(index, 3))
+                formattedString.appendFormat("%@-", prefix)
+                index += 3
+            }
+            
+            let remainder = decimalStr.substringFromIndex(index)
+            formattedString.appendString(remainder)
+            textField.text = formattedString as String
+            print("HELLO")
+        }
+        
+        return false
+    }
+    
     // MARK: - IBActions
     @IBAction func createButtonClicked(sender: UIButton) {
+        
+        // Show activity indicator
+        myActivityIndicator.startAnimating()
+        var canContinue = true
+        
+        // Check validity of each text field
+        if fullNameTextField.text!.isBlank {
+            invalidNameLabel.hidden = false
+            canContinue = false
+        } else {
+            invalidNameLabel.hidden = true
+        }
+        if !emailTextField.text!.isEmail {
+            invalidEmailLabel.hidden = false
+            canContinue = false
+        } else {
+            invalidEmailLabel.hidden = true
+        }
+        if passwordTextField.text?.characters.count < 8 {
+            invalidPasswordLabel.hidden = false
+            canContinue = false
+        } else {
+            invalidPasswordLabel.hidden = true
+        }
+        if !phoneNumberTextField.text!.isPhoneNumber {
+            invalidPhoneNumberLabel.hidden = false
+            canContinue = false
+        } else {
+            invalidPhoneNumberLabel.hidden = true
+        }
+        
+        // CHAD - Add check for existing email here!
+        /*if emailAlreadyExists {
+            invalidEmailLabel.hidden = false
+            invalidEmailLabel.text = "This email is already associated with an account."
+            canContinue = false
+        }*/
+        
+        // End activity indicator animation
+        myActivityIndicator.stopAnimating()
+        
+        if canContinue {
+            // Hide error messages
+            invalidNameLabel.hidden = true
+            invalidEmailLabel.hidden = true
+            invalidPasswordLabel.hidden = true
+            invalidPhoneNumberLabel.hidden = true
+            
+            // Reset canContinue variable
+            canContinue = false
+            
+            performSegueWithIdentifier("toAddressInfo", sender: self)
+        }
     }
     
     @IBAction func xButtonClicked(sender: UIBarButtonItem) {
         self.view.endEditing(true)
+        
+        // End activity indicator animation
+        myActivityIndicator.stopAnimating()
+        
+        // Hide error messages
+        invalidNameLabel.hidden = true
+        invalidEmailLabel.hidden = true
+        invalidPasswordLabel.hidden = true
+        invalidPhoneNumberLabel.hidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -138,13 +264,55 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     // MARK: - Navigation
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        //THIS IS WHERE WE WILL SEND DATA TO NEXT VIEWCONTROLLER
+        if segue.identifier == "toAddressInfo" {
+            // Send initial data to next screen
+            let VC = segue.destinationViewController as! AddressInfoViewController
+            
+            VC.fullName = fullNameTextField.text!
+            VC.email = emailTextField.text!
+            VC.password = passwordTextField.text!
+            VC.phoneNumber = phoneNumberTextField.text!
+        }
         
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
 
+}
+
+extension String {
+    
+    //To check text field or String is blank or not
+    var isBlank: Bool {
+        get {
+            let trimmed = stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            return trimmed.isEmpty
+        }
+    }
+    
+    //Validate Email
+    var isEmail: Bool {
+        do {
+            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .CaseInsensitive)
+            return regex.firstMatchInString(self, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
+        } catch {
+            return false
+        }
+    }
+    
+    //validate PhoneNumber
+    var isPhoneNumber: Bool {
+            let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
+            let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+            let result =  phoneTest.evaluateWithObject(self)
+            return result
+    }
+    
+    //validate Zip Code
+    var isZipCode: Bool {
+        let ZIP_REGEX = "^\\d{5}$"
+        let zipTest = NSPredicate(format: "SELF MATCHES %@", ZIP_REGEX)
+        let result =  zipTest.evaluateWithObject(self)
+        return result
+    }
 }

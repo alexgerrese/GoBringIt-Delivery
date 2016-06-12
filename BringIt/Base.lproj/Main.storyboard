@@ -89,7 +89,7 @@
                                 </constraints>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="floatingLabelYPadding">
                                         <real key="value" value="0.0"/>
@@ -120,7 +120,7 @@
                                 </constraints>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="floatingLabelYPadding">
                                         <real key="value" value="0.0"/>
@@ -157,7 +157,6 @@
                                 <connections>
                                     <action selector="continueButtonClicked:" destination="pcs-O5-cDM" eventType="touchUpInside" id="HjS-1z-1A1"/>
                                     <action selector="startClicked:" destination="oWt-rh-6tA" eventType="touchUpInside" id="fTp-90-thK"/>
-                                    <segue destination="ZeV-pK-guH" kind="show" id="Tp6-NM-hpe"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will be able to edit these details later." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zNZ-mS-HNv">
@@ -292,6 +291,47 @@
                                     <outletCollection property="otherButtons" destination="u7v-sW-c1W" id="zXw-Ae-tO6"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid address." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBW-3g-EUJ">
+                                <rect key="frame" x="33" y="232" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="mew-IZ-NlS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid city." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RH-9K-Cmm">
+                                <rect key="frame" x="33" y="386" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="FHO-WZ-SHD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid zip code." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gc-TO-a1o">
+                                <rect key="frame" x="33" y="461" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Xi4-Ow-D8l"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ns4-yS-PKL">
+                                <rect key="frame" x="189" y="554" width="37" height="37"/>
+                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OPTIONAL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFM-1O-iv8">
+                                <rect key="frame" x="296" y="283" width="83" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="0xP-yl-tWO"/>
+                                    <constraint firstAttribute="width" constant="83" id="6G1-3w-z01"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -300,20 +340,26 @@
                             <constraint firstItem="uXy-Ag-omd" firstAttribute="leading" secondItem="eZU-5b-XSL" secondAttribute="leading" id="1K7-iq-x4r"/>
                             <constraint firstItem="xsH-er-3PY" firstAttribute="leading" secondItem="Jbe-sF-VLG" secondAttribute="trailing" constant="70" id="1We-5c-uEf"/>
                             <constraint firstItem="8vK-A5-keu" firstAttribute="leading" secondItem="C1a-fx-x5h" secondAttribute="leading" id="1nj-6w-07m"/>
+                            <constraint firstItem="zNZ-mS-HNv" firstAttribute="top" secondItem="ns4-yS-PKL" secondAttribute="bottom" constant="66" id="2Wg-Fg-BHL"/>
                             <constraint firstItem="Ewh-QI-P6z" firstAttribute="leading" secondItem="8BE-WV-s0x" secondAttribute="leading" id="2hp-yb-0pD"/>
                             <constraint firstItem="Jbe-sF-VLG" firstAttribute="baseline" secondItem="u7v-sW-c1W" secondAttribute="firstBaseline" id="3ef-xE-wed"/>
                             <constraint firstItem="zNZ-mS-HNv" firstAttribute="centerX" secondItem="kgW-ZA-ZOc" secondAttribute="centerX" id="43K-iS-i9e"/>
                             <constraint firstItem="2u3-hA-qwM" firstAttribute="top" secondItem="C1a-fx-x5h" secondAttribute="bottom" constant="5" id="4Di-H1-K3G"/>
+                            <constraint firstItem="cFM-1O-iv8" firstAttribute="centerY" secondItem="C1a-fx-x5h" secondAttribute="centerY" constant="12" id="4IH-uD-ceo"/>
+                            <constraint firstItem="1gc-TO-a1o" firstAttribute="top" secondItem="eZU-5b-XSL" secondAttribute="top" id="6SP-Nd-TrN"/>
                             <constraint firstItem="Ewh-QI-P6z" firstAttribute="leading" secondItem="mBU-wA-3eV" secondAttribute="leadingMargin" constant="13" id="6Yn-w1-Zfq"/>
                             <constraint firstAttribute="bottom" secondItem="eZU-5b-XSL" secondAttribute="bottom" constant="274" id="9Vi-Lf-wdj"/>
                             <constraint firstItem="u7v-sW-c1W" firstAttribute="baseline" secondItem="xsH-er-3PY" secondAttribute="baseline" id="9xI-fS-H2V"/>
                             <constraint firstItem="fK0-cw-bIe" firstAttribute="top" secondItem="mBU-wA-3eV" secondAttribute="top" constant="336" id="BlQ-gZ-oHW"/>
                             <constraint firstItem="2u3-hA-qwM" firstAttribute="trailing" secondItem="fK0-cw-bIe" secondAttribute="trailing" id="Dej-TT-5dL"/>
+                            <constraint firstItem="0RH-9K-Cmm" firstAttribute="top" secondItem="odp-TW-4yC" secondAttribute="top" id="ENs-Q6-xrl"/>
+                            <constraint firstItem="0RH-9K-Cmm" firstAttribute="leading" secondItem="odp-TW-4yC" secondAttribute="leading" id="EdW-U3-h2Y"/>
                             <constraint firstItem="fK0-cw-bIe" firstAttribute="leading" secondItem="odp-TW-4yC" secondAttribute="leading" id="FMf-GO-Dmz"/>
                             <constraint firstItem="2FD-sj-6x7" firstAttribute="top" secondItem="vtM-rA-wiT" secondAttribute="bottom" constant="25" id="Gma-0F-LAv"/>
                             <constraint firstItem="Ewh-QI-P6z" firstAttribute="top" secondItem="kfL-nC-pNU" secondAttribute="bottom" constant="29" id="HLo-fO-QUY"/>
                             <constraint firstItem="kgW-ZA-ZOc" firstAttribute="leading" secondItem="mBU-wA-3eV" secondAttribute="leading" id="JM0-d6-vKA"/>
                             <constraint firstItem="Jbe-sF-VLG" firstAttribute="baseline" secondItem="8BE-WV-s0x" secondAttribute="firstBaseline" id="KDc-Ga-1QL"/>
+                            <constraint firstItem="cFM-1O-iv8" firstAttribute="trailing" secondItem="xsH-er-3PY" secondAttribute="trailing" id="KMK-tL-7bJ"/>
                             <constraint firstItem="Jbe-sF-VLG" firstAttribute="leading" secondItem="8BE-WV-s0x" secondAttribute="trailing" constant="7" id="LF1-PQ-dKF"/>
                             <constraint firstItem="odp-TW-4yC" firstAttribute="trailing" secondItem="uXy-Ag-omd" secondAttribute="trailing" id="MWK-fL-R6B"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xsH-er-3PY" secondAttribute="trailing" constant="15" id="Na3-fd-a9H"/>
@@ -324,6 +370,7 @@
                             <constraint firstItem="u7v-sW-c1W" firstAttribute="top" secondItem="xsH-er-3PY" secondAttribute="top" id="RSN-Jt-LXi"/>
                             <constraint firstItem="vtM-rA-wiT" firstAttribute="leading" secondItem="2FD-sj-6x7" secondAttribute="leading" id="Rmw-ZC-d0X"/>
                             <constraint firstItem="2FD-sj-6x7" firstAttribute="top" secondItem="mBU-wA-3eV" secondAttribute="top" constant="182" id="SCo-w8-8HB"/>
+                            <constraint firstItem="1gc-TO-a1o" firstAttribute="leading" secondItem="eZU-5b-XSL" secondAttribute="leading" id="Shg-bo-9w7"/>
                             <constraint firstItem="vtM-rA-wiT" firstAttribute="trailing" secondItem="2FD-sj-6x7" secondAttribute="trailing" id="TQ0-ME-L0u"/>
                             <constraint firstItem="vtM-rA-wiT" firstAttribute="top" secondItem="8BE-WV-s0x" secondAttribute="bottom" constant="9" id="VR8-RY-NvQ"/>
                             <constraint firstItem="kgW-ZA-ZOc" firstAttribute="top" secondItem="zNZ-mS-HNv" secondAttribute="bottom" constant="8" symbolic="YES" id="VdJ-Pa-XjI"/>
@@ -334,13 +381,17 @@
                             <constraint firstItem="eZU-5b-XSL" firstAttribute="top" secondItem="mBU-wA-3eV" secondAttribute="top" constant="461" id="aT7-q4-Aop"/>
                             <constraint firstItem="Jbe-sF-VLG" firstAttribute="top" secondItem="u7v-sW-c1W" secondAttribute="top" id="bB0-Uc-C22"/>
                             <constraint firstItem="2u3-hA-qwM" firstAttribute="leading" secondItem="fK0-cw-bIe" secondAttribute="leading" id="bHl-sK-mu9"/>
+                            <constraint firstItem="dBW-3g-EUJ" firstAttribute="leading" secondItem="8vK-A5-keu" secondAttribute="leading" id="dUN-1p-Xg1"/>
                             <constraint firstItem="zNZ-mS-HNv" firstAttribute="leading" secondItem="mBU-wA-3eV" secondAttribute="leadingMargin" constant="30" id="ddh-Ht-0jM"/>
                             <constraint firstItem="uXy-Ag-omd" firstAttribute="top" secondItem="odp-TW-4yC" secondAttribute="bottom" constant="26" id="dnR-CQ-1Ky"/>
                             <constraint firstItem="2FD-sj-6x7" firstAttribute="trailing" secondItem="8vK-A5-keu" secondAttribute="trailing" id="e7h-7h-28F"/>
+                            <constraint firstItem="ns4-yS-PKL" firstAttribute="centerX" secondItem="zNZ-mS-HNv" secondAttribute="centerX" id="eXu-wE-Pf0"/>
                             <constraint firstItem="eZU-5b-XSL" firstAttribute="top" secondItem="uXy-Ag-omd" secondAttribute="bottom" constant="3" id="j33-YZ-aWn"/>
                             <constraint firstItem="C1a-fx-x5h" firstAttribute="leading" secondItem="2u3-hA-qwM" secondAttribute="leading" id="j4u-qX-Vn7"/>
+                            <constraint firstItem="dBW-3g-EUJ" firstAttribute="top" secondItem="8vK-A5-keu" secondAttribute="top" id="jG4-Fl-8yp"/>
                             <constraint firstItem="u7v-sW-c1W" firstAttribute="leading" secondItem="8BE-WV-s0x" secondAttribute="trailing" constant="89" id="jLa-7d-vHO"/>
                             <constraint firstItem="fK0-cw-bIe" firstAttribute="trailing" secondItem="odp-TW-4yC" secondAttribute="trailing" id="jXR-ku-dq2"/>
+                            <constraint firstItem="dBW-3g-EUJ" firstAttribute="trailing" secondItem="0RH-9K-Cmm" secondAttribute="trailing" id="jab-EK-ob4"/>
                             <constraint firstItem="8BE-WV-s0x" firstAttribute="baseline" secondItem="Jbe-sF-VLG" secondAttribute="baseline" id="m4E-3W-lOa"/>
                             <constraint firstItem="u7v-sW-c1W" firstAttribute="baseline" secondItem="Jbe-sF-VLG" secondAttribute="firstBaseline" id="m4k-ED-AAY"/>
                             <constraint firstItem="uXy-Ag-omd" firstAttribute="trailing" secondItem="eZU-5b-XSL" secondAttribute="trailing" id="mNv-sR-vgl"/>
@@ -348,6 +399,8 @@
                             <constraint firstItem="C1a-fx-x5h" firstAttribute="top" secondItem="mBU-wA-3eV" secondAttribute="top" constant="259" id="pc2-xX-qB1"/>
                             <constraint firstItem="odp-TW-4yC" firstAttribute="leading" secondItem="uXy-Ag-omd" secondAttribute="leading" id="qbw-Tb-1nc"/>
                             <constraint firstItem="8BE-WV-s0x" firstAttribute="top" secondItem="Ewh-QI-P6z" secondAttribute="bottom" constant="3" id="rSO-TW-Ayk"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dBW-3g-EUJ" secondAttribute="trailing" constant="57" id="udI-0c-jIN"/>
+                            <constraint firstItem="0RH-9K-Cmm" firstAttribute="trailing" secondItem="1gc-TO-a1o" secondAttribute="trailing" id="w6N-8a-8V1"/>
                             <constraint firstItem="8vK-A5-keu" firstAttribute="top" secondItem="2FD-sj-6x7" secondAttribute="bottom" constant="5" id="xow-2A-bR1"/>
                             <constraint firstItem="8vK-A5-keu" firstAttribute="trailing" secondItem="C1a-fx-x5h" secondAttribute="trailing" id="z4F-mS-fT5"/>
                             <constraint firstItem="fK0-cw-bIe" firstAttribute="top" secondItem="2u3-hA-qwM" secondAttribute="bottom" constant="26" id="zDo-63-Lpn"/>
@@ -361,9 +414,14 @@
                         <outlet property="centralRadioButton" destination="Jbe-sF-VLG" id="woD-sP-S3n"/>
                         <outlet property="cityTextField" destination="fK0-cw-bIe" id="M2Q-80-0Mt"/>
                         <outlet property="eastRadioButton" destination="u7v-sW-c1W" id="rj5-cQ-gNK"/>
+                        <outlet property="invalidAddressLabel" destination="dBW-3g-EUJ" id="hhK-ki-uwM"/>
+                        <outlet property="invalidCitylabel" destination="0RH-9K-Cmm" id="X9p-Zx-4EO"/>
+                        <outlet property="invalidZipLabel" destination="1gc-TO-a1o" id="u4f-lj-p1w"/>
+                        <outlet property="myActivityIndicator" destination="ns4-yS-PKL" id="I4m-NZ-TRg"/>
                         <outlet property="offCampusRadioButton" destination="xsH-er-3PY" id="VKT-Bc-PNR"/>
                         <outlet property="westRadioButton" destination="8BE-WV-s0x" id="WDY-17-8FK"/>
                         <outlet property="zipTextField" destination="uXy-Ag-omd" id="J1a-Nc-fa8"/>
+                        <segue destination="ZeV-pK-guH" kind="show" identifier="toPaymentInfo" id="tXD-W1-K9H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7hZ-7W-Wcd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -517,7 +575,6 @@
                                 <connections>
                                     <action selector="saveAndFinishButtonClicked:" destination="ZeV-pK-guH" eventType="touchUpInside" id="Ndg-6N-nee"/>
                                     <action selector="startClicked:" destination="oWt-rh-6tA" eventType="touchUpInside" id="RA7-PP-bcM"/>
-                                    <segue destination="49e-Tb-3d3" kind="presentation" id="gGH-Qv-KeL"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will be able to edit these details later." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7B4-uM-KkV">
@@ -629,9 +686,13 @@
                                     <constraint firstAttribute="width" constant="83" id="gb8-v5-4HY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Ik8-ZC-dCa">
+                                <rect key="frame" x="189" y="563" width="37" height="37"/>
+                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -701,12 +762,14 @@
                         <outlet property="creditRadioButton" destination="McG-PA-cY7" id="fNP-aT-i61"/>
                         <outlet property="debitRadioButton" destination="sYv-8Z-4TN" id="00v-al-xfo"/>
                         <outlet property="expirationDateTextField" destination="8Zo-uH-yIw" id="FV3-rU-3yk"/>
+                        <outlet property="myActivityIndicator" destination="Ik8-ZC-dCa" id="19G-3D-4pU"/>
                         <outlet property="zipTextField" destination="YPd-0x-86L" id="M67-ur-c5i"/>
+                        <segue destination="49e-Tb-3d3" kind="presentation" identifier="toHomeFromSignUp" id="hH8-2L-SWV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXY-b9-m3V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1211" y="-729"/>
+            <point key="canvasLocation" x="1232" y="-729"/>
         </scene>
         <!--Bring It Home Table View Controller-->
         <scene sceneID="L1t-F2-IYV">
@@ -1620,7 +1683,7 @@ Sat - Sun: 2PM - 11PM</string>
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="164.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BringIt Background" translatesAutoresizingMaskIntoConstraints="NO" id="lgb-71-chH">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bring It Background" translatesAutoresizingMaskIntoConstraints="NO" id="lgb-71-chH">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="165"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5TN-Fh-Mr0">
@@ -2338,7 +2401,6 @@ Sat - Sun: 2PM - 11PM</string>
                                 </state>
                                 <connections>
                                     <action selector="createButtonClicked:" destination="CRK-7W-0xt" eventType="touchUpInside" id="grK-2m-kGY"/>
-                                    <segue destination="pcs-O5-cDM" kind="show" id="YB8-aM-9yI"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will be able to edit these details later." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zXj-pz-QUD">
@@ -2364,6 +2426,46 @@ Sat - Sun: 2PM - 11PM</string>
                                     <action selector="chooseImageClicked:" destination="CRK-7W-0xt" eventType="touchUpInside" id="DZp-Oc-HHV"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your name." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPq-yU-Bo3">
+                                <rect key="frame" x="33" y="300" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="515-Lf-zoB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid email." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Xy-bw-ht7">
+                                <rect key="frame" x="33" y="377" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="lVu-qq-2vN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a password with at least 8 characters." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qB5-Cp-X5R">
+                                <rect key="frame" x="33" y="454" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="S9b-mH-Qhb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid phone number." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94p-ZK-Ffx">
+                                <rect key="frame" x="33" y="531" width="304" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="WIH-FS-shz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ASg-eu-G56">
+                                <rect key="frame" x="189" y="591" width="37" height="37"/>
+                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -2381,6 +2483,8 @@ Sat - Sun: 2PM - 11PM</string>
                             <constraint firstItem="Ng6-xE-bFs" firstAttribute="leading" secondItem="zgP-nu-XtZ" secondAttribute="leading" id="CCz-NZ-LJL"/>
                             <constraint firstItem="zgP-nu-XtZ" firstAttribute="leading" secondItem="H9Y-v3-4pA" secondAttribute="leading" id="Cdg-Yz-RyL"/>
                             <constraint firstItem="5gn-jX-W74" firstAttribute="top" secondItem="IaT-DT-irc" secondAttribute="top" constant="327" id="Cjn-iO-2dG"/>
+                            <constraint firstItem="qB5-Cp-X5R" firstAttribute="top" secondItem="Ng6-xE-bFs" secondAttribute="top" id="Dmj-KS-Jhc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="CPq-yU-Bo3" secondAttribute="trailing" constant="57" id="EMj-E8-UkM"/>
                             <constraint firstItem="LNK-Sf-bwu" firstAttribute="bottom" secondItem="kxt-i6-mhm" secondAttribute="top" id="Fo8-m4-abG"/>
                             <constraint firstItem="LNK-Sf-bwu" firstAttribute="leading" secondItem="IaT-DT-irc" secondAttribute="leading" id="HfS-65-dsp"/>
                             <constraint firstItem="kOd-5z-Dkq" firstAttribute="trailing" secondItem="5gn-jX-W74" secondAttribute="trailing" id="IJd-Tm-f0B"/>
@@ -2391,15 +2495,22 @@ Sat - Sun: 2PM - 11PM</string>
                             <constraint firstItem="e7R-4a-Xtc" firstAttribute="top" secondItem="5gn-jX-W74" secondAttribute="bottom" constant="5" id="Mih-Cg-hs0"/>
                             <constraint firstItem="LNK-Sf-bwu" firstAttribute="top" secondItem="zXj-pz-QUD" secondAttribute="bottom" constant="8" symbolic="YES" id="PyY-dK-4NQ"/>
                             <constraint firstItem="jq3-Me-6Cm" firstAttribute="top" secondItem="u35-EQ-eYo" secondAttribute="bottom" constant="35" id="RTb-Ix-BZe"/>
+                            <constraint firstItem="CPq-yU-Bo3" firstAttribute="trailing" secondItem="9Xy-bw-ht7" secondAttribute="trailing" id="TCt-Dh-YJ7"/>
                             <constraint firstItem="zXj-pz-QUD" firstAttribute="leading" secondItem="IaT-DT-irc" secondAttribute="leadingMargin" constant="30" id="TSu-oU-YEY"/>
                             <constraint firstItem="kOd-5z-Dkq" firstAttribute="leading" secondItem="5gn-jX-W74" secondAttribute="leading" id="WGp-uE-J0c"/>
+                            <constraint firstItem="9Xy-bw-ht7" firstAttribute="leading" secondItem="e7R-4a-Xtc" secondAttribute="leading" id="WyQ-pV-tA7"/>
                             <constraint firstItem="WhS-eW-c1c" firstAttribute="top" secondItem="e7R-4a-Xtc" secondAttribute="bottom" constant="26" id="Xjx-aD-FMH"/>
                             <constraint firstItem="KYW-4c-PMb" firstAttribute="trailing" secondItem="Usn-Yb-lQa" secondAttribute="trailing" id="Zhw-oe-Ldi"/>
                             <constraint firstItem="PC5-05-2cq" firstAttribute="top" secondItem="Usn-Yb-lQa" secondAttribute="bottom" constant="51" id="aG5-7x-PuI"/>
+                            <constraint firstItem="9Xy-bw-ht7" firstAttribute="top" secondItem="e7R-4a-Xtc" secondAttribute="top" id="bq6-1s-Cqn"/>
+                            <constraint firstItem="94p-ZK-Ffx" firstAttribute="top" secondItem="H9Y-v3-4pA" secondAttribute="top" id="ctM-vW-RFm"/>
+                            <constraint firstItem="qB5-Cp-X5R" firstAttribute="leading" secondItem="Ng6-xE-bFs" secondAttribute="leading" id="diO-BH-eeh"/>
+                            <constraint firstItem="CPq-yU-Bo3" firstAttribute="top" secondItem="kOd-5z-Dkq" secondAttribute="top" id="dzm-1D-Ggz"/>
                             <constraint firstItem="5gn-jX-W74" firstAttribute="leading" secondItem="e7R-4a-Xtc" secondAttribute="leading" id="g2Q-l0-eG9"/>
                             <constraint firstItem="zXj-pz-QUD" firstAttribute="centerX" secondItem="LNK-Sf-bwu" secondAttribute="centerX" id="gSH-Y7-nTd"/>
                             <constraint firstItem="H9Y-v3-4pA" firstAttribute="top" secondItem="IaT-DT-irc" secondAttribute="top" constant="531" id="h5U-q3-OTE"/>
                             <constraint firstItem="PC5-05-2cq" firstAttribute="leading" secondItem="IaT-DT-irc" secondAttribute="leadingMargin" constant="13" id="iDp-rL-NTz"/>
+                            <constraint firstItem="94p-ZK-Ffx" firstAttribute="leading" secondItem="H9Y-v3-4pA" secondAttribute="leading" id="j7Y-dP-EAE"/>
                             <constraint firstItem="KYW-4c-PMb" firstAttribute="leading" secondItem="Usn-Yb-lQa" secondAttribute="leading" id="jnb-0z-GML"/>
                             <constraint firstItem="KYW-4c-PMb" firstAttribute="top" secondItem="jq3-Me-6Cm" secondAttribute="top" id="kWx-ph-A9t"/>
                             <constraint firstItem="H9Y-v3-4pA" firstAttribute="top" secondItem="zgP-nu-XtZ" secondAttribute="bottom" constant="5" id="kaP-8Q-67p"/>
@@ -2407,8 +2518,11 @@ Sat - Sun: 2PM - 11PM</string>
                             <constraint firstItem="WhS-eW-c1c" firstAttribute="leading" secondItem="Ng6-xE-bFs" secondAttribute="leading" id="oLg-Ax-L5Z"/>
                             <constraint firstItem="Ng6-xE-bFs" firstAttribute="top" secondItem="IaT-DT-irc" secondAttribute="top" constant="454" id="pqC-ds-Lkr"/>
                             <constraint firstItem="zgP-nu-XtZ" firstAttribute="trailing" secondItem="H9Y-v3-4pA" secondAttribute="trailing" id="sPe-Bt-1aX"/>
+                            <constraint firstItem="qB5-Cp-X5R" firstAttribute="trailing" secondItem="94p-ZK-Ffx" secondAttribute="trailing" id="sgX-CX-O9o"/>
                             <constraint firstItem="5gn-jX-W74" firstAttribute="trailing" secondItem="e7R-4a-Xtc" secondAttribute="trailing" id="spN-zH-Bqw"/>
+                            <constraint firstItem="9Xy-bw-ht7" firstAttribute="trailing" secondItem="qB5-Cp-X5R" secondAttribute="trailing" id="u6O-dp-k5U"/>
                             <constraint firstItem="PC5-05-2cq" firstAttribute="trailing" secondItem="kOd-5z-Dkq" secondAttribute="trailing" id="yGe-Hk-YdT"/>
+                            <constraint firstItem="CPq-yU-Bo3" firstAttribute="leading" secondItem="kOd-5z-Dkq" secondAttribute="leading" id="yad-8v-a3u"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="G5H-gA-3aW">
@@ -2426,9 +2540,15 @@ Sat - Sun: 2PM - 11PM</string>
                         <outlet property="chooseImageButton" destination="KYW-4c-PMb" id="pjH-Qa-QxO"/>
                         <outlet property="emailTextField" destination="5gn-jX-W74" id="aFU-Wb-gS2"/>
                         <outlet property="fullNameTextField" destination="PC5-05-2cq" id="cvN-Ns-8gc"/>
+                        <outlet property="invalidEmailLabel" destination="9Xy-bw-ht7" id="GRw-gc-reF"/>
+                        <outlet property="invalidNameLabel" destination="CPq-yU-Bo3" id="YSu-PO-FM2"/>
+                        <outlet property="invalidPasswordLabel" destination="qB5-Cp-X5R" id="19t-RT-vZf"/>
+                        <outlet property="invalidPhoneNumberLabel" destination="94p-ZK-Ffx" id="7eK-xC-rOg"/>
+                        <outlet property="myActivityIndicator" destination="ASg-eu-G56" id="5PA-xV-SMD"/>
                         <outlet property="passwordTextField" destination="WhS-eW-c1c" id="3jE-Vg-FPX"/>
                         <outlet property="phoneNumberTextField" destination="zgP-nu-XtZ" id="VQx-lt-zaT"/>
                         <outlet property="profilePicImage" destination="Usn-Yb-lQa" id="faX-mP-vLk"/>
+                        <segue destination="pcs-O5-cDM" kind="show" identifier="toAddressInfo" id="AOu-eT-4lo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nlT-wj-GxU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2614,7 +2734,7 @@ Sat - Sun: 2PM - 11PM</string>
         </scene>
     </scenes>
     <resources>
-        <image name="BringIt Background" width="750" height="300"/>
+        <image name="Bring It Background" width="750" height="300"/>
         <image name="Cart" width="46" height="35"/>
         <image name="Coming Soon Background" width="750" height="300"/>
         <image name="Dames Background" width="750" height="302"/>
@@ -2635,7 +2755,7 @@ Sat - Sun: 2PM - 11PM</string>
         <image name="settings" width="21" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FW6-2I-gdP"/>
+        <segue reference="hH8-2L-SWV"/>
         <segue reference="v0k-Br-ddb"/>
         <segue reference="gs5-5B-2gF"/>
         <segue reference="MIb-bQ-wH3"/>

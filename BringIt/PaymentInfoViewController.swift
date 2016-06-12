@@ -21,7 +21,18 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
     @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var CVCTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var expirationDateTextField: B68UIFloatLabelTextField!
-
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    
+    // Passed data
+    var fullName = ""
+    var email = ""
+    var password = ""
+    var phoneNumber = ""
+    var campusLocation = ""
+    var address1 = ""
+    var address2 = ""
+    var city = ""
+    var zip = ""
     
     // Doing this and the two lines in viewDidLoad automaticaly handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
@@ -37,27 +48,30 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        
+        // Hide activity indicator
+        myActivityIndicator.stopAnimating()
     }
     
     // MARK: - IBActions
     
     @IBAction func saveAndFinishButtonClicked(sender: UIButton) {
-        // Alex - fill in the "put_x_here" with the respective values from SignUpVC and AddressInfoVC
-        // create JSON data and configure the request
-        let params = ["name":"put_name_here", // from SignUpVC
-                      "email":"put_email_here", // from SignUpVC
-                      "phone": "put_phone_here", // from SignUpVC
-                      "password": "put_password_here", // from SignUpVC
-                      "address": "put_address1_here", // from AddressInfoVC
-                      "apartment": "put_address2_here", // from AddressInfoVC
-                      "city": "put_city_here", // from AddressInfoVC
-                      "state": "put_state_here", // from AddressInfoVC
-                      "zip": "put_zip_here", // from AddressInfoVC
-                      "campus_loc": "put_campuslocation_here"] // from AddressInfoVC
+        // Show activity indicator
+        myActivityIndicator.startAnimating()
+        
+        // Create JSON data and configure the request
+        let params = ["name": fullName, // from SignUpVC
+                      "email": email, // from SignUpVC
+                      "phone": phoneNumber, // from SignUpVC
+                      "password": password, // from SignUpVC
+                      "address": address1, // from AddressInfoVC
+                      "apartment": address2, // from AddressInfoVC
+                      "city": city, // from AddressInfoVC
+                      "state": "NC", // from AddressInfoVC
+                      "zip": zip, // from AddressInfoVC
+                      "campus_loc": campusLocation] // from AddressInfoVC
             as Dictionary<String, String>
         
-        // From SignUpVC: Full name, Email, Password, Phone #
-        // From AddressInfoVC: Campus location, Address 1 (street address), Address 2 (apartment), City, Zip, Campus_loc
         // This is not being saved anywhere: PaymentInfoVC: card_type, card_number, card_zip, card_cvc, card_exp
         
         // create the request & response
@@ -80,6 +94,9 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         
         task.resume()
         
+        // Stop animating activity indicator and enter app
+        myActivityIndicator.stopAnimating()
+        performSegueWithIdentifier("toHomeFromSignUp", sender: self)
     }
 
     override func didReceiveMemoryWarning() {
