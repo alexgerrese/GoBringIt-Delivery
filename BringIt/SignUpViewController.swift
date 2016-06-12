@@ -220,9 +220,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             invalidPhoneNumberLabel.hidden = true
         }
         
-        
-        
-        // CHAD - Add check for existing email here!
+        // Check for existing email here
         if (canContinue) {
             // Open Connection to PHP Service
             let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
@@ -286,25 +284,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                 }
             }
             task.resume()
-            
-        
         }
-        
-        /*// End activity indicator animation
-        myActivityIndicator.stopAnimating()
-        
-        if canContinue {
-            // Hide error messages
-            invalidNameLabel.hidden = true
-            invalidEmailLabel.hidden = true
-            invalidPasswordLabel.hidden = true
-            invalidPhoneNumberLabel.hidden = true
-            
-            // Reset canContinue variable
-            canContinue = false
-            
-            performSegueWithIdentifier("toAddressInfo", sender: self)
-        }*/
     }
     
     @IBAction func xButtonClicked(sender: UIBarButtonItem) {
