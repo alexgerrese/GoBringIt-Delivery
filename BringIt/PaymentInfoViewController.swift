@@ -36,6 +36,8 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
     
     // Doing this and the two lines in viewDidLoad automaticaly handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +95,12 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         }
         
         task.resume()
+        
+        // Update UserDefaults
+        self.defaults.setBool(true, forKey: "loggedIn")
+        
+        // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
+        //self.defaults.setObject(userID, forKey: "userID")
         
         // Stop animating activity indicator and enter app
         myActivityIndicator.stopAnimating()

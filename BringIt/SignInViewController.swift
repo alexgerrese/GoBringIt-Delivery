@@ -86,6 +86,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     
                                     // Update UserDefaults 
                                     self.defaults.setBool(true, forKey: "loggedIn")
+                                    
                                     // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
                                     //self.defaults.setObject(userID, forKey: "userID")
                                     
