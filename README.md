@@ -6,6 +6,12 @@ TODO:
 - Get Menu Items
 - Do Ordering
 - Do Checkout
-- Do Stripe; figure out where in DB Credit Card info should go
+- Do Stripe
 - Figure out Password Recovery
 - Figure out Global User ID accessible throughout the app
+
+Questions:
+- figure out where in DB Credit Card info should go
+- only Sushi Love has restaurant hours in the DB; other restaurants do not
+- 
+
