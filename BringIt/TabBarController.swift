@@ -9,6 +9,8 @@
 import UIKit
 
 class TabBarController: UITabBarController {
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +33,38 @@ class TabBarController: UITabBarController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
     }
     
-
-
+    override func viewDidAppear(animated: Bool) {
+        // Display walkthrough if first launch
+        displayWalkthroughs()
+        
+        // Check if user is already logged in
+        checkLoggedIn()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    // Check if user is already logged in. If not, present SignInViewController.
+    func checkLoggedIn() {
+        let loggedIn = defaults.boolForKey("loggedIn")
+        if !loggedIn {
+            performSegueWithIdentifier("toSignIn", sender: self)
+        }
+    }
+    
+    // Check if walkthrough has been shown, then show if needed
+    func displayWalkthroughs() {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let displayedWalkthrough = userDefaults.boolForKey("displayedWalkthrough")
+        
+        if !displayedWalkthrough {
+            if let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("PageViewController") {
+                self.presentViewController(pageViewController, animated: true, completion: nil)
+            }
+        }
+    }
 
     /*
     // MARK: - Navigation

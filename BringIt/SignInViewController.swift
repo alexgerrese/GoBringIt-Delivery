@@ -29,6 +29,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginErrorMessageLabel: UILabel!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
     override func viewDidLoad() {
@@ -38,14 +40,9 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
         
-        // Initially hide error label
+        // Initially hide error label and activity indicator
         loginErrorMessageLabel.hidden = true
-        
         myActivityIndicator.stopAnimating()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        displayWalkthroughs()
     }
     
     // Sign in if credentials match with existing backend entry
@@ -54,7 +51,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         myActivityIndicator.startAnimating()
         
         var canLogin = false
-        //customActivityIndicator.startAnimation()
         
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
@@ -84,9 +80,19 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                 // User is verified
                                 canLogin = true
                                 NSOperationQueue.mainQueue().addOperationWithBlock {
+                                    // Reset views
                                     self.loginErrorMessageLabel.hidden = true
                                     self.myActivityIndicator.stopAnimating()
-                                    self.performSegueWithIdentifier("toHome", sender: self)
+                                    
+                                    // Update UserDefaults 
+                                    self.defaults.setBool(true, forKey: "loggedIn")
+                                    // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
+                                    //self.defaults.setObject(userID, forKey: "userID")
+                                    
+                                    //FOR TEST USE ONLY (SO I DON'T HAVE TO KEEP LOGGING IN)
+                                    self.defaults.setObject("12345678", forKey: "userID")
+                                    
+                                    self.dismissViewControllerAnimated(true, completion: nil)
                                 }
                                 
                             }
@@ -94,7 +100,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                     }
                     
                     // User not verified
-                    if (canLogin == false) {
+                    if (!canLogin) {
                         NSOperationQueue.mainQueue().addOperationWithBlock {
                             self.loginErrorMessageLabel.hidden = false
                             self.myActivityIndicator.stopAnimating()
@@ -108,18 +114,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         }
         
         task.resume()
-    }
-    
-    // Check if walkthrough has been shown, then show if needed
-    func displayWalkthroughs() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let displayedWalkthrough = userDefaults.boolForKey("displayedWalkthrough")
-        
-        if !displayedWalkthrough {
-            if let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("PageViewController") {
-                self.presentViewController(pageViewController, animated: true, completion: nil)
-            }
-        }
     }
     
     @IBAction func rewindFromSignUp(segue: UIStoryboardSegue) {

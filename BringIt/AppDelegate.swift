@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        // Set up keyboard manager
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().keyboardDistanceFromTextField = CGFloat(50)
         IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true

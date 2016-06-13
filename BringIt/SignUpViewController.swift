@@ -63,6 +63,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         myActivityIndicator.stopAnimating()
     }
     
+    @IBAction func lol(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     // MARK: - Image Picker Methods
     
     @IBAction func chooseImageClicked(sender: AnyObject) {

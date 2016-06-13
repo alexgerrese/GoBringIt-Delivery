@@ -10,7 +10,21 @@ import UIKit
 
 class MenuTableViewController: UITableViewController {
     
-    // SAMPLE DATA
+    // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
+
+    /* The best way to do this would be to grab it from the database and store it in an array of objects like below. If you use the same variable names, they should automatically work with the front end.*/
+    
+    // Create struct to organize data
+    struct MenuItem {
+        var foodName: String
+        var foodDescription: String
+        var foodPrice: String
+    }
+    
+    // Create empty array of Restaurants to be filled in ViewDidLoad
+    var menuItems: [MenuItem] = []
+ 
+    // SAMPLE DATA (Don't pay attention to this Chad)
     let foodNames = ["The Carolina Cockerel", "The Buff Brahmas", "Frizzled Fowl", "The Quilted Buttercup", "Light Brown Leghorn", "Orange Speckled Chabo", "Make Your Own Waffle", "Breakfast Buttercup", "Parfait Waffle"]
     let foodDescriptions = ["Three chicken wings, two petite waffles, shmear", "Two cutlets, sweet potato waffles, whiskey cream sauce drizzle", "A panko-fried cutlet, petite classic waffles, almonds & plum sauce", "A chicken cutlet 'sandwiched' between sweet potato waffles, shmear", "Three drumsticks, classic waffles, caramel cashew drizzle", "Three chicken wings, two petite waffles, shmear", "Choose the type of waffle you'd like (classic, sweet potato, or vegan) and your shmear of choice! ", "Two waffles 'sandwiched' w/bacon, egg, shmear", ""]
     let foodPrices = ["10.00", "13.00", "10.00", "10.00", "10.00", "10.00", "8.00", "7.00", "6.00"]
@@ -27,13 +41,16 @@ class MenuTableViewController: UITableViewController {
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-
-        
         // Set tableView cells to custom height and automatically resize if needed
         tableView.estimatedRowHeight = 75
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
+        
+        // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+        for i in 0..<foodNames.count {
+            menuItems.append(MenuItem(foodName: foodNames[i], foodDescription: foodDescriptions[i], foodPrice: foodPrices[i]))
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,16 +65,15 @@ class MenuTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return foodNames.count
+        return menuItems.count
     }
 
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("menuCell", forIndexPath: indexPath) as! MenuTableViewCell
 
-        cell.menuItemLabel.text = foodNames[indexPath.row]
-        cell.itemDescriptionLabel.text = foodDescriptions[indexPath.row]
-        cell.itemPriceLabel.text = foodPrices[indexPath.row]
+        cell.menuItemLabel.text = menuItems[indexPath.row].foodName
+        cell.itemDescriptionLabel.text = menuItems[indexPath.row].foodDescription
+        cell.itemPriceLabel.text = menuItems[indexPath.row].foodPrice
 
         return cell
     }

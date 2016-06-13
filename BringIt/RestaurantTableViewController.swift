@@ -14,10 +14,10 @@ class RestaurantTableViewController: UITableViewController {
     
     @IBOutlet weak var cuisineTypeLabel: UILabel!
     @IBOutlet weak var restaurantHoursLabel: UILabel!
-    @IBOutlet weak var openClosedLabel: UILabel!
+    //@IBOutlet weak var openClosedLabel: UILabel!
     @IBOutlet weak var isOpenIndicator: UIImageView!
     
-    // SAMPLE DATA
+    // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
     let menuCategories = ["Signature Chicken and Waffles", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc.", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc."]
 
     override func viewDidLoad() {
