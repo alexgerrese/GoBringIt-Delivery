@@ -23,17 +23,21 @@ class BringItHomeTableViewController: UITableViewController {
         var cuisineType: String
         var openHours: String
         var isOpen: Bool
+        // Added by Chad for DB purposes
+        var id: String
     }
     
     // Create empty array of Restaurants to be filled in ViewDidLoad
     var restaurants: [Restaurant] = []
     
-    // SAMPLE DATA (pay no attention to this Chad)
-    let coverImages = ["Sushi Love Background", "Dunkin Donuts Background", "Dames Background", "TGIF Background", "Hungry Leaf Background", "Mediterra Background"]
-    let restaurantNames = ["Sushi Love", "Dunkin' Donuts", "Dames", "TGI Friday's", "Hungry Leaf", "Mediterra"]
-    let cuisineTypes = ["Sushi", "Breakfast", "Chicken and Waffles", "American Bar and Grill", "Salad", "Greek"]
+    // DB DATA
+    var coverImages = [String]()
+    var restaurantNames = [String]()
+    var cuisineTypes = [String]()
+    //TODO
     let openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
     let isOpen = [true, false, false, true, true, true]
+    var idList = [String]()
     
     let defaults = NSUserDefaults.standardUserDefaults()
 
@@ -46,10 +50,56 @@ class BringItHomeTableViewController: UITableViewController {
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // CHAD: Loop through DB data and append Restaurant objects into restaurants array
-        for i in 0..<coverImages.count {
-            restaurants.append(Restaurant(coverImage: coverImages[i], restaurantName: restaurantNames[i], cuisineType: cuisineTypes[i], openHours: openHours[i], isOpen: isOpen[i]))
+        // get list of coverImages, restaurantNames, id
+        
+        // Open Connection to PHP Service
+        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let image = Restaurant["image"] as! String
+                                self.coverImages.append(image)
+                                let name = Restaurant["name"] as! String
+                                self.restaurantNames.append(name)
+                                let type = Restaurant["type"] as! String
+                                self.cuisineTypes.append(type)
+                                let idHere = Restaurant["id"] as! String
+                                self.idList.append(idHere)
+                            }
+                            
+                             NSOperationQueue.mainQueue().addOperationWithBlock {
+                                for i in 0..<self.coverImages.count {
+                                    self.restaurants.append(Restaurant(coverImage: self.coverImages[i], restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
+                                    print(self.coverImages[i])
+                                }
+                                print("yo:%i",  self.restaurants.count)
+                                self.tableView.reloadData()
+                                print("Task completed")
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
         }
+        
+        task.resume()
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,14 +116,21 @@ class BringItHomeTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        
         return restaurants.count
+
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
 
+        
         // Set up cell properties
-        cell.restaurantBannerImage.image = UIImage(named: restaurants[indexPath.row].coverImage)
+            let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
+            let data = NSData(contentsOfURL: url!)
+            cell.restaurantBannerImage.image = UIImage(data: data!)
+            
         cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
         cell.restaurantHoursLabel.text = restaurants[indexPath.row].openHours

@@ -17,6 +17,7 @@ class RestaurantTableViewController: UITableViewController {
     //@IBOutlet weak var openClosedLabel: UILabel!
     @IBOutlet weak var isOpenIndicator: UIImageView!
     
+    // Categories
     // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
     let menuCategories = ["Signature Chicken and Waffles", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc.", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc."]
 
