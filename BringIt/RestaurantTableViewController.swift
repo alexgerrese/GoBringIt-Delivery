@@ -19,8 +19,9 @@ class RestaurantTableViewController: UITableViewController {
     
     // Categories
     // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
-    let menuCategories = ["Signature Chicken and Waffles", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc.", "Weekend Brunch", "Omelets", "Burgers, Cluckers, etc."]
-
+    var menuCategories = [String]()
+    var idList = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,6 +34,54 @@ class RestaurantTableViewController: UITableViewController {
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        
+        // Open Connection to PHP Service
+        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuCategories.php")!
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let name = Restaurant["name"] as! String
+                                self.menuCategories.append(name)
+                                print(name)
+                                let service_id = Restaurant["service_id"] as! String
+                                self.idList.append(service_id)
+                                print(service_id)
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                /*for i in 0..<self.coverImages.count {
+                                    self.restaurants.append(Restaurant(coverImage: self.coverImages[i], restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
+                                    print(self.coverImages[i])
+                                }*/
+                                //print("yo:%i",  self.restaurants.count)
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task.resume()
+
     }
 
     override func didReceiveMemoryWarning() {

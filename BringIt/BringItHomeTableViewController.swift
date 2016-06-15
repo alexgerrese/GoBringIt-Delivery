@@ -87,7 +87,6 @@ class BringItHomeTableViewController: UITableViewController {
                                 }
                                 print("yo:%i",  self.restaurants.count)
                                 self.tableView.reloadData()
-                                print("Task completed")
                             }
                         }
                     }
@@ -127,9 +126,9 @@ class BringItHomeTableViewController: UITableViewController {
 
         
         // Set up cell properties
-            let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
-            let data = NSData(contentsOfURL: url!)
-            cell.restaurantBannerImage.image = UIImage(data: data!)
+        let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
+        let data = NSData(contentsOfURL: url!)
+        cell.restaurantBannerImage.image = UIImage(data: data!)
             
         cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
