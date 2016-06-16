@@ -8,8 +8,6 @@
 
 import UIKit
 
-//var cameFromRestaurant =
-
 class RestaurantTableViewController: UITableViewController {
     
     @IBOutlet weak var cuisineTypeLabel: UILabel!
@@ -18,15 +16,21 @@ class RestaurantTableViewController: UITableViewController {
     @IBOutlet weak var isOpenIndicator: UIImageView!
     
     // Categories
-    // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
+    var restaurantName = String();
+    var restaurantID = String();
+    var restaurantType = String();
+    var restaurantHours = String();
+    var open_hours = String();
     var menuCategories = [String]()
+    var menuID = [String]()
     var idList = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Set SAMPLE title
-        self.title = "Dames"
+        self.title = restaurantName
+        self.cuisineTypeLabel.text = restaurantType
         
         // Set tableView cells to custom height and automatically resize if needed
         tableView.estimatedRowHeight = 50
@@ -34,7 +38,6 @@ class RestaurantTableViewController: UITableViewController {
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        
         
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuCategories.php")!
@@ -54,20 +57,19 @@ class RestaurantTableViewController: UITableViewController {
                             let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
-                                let name = Restaurant["name"] as! String
-                                self.menuCategories.append(name)
-                                print(name)
+                                
                                 let service_id = Restaurant["service_id"] as! String
-                                self.idList.append(service_id)
-                                print(service_id)
+                                
+                                if (service_id == self.restaurantID) {
+                                    let name = Restaurant["name"] as! String
+                                    self.menuCategories.append(name)
+                                    self.idList.append(service_id)
+                                    let id = Restaurant["id"] as! String
+                                    self.menuID.append(id)
+                                }
                             }
                             
                             NSOperationQueue.mainQueue().addOperationWithBlock {
-                                /*for i in 0..<self.coverImages.count {
-                                    self.restaurants.append(Restaurant(coverImage: self.coverImages[i], restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
-                                    print(self.coverImages[i])
-                                }*/
-                                //print("yo:%i",  self.restaurants.count)
                                 self.tableView.reloadData()
                             }
                         }
@@ -81,32 +83,75 @@ class RestaurantTableViewController: UITableViewController {
         }
         
         task.resume()
-
+        
+        
+        // Open Connection to PHP Service
+        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantHours.php")!
+        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
+        let session1 = NSURLSession.sharedSession()
+        let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                
+                                let restaurant_id = Restaurant["restaurant_id"] as? String
+                                
+                                if (restaurant_id == self.restaurantID) {
+                                    self.open_hours = Restaurant["open_hours"] as! String
+                                    
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                self.restaurantHoursLabel.text = self.open_hours
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task1.resume()
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return menuCategories.count
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("menuCategories", forIndexPath: indexPath)
-
+        
         // Set up cell properties
         cell.textLabel?.text = menuCategories[indexPath.row]
-
+        
         return cell
     }
     
@@ -124,8 +169,13 @@ class RestaurantTableViewController: UITableViewController {
             let nav = segue.destinationViewController as! UINavigationController
             let VC = nav.topViewController as! CheckoutViewController
             VC.cameFromVC = "Restaurant"
+        } else {
+            let indexPath = tableView.indexPathForSelectedRow?.row
+            let destination = segue.destinationViewController as? MenuTableViewController
+            destination?.titleCell = menuCategories[indexPath!]
+            destination?.titleID = menuID[indexPath!]
         }
     }
     
-
+    
 }
