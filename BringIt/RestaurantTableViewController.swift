@@ -101,12 +101,32 @@ class RestaurantTableViewController: UITableViewController {
                         do{
                             // Parse JSON
                             let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 
                                 let restaurant_id = Restaurant["restaurant_id"] as? String
                                 
                                 if (restaurant_id == self.restaurantID) {
-                                    self.open_hours = Restaurant["open_hours"] as! String
+                                    let all_hours = Restaurant["open_hours"] as! String
+                                    let hours_byDay = all_hours.componentsSeparatedByString(", ")
+                                    
+                                    let currentDate = NSDate()
+                                    let dateFormatter = NSDateFormatter()
+                                    dateFormatter.locale = NSLocale.currentLocale()
+                                    dateFormatter.dateFormat = "EEEE"
+                                    let convertedDate = dateFormatter.stringFromDate(currentDate)
+                                    print(convertedDate)
+                                    
+                                    for i in 0..<hours_byDay.count {
+                                        if (hours_byDay[i].rangeOfString(convertedDate) != nil) {
+                                            self.open_hours = hours_byDay[i]
+                                            print(hours_byDay[i])
+                                        }
+                                    }
+                                    
+                                    
+                                    
+                                    
                                     
                                 }
                             }
