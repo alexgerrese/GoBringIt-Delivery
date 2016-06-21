@@ -1,8 +1,6 @@
 # BringIt
 
 TODO:
-- Get Categories
-- Get Menu Items
 - Do Ordering
 - Do Checkout
 - Do Stripe
