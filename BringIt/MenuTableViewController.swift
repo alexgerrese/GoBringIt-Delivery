@@ -41,6 +41,8 @@ class MenuTableViewController: UITableViewController {
         // Set title
         self.title = titleCell
         
+        print("TitleID: " + self.titleID)
+        
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
@@ -50,8 +52,12 @@ class MenuTableViewController: UITableViewController {
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
         
+        // Create JSON data and configure the request
+        let params = ["category_ID": self.titleID]
+            as Dictionary<String, String>
+        
         // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems.php")!
+        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems1.php")!
         let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
@@ -66,15 +72,21 @@ class MenuTableViewController: UITableViewController {
                         do{
                             // Parse JSON
                             let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                            print(json)
+                           // print(json)
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 let category_id = Restaurant["category_id"] as! String
                                 
                                 if (self.titleID == category_id) {
                                     let name = Restaurant["name"] as! String
                                     self.foodNames.append(name)
-                                    let desc = Restaurant["desc"] as! String
-                                    self.foodDescriptions.append(desc)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
                                     let price = Restaurant["price"] as! String
                                     self.foodPrices.append(price)
                                 }
@@ -98,6 +110,394 @@ class MenuTableViewController: UITableViewController {
         }
         
         task.resume()
+        
+        // Open Connection to PHP Service
+        let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems2.php")!
+        let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
+        let session2 = NSURLSession.sharedSession()
+        let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task2.resume()
+
+        
+        // Open Connection to PHP Service
+        let requestURL3: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems3.php")!
+        let urlRequest3: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL3)
+        let session3 = NSURLSession.sharedSession()
+        let task3 = session3.dataTaskWithRequest(urlRequest3) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task3.resume()
+        
+        // Open Connection to PHP Service
+        let requestURL4: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems4.php")!
+        let urlRequest4: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL4)
+        let session4 = NSURLSession.sharedSession()
+        let task4 = session4.dataTaskWithRequest(urlRequest4) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task4.resume()
+
+        // Open Connection to PHP Service
+        let requestURL5: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems5.php")!
+        let urlRequest5: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL5)
+        let session5 = NSURLSession.sharedSession()
+        let task5 = session5.dataTaskWithRequest(urlRequest5) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task5.resume()
+        
+        // Open Connection to PHP Service
+        let requestURL6: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems6.php")!
+        let urlRequest6: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL6)
+        let session6 = NSURLSession.sharedSession()
+        let task6 = session6.dataTaskWithRequest(urlRequest6) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task6.resume()
+        
+        // Open Connection to PHP Service
+        let requestURL7: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems7.php")!
+        let urlRequest7: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL7)
+        let session7 = NSURLSession.sharedSession()
+        let task7 = session6.dataTaskWithRequest(urlRequest7) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task7.resume()
+        
+        // Open Connection to PHP Service
+        let requestURL8: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems8.php")!
+        let urlRequest8: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL8)
+        let session8 = NSURLSession.sharedSession()
+        let task8 = session8.dataTaskWithRequest(urlRequest8) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            // print(json)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let category_id = Restaurant["category_id"] as! String
+                                
+                                if (self.titleID == category_id) {
+                                    let name = Restaurant["name"] as! String
+                                    self.foodNames.append(name)
+                                    var desc : String?
+                                    desc = Restaurant["desc"] as? String
+                                    if (desc == nil) {
+                                        self.foodDescriptions.append("No Description")
+                                    } else {
+                                        self.foodDescriptions.append(desc!)
+                                    }
+                                    
+                                    let price = Restaurant["price"] as! String
+                                    self.foodPrices.append(price)
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                for i in 0..<self.foodNames.count {
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                }
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task8.resume()
+
+
         
     }
     
