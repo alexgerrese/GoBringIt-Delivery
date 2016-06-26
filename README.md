@@ -22,4 +22,3 @@ Questions:
 - figure out where in DB Credit Card info should go
 - only Sushi Love has restaurant hours in the DB; other restaurants do not
 - figure out Password Recovery
-
