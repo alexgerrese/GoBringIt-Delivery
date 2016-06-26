@@ -1,13 +1,16 @@
 # BringIt
 
 TODO (in order of greatest to least priority):
+- Do Restaurant List (DONE)
+- Do Categories (DONE)
+- Do Menu Items (DONE)
 - Do Menu Sides (DONE)
+- Figure out Global User ID accessible throughout the app
 - Do Ordering
 - Do Checkout
-- Figure out Global User ID accessible throughout the app
-- Code Cleanup and Optimization
 - Do all restaurant hours & open/close switch
 - Do Stripe
+- Code Cleanup
 
 CN: work through TODO's above; look at Bug #4
 
