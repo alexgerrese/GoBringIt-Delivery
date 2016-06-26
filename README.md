@@ -1,16 +1,17 @@
 # BringIt
 
-TODO:
+TODO (in order of greatest to least priority):
+- Do Menu Sides
 - Do Ordering
 - Do Checkout
-- Do Stripe
-- Figure out Password Recovery
 - Figure out Global User ID accessible throughout the app
-- Do restaurant hours & open/close switch
+- Do all restaurant hours & open/close switch
+- Do Stripe
 
+CN: work through TODO's above
 AG: upload nice restaurant images to the DB
 
-Bugs:
+Known Bugs:
 - 'X' on AddToOrder Screen does not work
 - 'Add to Order' button on AddToOrder Screen does not work
 - Check if Restaurant hours work in different timezones
@@ -18,4 +19,5 @@ Bugs:
 Questions:
 - figure out where in DB Credit Card info should go
 - only Sushi Love has restaurant hours in the DB; other restaurants do not
+- figure out Password Recovery
 
