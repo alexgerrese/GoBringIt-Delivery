@@ -10,24 +10,24 @@ import UIKit
 
 class MenuTableViewController: UITableViewController {
     
-    // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
-    
-    /* The best way to do this would be to grab it from the database and store it in an array of objects like below. If you use the same variable names, they should automatically work with the front end.*/
-    
     // Create struct to organize data
     struct MenuItem {
         var foodName: String
         var foodDescription: String
         var foodPrice: String
+        var foodID: String
+        var foodSideNum: String
     }
     
     // Create empty array of Restaurants to be filled in ViewDidLoad
     var menuItems: [MenuItem] = []
     
-    // SAMPLE DATA (Don't pay attention to this Chad)
-    var foodNames = [String]()//["The Carolina Cockerel", "The Buff Brahmas", "Frizzled Fowl", "The Quilted Buttercup", "Light Brown Leghorn", "Orange Speckled Chabo", "Make Your Own Waffle", "Breakfast Buttercup", "Parfait Waffle"]
-    var foodDescriptions = [String]()//["Three chicken wings, two petite waffles, shmear", "Two cutlets, sweet potato waffles, whiskey cream sauce drizzle", "A panko-fried cutlet, petite classic waffles, almonds & plum sauce", "A chicken cutlet 'sandwiched' between sweet potato waffles, shmear", "Three drumsticks, classic waffles, caramel cashew drizzle", "Three chicken wings, two petite waffles, shmear", "Choose the type of waffle you'd like (classic, sweet potato, or vegan) and your shmear of choice! ", "Two waffles 'sandwiched' w/bacon, egg, shmear", ""]
-    var foodPrices = [String]()//["10.00", "13.00", "10.00", "10.00", "10.00", "10.00", "8.00", "7.00", "6.00"]
+    // DATA
+    var foodNames = [String]()
+    var foodDescriptions = [String]()
+    var foodPrices = [String]()
+    var foodIDs = [String]()
+    var foodSideNums = [String]()
     
     // Variables
     var backToVC = ""
@@ -40,8 +40,6 @@ class MenuTableViewController: UITableViewController {
         
         // Set title
         self.title = titleCell
-        
-        print("TitleID: " + self.titleID)
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -79,7 +77,7 @@ class MenuTableViewController: UITableViewController {
                                 if (self.titleID == category_id) {
                                     let name = Restaurant["name"] as! String
                                     self.foodNames.append(name)
-                                    var desc : String?
+                                    var desc: String?
                                     desc = Restaurant["desc"] as? String
                                     if (desc == nil) {
                                         self.foodDescriptions.append("No Description")
@@ -89,13 +87,15 @@ class MenuTableViewController: UITableViewController {
                                     
                                     let price = Restaurant["price"] as! String
                                     self.foodPrices.append(price)
+                                    self.foodIDs.append(Restaurant["id"] as! String)
+                                    self.foodSideNums.append(Restaurant["num_sides"] as! String)
                                 }
                             }
                             
                             NSOperationQueue.mainQueue().addOperationWithBlock {
-                                // CHAD: Loop through DB data and append Restaurant objects into restaurants array
+                                // Loop through DB data and append Restaurant objects into restaurants array
                                 for i in 0..<self.foodNames.count {
-                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i]))
+                                    self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i], foodID: self.foodIDs[i], foodSideNum: self.foodSideNums[i]))
                                 }
                                 self.tableView.reloadData()
                             }
@@ -197,6 +197,8 @@ class MenuTableViewController: UITableViewController {
             VC.selectedFoodName = foodNames[indexPath.row]
             VC.selectedFoodDescription = foodDescriptions[indexPath.row]
             VC.selectedFoodPrice = foodPrices[indexPath.row]
+            VC.selectedFoodID = foodIDs[indexPath.row]
+            VC.selectedFoodSidesNum = foodSideNums[indexPath.row]
         } else if segue.identifier == "toCheckout" {
             // Send selected food's data to AddToOrder screen
             let nav = segue.destinationViewController as! UINavigationController
@@ -205,6 +207,5 @@ class MenuTableViewController: UITableViewController {
         }
         
     }
-    
     
 }
