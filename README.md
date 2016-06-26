@@ -5,6 +5,7 @@ TODO (in order of greatest to least priority):
 - Do Ordering
 - Do Checkout
 - Figure out Global User ID accessible throughout the app
+- Code Cleanup and Optimization
 - Do all restaurant hours & open/close switch
 - Do Stripe
 
