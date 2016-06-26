@@ -34,7 +34,7 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
     var city = ""
     var zip = ""
     
-    // Doing this and the two lines in viewDidLoad automaticaly handles all keyboard and textField problems!
+    // Doing this and the two lines in viewDidLoad automatically handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
     let defaults = NSUserDefaults.standardUserDefaults()

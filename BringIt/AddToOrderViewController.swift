@@ -11,6 +11,13 @@ import GMStepper
 
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    
+    // TODO: get USER ID
+    //let yourObject: AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey("userID")
+    
+    
+    
+    
     // Create struct to organize data
     struct SideItem {
         var sideName: String
