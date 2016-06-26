@@ -1,7 +1,7 @@
 # BringIt
 
 TODO (in order of greatest to least priority):
-- Do Menu Sides
+- Do Menu Sides (DONE)
 - Do Ordering
 - Do Checkout
 - Figure out Global User ID accessible throughout the app
