@@ -12,11 +12,8 @@ import GMStepper
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
-    // TODO: get USER ID
-    //let yourObject: AnyObject? = NSUserDefaults.standardUserDefaults().objectForKey("userID")
-    
-    
-    
+    // Get USER ID
+    let defaults = NSUserDefaults.standardUserDefaults()
     
     // Create struct to organize data
     struct SideItem {
@@ -58,6 +55,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let userID = self.defaults.objectForKey("userID")
+        print(userID!)
         
         // Set title
         self.title = selectedFoodName

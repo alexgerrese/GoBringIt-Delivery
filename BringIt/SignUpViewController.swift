@@ -246,8 +246,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                                 for User in json as! [Dictionary<String, AnyObject>] {
                                     let emailID = User["email"] as! String
                                     print(emailID)
-                                    print("Input: " + self.emailTextField.text!)
-                                    
                                     
                                     // Verify email
                                     if (emailID == self.emailTextField.text) {
