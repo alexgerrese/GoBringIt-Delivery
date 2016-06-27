@@ -5,7 +5,7 @@ TODO (in order of greatest to least priority):
 - Do Categories (DONE)
 - Do Menu Items (DONE)
 - Do Menu Sides (DONE)
-- Figure out Global User ID accessible throughout the app
+- Figure out Global User ID accessible throughout the app (DONE)
 - Do Ordering
 - Do Checkout
 - Do all restaurant hours & open/close switch
