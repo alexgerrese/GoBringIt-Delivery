@@ -33,7 +33,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     // Doing this and the two lines in ViewDidLoad automatically handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,7 +48,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0
         self.profilePicImage.layer.borderColor = GREEN.CGColor
-
+        
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
         
@@ -229,7 +229,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
             let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
             let session = NSURLSession.sharedSession()
-             let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+            let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
                 print("Task completed")
                 if let data = data {
                     do {
@@ -246,38 +246,36 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                                 for User in json as! [Dictionary<String, AnyObject>] {
                                     let emailID = User["email"] as! String
                                     print(emailID)
-                                    print("Input: " + self.emailTextField.text!)
-                                    
                                     
                                     // Verify email
                                     if (emailID == self.emailTextField.text) {
                                         NSOperationQueue.mainQueue().addOperationWithBlock {
-                                        self.invalidEmailLabel.hidden = false
-                                        self.invalidEmailLabel.text = "This email is already associated with an account."
-                                        canContinue = false
+                                            self.invalidEmailLabel.hidden = false
+                                            self.invalidEmailLabel.text = "This email is already associated with an account."
+                                            canContinue = false
                                         }
                                     }
                                 }
                                 
                                 NSOperationQueue.mainQueue().addOperationWithBlock {
-                                // End activity indicator animation
-                                self.myActivityIndicator.stopAnimating()
-                                
-                                if canContinue {
-                                    // Hide error messages
-                                    self.invalidNameLabel.hidden = true
-                                    self.invalidEmailLabel.hidden = true
-                                    self.invalidPasswordLabel.hidden = true
-                                    self.invalidPhoneNumberLabel.hidden = true
+                                    // End activity indicator animation
+                                    self.myActivityIndicator.stopAnimating()
                                     
-                                    // Reset canContinue variable
-                                    canContinue = false
-                                    
-                                    self.performSegueWithIdentifier("toAddressInfo", sender: self)
+                                    if canContinue {
+                                        // Hide error messages
+                                        self.invalidNameLabel.hidden = true
+                                        self.invalidEmailLabel.hidden = true
+                                        self.invalidPasswordLabel.hidden = true
+                                        self.invalidPhoneNumberLabel.hidden = true
+                                        
+                                        // Reset canContinue variable
+                                        canContinue = false
+                                        
+                                        self.performSegueWithIdentifier("toAddressInfo", sender: self)
                                     }
                                 }
                             }
-
+                            
                         }
                     } catch let error as NSError {
                         print(error.localizedDescription)
@@ -302,7 +300,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         invalidPasswordLabel.hidden = true
         invalidPhoneNumberLabel.hidden = true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -323,7 +321,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         }
         
     }
-
+    
 }
 
 extension String {
@@ -348,10 +346,10 @@ extension String {
     
     //validate PhoneNumber
     var isPhoneNumber: Bool {
-            let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
-            let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-            let result =  phoneTest.evaluateWithObject(self)
-            return result
+        let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+        let result =  phoneTest.evaluateWithObject(self)
+        return result
     }
     
     //validate Zip Code

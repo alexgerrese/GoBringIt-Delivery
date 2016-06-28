@@ -88,14 +88,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     self.defaults.setBool(true, forKey: "loggedIn")
                                     
                                     // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
-                                    //self.defaults.setObject(userID, forKey: "userID")
-                                    
-                                    //FOR TEST USE ONLY (SO I DON'T HAVE TO KEEP LOGGING IN)
-                                    self.defaults.setObject("12345678", forKey: "userID")
+                                    self.defaults.setObject(User["uid"] as! String, forKey: "userID")
                                     
                                     self.dismissViewControllerAnimated(true, completion: nil)
                                 }
-                                
                             }
                         }
                     }
