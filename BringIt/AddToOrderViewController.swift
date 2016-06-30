@@ -39,7 +39,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - IBOutlets
     @IBOutlet weak var myTableView: UITableView!
-    @IBOutlet weak var foodDescriptionLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var stepper: GMStepper!
     
@@ -62,9 +61,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set title
         self.title = selectedFoodName
         
-        // Set food description label
-        foodDescriptionLabel.text = selectedFoodDescription
-        
         // Set custom nav bar font
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
@@ -83,8 +79,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
         
+        // Set tableView cells to custom height and automatically resize if needed
+        myTableView.estimatedRowHeight = 55
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        
         print("Selected Food ID: " + selectedFoodID)
         print("How many sides this food item can have: " + selectedFoodSidesNum)
+        sectionNames.append("DESCRIPTION")
         sectionNames.append("SIDES (PICK " + selectedFoodSidesNum + ")")
         sectionNames.append("EXTRAS")
         sectionNames.append("SPECIAL INSTRUCTIONS")
@@ -219,6 +220,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // TO-DO: FINISH THIS METHOD
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
+        // FOR CHAD - Write code to save item to database cart
+        // HEREEEEEE
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func xButtonClicked(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Table view data source
@@ -230,8 +238,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return section1.count
+            return 1
         } else if section == 1 {
+            return section1.count
+        } else if section == 2 {
             return section2.count
         } else {
             return 1
@@ -240,6 +250,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("descriptionCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
+            
+            cell.textLabel?.text = selectedFoodDescription
+            
+            return cell
+        } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
             
             // ISSUE: If it says pick X, you can still pick as many or as few as you want
@@ -248,7 +264,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.extraCostLabel.hidden = true
             
             return cell
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
             
             cell.radioButton.multipleSelectionEnabled = true
@@ -272,7 +288,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor.whiteColor()
+        //header.contentView.backgroundColor = UIColor.whiteColor()
         header.textLabel!.textColor = UIColor.darkGrayColor()
         header.textLabel?.font = TV_HEADER_FONT
     }

@@ -179,6 +179,9 @@ class MenuTableViewController: UITableViewController {
     @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
     }
     
+    @IBAction func returnToMenu(segue: UIStoryboardSegue) {
+    }
+    
     override func canPerformUnwindSegueAction(action: Selector, fromViewController: UIViewController, withSender sender: AnyObject) -> Bool {
         if backToVC == "Menu" {
             return true
