@@ -46,6 +46,9 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
             ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
         
+        // Set custom back button
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
         // Set label to current month
         monthAndYearLabel.text = CVDate(date: NSDate()).globalDescription
         menuView.dayOfWeekTextColor = UIColor.whiteColor()

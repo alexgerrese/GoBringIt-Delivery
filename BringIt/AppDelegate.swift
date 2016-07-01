@@ -20,6 +20,14 @@ let TITLE_FONT = UIFont(name: "Avenir-Medium", size: 17)!
 let TV_HEADER_FONT = UIFont(name: "Avenir-Medium", size: 14)!
 let BUTTON_FONT = UIFont(name: "Avenir-Medium", size: 15)!
 
+extension UILabel{
+    func addTextSpacing(){
+        let attributedString = NSMutableAttributedString(string: self.text!)
+        attributedString.addAttribute(NSKernAttributeName, value: CGFloat(1.2), range: NSRange(location: 0, length: self.text!.characters.count))
+        self.attributedText = attributedString
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

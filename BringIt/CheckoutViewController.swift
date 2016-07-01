@@ -13,6 +13,8 @@ import UIKit
 // Add segues to deliverTo and payWith
 // Add rest of IBOutlets and make them dynamic
 
+var comingFromOrderPlaced = false
+
 class CheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     // MARK: - IBOutlets
@@ -26,6 +28,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var deliverTo = ""
     var payWith = ""
     var totalCost = 0.0
+    var selectedCell = 0
     
     // SAMPLE DATA
     struct Item {
@@ -61,6 +64,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if comingFromOrderPlaced == true {
+            comingFromOrderPlaced = false
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -154,9 +164,15 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         return true
     }
     */
+    
+    // Find out which cell was selected and sent to prepareForSegue
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        selectedCell = indexPath.row
+        
+        return indexPath
+    }
 
     @IBAction func xButtonPressed(sender: AnyObject) {
-        print("HELLO")
         self.navigationController?.popViewControllerAnimated(true);
         
     }
@@ -167,10 +183,14 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         if segue.identifier == "prepareForUnwind" {
             let VC = segue.destinationViewController as! MenuTableViewController
             VC.backToVC = cameFromVC
+        } else if segue.identifier == "toDeliverToPayingWith" {
+            let VC = segue.destinationViewController as! DeliverToPayingWithTableViewController
+            if self.selectedCell == 0 {
+                VC.selectedCell = "Deliver To"
+            } else if self.selectedCell == 1 {
+                VC.selectedCell = "Paying With"
+            }
         }
-
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
 
 }

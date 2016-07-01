@@ -10,9 +10,10 @@ import UIKit
 
 class RestaurantTableViewController: UITableViewController {
     
+    @IBOutlet weak var restaurantNameLabel: UILabel!
+    @IBOutlet weak var restaurantBackgroundImage: UIImageView!
     @IBOutlet weak var cuisineTypeLabel: UILabel!
     @IBOutlet weak var restaurantHoursLabel: UILabel!
-    //@IBOutlet weak var openClosedLabel: UILabel!
     @IBOutlet weak var isOpenIndicator: UIImageView!
     
     // Categories
@@ -29,8 +30,9 @@ class RestaurantTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set SAMPLE title
+        // Set title
         self.title = restaurantName
+        restaurantNameLabel.text = restaurantName.uppercaseString
         self.cuisineTypeLabel.text = restaurantType
         
         // Set tableView cells to custom height and automatically resize if needed
@@ -108,6 +110,8 @@ class RestaurantTableViewController: UITableViewController {
                                 let restaurant_id = Restaurant["restaurant_id"] as? String
                                 
                                 if (restaurant_id == self.restaurantID) {
+                                    
+
                                     
                                     let all_hours = Restaurant["open_hours"] as! String
                                     let hours_byDay = all_hours.componentsSeparatedByString(", ")

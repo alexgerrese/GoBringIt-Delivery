@@ -18,6 +18,9 @@
 		110220351CE83307003D82FB /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220341CE83307003D82FB /* PageViewController.swift */; };
 		110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220361CE83EB7003D82FB /* SignInViewController.swift */; };
 		11210CBE1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */; };
+		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
+		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
+		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
 		115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */; };
@@ -76,6 +79,9 @@
 		110220341CE83307003D82FB /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		110220361CE83EB7003D82FB /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = B68UIFloatLabelTextField.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/B68UIFloatLabelTextField/B68UIFloatLabelTextField.framework"; sourceTree = "<group>"; };
+		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
+		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedViewController.swift; sourceTree = "<group>"; };
+		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; };
 		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewController.swift; sourceTree = "<group>"; };
@@ -204,6 +210,23 @@
 			name = Walkthrough;
 			sourceTree = "<group>";
 		};
+		11210CC51D26B86800B8FD9E /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */,
+				11021FF91CE68A83003D82FB /* ScheduleViewController.swift */,
+			);
+			name = Calendar;
+			sourceTree = "<group>";
+		};
+		11210CC81D26C8C200B8FD9E /* Deliver To/Paying With */ = {
+			isa = PBXGroup;
+			children = (
+				11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */,
+			);
+			name = "Deliver To/Paying With";
+			sourceTree = "<group>";
+		};
 		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,7 +242,7 @@
 		115ECC3C1CEAB3CC0053E03F /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				11021FF91CE68A83003D82FB /* ScheduleViewController.swift */,
+				11210CC51D26B86800B8FD9E /* Calendar */,
 				115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */,
 			);
 			name = Schedule;
@@ -294,6 +317,8 @@
 			children = (
 				11F6DE461CF6CF1A00662C20 /* CheckoutViewController.swift */,
 				11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */,
+				11210CC81D26C8C200B8FD9E /* Deliver To/Paying With */,
+				11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */,
 			);
 			name = Checkout;
 			sourceTree = "<group>";
@@ -593,6 +618,8 @@
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */,
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
+				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
+				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
 				11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */,
@@ -600,6 +627,7 @@
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
 				11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */,
+				11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
 				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,

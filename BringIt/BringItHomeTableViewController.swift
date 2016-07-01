@@ -126,7 +126,7 @@ class BringItHomeTableViewController: UITableViewController {
         let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
         let data = NSData(contentsOfURL: url!)
         cell.restaurantBannerImage.image = UIImage(data: data!)
-        cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName
+        cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
         cell.restaurantHoursLabel.text = restaurants[indexPath.row].openHours
         if restaurants[indexPath.row].isOpen {

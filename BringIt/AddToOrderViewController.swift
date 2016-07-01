@@ -31,7 +31,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var sideRequireds = [String]()
     
     // DATA
-    var sectionNames = [String]() //["SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
+    var sectionNames = [String]() //["DESCRIPTION", "SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
     var section1 = [String]()
     var section2 = [String]()
     var section2Prices = [String]()
@@ -206,13 +206,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         task.resume()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        // BUGGY - Add bottomView to bottom of screen
-        /*self.tableView.tableFooterView = nil
-         self.bottomView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.tableView.frame.size.height - self.tableView.contentSize.height - self.bottomView.frame.size.height)
-         self.tableView.tableFooterView = self.bottomView*/
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -270,7 +263,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.radioButton.multipleSelectionEnabled = true
             cell.radioButton.setTitle(section2[indexPath.row], forState: .Normal)
             cell.extraCostLabel.hidden = false
-            cell.extraCostLabel.text = section2Prices[indexPath.row]
+            cell.extraCostLabel.text = "+\(section2Prices[indexPath.row])"
             
             return cell
         } else {
