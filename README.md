@@ -1,6 +1,6 @@
 # BringIt
 
-TODO (in order of greatest to least priority):
+LARGE SCALE TODOS (in order of greatest to least priority):
 - Do Restaurant List (DONE)
 - Do Categories (DONE)
 - Do Menu Items (DONE)
@@ -12,15 +12,36 @@ TODO (in order of greatest to least priority):
 - Do Stripe
 - Code Cleanup
 
-CN: work through TODO's above; look at Bug #4
+SPECIFIC TODOS:
+GENERAL
+- Make sure all back buttons are custom (Alex)
+- Optimize log in (it sometimes takes 10+ seconds, even if nothing is input at all) (Chad)
+- Add new photos to the database (I also want to learn how so I can play around with them) (Chad and Alex)
+- Fix all bottom button bugs (something just happened, some don’t work and one disappeared completely) (Alex)
 
-AG: upload nice restaurant images to the DB; look at Bugs #1-#3
+ADD TO ORDER
+- Add empty states in AddToOrder if there are no sides or extras (Alex)
+- Make sure limits (e.g. pick 2) work with the radio buttons (right now you can select none or infinite) (Alex)
+- Save item to DB cart with all the details when Add To Order is clicked (Chad)
 
-Known Bugs:
-- 1. 'X' on AddToOrder Screen does not work (DONE)
-- 2. 'Add to Order' button on AddToOrder Screen does not work (DONE)
-- 3. Full Item Description does not show on AddToOrderVC for long descriptions. Is that ok? (DONE)
-- 4. Check if Restaurant hours work in different timezones (UNECESSARY)
+CHECKOUT
+- Fix the DeliverToPayWith bugs
+    - Make sure only one cell can be checked at once (and one must be checked at all times) (Alex)
+    - Pull address and payment info from DB (Chad)
+    - Link to/create ways to add new addresses or payment methods (Alex)
+- Pull db data to populate the tableview of items in cart (Chad)
+- Calculate the total cost from db data  (Alex)
+- Finalize checkout process (Chad)
+- EXTRA: Find out if we can calculate ETA  (Alex)
+
+SCHEDULE
+- Pull past order data from db (Chad)
+- Populate the tableview with the data (Alex)
+
+SCHEDULE DETAILS
+- Pull db data (Chad)
+- Present the data (Alex)
+- EXTRA: Add order again functionality  (Alex and Chad)
 
 Questions:
 - figure out where in DB Credit Card info should go
