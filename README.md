@@ -19,6 +19,9 @@ GENERAL
 - Add new photos to the database (I also want to learn how so I can play around with them) (Chad and Alex)
 - Fix all bottom button bugs (something just happened, some don’t work and one disappeared completely) (Alex)
 
+RESTAURANT
+- Pull background image and display it (Chad)
+
 ADD TO ORDER
 - Add empty states in AddToOrder if there are no sides or extras (Alex)
 - Make sure limits (e.g. pick 2) work with the radio buttons (right now you can select none or infinite) (Alex)
