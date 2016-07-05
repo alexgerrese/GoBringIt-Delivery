@@ -66,6 +66,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
         
+        // Set custom back button
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
         // Display price in nav bar
         self.navigationItem.rightBarButtonItem?.title = selectedFoodPrice
         self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: TITLE_FONT,

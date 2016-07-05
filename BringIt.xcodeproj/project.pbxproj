@@ -213,8 +213,9 @@
 		11210CC51D26B86800B8FD9E /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */,
 				11021FF91CE68A83003D82FB /* ScheduleViewController.swift */,
+				115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */,
+				11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -243,7 +244,6 @@
 			isa = PBXGroup;
 			children = (
 				11210CC51D26B86800B8FD9E /* Calendar */,
-				115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */,
 			);
 			name = Schedule;
 			sourceTree = "<group>";

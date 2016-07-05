@@ -50,6 +50,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
+        
+        // Set custom back button
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
 
         // Set SAMPLE DATA
         deliverTo = "1368 Campus Drive"
