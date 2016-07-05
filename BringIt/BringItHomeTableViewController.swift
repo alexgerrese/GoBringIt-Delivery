@@ -142,6 +142,7 @@ class BringItHomeTableViewController: UITableViewController {
         
         let indexPath = tableView.indexPathForSelectedRow?.row
         let destination = segue.destinationViewController as? RestaurantTableViewController
+        destination?.restaurantImageURL = "http://www.gobring.it/images/" + restaurants[indexPath!].coverImage;
         destination?.restaurantName = restaurants[indexPath!].restaurantName
         destination?.restaurantID = restaurants[indexPath!].id
         destination?.restaurantType = restaurants[indexPath!].cuisineType
