@@ -11,7 +11,6 @@ import GMStepper
 
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
     // Get USER ID
     let defaults = NSUserDefaults.standardUserDefaults()
     

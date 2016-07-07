@@ -30,13 +30,16 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var totalCost = 0.0
     var selectedCell = 0
     
-    // SAMPLE DATA
+    // Data structure
     struct Item {
         var name = ""
         var quantity = 0
         var price = 0.00
     }
     
+    // FOR CHAD - Uncomment this when you finish the data loading
+    // var items = [Item]()
+    // FOR CHAD - Delete this when you finish the data loading
     let items = [Item(name: "The Carolina Cockerel", quantity: 2, price: 10.00), Item(name: "Chocolate Milkshake", quantity: 1, price: 4.99), Item(name: "Large Fries", quantity: 2, price: 3.00)]
     
     override func viewDidLoad() {
@@ -53,6 +56,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        // TO-DO: - LOAD CART DATA FROM DB
+        // FOR CHAD
+        // Write code hereeeee
+        // Suggestion: Use the struct I created to structure the data. So use a for loop to loop through the items in the db cart and then put each in items[i].name or items[i].quantity or items[i].price
 
         // Set SAMPLE DATA
         deliverTo = "1368 Campus Drive"

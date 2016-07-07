@@ -138,7 +138,7 @@ class BringItHomeTableViewController: UITableViewController {
         return cell
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         
         let indexPath = tableView.indexPathForSelectedRow?.row
         let destination = segue.destinationViewController as? RestaurantTableViewController
