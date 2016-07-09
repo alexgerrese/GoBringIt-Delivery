@@ -77,7 +77,7 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         // This is not being saved anywhere: PaymentInfoVC: card_type, card_number, card_zip, card_cvc, card_exp
         
         // create the request & response
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddUser.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 5)
+        let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddUser.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
         
         do {
             let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)

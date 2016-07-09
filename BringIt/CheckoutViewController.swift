@@ -42,6 +42,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // FOR CHAD - Delete this when you finish the data loading
     let items = [Item(name: "The Carolina Cockerel", quantity: 2, price: 10.00), Item(name: "Chocolate Milkshake", quantity: 1, price: 4.99), Item(name: "Large Fries", quantity: 2, price: 3.00)]
     
+    // Get USER ID
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,8 +65,59 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Write code hereeeee
         // Suggestion: Use the struct I created to structure the data. So use a for loop to loop through the items in the db cart and then put each in items[i].name or items[i].quantity or items[i].price
 
+        // Get Address of User
+       // var userID: String?
+        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        
+        var addressString: String?
+        
+        // Open Connection to PHP Service
+        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADaccountAddresses.php")!
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                //var account_id: String?
+                                let account_id = Restaurant["account_id"] as! String
+                                    if ( account_id.rangeOfString(userID) != nil ) {
+                                        print(userID)
+                                        print(Restaurant["street"] as? String)
+                                        let street = Restaurant["street"] as AnyObject! as! String //+ ", " + Restaurant["apartment"] as AnyObject! as! String
+                                        let apartment = Restaurant["apartment"] as AnyObject! as! String
+                                        addressString = street + ", " + apartment
+                                    }
+                                }
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                print(addressString!)
+                                self.deliverTo = addressString!
+                                self.detailsTableView.reloadData()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print("Error:" + error.localizedDescription)
+                }
+            } else if let error = error {
+                print("Error:" + error.localizedDescription)
+            }
+        }
+        
+        task.resume()
+
         // Set SAMPLE DATA
-        deliverTo = "1368 Campus Drive"
+        //deliverTo = "1369 Campus Drive"
         payWith = "Food Points"
         
         // Calculate and display totalCost
