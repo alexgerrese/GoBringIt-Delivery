@@ -11,6 +11,8 @@ import CVCalendar
 
 class ScheduleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    //TO-DO: Add past carts from DB
+    
     // SAMPLE DATA
     struct ScheduleEntry {
         var date: NSDate
