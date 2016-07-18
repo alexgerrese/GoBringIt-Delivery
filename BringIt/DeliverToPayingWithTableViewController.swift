@@ -16,10 +16,21 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     
     // MARK: - SAMPLE DATA
     
+    struct Address {
+        var address: String
+        var selected: Bool
+    }
+    
+    struct PaymentMethod {
+        var method: String
+        var selected: Bool
+        // NOTE: Something to connect to Stripe? Don't know if we need two different structs
+    }
+    
     // Addresses
-    let addresses = ["1368 Campus Drive \nDurham, NC \n27708", "1100 Alexander Drive \nDurham, NC \n27708"]
+    var addresses = [Address(address: "1368 Campus Drive \nDurham, NC \n27708", selected: false), Address(address: "1100 Alexander Drive \nDurham, NC \n27708", selected: true)]
     // Payment Methods
-    let paymentMethods = ["Food points", "Credit Card"]
+    var paymentMethods = [PaymentMethod(method: "Food points", selected: true), PaymentMethod(method: "Credit Card", selected: false)]
     
     var selectedCell = ""
 
@@ -42,6 +53,9 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         // Set tableView cells to custom height and automatically resize if needed
         tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Only one cell can be selected at a time
+        tableView.allowsMultipleSelection = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,12 +81,50 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
 
         if selectedCell == "Deliver To" {
-            cell.textLabel?.text = addresses[indexPath.row]
+            cell.textLabel?.text = addresses[indexPath.row].address
+            if addresses[indexPath.row].selected {
+                cell.accessoryType = .Checkmark
+            } else {
+                cell.accessoryType = .None
+            }
         } else {
-            cell.textLabel?.text = paymentMethods[indexPath.row]
+            cell.textLabel?.text = paymentMethods[indexPath.row].method
+            if paymentMethods[indexPath.row].selected {
+                cell.accessoryType = .Checkmark
+            } else {
+                cell.accessoryType = .None
+            }
         }
 
         return cell
+    }
+    
+    // MAKE SURE THIS WORKSSSSSSSS
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
+        
+        if selectedCell == "Deliver To" {
+            deselectAll()
+            addresses[indexPath.row].selected = true
+        } else {
+            deselectAll()
+            paymentMethods[indexPath.row].selected = true
+            }
+        
+        tableView.reloadData()
+    }
+    
+    // TO-DO: Write a function that deselects all cells
+    func deselectAll() {
+        if selectedCell == "Deliver To" {
+            for i in 0..<addresses.count {
+                addresses[i].selected = false
+            }
+        } else {
+            for i in 0..<paymentMethods.count {
+                paymentMethods[i].selected = false
+            }
+        }
     }
     
 

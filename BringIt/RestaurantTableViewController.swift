@@ -17,16 +17,16 @@ class RestaurantTableViewController: UITableViewController {
     @IBOutlet weak var isOpenIndicator: UIImageView!
     
     // Categories
-    var restaurantImageURL = String();
-    var restaurantName = String();
-    var restaurantID = String();
-    var restaurantType = String();
-    var restaurantHours = String();
-    var open_hours = String();
+    var restaurantImageURL = String()
+    var restaurantName = String()
+    var restaurantID = String()
+    var restaurantType = String()
+    var restaurantHours = String()
+    var open_hours = String()
     var menuCategories = [String]()
     var menuID = [String]()
     var idList = [String]()
-    var isOpen = Bool();
+    var isOpen = Bool()
     
     override func viewDidLoad() {
         super.viewDidLoad()

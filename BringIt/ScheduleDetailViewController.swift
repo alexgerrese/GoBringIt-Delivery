@@ -10,30 +10,92 @@ import UIKit
 
 class ScheduleDetailViewController: UIViewController {
 
-    @IBOutlet weak var backgroundImage: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
+    // MARK: - IBOutlets
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var totalCostLabel: UILabel!
+    @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
+    
+    // Data structure
+    struct Item {
+        var name = ""
+        var quantity = 0
+        var price = 0.00
+    }
+    
+    // FOR CHAD - Uncomment this when you finish the data loading
+    // var items = [Item]()
+    // FOR CHAD - Delete this when you finish the data loading
+    let items = [Item(name: "The Carolina Cockerel", quantity: 2, price: 10.00), Item(name: "Chocolate Milkshake", quantity: 1, price: 4.99), Item(name: "Large Fries", quantity: 2, price: 3.00)]
+    
+    // MARK: - Variables
+    var orderID = "" // Passed from previous view controller
+    var date = "" // Passed from previous view controller
+    var totalCost = 0.0
+    var backgroundImageURL = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set title
+        self.title = date
+        
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        // Calculate and display totalCost
+        calculateTotalCost()
+        totalCostLabel.text = String(format: "$%.2f", totalCost)
+        
+        
+        // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
+        // backgroundImageView.image = // Insert image URL here
 
-        // Do any additional setup after loading the view.
+        // TO-DO: CHAD! Please load past order items into the tableview. This should be the exact same code as in checkoutViewController so copy and pasting should work!
+    }
+    
+    func calculateTotalCost() {
+        for item in items {
+            totalCost += Double(item.price) * Double(item.quantity)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    // TO-DO: Finish this method
+
     @IBAction func orderAgainButtonPressed(sender: UIButton) {
+        // TO-DO: Chad! When this button is pressed, create a new cart with all the previously ordered items in it. We will load this cart in the next viewcontroller which will be the CheckoutViewController. From there, the user can make changes if needed and then use that viewcontroller as usual.
     }
     
-
+    // MARK: - Table view data source
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return items.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCellWithIdentifier("checkoutCell", forIndexPath: indexPath) as! CheckoutTableViewCell
+            
+            cell.itemNameLabel.text = items[indexPath.row].name
+            cell.itemQuantityLabel.text = String(items[indexPath.row].quantity)
+            let totalItemCost = Double(items[indexPath.row].quantity) * items[indexPath.row].price
+            cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
+            
+            return cell
+    }
+    
+    // Resize itemsTableView
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        myTableViewHeight.constant = myTableView.contentSize.height
+    }
+    
     /*
     // MARK: - Navigation
 

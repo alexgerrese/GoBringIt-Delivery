@@ -8,6 +8,7 @@
 
 import UIKit
 import GMStepper
+import DLRadioButton
 
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -19,6 +20,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         var sideName: String
         var sidePrice: String
         var sideRequired: String
+        var selected: Bool
     }
     
     // Create empty array of Restaurants to be filled in ViewDidLoad
@@ -32,9 +34,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     // DATA
     var sectionNames = [String]() //["DESCRIPTION", "SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
     var section1 = [String]()
-    var section2 = [String]()
-    var section2Prices = [String]()
+    var section2 = [SideItem]()
+    //var section2 = [String]()
+    //var section2Prices = [String]()
     let section3 = "E.g. Easy on the mayo, add bacon"
+    
+    var numberOfSidesSelected = 0
     
     // MARK: - IBOutlets
     @IBOutlet weak var myTableView: UITableView!
@@ -76,6 +81,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 50
         myTableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Allow multiple selection in tableView
+        self.myTableView.allowsMultipleSelection = true
         
         // Set stepper font
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
@@ -122,7 +130,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 // Loop through DB data and append Restaurant objects into restaurants array
                                 for i in 0..<self.sideNames.count {
-                                    self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i]))
+                                    self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], selected: false))
                                 }
                                 for i in 0..<self.sideItems.count {
                                     // If required and price == 0, Section 1
@@ -132,17 +140,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     }
                                     // If required and price !=0, Section 2
                                     if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice != "0") {
-                                        self.section2.append(self.sideItems[i].sideName)
-                                        print("S2:" + self.sideItems[i].sideName)
-                                        self.section2Prices.append(self.sideItems[i].sidePrice)
-                                        print("S2Price:" + self.sideItems[i].sidePrice)
+                                        self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", selected: false))
+                                        print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
                                     }
                                     // If not required, Section 2
                                     if (self.sideItems[i].sideRequired == "0") {
-                                        self.section2.append(self.sideItems[i].sideName)
-                                        print("S2:" + self.sideItems[i].sideName)
-                                        self.section2Prices.append(self.sideItems[i].sidePrice)
-                                        print("S2Price:" + self.sideItems[i].sidePrice)
+                                        self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", selected: false))
+                                        print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
                                     }
                                 }
                                 
@@ -252,21 +256,40 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
-            
-            // ISSUE: If it says pick X, you can still pick as many or as few as you want
-            cell.radioButton.multipleSelectionEnabled = true
-            cell.radioButton.setTitle(section1[indexPath.row], forState: .Normal)
+
+            // Set cell properties
+            cell.selectionStyle = .None
+            cell.sideLabel.text = section1[indexPath.row]
             cell.extraCostLabel.hidden = true
+            
+            //Change cell's tint color
+            cell.tintColor = GREEN
+            
+            if sideItems[indexPath.row].selected {
+                cell.accessoryType = .Checkmark
+            } else {
+                cell.accessoryType = .None
+            }
             
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
             
-            cell.radioButton.multipleSelectionEnabled = true
-            cell.radioButton.setTitle(section2[indexPath.row], forState: .Normal)
+            // Set cell properties
+            cell.selectionStyle = .None
+            cell.sideLabel.text = section2[indexPath.row].sideName
             cell.extraCostLabel.hidden = false
-            cell.extraCostLabel.text = "+\(section2Prices[indexPath.row])"
+            cell.extraCostLabel.text = "+\(section2[indexPath.row].sidePrice)"
             
+            //Change cell's tint color
+            cell.tintColor = GREEN
+            
+            if section2[indexPath.row].selected {
+                cell.accessoryType = .Checkmark
+            } else {
+                cell.accessoryType = .None
+            }
+        
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("specialInstructionsCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
@@ -277,6 +300,29 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionNames[section]
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.section == 1 {
+            if !sideItems[indexPath.row].selected {
+                if numberOfSidesSelected < 2 {
+                    sideItems[indexPath.row].selected = true
+                    numberOfSidesSelected += 1
+                }
+            } else {
+                sideItems[indexPath.row].selected = false
+                numberOfSidesSelected -= 1
+            }
+        } else if indexPath.section == 2 {
+            if !section2[indexPath.row].selected {
+                section2[indexPath.row].selected = true
+            } else {
+                section2[indexPath.row].selected = false
+            }
+        }
+        
+        tableView.reloadData()
     }
     
     // Set up custom header

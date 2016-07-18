@@ -11,8 +11,6 @@ import CVCalendar
 
 class ScheduleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    //TO-DO: Add past carts from DB
-    
     // SAMPLE DATA
     struct ScheduleEntry {
         var date: NSDate
@@ -21,6 +19,12 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         var descriptionLabel: String
         var priceLabel: String
     }
+    
+    struct Header {
+        var month: String
+        var numOccurences: Int
+    }
+    
     var entries = [ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "10:45PM", descriptionLabel: "Sushi Love", priceLabel: "42.59"), ScheduleEntry(date: NSDate(), serviceType: "Room/Apt Clean", timeLabel: "3:15PM", descriptionLabel: "Deluxe", priceLabel: "60.00"), ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "9:30AM", descriptionLabel: "Dunkin' Donuts", priceLabel: "12.67")]
 
     // MARK: - IBOutlets
@@ -34,7 +38,9 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var myViewHeight: NSLayoutConstraint!
     @IBOutlet weak var switchViewsButton: UISegmentedControl!
     
-    var selectedDay:DayView!
+    var selectedDay: DayView!
+    var selectedDate = ""
+    var selectedOrderID = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +60,13 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         // Set label to current month
         monthAndYearLabel.text = CVDate(date: NSDate()).globalDescription
         menuView.dayOfWeekTextColor = UIColor.whiteColor()
+        
+        // TO-DO: CHAD! 
+            // 1. Please load all previous orders by this user from the db and put them in an array in the ScheduleEntry struct format above. Please sort them by date, with the most recent on top.
+            // 2. This array will need to be separated into sections by month, with the header of each section being the name of the month and the number of entries for that month (for example, "JUNE (3)"). Please let me know if you need help with this because it is confusing.
+            // 3. We need to mark on the calendar which dates have a ScheduleEntry item. If you can give me the dates of each entry formatted as an NSDate, I can mark them on the calendar with a little dot.
+        // Insert code hereeeeeeee
+        
     }
     
     // Set up Calendar View
@@ -67,11 +80,12 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
         return entries.count
     }
     
@@ -96,14 +110,12 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBAction func switchViewsButtonClicked(sender: AnyObject) {
         if switchViewsButton.selectedSegmentIndex == 0 {
-            scrollViewToTopConstraint.constant = 397 //CHANGE THIS, SHOULDN'T BE CONSTANT!!!
-            //self.automaticallyAdjustsScrollViewInsets = false
+            scrollViewToTopConstraint.constant = 397 // TO-DO: ALEX! CHANGE THIS, SHOULDN'T BE CONSTANT!!!
             UIView.animateWithDuration(0.4) {
                 self.view.layoutIfNeeded()
             }
         } else {
             scrollViewToTopConstraint.constant = 64
-            //self.automaticallyAdjustsScrollViewInsets = true
             UIView.animateWithDuration(0.4) {
                 self.view.layoutIfNeeded()
             }
@@ -120,16 +132,39 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        // TO-DO: ALEX! When we have calculated the headers situations (how many months have orders), make this dynamic
         if section == 0 {
             return "JUNE (3)"
         }
         
         return ""
     }
+    
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
+        // TO-DO: CHAD! Please load the selected cell's orderID into the following dummy variable so we can know which order was selected in the next viewController.
+        // selectedOrderID = //Insert this indexPath.row's orderID here
+        
+        // Get date components
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = .MediumStyle
+        selectedDate = dateFormatter.stringFromDate(entries[indexPath.row].date)
+        
+        return indexPath
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Send the selected orderID to the next viewController
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toScheduleDetail" {
+            let VC = segue.destinationViewController as! ScheduleDetailViewController
+            VC.orderID = self.selectedOrderID
+            VC.date = self.selectedDate
+        }
     }
 }
 

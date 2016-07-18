@@ -11,13 +11,14 @@ import DLRadioButton
 
 class AddToOrderTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var radioButton: DLRadioButton!
+    //@IBOutlet weak var radioButton: DLRadioButton!
+    @IBOutlet weak var sideLabel: UILabel!
     @IBOutlet weak var extraCostLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        radioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        //radioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
