@@ -8,9 +8,8 @@
 
 import UIKit
 import GMStepper
-import DLRadioButton
 
-class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     // Get USER ID
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -57,6 +56,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var sidesIDList = [String]()
     var currentActiveCartOrderID = "NONE"
     var maxCartOrderID: Int = 0
+    var specialInstructions = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -268,11 +268,18 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // TO-DO: FINISH THIS METHOD
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
-        // FOR CHAD - Write code to save item to database cart
+        
         // loop through all carts with user_id searching for active
         let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
         print(userID)
         
+        // Retrieve special instructions if available
+        let indexPath = NSIndexPath(forRow: 0, inSection: 3)
+        let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+        if selectedCell.specialInstructionsText.text != nil {
+            specialInstructions = selectedCell.specialInstructionsText.text!
+        }
+
         // Open Connection to PHP Service to carts DB to find an active cart
         let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
         let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
@@ -320,12 +327,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 // Create JSON data and configure the request
                                 let params = ["item_id": self.selectedFoodID,
                                     "user_id": userID,
-                                    "quantity": "?",
+                                    "quantity": String(Int(self.stepper.value)),
                                     "active": "1",
-                                    "instructions": "?",
+                                    "instructions": self.specialInstructions,
                                     "order_id": String(self.maxCartOrderID),
                                     ]
                                     as Dictionary<String, String>
+                                print("HELLO \(userID) \(self.stepper.value) \(self.specialInstructions)")
                                 
                                 // create the request & response
                                 let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
@@ -369,7 +377,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return sectionNames.count
     }
     

@@ -192,7 +192,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     override func updateViewConstraints() {
         super.updateViewConstraints()
         //TODO: Alex can you work your Storyboard magic here :)
-        //itemsTableViewHeight.constant = itemsTableView.contentSize.height
+        itemsTableViewHeight.constant = itemsTableView.contentSize.height
     }
     
 
