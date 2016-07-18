@@ -55,12 +55,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Backend Data
     var sidesIDList = [String]()
+    var currentActiveCartOrderID = "NONE"
+    var maxCartOrderID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let userID = self.defaults.objectForKey("userID")
-        print(userID!)
+        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        print(userID)
         
         // Set title
         self.title = selectedFoodName
@@ -99,6 +101,53 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         sectionNames.append("SIDES (PICK " + selectedFoodSidesNum + ")")
         sectionNames.append("EXTRAS")
         sectionNames.append("SPECIAL INSTRUCTIONS")
+        
+        /*// Open Connection to PHP Service to carts DB to find an active cart
+        let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
+        let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
+        let session2 = NSURLSession.sharedSession()
+        let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Cart in json as! [Dictionary<String, AnyObject>] {
+                                
+                                let order_id = Cart["order_id"] as! String
+                                if (Int(order_id)! > self.maxCartOrderID) {
+                                    print( Int(order_id)!)
+                                    self.maxCartOrderID = Int(order_id)!
+                                }
+                                
+                                let user_id = Cart["user_id"] as! String
+                                
+                                if (userID == user_id) {
+                                    let active_cart = Cart["active"] as! String
+                                    if (active_cart == "1") {
+                                        print(order_id)
+                                        self.currentActiveCartOrderID = order_id
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print("Error:" + error.localizedDescription)
+                }
+            } else if let error = error {
+                print("Error:" + error.localizedDescription)
+            }
+        }
+        
+        task2.resume();*/
         
         // Open Connection to PHP Service to menuSides
         let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSides.php")!
@@ -220,7 +269,96 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     // TO-DO: FINISH THIS METHOD
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
         // FOR CHAD - Write code to save item to database cart
-        // HEREEEEEE
+        // loop through all carts with user_id searching for active
+        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        print(userID)
+        
+        // Open Connection to PHP Service to carts DB to find an active cart
+        let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
+        let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
+        let session2 = NSURLSession.sharedSession()
+        let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Cart in json as! [Dictionary<String, AnyObject>] {
+                                
+                                let order_id = Cart["order_id"] as! String
+                                if (Int(order_id)! > self.maxCartOrderID) {
+                                    self.maxCartOrderID = Int(order_id)!
+                                }
+                                
+                                let user_id = Cart["user_id"] as! String
+                                
+                                if (userID == user_id) {
+                                    let active_cart = Cart["active"] as! String
+                                    if (active_cart == "1") {
+                                        print(order_id)
+                                        self.currentActiveCartOrderID = order_id
+                                    }
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                if (self.currentActiveCartOrderID == "NONE") {
+                                    print("This is the old max order_id", self.maxCartOrderID)
+                                    self.maxCartOrderID = self.maxCartOrderID + 10;
+                                } else {
+                                    print("This is the active cart id value", self.currentActiveCartOrderID)
+                                }
+                                print("This is the current max order_id", self.maxCartOrderID)
+                                
+                                // Create JSON data and configure the request
+                                let params = ["item_id": self.selectedFoodID,
+                                    "user_id": userID,
+                                    "quantity": "?",
+                                    "active": "1",
+                                    "instructions": "?",
+                                    "order_id": String(self.maxCartOrderID),
+                                    ]
+                                    as Dictionary<String, String>
+                                
+                                // create the request & response
+                                let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                
+                                do {
+                                    let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
+                                    request.HTTPBody = jsonData
+                                } catch let error as NSError {
+                                    print(error)
+                                }
+                                request.HTTPMethod = "POST"
+                                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                                
+                                // send the request
+                                let session = NSURLSession.sharedSession()
+                                let task = session.dataTaskWithRequest(request) {
+                                    (let data, let response, let error) in
+                                }
+                                task.resume()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print("Error:" + error.localizedDescription)
+                }
+            } else if let error = error {
+                print("Error:" + error.localizedDescription)
+            }
+        }
+        
+        task2.resume();
+
+        // 2. if none are active, get the max order_id, then add 10, and save it as the new currentActiveCartOrderID
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
