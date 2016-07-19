@@ -1,12 +1,12 @@
 # BringIt
 
 LARGE SCALE TODOS (in order of greatest to least priority):
-- Do Restaurant List (DONE)
-- Do Categories (DONE)
-- Do Menu Items (DONE)
-- Do Menu Sides (DONE)
-- Figure out Global User ID accessible throughout the app (DONE)
-- Do Ordering
+- <del>Do Restaurant List (DONE)</del>
+- <del>Do Categories (DONE)</del>
+- <del>Do Menu Items (DONE)</del>
+- <del>Do Menu Sides (DONE)</del>
+- <del>Figure out Global User ID accessible throughout the app (DONE)</del>
+- <del>Do Adding Items/Sides to Cart</del>
 - Do Checkout
 - Do all restaurant hours & open/close switch
 - Do Stripe
@@ -16,16 +16,16 @@ SPECIFIC TODOS:
 GENERAL
 - Make sure all back buttons are custom (Alex)
 - Optimize log in (it sometimes takes 10+ seconds, even if nothing is input at all) (Chad)
-- Add new photos to the database (I also want to learn how so I can play around with them) (Chad and Alex)
+- <del>Add new photos to the database (I also want to learn how so I can play around with them) (Chad and Alex)</del>
 - Fix all bottom button bugs (something just happened, some don’t work and one disappeared completely) (Alex)
 
 RESTAURANT (DONE)
-- Pull background image and display it (DONE) (Chad)
+- <del>Pull background image and display it (DONE) (Chad)</del>
 
 ADD TO ORDER
 - Add empty states in AddToOrder if there are no sides or extras (Alex)
 - Make sure limits (e.g. pick 2) work with the radio buttons (right now you can select none or infinite) (Alex)
-- Save item to DB cart with all the details when Add To Order is clicked (Chad)
+- <del>Save item to DB cart with all the details when Add To Order is clicked (DONE) (Chad)</del>
 
 CHECKOUT
 - Fix the DeliverToPayWith bugs
