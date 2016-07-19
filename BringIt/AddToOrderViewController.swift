@@ -40,6 +40,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     let section3 = "E.g. Easy on the mayo, add bacon"
     
     var numberOfSidesSelected = 0
+    var totalPrice = 0.0
     
     // MARK: - IBOutlets
     @IBOutlet weak var myTableView: UITableView!
@@ -78,10 +79,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // Display price in nav bar
-        self.navigationItem.rightBarButtonItem?.title = "$\(selectedFoodPrice)"
-        self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: TITLE_FONT,
-            NSForegroundColorAttributeName: GREEN], forState: .Normal)
+        // Calculate base price
+        calculatePrice()
         
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 50
@@ -93,6 +92,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set stepper font
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
+        stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), forControlEvents: .ValueChanged)
         
         // Check if the required sides have been selected
         if numberOfSidesSelected == Int(selectedFoodSidesNum) {
@@ -123,6 +123,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         sectionNames.append("Sides")
         sectionNames.append("Extras")
         sectionNames.append("Special Instructions")
+        sectionNames.append("Price")
         
         /*// Open Connection to PHP Service to carts DB to find an active cart
          let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
@@ -373,7 +374,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     "order_id": String(self.currentActiveCartOrderID),
                                     ]
                                     as Dictionary<String, String>
-                                print("HELLO \(userID) \(self.stepper.value) \(self.specialInstructions)")
 
                                 // create the request & response
                                 let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
@@ -456,6 +456,24 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func calculatePrice() {
+        totalPrice = Double(selectedFoodPrice)!
+        for side in section2 {
+            if side.selected {
+                totalPrice += Double(side.sidePrice)!
+            }
+        }
+        totalPrice = totalPrice * stepper.value
+        
+        myTableView.reloadData()
+    }
+    
+    
+    func stepperTapped(sender: GMStepper) {
+        // Recalculate price
+        calculatePrice()
+    }
+    
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -518,8 +536,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             return cell
-        } else {
+        } else if indexPath.section == 3 {
             let cell = tableView.dequeueReusableCellWithIdentifier("specialInstructionsCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
+            
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath) as! AddToOrderPriceTableViewCell
+            
+            cell.priceLabel.text = String(format: "$%.2f", totalPrice)
             
             return cell
         }
@@ -563,7 +587,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             stepper.enabled = false
         }
         
-        tableView.reloadData()
+        // Recalculate price
+        calculatePrice()
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -589,16 +614,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         
         return headerCell
     }
-    
-    /* Set up custom header
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        
-        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.textLabel?.text?.capitalizedString
-        header.textLabel!.textColor = UIColor.darkGrayColor()
-        header.textLabel?.font = UIFont(name: "Avenir-Black", size: 35)!
-        header.backgroundView?.backgroundColor = UIColor.whiteColor()
-    }*/
     
     /*
      // Override to support conditional editing of the table view.

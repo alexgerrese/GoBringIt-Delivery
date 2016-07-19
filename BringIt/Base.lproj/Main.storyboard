@@ -1631,7 +1631,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sqr-3h-nQT">
                                 <rect key="frame" x="0.0" y="64" width="414" height="623"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="wxg-Dj-6mx">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="14" sectionFooterHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="wxg-Dj-6mx">
                                         <rect key="frame" x="10" y="8" width="395" height="623"/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
@@ -1752,14 +1752,14 @@
                                                     <outlet property="titleLabel" destination="4wy-EE-vSe" id="pNx-LX-kg4"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="72" id="9Wu-TD-xXB" customClass="HeaderTableViewCell" customModule="BringIt" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="priceCell" rowHeight="72" id="9Wu-TD-xXB" customClass="AddToOrderPriceTableViewCell" customModule="BringIt" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="270.5" width="395" height="72"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Wu-TD-xXB" id="qBF-xR-MMr">
-                                                    <rect key="frame" x="0.0" y="0.0" width="395" height="71.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="395" height="72"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$31.69" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999998807907104" translatesAutoresizingMaskIntoConstraints="NO" id="IW7-aq-9ZG">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$31.69" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="IW7-aq-9ZG">
                                                             <rect key="frame" x="17" y="12" width="370" height="48"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="35"/>
                                                             <color key="textColor" red="0.27058823529999998" green="0.79215686269999996" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -1767,12 +1767,13 @@
                                                         </label>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="IW7-aq-9ZG" firstAttribute="centerY" secondItem="qBF-xR-MMr" secondAttribute="centerY" id="40e-rm-ZOQ"/>
-                                                        <constraint firstItem="IW7-aq-9ZG" firstAttribute="leading" secondItem="qBF-xR-MMr" secondAttribute="leadingMargin" constant="9" id="UnR-fF-3WD"/>
+                                                        <constraint firstItem="IW7-aq-9ZG" firstAttribute="centerY" secondItem="qBF-xR-MMr" secondAttribute="centerY" id="BCv-my-d04"/>
+                                                        <constraint firstItem="IW7-aq-9ZG" firstAttribute="trailing" secondItem="qBF-xR-MMr" secondAttribute="trailingMargin" id="Ijl-a8-uDd"/>
+                                                        <constraint firstItem="IW7-aq-9ZG" firstAttribute="leading" secondItem="qBF-xR-MMr" secondAttribute="leadingMargin" constant="9" id="V0r-1p-7ed"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="titleLabel" destination="IW7-aq-9ZG" id="hqS-Yz-qfy"/>
+                                                    <outlet property="priceLabel" destination="IW7-aq-9ZG" id="ddt-lJ-Ngb"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -1874,9 +1875,6 @@
                             <connections>
                                 <action selector="xButtonClicked:" destination="IFI-UG-yEb" id="MB5-aO-Ake"/>
                             </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="Gkv-Wg-Tw5">
-                            <color key="tintColor" red="0.27058823529999998" green="0.79215686269999996" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
