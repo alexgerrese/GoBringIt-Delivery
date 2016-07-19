@@ -34,9 +34,10 @@ class BringItHomeTableViewController: UITableViewController {
     var coverImages = [String]()
     var restaurantNames = [String]()
     var cuisineTypes = [String]()
-    //TODO
-    let openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
-    let isOpen = [true, false, false, true, true, true]
+    
+    //TODO: CHAD! This is still reliant on sample data. Please pull these from the database!!! Essentially do what you did in the restaurantVC but for each restaurant in the tableview!
+    var openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
+    var isOpen = [true, false, false, true, true, true]
     var idList = [String]()
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -50,7 +51,7 @@ class BringItHomeTableViewController: UITableViewController {
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // get list of coverImages, restaurantNames, id
+        // Get list of coverImages, restaurantNames, id
         
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!

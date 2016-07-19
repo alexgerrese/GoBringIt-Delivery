@@ -19,7 +19,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         var sideName: String
         var sidePrice: String
         var sideRequired: String
-        // Chad added this
         var sideID: String
         var selected: Bool
     }
@@ -32,13 +31,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var sidePrices = [String]()
     var sideRequireds = [String]()
     var sideIDs = [String]()
+    var sideIDSelectedArray = [String]()
     
     // DATA
     var sectionNames = [String]() //["DESCRIPTION", "SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
     var section1 = [String]()
     var section2 = [SideItem]()
-    //var section2 = [String]()
-    //var section2Prices = [String]()
     let section3 = "E.g. Easy on the mayo, add bacon"
     
     var numberOfSidesSelected = 0
@@ -47,6 +45,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var stepper: GMStepper!
+    @IBOutlet weak var addToOrderButton: UIButton!
     
     // Data passed from previous View Controller
     var selectedFoodName = ""
@@ -80,7 +79,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         // Display price in nav bar
-        self.navigationItem.rightBarButtonItem?.title = selectedFoodPrice
+        self.navigationItem.rightBarButtonItem?.title = "$\(selectedFoodPrice)"
         self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: TITLE_FONT,
             NSForegroundColorAttributeName: GREEN], forState: .Normal)
         
@@ -95,16 +94,35 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
         
+        // Check if the required sides have been selected
+        if numberOfSidesSelected == Int(selectedFoodSidesNum) {
+            // Enable the button and make it opaque
+            addToOrderButton.alpha = 1
+            addToOrderButton.enabled = true
+            
+            // Enable the stepper and make it opaque
+            stepper.alpha = 1
+            stepper.enabled = true
+        } else {
+            // Disable the button and make it transparent
+            addToOrderButton.alpha = 0.5
+            addToOrderButton.enabled = false
+            
+            // Disable the stepper and make it transparent
+            stepper.alpha = 0.5
+            stepper.enabled = false
+        }
+        
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 55
         self.myTableView.rowHeight = UITableViewAutomaticDimension
         
         print("Selected Food ID: " + selectedFoodID)
         print("How many sides this food item can have: " + selectedFoodSidesNum)
-        sectionNames.append("DESCRIPTION")
-        sectionNames.append("SIDES (PICK " + selectedFoodSidesNum + ")")
-        sectionNames.append("EXTRAS")
-        sectionNames.append("SPECIAL INSTRUCTIONS")
+        sectionNames.append("Description")
+        sectionNames.append("Sides")
+        sectionNames.append("Extras")
+        sectionNames.append("Special Instructions")
         
         /*// Open Connection to PHP Service to carts DB to find an active cart
          let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
@@ -281,8 +299,22 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Retrieve special instructions if available
         let indexPath = NSIndexPath(forRow: 0, inSection: 3)
         let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-        if selectedCell.specialInstructionsText.text != nil {
+        if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
             specialInstructions = selectedCell.specialInstructionsText.text!
+        }
+        
+        // Retrieve the selected sides and put them in sideIDSelectedArray
+        // For required sides
+        for item in sideItems {
+            if item.selected {
+                sideIDSelectedArray.append(item.sideID)
+            }
+        }
+        // For optional sides
+        for item in section2 {
+            if item.selected {
+                sideIDSelectedArray.append(item.sideID)
+            }
         }
         
         // Open Connection to PHP Service to carts DB to find an active cart
@@ -367,11 +399,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                                 self.currentActiveCartID = contentType
                                                 
                                                 // Send Side Item Data to cart_sides DB
-                                                
-                                                // TODO: Alex, please fill this array with the side_id's that are selected. You can probably initialize it at the top of the file and fill it in anywhere. There is a property in the DB for the quantity of sides, not sure how we want to enable that. I don't think it's necessary, because out of the 40,000 sides ordered thus far, not one of them has ordered a quantity other than 1. This leads me to think that the web-app doesn't even allow multiple sides :)
-                                                var sideIDSelectedArray: [String] = ["-1", "-2"]
-                                                
-                                                for sideID in sideIDSelectedArray {
+                                                for sideID in self.sideIDSelectedArray {
                                                     //print("SideId: ", sideID)
                                                     //print("Cart's UID2: ",self.currentActiveCartID)
                                                     
@@ -380,7 +408,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                                     // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
                                                     let params1 = ["cart_entry_uid": self.currentActiveCartID,
                                                         "side_id": sideID,
-                                                        "quantity": "10",
+                                                        "quantity": "1",
                                                         ]
                                                         as Dictionary<String, String>
                                                     
@@ -478,7 +506,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.selectionStyle = .None
             cell.sideLabel.text = section2[indexPath.row].sideName
             cell.extraCostLabel.hidden = false
-            cell.extraCostLabel.text = "+\(section2[indexPath.row].sidePrice)"
+            cell.extraCostLabel.text = "+$\(section2[indexPath.row].sidePrice)"
             
             //Change cell's tint color
             cell.tintColor = GREEN
@@ -497,15 +525,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionNames[section]
-    }
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.section == 1 {
             if !sideItems[indexPath.row].selected {
-                if numberOfSidesSelected < 2 {
+                if numberOfSidesSelected < Int(selectedFoodSidesNum) {
                     sideItems[indexPath.row].selected = true
                     numberOfSidesSelected += 1
                 }
@@ -521,16 +545,60 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
+        if numberOfSidesSelected == Int(selectedFoodSidesNum) {
+            // Enable the button and make it opaque
+            addToOrderButton.alpha = 1
+            addToOrderButton.enabled = true
+            
+            // Enable the stepper and make it opaque
+            stepper.alpha = 1
+            stepper.enabled = true
+        } else {
+            // Disable the button and make it transparent
+            addToOrderButton.alpha = 0.5
+            addToOrderButton.enabled = false
+            
+            // Disable the stepper and make it transparent
+            stepper.alpha = 0.5
+            stepper.enabled = false
+        }
+        
         tableView.reloadData()
     }
     
-    // Set up custom header
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerCell = tableView.dequeueReusableCellWithIdentifier("headerCell") as! HeaderTableViewCell
+        
+        // Set header text
+        headerCell.titleLabel.text = sectionNames[section]
+        
+        if section != 1 {
+            headerCell.pickXLabel.hidden = true
+        } else {
+            headerCell.pickXLabel.hidden = false
+            if Int(selectedFoodSidesNum) == 0 {
+                headerCell.pickXLabel.text = "None"
+            }
+            headerCell.pickXLabel.text = "(Pick " + selectedFoodSidesNum + ")"
+        }
+        
+        return headerCell
+    }
+    
+    /* Set up custom header
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        header.textLabel?.text?.capitalizedString
         header.textLabel!.textColor = UIColor.darkGrayColor()
-        header.textLabel?.font = TV_HEADER_FONT
-    }
+        header.textLabel?.font = UIFont(name: "Avenir-Black", size: 35)!
+        header.backgroundView?.backgroundColor = UIColor.whiteColor()
+    }*/
     
     /*
      // Override to support conditional editing of the table view.

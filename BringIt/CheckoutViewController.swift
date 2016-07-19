@@ -21,7 +21,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var itemsTableView: UITableView!
     @IBOutlet weak var detailsTableView: UITableView!
     @IBOutlet weak var itemsTableViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var ETALabel: UILabel!
+    //@IBOutlet weak var ETALabel: UILabel!
+    @IBOutlet weak var deliveryFeeLabel: UILabel!
+    @IBOutlet weak var subtotalCostLabel: UILabel!
     @IBOutlet weak var totalCostLabel: UILabel!
     
     var cameFromVC = ""
@@ -29,6 +31,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
+    var deliveryFee = 2.5 // CHAD!!!! PLEASE PULL THE DELIVERY FEE AND STORE IT HEREEEE (It is different for a couple restaurants so this is needed)
     
     // Data structure
     struct Item {
@@ -122,7 +125,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Calculate and display totalCost
         calculateTotalCost()
-        totalCostLabel.text = String(format: "$%.2f", totalCost)
+        subtotalCostLabel.text = String(format: "$%.2f", totalCost)
+        totalCostLabel.text = String(format: "$%.2f", totalCost + deliveryFee)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -191,7 +195,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // Resize itemsTableView
     override func updateViewConstraints() {
         super.updateViewConstraints()
-        //TODO: Alex can you work your Storyboard magic here :)
         itemsTableViewHeight.constant = itemsTableView.contentSize.height
     }
     

@@ -101,7 +101,6 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     
     // MAKE SURE THIS WORKSSSSSSSS
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
         
         if selectedCell == "Deliver To" {
             deselectAll()
@@ -114,7 +113,7 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    // TO-DO: Write a function that deselects all cells
+    // Deselect all cells
     func deselectAll() {
         if selectedCell == "Deliver To" {
             for i in 0..<addresses.count {
