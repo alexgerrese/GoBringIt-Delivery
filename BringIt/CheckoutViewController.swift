@@ -21,7 +21,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var itemsTableView: UITableView!
     @IBOutlet weak var detailsTableView: UITableView!
     @IBOutlet weak var itemsTableViewHeight: NSLayoutConstraint!
-    //@IBOutlet weak var ETALabel: UILabel!
     @IBOutlet weak var deliveryFeeLabel: UILabel!
     @IBOutlet weak var subtotalCostLabel: UILabel!
     @IBOutlet weak var totalCostLabel: UILabel!
