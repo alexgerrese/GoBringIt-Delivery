@@ -77,6 +77,50 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         var addressString: String?
         
         // Open Connection to PHP Service
+        let requestURL4: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
+        let urlRequest4: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL4)
+        let session4 = NSURLSession.sharedSession()
+        let task4 = session4.dataTaskWithRequest(urlRequest4) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                //var account_id: String?
+                                let id = Restaurant["id"] as! String
+                                if ( id == self.service_id ) {
+                                    let delivery_fee = Restaurant["delivery_fee"] as AnyObject! as! String
+                                    print(delivery_fee)
+                                    self.deliveryFee = Double(delivery_fee)!
+
+                                }
+                            }
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                self.itemsTableView.reloadData()
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    self.itemsTableView.reloadData()
+                                })
+                                self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print("Error:" + error.localizedDescription)
+                }
+            } else if let error = error {
+                print("Error:" + error.localizedDescription)
+            }
+        }
+        
+        // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADaccountAddresses.php")!
         let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
         let session = NSURLSession.sharedSession()
@@ -155,13 +199,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 task.resume()
+                                task4.resume()
                                 self.itemsTableView.reloadData();
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     self.itemsTableView.reloadData()
                                 })
                                 self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
-
-                                //self.tableView.rel
                             }
                         }
                     }
@@ -214,6 +257,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
                                 
                                 task3.resume()
+                            
                                 self.itemsTableView.reloadData()
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     self.itemsTableView.reloadData()
