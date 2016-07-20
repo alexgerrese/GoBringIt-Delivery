@@ -42,6 +42,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var numberOfSidesSelected = 0
     var totalPrice = 0.0
     
+    // Get indexes of each section (in case some aren't added because there are no rows to show)
+    var sidesIndex = -1
+    var extrasIndex = -1
+    var specialInstructionsIndex = -1
+    var priceIndex = -1
+    
     // MARK: - IBOutlets
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var bottomView: UIView!
@@ -116,14 +122,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 55
         self.myTableView.rowHeight = UITableViewAutomaticDimension
-        
-        print("Selected Food ID: " + selectedFoodID)
-        print("How many sides this food item can have: " + selectedFoodSidesNum)
-        sectionNames.append("Description")
-        sectionNames.append("Sides")
-        sectionNames.append("Extras")
-        sectionNames.append("Special Instructions")
-        sectionNames.append("Price")
         
         /*// Open Connection to PHP Service to carts DB to find an active cart
          let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
@@ -223,6 +221,28 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     }
                                 }
                                 
+                                // Populate sectionNames array
+                                print("Selected Food ID: " + self.selectedFoodID)
+                                print("How many sides this food item can have: " + self.selectedFoodSidesNum)
+                                self.sectionNames.append("Description")
+                                if self.section1.count > 0 {
+                                    self.sectionNames.append("Sides")
+                                }
+                                if self.section2.count > 0 {
+                                    self.sectionNames.append("Extras")
+                                }
+                                self.sectionNames.append("Special Instructions")
+                                self.sectionNames.append("Price")
+                                
+                                if let sIndex = self.sectionNames.indexOf("Sides") {
+                                    self.sidesIndex = sIndex
+                                }
+                                if let eIndex = self.sectionNames.indexOf("Extras") {
+                                    self.extrasIndex = eIndex
+                                }
+                                self.specialInstructionsIndex = self.sectionNames.indexOf("Special Instructions")!
+                                self.priceIndex = self.sectionNames.indexOf("Price")!
+                                
                                 self.myTableView.reloadData()
                             }
                         }
@@ -283,14 +303,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
         task.resume()
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    // TO-DO: FINISH THIS METHOD
+
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
         
         // loop through all carts with user_id searching for active
@@ -468,7 +488,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         myTableView.reloadData()
     }
     
-    
     func stepperTapped(sender: GMStepper) {
         // Recalculate price
         calculatePrice()
@@ -481,16 +500,17 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        
+        if section == 0 { // Description
             return 1
-        } else if section == 1 {
+        } else if section == sidesIndex { // Sides
             return section1.count
-        } else if section == 2 {
+        } else if section == extrasIndex { // Extras
             return section2.count
-        } else if section == 3 {
+        } else if section == specialInstructionsIndex { // Special Instructions
             return 1
-        } else {
-            return 0
+        } else { // Price
+            return 1
         }
     }
     
@@ -501,7 +521,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.textLabel?.text = selectedFoodDescription
             
             return cell
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == sidesIndex {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
             
             // Set cell properties
@@ -519,7 +539,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             return cell
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == extrasIndex {
             let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
             
             // Set cell properties
@@ -538,14 +558,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             return cell
-        } else if indexPath.section == 3 {
+        } else if indexPath.section == specialInstructionsIndex {
             let cell = tableView.dequeueReusableCellWithIdentifier("specialInstructionsCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath) as! AddToOrderPriceTableViewCell
             
-            //cell.priceLabel.text = String(format: "$%.2f", totalPrice)
+            cell.priceLabel.text = String(format: "$%.2f", totalPrice)
             
             return cell
         }
@@ -553,7 +573,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.section == 1 {
+        if indexPath.section == sidesIndex {
             if !sideItems[indexPath.row].selected {
                 if numberOfSidesSelected < Int(selectedFoodSidesNum) {
                     sideItems[indexPath.row].selected = true
@@ -563,7 +583,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 sideItems[indexPath.row].selected = false
                 numberOfSidesSelected -= 1
             }
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == extrasIndex {
             if !section2[indexPath.row].selected {
                 section2[indexPath.row].selected = true
             } else {
@@ -593,8 +613,20 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         calculatePrice()
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 55
+        if section != priceIndex {
+            return 55
+        } else {
+            return CGFloat.min
+        }
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -604,16 +636,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set header text
         headerCell.titleLabel.text = sectionNames[section]
         
-        if section != 1 && section != 4 {
+        if section != sidesIndex && section != priceIndex {
             headerCell.pickXLabel.hidden = true
         } else {
             headerCell.pickXLabel.hidden = false
-            if section == 1 {
+            if section == sidesIndex {
                 headerCell.pickXLabel.text = "(Pick " + selectedFoodSidesNum + ")"
-            } else {
+            } /*else {
                 headerCell.pickXLabel.textColor = GREEN
                 headerCell.pickXLabel.text = String(format: "$%.2f", totalPrice)
-            }
+            }*/
         }
         
         return headerCell

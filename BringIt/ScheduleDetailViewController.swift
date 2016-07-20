@@ -15,6 +15,7 @@ class ScheduleDetailViewController: UIViewController {
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var totalCostLabel: UILabel!
     @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var orderView: UIView!
     
     // Data structure
     struct Item {
@@ -46,6 +47,12 @@ class ScheduleDetailViewController: UIViewController {
         // Calculate and display totalCost
         calculateTotalCost()
         totalCostLabel.text = String(format: "$%.2f", totalCost)
+        
+        // Add shadow to orderView
+        orderView.layer.shadowColor = UIColor.darkGrayColor().CGColor
+        orderView.layer.shadowOpacity = 0.5
+        orderView.layer.shadowOffset = CGSizeZero
+        orderView.layer.shadowRadius = 1
         
         
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
