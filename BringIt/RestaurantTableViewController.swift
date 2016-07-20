@@ -15,6 +15,7 @@ class RestaurantTableViewController: UITableViewController {
     @IBOutlet weak var cuisineTypeLabel: UILabel!
     @IBOutlet weak var restaurantHoursLabel: UILabel!
     @IBOutlet weak var isOpenIndicator: UIImageView!
+    @IBOutlet weak var detailsView: UIView!
     
     // Categories
     var restaurantImageURL = String()
@@ -45,6 +46,12 @@ class RestaurantTableViewController: UITableViewController {
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        // Add shadow to detailsView
+        detailsView.layer.shadowColor = UIColor.darkGrayColor().CGColor
+        detailsView.layer.shadowOpacity = 0.5
+        detailsView.layer.shadowOffset = CGSizeZero
+        detailsView.layer.shadowRadius = 1.5
         
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuCategories.php")!
@@ -258,9 +265,9 @@ class RestaurantTableViewController: UITableViewController {
                             
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 if (self.isOpen) {
-                                    self.isOpenIndicator.image = UIImage(named: "Open");
+                                    self.isOpenIndicator.image = UIImage(named: "oval-green");
                                 } else {
-                                    self.isOpenIndicator.image = UIImage(named: "Closed");
+                                    self.isOpenIndicator.image = UIImage(named: "oval-red");
                                 }
                                 self.restaurantHoursLabel.text = self.open_hours
                                 self.tableView.reloadData()

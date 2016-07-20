@@ -8,11 +8,6 @@
 
 import UIKit
 
-// TO-DO: Add special delivery cost cell?
-// Add return segues to both viewcontrollers
-// Add segues to deliverTo and payWith
-// Add rest of IBOutlets and make them dynamic
-
 var comingFromOrderPlaced = false
 
 class CheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -30,9 +25,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
-    var deliveryFee = 0.0 // CHAD!!!! PLEASE PULL THE DELIVERY FEE AND STORE IT HEREEEE (It is different for a couple restaurants so this is needed)
+    var deliveryFee = 0.0
     
     var items_ordered: [String] = []
+    var items = [Item]()
+    var service_id = ""
     
     // Data structure
     struct Item {
@@ -41,17 +38,14 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         var price = 0.00
     }
     
-    // FOR CHAD - Uncomment this when you finish the data loading
-    var items = [Item]()
-    var service_id = ""
-    // FOR CHAD - Delete this when you finish the data loading
-    //var items = [Item(name: "The Carolina Cockerel", quantity: 2, price: 10.00), Item(name: "Chocolate Milkshake", quantity: 1, price: 4.99), Item(name: "Large Fries", quantity: 2, price: 3.00)]
-    
     // Get USER ID
     let defaults = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //FAKE DATAAAA
+        items.append(Item(name: "Tester", quantity: 1, price: 999.99))
         
         // Set title
         self.title = "Checkout"
@@ -65,14 +59,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // TO-DO: - LOAD CART DATA FROM DB
-        // FOR CHAD
-        // Suggestion: Use the struct I created to structure the data. So use a for loop to loop through the items in the db cart and then put each in items[i].name or items[i].quantity or items[i].price
-        
         // Get Address of User
         // var userID: String?
         let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
-        
         var addressString: String?
         
         // Open Connection to PHP Service
@@ -99,7 +88,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     let delivery_fee = Restaurant["delivery_fee"] as AnyObject! as! String
                                     print(delivery_fee)
                                     self.deliveryFee = Double(delivery_fee)!
-
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
@@ -107,7 +95,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     self.itemsTableView.reloadData()
                                 })
-                                self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
+                                self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
                             }
                         }
                     }
@@ -155,7 +143,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     self.itemsTableView.reloadData()
                                 })
-                                self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
+                                self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
                             }
                         }
                     }
@@ -203,7 +191,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     self.itemsTableView.reloadData()
                                 })
-                                self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
+                                self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
                             }
                         }
                     }
@@ -238,7 +226,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                             
                             for Cart in json as! [Dictionary<String, AnyObject>] {
                                 
-                                let order_id = Cart["order_id"] as! String
+                                //let order_id = Cart["order_id"] as! String
                                 
                                 let user_id = Cart["user_id"] as! String
                                 
@@ -254,12 +242,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 for item in self.items_ordered {
                                     print("Item here:", item)
                                 }
-                                
+
                                 task3.resume()
                             
                                 self.itemsTableView.reloadData()
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                     self.itemsTableView.reloadData()
+                                    self.updateViewConstraints()
                                 })
                             }
                         }
@@ -338,18 +327,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set SAMPLE DATA
         //deliverTo = "1369 Campus Drive"
         payWith = "Food Points"
-        
-        // Calculate and display totalCost
-        calculateTotalCost()
-        subtotalCostLabel.text = String(format: "$%.2f", totalCost)
-        totalCostLabel.text = String(format: "$%.2f", totalCost + deliveryFee)
-        
+
         self.itemsTableView.reloadData();
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.itemsTableView.reloadData()
         })
-        self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
-
+        self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -363,6 +346,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             comingFromOrderPlaced = false
             self.dismissViewControllerAnimated(true, completion: nil)
         }
+        
+        // Calculate and display delivery Fee and totalCost
+        calculateTotalCost()
+        deliveryFeeLabel.text = String(format: "$%.2f", deliveryFee)
+        subtotalCostLabel.text = String(format: "$%.2f", totalCost)
+        totalCostLabel.text = String(format: "$%.2f", totalCost + deliveryFee)
     }
 
     override func didReceiveMemoryWarning() {
@@ -371,6 +360,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func calculateTotalCost() {
+        totalCost = 0.0
         for item in items {
             totalCost += Double(item.price) * Double(item.quantity)
         }
@@ -383,7 +373,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("ITEMS COUNT: \(items.count)")
         if tableView == itemsTableView {
+            print("ITEMSTABLEVIEW")
             return items.count
         } else {
             return 2
@@ -391,6 +383,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        print("CELLFORROWATINDEXPATH")
+        print(tableView == itemsTableView)
         if tableView == itemsTableView {
             let cell = tableView.dequeueReusableCellWithIdentifier("checkoutCell", forIndexPath: indexPath) as! CheckoutTableViewCell
             
@@ -417,6 +411,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Resize itemsTableView
     override func updateViewConstraints() {
+        print("UPDATEVIEWCONSTRAINTS")
         super.updateViewConstraints()
         itemsTableViewHeight.constant = itemsTableView.contentSize.height
     }
@@ -466,7 +461,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
 
     @IBAction func xButtonPressed(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true);
-        
     }
     
     // MARK: - Navigation

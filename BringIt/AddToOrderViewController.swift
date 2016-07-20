@@ -408,7 +408,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                                     // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
                                                     let params1 = ["cart_entry_uid": self.currentActiveCartID,
                                                         "side_id": sideID,
-                                                        "quantity": "1",
+                                                        "quantity": String(self.stepper.value),
                                                         ]
                                                         as Dictionary<String, String>
                                                     
@@ -487,8 +487,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             return section1.count
         } else if section == 2 {
             return section2.count
-        } else {
+        } else if section == 3 {
             return 1
+        } else {
+            return 0
         }
     }
     
@@ -541,9 +543,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath) as! AddToOrderPriceTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath)
             
-            cell.priceLabel.text = String(format: "$%.2f", totalPrice)
+            //cell.priceLabel.text = String(format: "$%.2f", totalPrice)
             
             return cell
         }
@@ -592,7 +594,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
+        return 55
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -602,14 +604,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set header text
         headerCell.titleLabel.text = sectionNames[section]
         
-        if section != 1 {
+        if section != 1 && section != 4 {
             headerCell.pickXLabel.hidden = true
         } else {
             headerCell.pickXLabel.hidden = false
-            if Int(selectedFoodSidesNum) == 0 {
-                headerCell.pickXLabel.text = "None"
+            if section == 1 {
+                headerCell.pickXLabel.text = "(Pick " + selectedFoodSidesNum + ")"
+            } else {
+                headerCell.pickXLabel.textColor = GREEN
+                headerCell.pickXLabel.text = String(format: "$%.2f", totalPrice)
             }
-            headerCell.pickXLabel.text = "(Pick " + selectedFoodSidesNum + ")"
         }
         
         return headerCell
