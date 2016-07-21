@@ -31,11 +31,15 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var items = [Item]()
     var service_id = ""
     
+    // TO-DO: CHAD! So I've created 3 more fields in the struct for you to put the sides, extras and special instructions in. The way you can format it is to pull all the sides and extras and special instructions associated with one item, and create a single string with all the sides/extras separated by commas. For example, "Mashed Potatoes, Fries, Mac & Cheese". I will deal with other formatting later!
     // Data structure
     struct Item {
         var name = ""
         var quantity = 0
         var price = 0.00
+        var sides = ""
+        var extras = ""
+        var specialInstructions = ""
     }
     
     // Get USER ID
@@ -43,9 +47,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //FAKE DATAAAA
-        items.append(Item(name: "Tester", quantity: 1, price: 999.99))
         
         // Set title
         self.title = "Checkout"
@@ -91,11 +92,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
+                                //THIS IS WHERE WE NEED TO RELOAD EVERYTHING
                                 self.itemsTableView.reloadData()
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    self.itemsTableView.reloadData()
-                                })
-                                self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
+                                self.detailsTableView.reloadData()
+                                self.updateViewConstraints()
                             }
                         }
                     }
@@ -139,11 +139,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 print(addressString!)
                                 self.deliverTo = addressString!
                                 self.detailsTableView.reloadData()
-                                self.itemsTableView.reloadData()
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    self.itemsTableView.reloadData()
-                                })
-                                self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
                             }
                         }
                     }
@@ -179,19 +174,15 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     print("this item id exists")
                                     print(Cart["name"] as! String)
                                     print(Cart["price"] as! String)
+                                    
+                                    //CHAD! Add the extra fields here and pull from the db
                                     self.items.append(Item(name: Cart["name"] as! String, quantity: 10, price: Double(Cart["price"] as! String)!))
                                     self.service_id = Cart["service_id"] as! String
-                                    self.itemsTableView.reloadData();
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 task.resume()
                                 task4.resume()
-                                self.itemsTableView.reloadData();
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    self.itemsTableView.reloadData()
-                                })
-                                self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
                             }
                         }
                     }
@@ -244,12 +235,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
 
                                 task3.resume()
-                            
-                                self.itemsTableView.reloadData()
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    self.itemsTableView.reloadData()
-                                    self.updateViewConstraints()
-                                })
                             }
                         }
                     }
@@ -328,11 +313,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         //deliverTo = "1369 Campus Drive"
         payWith = "Food Points"
 
-        self.itemsTableView.reloadData();
+        /*self.itemsTableView.reloadData();
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.itemsTableView.reloadData()
         })
-        self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)
+        self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)*/
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -373,9 +358,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("ITEMS COUNT: \(items.count)")
         if tableView == itemsTableView {
-            print("ITEMSTABLEVIEW")
             return items.count
         } else {
             return 2
@@ -383,8 +366,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        print("CELLFORROWATINDEXPATH")
-        print(tableView == itemsTableView)
         if tableView == itemsTableView {
             let cell = tableView.dequeueReusableCellWithIdentifier("checkoutCell", forIndexPath: indexPath) as! CheckoutTableViewCell
             
@@ -392,6 +373,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.itemQuantityLabel.text = String(items[indexPath.row].quantity)
             let totalItemCost = Double(items[indexPath.row].quantity) * items[indexPath.row].price
             cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
+            
+            cell.sidesLabel.text = "Sides: \(items[indexPath.row].sides)"
+            cell.extrasLabel.text = "Extras: \(items[indexPath.row].extras)"
+            cell.specialInstructionsLabel.text = "Special Instructions: \(items[indexPath.row].specialInstructions)"
             
             return cell
         } else {

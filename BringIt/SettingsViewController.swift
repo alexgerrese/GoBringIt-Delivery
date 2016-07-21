@@ -16,10 +16,16 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var myTableView: UITableView!
     
     // Tableview cells
-    let cells = ["Contact Info", "Addresses", "Payment Methods"]
-    let cellNumbers = [0, 2, 1]
+    let infoCells = ["Contact Info", "Addresses", "Payment Methods"]
+    let helpCells = ["Contact Us", "Become a BringIt Driver"]
+    
+    // TO-DO: CHAD! Please pull the db data and make these dynamic. See below for where to put the data!
+    var cellNumbers = [Int]()
+    var userName = ""
     
     let defaults = NSUserDefaults.standardUserDefaults()
+    
+    var selectedCell = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +44,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
+        
+        // CHAD! Here is where you can load the data into the dummy variables
+        cellNumbers = [0, 2, 1] // These represent the number of each that exist (0 means not applicable, then the 2 means the user has 2 addresses, and 1 means the user has one payment method on file).
+        userName = "Alexander Gerrese"
+        
+        // Set name
+        nameLabel.text = userName
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,23 +61,33 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
+        if section == 0 {
+            return infoCells.count
+        } else {
+            return helpCells.count
+        }
+        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell", forIndexPath: indexPath)
 
-        cell.textLabel?.text = cells[indexPath.row]
-        if cellNumbers[indexPath.row] == 0 {
-            cell.detailTextLabel?.text = ""
+        if indexPath.section == 0 {
+            cell.textLabel?.text = infoCells[indexPath.row]
+            if cellNumbers[indexPath.row] == 0 {
+                cell.detailTextLabel?.text = ""
+            } else {
+                cell.detailTextLabel?.text = String(cellNumbers[indexPath.row])
+            }
         } else {
-            cell.detailTextLabel?.text = String(cellNumbers[indexPath.row])
+            cell.textLabel?.text = helpCells[indexPath.row]
+            cell.detailTextLabel?.text = ""
         }
-        
+
         return cell
     }
     
@@ -80,9 +103,22 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "INFO"
+        } else {
+            return "HELP"
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 1 || indexPath.row == 2 {
+            performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
+        }
+    }
+    
+    // Find out which cell was selected and sent to prepareForSegue
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        selectedCell = indexPath.row
         
-        return ""
+        return indexPath
     }
     
     // BUG - If you log out then back in, you will come back here, not home.
@@ -128,14 +164,20 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "toDeliverToPayingWithFromProfile" {
+            let VC = segue.destinationViewController as! DeliverToPayingWithTableViewController
+            if self.selectedCell == 1 {
+                VC.selectedCell = "Deliver To"
+            } else if self.selectedCell == 2 {
+                VC.selectedCell = "Paying With"
+            }
+        }
     }
-    */
+    
 
 }

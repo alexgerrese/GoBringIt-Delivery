@@ -13,6 +13,9 @@ class CheckoutTableViewCell: UITableViewCell {
     @IBOutlet weak var itemNameLabel: UILabel!
     @IBOutlet weak var itemQuantityLabel: UILabel!
     @IBOutlet weak var totalCostLabel: UILabel!
+    @IBOutlet weak var sidesLabel: UILabel!
+    @IBOutlet weak var extrasLabel: UILabel!
+    @IBOutlet weak var specialInstructionsLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
