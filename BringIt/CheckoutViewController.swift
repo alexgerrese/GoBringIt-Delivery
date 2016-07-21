@@ -175,8 +175,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     print(Cart["name"] as! String)
                                     print(Cart["price"] as! String)
                                     
-                                    //CHAD! Add the extra fields here and pull from the db
-                                    self.items.append(Item(name: Cart["name"] as! String, quantity: 10, price: Double(Cart["price"] as! String)!))
+                                    //CHAD! Pull from the db and replace the dummy variables here
+                                    self.items.append(Item(name: Cart["name"] as! String, quantity: 10, price: Double(Cart["price"] as! String)!, sides: "Mashed Potatoes, Truffle Fries", extras: "Extra sauce, Ranch wings", specialInstructions: "Please add a few bags of ketchup."))
                                     self.service_id = Cart["service_id"] as! String
                                 }
                             }
@@ -374,9 +374,56 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             let totalItemCost = Double(items[indexPath.row].quantity) * items[indexPath.row].price
             cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
             
-            cell.sidesLabel.text = "Sides: \(items[indexPath.row].sides)"
-            cell.extrasLabel.text = "Extras: \(items[indexPath.row].extras)"
-            cell.specialInstructionsLabel.text = "Special Instructions: \(items[indexPath.row].specialInstructions)"
+            let sides = "Sides: \(items[indexPath.row].sides)"
+            let extras = "Extras: \(items[indexPath.row].extras)"
+            let specialInstructions = "Special Instructions: \(items[indexPath.row].specialInstructions)"
+            
+            // Create attributed strings of the extras
+            var sidesAS = NSMutableAttributedString()
+            var extrasAS = NSMutableAttributedString()
+            var specialInstructionsAS = NSMutableAttributedString()
+            
+            sidesAS = NSMutableAttributedString(
+                string: sides,
+                attributes: [NSFontAttributeName:UIFont(
+                    name: "Avenir",
+                    size: 13.0)!])
+            extrasAS = NSMutableAttributedString(
+                string: extras,
+                attributes: [NSFontAttributeName:UIFont(
+                    name: "Avenir",
+                    size: 13.0)!])
+            specialInstructionsAS = NSMutableAttributedString(
+                string: specialInstructions,
+                attributes: [NSFontAttributeName:UIFont(
+                    name: "Avenir",
+                    size: 13.0)!])
+            
+            sidesAS.addAttribute(NSFontAttributeName,
+                                    value: UIFont(
+                                    name: "Avenir-Heavy",
+                                    size: 13.0)!,
+                                    range: NSRange(
+                                    location: 0,
+                                    length: 6))
+            extrasAS.addAttribute(NSFontAttributeName,
+                                 value: UIFont(
+                                    name: "Avenir-Heavy",
+                                    size: 13.0)!,
+                                 range: NSRange(
+                                    location: 0,
+                                    length: 7))
+            specialInstructionsAS.addAttribute(NSFontAttributeName,
+                                 value: UIFont(
+                                    name: "Avenir-Heavy",
+                                    size: 13.0)!,
+                                 range: NSRange(
+                                    location: 0,
+                                    length: 21))
+            
+            cell.sidesLabel.attributedText = sidesAS
+                cell.extrasLabel.attributedText = extrasAS
+                cell.specialInstructionsLabel.attributedText = specialInstructionsAS
             
             return cell
         } else {
