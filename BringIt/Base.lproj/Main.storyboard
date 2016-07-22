@@ -2163,7 +2163,7 @@
                                                         <color key="textColor" red="0.27058823529999998" green="0.79215686269999996" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rra-uC-DOy">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rra-uC-DOy">
                                                         <rect key="frame" x="220" y="277" width="162" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="mTp-sZ-Ce2"/>
@@ -2201,7 +2201,7 @@
                                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$31.27" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="LxI-YL-591">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="LxI-YL-591">
                                                         <rect key="frame" x="76" y="364" width="243" height="58"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="243" id="ZWd-AX-TCp"/>
@@ -3845,7 +3845,7 @@ with your details shortly.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ai2-H9-Z3b"/>
-        <segue reference="4WX-cL-B0O"/>
         <segue reference="bSP-Mp-njt"/>
+        <segue reference="T8g-e2-lr9"/>
     </inferredMetricsTieBreakers>
 </document>

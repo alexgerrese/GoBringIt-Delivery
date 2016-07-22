@@ -96,6 +96,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 self.itemsTableView.reloadData()
                                 self.detailsTableView.reloadData()
                                 self.updateViewConstraints()
+                                
+                                // Calculate and display delivery Fee and totalCost
+                                self.calculateTotalCost()
+                                self.deliveryFeeLabel.text = String(format: "$%.2f", self.deliveryFee)
+                                self.subtotalCostLabel.text = String(format: "$%.2f", self.totalCost)
+                                self.totalCostLabel.text = String(format: "$%.2f", self.totalCost + self.deliveryFee)
                             }
                         }
                     }
@@ -332,11 +338,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
-        // Calculate and display delivery Fee and totalCost
-        calculateTotalCost()
-        deliveryFeeLabel.text = String(format: "$%.2f", deliveryFee)
-        subtotalCostLabel.text = String(format: "$%.2f", totalCost)
-        totalCostLabel.text = String(format: "$%.2f", totalCost + deliveryFee)
+
     }
 
     override func didReceiveMemoryWarning() {
