@@ -16,6 +16,7 @@ class ScheduleDetailViewController: UIViewController {
     @IBOutlet weak var totalCostLabel: UILabel!
     @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var orderView: UIView!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Data structure
     struct Item {
@@ -38,6 +39,10 @@ class ScheduleDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Start activity indicator
+        myActivityIndicator.startAnimating()
+        self.myActivityIndicator.hidden = false
+        
         // Set title
         self.title = date
         
@@ -59,6 +64,11 @@ class ScheduleDetailViewController: UIViewController {
         // backgroundImageView.image = // Insert image URL here
 
         // TO-DO: CHAD! Please load past order items into the tableview. This should be the exact same code as in checkoutViewController so copy and pasting should work!
+        
+        // Stop activity indicator
+        //TO-DO: Place this so it is executed after the db request is made!
+        self.myActivityIndicator.stopAnimating()
+        self.myActivityIndicator.hidden = true
     }
     
     func calculateTotalCost() {

@@ -18,7 +18,7 @@ class RestaurantTableViewController: UITableViewController {
     @IBOutlet weak var detailsView: UIView!
     
     // Categories
-    var restaurantImageURL = String()
+    var restaurantImageData = NSData()
     var restaurantName = String()
     var restaurantID = String()
     var restaurantType = String()
@@ -35,10 +35,12 @@ class RestaurantTableViewController: UITableViewController {
         // Set title
         self.title = restaurantName
         restaurantNameLabel.text = restaurantName.uppercaseString
+        
         self.cuisineTypeLabel.text = restaurantType
-        let url = NSURL(string: restaurantImageURL)
-        let data = NSData(contentsOfURL: url!)
-        self.restaurantBackgroundImage.image = UIImage(data: data!)
+        
+        //let url = NSURL(string: restaurantImageURL)
+        //let data = NSData(contentsOfURL: url!)
+        self.restaurantBackgroundImage.image = UIImage(data: restaurantImageData)
         
         // Set tableView cells to custom height and automatically resize if needed
         tableView.estimatedRowHeight = 50

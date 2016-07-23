@@ -45,6 +45,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
         
+        // Set custom back button
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
         // CHAD! Here is where you can load the data into the dummy variables
         cellNumbers = [0, 2, 1] // These represent the number of each that exist (0 means not applicable, then the 2 means the user has 2 addresses, and 1 means the user has one payment method on file).
         userName = "Alexander Gerrese"
@@ -110,7 +113,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 1 || indexPath.row == 2 {
-            performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
+        performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
+        } else if indexPath.row == 0 {
+            performSegueWithIdentifier("toContactInfo", sender: self)
         }
     }
     
@@ -123,9 +128,25 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // BUG - If you log out then back in, you will come back here, not home.
     @IBAction func logOutButtonClicked(sender: UIButton) {
-        defaults.setBool(false, forKey: "loggedIn")
-        defaults.setObject(nil, forKey: "userID")
-        (self.tabBarController as! TabBarController).checkLoggedIn()
+        
+        let alertController = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .ActionSheet)
+        let signOut = UIAlertAction(title: "Yes, sign me out", style: .Default, handler: { (action) -> Void in
+            print("SignOut Button Pressed")
+            self.defaults.setBool(false, forKey: "loggedIn")
+            self.defaults.setObject(nil, forKey: "userID")
+            (self.tabBarController as! TabBarController).checkLoggedIn()
+        })
+        let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
+            print("Cancel Button Pressed")
+        })
+        
+        alertController.addAction(signOut)
+        alertController.addAction(cancel)
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func returnToSettings(segue: UIStoryboardSegue) {
     }
     
 

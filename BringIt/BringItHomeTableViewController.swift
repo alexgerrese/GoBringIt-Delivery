@@ -18,12 +18,11 @@ class BringItHomeTableViewController: UITableViewController {
     
     // Create struct to organize data
     struct Restaurant {
-        var coverImage: String
+        var coverImage: NSData
         var restaurantName: String
         var cuisineType: String
         var openHours: String
         var isOpen: Bool
-        // Added by Chad for DB purposes
         var id: String
     }
     
@@ -83,8 +82,15 @@ class BringItHomeTableViewController: UITableViewController {
                             
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 for i in 0..<self.coverImages.count {
-                                    self.restaurants.append(Restaurant(coverImage: self.coverImages[i], restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
+                                    
+                                    // Get image data
+                                    let url = NSURL(string: "http://www.gobring.it/images/" + self.coverImages[i])
+                                    let data = NSData(contentsOfURL: url!)
+                                    
+                                    self.restaurants.append(Restaurant(coverImage: data!, restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
                                 }
+                                
+
                                 self.tableView.reloadData()
                             }
                         }
@@ -124,9 +130,9 @@ class BringItHomeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
         
         // Set up cell properties
-        let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
-        let data = NSData(contentsOfURL: url!)
-        cell.restaurantBannerImage.image = UIImage(data: data!)
+        //let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
+        //let data = NSData(contentsOfURL: url!)
+        cell.restaurantBannerImage.image = UIImage(data: restaurants[indexPath.row].coverImage)
         cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
         cell.restaurantHoursLabel.text = restaurants[indexPath.row].openHours
@@ -143,7 +149,7 @@ class BringItHomeTableViewController: UITableViewController {
         
         let indexPath = tableView.indexPathForSelectedRow?.row
         let destination = segue.destinationViewController as? RestaurantTableViewController
-        destination?.restaurantImageURL = "http://www.gobring.it/images/" + restaurants[indexPath!].coverImage;
+        destination?.restaurantImageData = restaurants[indexPath!].coverImage;
         destination?.restaurantName = restaurants[indexPath!].restaurantName
         destination?.restaurantID = restaurants[indexPath!].id
         destination?.restaurantType = restaurants[indexPath!].cuisineType

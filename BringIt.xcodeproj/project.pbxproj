@@ -22,6 +22,8 @@
 		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
+		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
+		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
 		115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */; };
 		115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC371CEAA3460053E03F /* TabBarController.swift */; };
@@ -85,6 +87,8 @@
 		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedViewController.swift; sourceTree = "<group>"; };
 		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; };
 		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
+		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewController.swift; sourceTree = "<group>"; };
 		115ECC371CEAA3460053E03F /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -305,6 +309,8 @@
 			isa = PBXGroup;
 			children = (
 				1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */,
+				114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */,
+				114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -620,6 +626,7 @@
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
+				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
@@ -641,6 +648,7 @@
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
 				11F6DE471CF6CF1A00662C20 /* CheckoutViewController.swift in Sources */,
+				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */,
 				11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */,
 			);

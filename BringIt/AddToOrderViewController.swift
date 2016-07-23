@@ -8,11 +8,9 @@
 
 import UIKit
 import GMStepper
+import IQKeyboardManagerSwift
 
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    
-    // Get USER ID
-    let defaults = NSUserDefaults.standardUserDefaults()
     
     // Create struct to organize data
     struct SideItem {
@@ -53,6 +51,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var stepper: GMStepper!
     @IBOutlet weak var addToOrderButton: UIButton!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Data passed from previous View Controller
     var selectedFoodName = ""
@@ -68,8 +67,21 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var maxCartOrderID: Int = 0
     var specialInstructions = ""
     
+    // Get USER ID
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    // Coming from checkoutVC?
+    var comingFromCheckoutVC = false
+    
+    // Doing this and the two lines in ViewDidLoad automatically handles all keyboard and textField problems!
+    var returnKeyHandler : IQKeyboardReturnKeyHandler!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Start activity indicator
+        myActivityIndicator.startAnimating()
+        self.myActivityIndicator.hidden = false
         
         let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
         print(userID)
@@ -85,8 +97,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // Calculate base price
-        calculatePrice()
+        returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
         
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 50
@@ -99,6 +111,17 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
         stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), forControlEvents: .ValueChanged)
+        
+        // TO-DO: CHAD! Talk to me before doing this! But basically if you have the data from checkoutVC so that you can pull from the db the details of the item, do it here. There is a bunch of db code you did below so if you can reuse it there's no need to put it in the if statement. If you need new code, we will need to put that in the if true, and then what is below this if statement inside the if false. We should maybe have a quick call to clarify this!
+        // If coming from checkoutVC
+        if comingFromCheckoutVC {
+            // Write code hereeee
+        } else {
+            // And hereeee
+        }
+        
+        // Calculate base price
+        calculatePrice()
         
         // Check if the required sides have been selected
         if numberOfSidesSelected == Int(selectedFoodSidesNum) {
@@ -244,6 +267,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 self.priceIndex = self.sectionNames.indexOf("Price")!
                                 
                                 self.myTableView.reloadData()
+                                
+                                // Stop activity indicator
+                                self.myActivityIndicator.stopAnimating()
+                                self.myActivityIndicator.hidden = true
                             }
                         }
                     }
@@ -318,7 +345,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         print(userID)
         
         // Retrieve special instructions if available
-        let indexPath = NSIndexPath(forRow: 0, inSection: 3)
+        let indexPath = NSIndexPath(forRow: 0, inSection: specialInstructionsIndex)
         let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
         if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
             specialInstructions = selectedCell.specialInstructionsText.text!

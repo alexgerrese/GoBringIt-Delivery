@@ -1,8 +1,8 @@
 //
-//  SignUpViewController.swift
+//  ContactInfoViewController
 //  BringIt
 //
-//  Created by Alexander's MacBook on 5/15/16.
+//  Created by Alexander's MacBook on 7/23/16.
 //  Copyright © 2016 Campus Enterprises. All rights reserved.
 //
 
@@ -10,23 +10,21 @@ import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 
-// To think about later: What to do with the profile pic
+// Later to think about: Check if anything has changed, and if not then no need to call db
 
-class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet weak var profilePicImage: UIImageView!
     @IBOutlet weak var chooseImageButton: UIButton!
     @IBOutlet weak var fullNameTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var passwordTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Error messages
     @IBOutlet weak var invalidNameLabel: UILabel!
     @IBOutlet weak var invalidEmailLabel: UILabel!
-    @IBOutlet weak var invalidPasswordLabel: UILabel!
     @IBOutlet weak var invalidPhoneNumberLabel: UILabel!
     
     // Variables to choose profile pic
@@ -40,7 +38,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         super.viewDidLoad()
         
         // Set title
-        self.title = "Sign Up"
+        self.title = "Contact Info"
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -57,17 +55,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         // Hide error messages
         invalidNameLabel.hidden = true
         invalidEmailLabel.hidden = true
-        invalidPasswordLabel.hidden = true
         invalidPhoneNumberLabel.hidden = true
         phoneNumberTextField.delegate = self
         
-        // Hide activity indicator
-        myActivityIndicator.stopAnimating()
+        // TO-DO: CHAD! Please preload the user's db data so we can populate the fields!
+        let fullname = ""
+        let email = ""
+        let phoneNum = ""
+        
+        //WRITE YOUR CODE HEREEEE
+
     }
-    
-    @IBAction func lol(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+
     // MARK: - Image Picker Methods
     
     @IBAction func chooseImageClicked(sender: AnyObject) {
@@ -193,10 +192,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     // MARK: - IBActions
-    @IBAction func createButtonClicked(sender: UIButton) {
+    @IBAction func saveButtonClicked(sender: UIButton) {
         
         // Show activity indicator
         myActivityIndicator.startAnimating()
+        
         var canContinue = true
         
         // Check validity of each text field
@@ -212,12 +212,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         } else {
             invalidEmailLabel.hidden = true
         }
-        if passwordTextField.text?.characters.count < 8 {
-            invalidPasswordLabel.hidden = false
-            canContinue = false
-        } else {
-            invalidPasswordLabel.hidden = true
-        }
         if !phoneNumberTextField.text!.isPhoneNumber {
             invalidPhoneNumberLabel.hidden = false
             canContinue = false
@@ -225,82 +219,32 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             invalidPhoneNumberLabel.hidden = true
         }
         
-        // Check for existing email here
-        if (canContinue) {
-            // Open Connection to PHP Service
-            let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
-            let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
-                print("Task completed")
-                if let data = data {
-                    do {
-                        let httpResponse = response as! NSHTTPURLResponse
-                        let statusCode = httpResponse.statusCode
-                        
-                        // Check HTTP Response
-                        if (statusCode == 200) {
-                            
-                            do{
-                                // Parse JSON
-                                let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                                
-                                for User in json as! [Dictionary<String, AnyObject>] {
-                                    let emailID = User["email"] as! String
-                                    print(emailID)
-                                    
-                                    // Verify email
-                                    if (emailID == self.emailTextField.text) {
-                                        NSOperationQueue.mainQueue().addOperationWithBlock {
-                                            self.invalidEmailLabel.hidden = false
-                                            self.invalidEmailLabel.text = "This email is already associated with an account."
-                                            canContinue = false
-                                        }
-                                    }
-                                }
-                                
-                                NSOperationQueue.mainQueue().addOperationWithBlock {
-                                    // End activity indicator animation
-                                    self.myActivityIndicator.stopAnimating()
-                                    
-                                    if canContinue {
-                                        // Hide error messages
-                                        self.invalidNameLabel.hidden = true
-                                        self.invalidEmailLabel.hidden = true
-                                        self.invalidPasswordLabel.hidden = true
-                                        self.invalidPhoneNumberLabel.hidden = true
-                                        
-                                        // Reset canContinue variable
-                                        canContinue = false
-                                        
-                                        self.performSegueWithIdentifier("toAddressInfo", sender: self)
-                                    }
-                                }
-                            }
-                            
-                        }
-                    } catch let error as NSError {
-                        print(error.localizedDescription)
-                    }
-                } else if let error = error {
-                    print(error.localizedDescription)
-                }
-            }
-            task.resume()
+        if canContinue {
+        // Hide error messages
+        self.invalidNameLabel.hidden = true
+        self.invalidEmailLabel.hidden = true
+        self.invalidPhoneNumberLabel.hidden = true
+            
+        // TO-DO: CHAD! Please save the new user data to the db here!!!
+        //WRITE CODE HEREEEEE
+            
+        // Reset canContinue variable
+        canContinue = false
+            
+        // End activity indicator animation
+        self.myActivityIndicator.stopAnimating()
+            
+        // Perform unwind segue
+        self.performSegueWithIdentifier("returnToSettings", sender: self)
+
+        } else {
+            // End activity indicator animation
+            self.myActivityIndicator.stopAnimating()
+            self.myActivityIndicator.hidden = true
         }
     }
     
-    @IBAction func xButtonClicked(sender: UIBarButtonItem) {
-        self.view.endEditing(true)
-        
-        // End activity indicator animation
-        myActivityIndicator.stopAnimating()
-        
-        // Hide error messages
-        invalidNameLabel.hidden = true
-        invalidEmailLabel.hidden = true
-        invalidPasswordLabel.hidden = true
-        invalidPhoneNumberLabel.hidden = true
+    @IBAction func returnToContactInfo(segue: UIStoryboardSegue) {
     }
     
     override func didReceiveMemoryWarning() {
@@ -310,7 +254,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "toAddressInfo" {
             // Send initial data to next screen
@@ -322,43 +266,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             VC.phoneNumber = phoneNumberTextField.text!
         }
         
-    }
+    }*/
     
-}
-
-extension String {
-    
-    //To check text field or String is blank or not
-    var isBlank: Bool {
-        get {
-            let trimmed = stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            return trimmed.isEmpty
-        }
-    }
-    
-    //Validate Email
-    var isEmail: Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .CaseInsensitive)
-            return regex.firstMatchInString(self, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
-        } catch {
-            return false
-        }
-    }
-    
-    //validate PhoneNumber
-    var isPhoneNumber: Bool {
-        let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
-        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-        let result =  phoneTest.evaluateWithObject(self)
-        return result
-    }
-    
-    //validate Zip Code
-    var isZipCode: Bool {
-        let ZIP_REGEX = "^\\d{5}$"
-        let zipTest = NSPredicate(format: "SELF MATCHES %@", ZIP_REGEX)
-        let result =  zipTest.evaluateWithObject(self)
-        return result
-    }
 }

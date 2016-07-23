@@ -19,6 +19,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var deliveryFeeLabel: UILabel!
     @IBOutlet weak var subtotalCostLabel: UILabel!
     @IBOutlet weak var totalCostLabel: UILabel!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     var cameFromVC = ""
     var deliverTo = ""
@@ -47,6 +48,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Start activity indicator
+        myActivityIndicator.startAnimating()
+        self.myActivityIndicator.hidden = false
         
         // Set title
         self.title = "Checkout"
@@ -102,6 +107,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 self.deliveryFeeLabel.text = String(format: "$%.2f", self.deliveryFee)
                                 self.subtotalCostLabel.text = String(format: "$%.2f", self.totalCost)
                                 self.totalCostLabel.text = String(format: "$%.2f", self.totalCost + self.deliveryFee)
+                                
+                                // Stop activity indicator
+                                self.myActivityIndicator.stopAnimating()
+                                self.myActivityIndicator.hidden = true
                             }
                         }
                     }
@@ -445,52 +454,67 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Resize itemsTableView
     override func updateViewConstraints() {
-        print("UPDATEVIEWCONSTRAINTS")
         super.updateViewConstraints()
         itemsTableViewHeight.constant = itemsTableView.contentSize.height
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView == itemsTableView {
+            if editingStyle == .Delete {
+                // Delete the row from the data source
+                
+                // TO-DO: CHAD! Please remove this item from the cart in the db. This needs to happen here (or we need to store the whole cart locally) in case the user deletes a couple of rows and then clicks X to browse a bit more or quits out of the app.
+                // Write code hereeeeee
+                
+                items.removeAtIndex(indexPath.row)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     // Find out which cell was selected and sent to prepareForSegue
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         selectedCell = indexPath.row
         
         return indexPath
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView == itemsTableView {
+            performSegueWithIdentifier("toChangeOrder", sender: self)
+        }
+    }
+    
+    
+    @IBAction func checkoutButtonPressed(sender: UIButton) {
+        
+        let alertController = UIAlertController(title: "Checkout", message: "Are you sure you want to checkout?", preferredStyle: .ActionSheet)
+        let checkout = UIAlertAction(title: "Yes, bring me my food!", style: .Default, handler: { (action) -> Void in
+            print("Checkout Button Pressed")
+            
+            // Start activity indicator again
+            self.myActivityIndicator.hidden = false
+            self.myActivityIndicator.startAnimating()
+            
+            // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
+            // Write code hereeeeee
+            
+            // Stop activity indicator again
+            self.myActivityIndicator.hidden = true
+            self.myActivityIndicator.startAnimating()
+            
+            self.performSegueWithIdentifier("toOrderPlaced", sender: self)
+        })
+        let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
+            print("Cancel Button Pressed")
+        })
+        
+        alertController.addAction(checkout)
+        alertController.addAction(cancel)
+        
+        presentViewController(alertController, animated: true, completion: nil)
+
     }
 
     @IBAction func xButtonPressed(sender: AnyObject) {
@@ -510,6 +534,16 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             } else if self.selectedCell == 1 {
                 VC.selectedCell = "Paying With"
             }
+        } else if segue.identifier == "toChangeOrder" {
+            let nav = segue.destinationViewController as! UINavigationController
+            let VC = nav.topViewController as! AddToOrderViewController
+            
+            VC.comingFromCheckoutVC = true
+            
+            // TO-DO: CHAD! Get the item id (or whatever it is) of the selected cell so we can present the AddToOrderVC with all the fields already populated. Let me know what data will be sufficient so that when you pull it form AddToOrderVC, we'll know all about the item (selected sides, special instructions, etc.).
+            // Write code hereeeee
+            
+            
         }
     }
 
