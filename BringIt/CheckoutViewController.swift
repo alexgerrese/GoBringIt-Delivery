@@ -38,6 +38,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var service_id = ""
     
+    var sides = [Side]()
+    
     // TO-DO: CHAD! So I've created 3 more fields in the struct for you to put the sides, extras and special instructions in. The way you can format it is to pull all the sides and extras and special instructions associated with one item, and create a single string with all the sides/extras separated by commas. For example, "Mashed Potatoes, Fries, Mac & Cheese". I will deal with other formatting later!
     /*
     // Data structure
@@ -62,7 +64,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     */
     
-    var sides = [Side]()
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     // Get USER ID
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -528,10 +533,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Fetch all active carts, if any
         // Check if there is an existing active cart from this restaurant
-        let appDelegate =
-            UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        let managedContext = appDelegate.managedObjectContext
         
         let fetchRequest = NSFetchRequest(entityName: "Order")
         let firstPredicate = NSPredicate(format: "isActive == %@", true)
@@ -727,13 +728,17 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == itemsTableView {
             if editingStyle == .Delete {
-                // Delete the row from the data source
                 
-                // TO-DO: ALEX! Save the managed object context when deleting a row!!!
+                // Delete the row from the data source
+                managedContext.deleteObject(items[indexPath.row])
+                appDelegate.saveContext()
                 
                 items.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
+                // Reload tableview and adjust tableview height
+                itemsTableView.reloadData()
+                updateViewConstraints()
             }
         }
     }

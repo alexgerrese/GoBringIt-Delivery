@@ -11,6 +11,8 @@ import GMStepper
 import IQKeyboardManagerSwift
 import CoreData
 
+// TO-DO: - FIX BUG: Find out a way to update items when they are changed
+
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     var passedItem: Item?
@@ -122,8 +124,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
         stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), forControlEvents: .ValueChanged)
-        
-        // TO-DO: CHAD! Talk to me before doing this! But basically if you have the data from checkoutVC so that you can pull from the db the details of the item, do it here. There is a bunch of db code you did below so if you can reuse it there's no need to put it in the if statement. If you need new code, we will need to put that in the if true, and then what is below this if statement inside the if false. We should maybe have a quick call to clarify this!
         
         if comingFromCheckoutVC {
             self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
