@@ -11,7 +11,7 @@ import UIKit
 var comingFromOrderPlaced = false
 
 class CheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
     // MARK: - IBOutlets
     @IBOutlet weak var itemsTableView: UITableView!
     @IBOutlet weak var detailsTableView: UITableView!
@@ -29,12 +29,18 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var deliveryFee = 0.0
     
     var items_ordered: [String] = []
+    var items_ordered_quantity: [String] = []
+    var items_ordered_cartUID: [String] = []
+    var cartUID_side = [String: String]()
+    var items_ordered_instructions: [String] = []
     var items = [Item]()
+    
     var service_id = ""
     
     // TO-DO: CHAD! So I've created 3 more fields in the struct for you to put the sides, extras and special instructions in. The way you can format it is to pull all the sides and extras and special instructions associated with one item, and create a single string with all the sides/extras separated by commas. For example, "Mashed Potatoes, Fries, Mac & Cheese". I will deal with other formatting later!
     // Data structure
     struct Item {
+        var uid = ""
         var name = ""
         var quantity = 0
         var price = 0.00
@@ -42,6 +48,18 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         var extras = ""
         var specialInstructions = ""
     }
+    
+    struct Side {
+        var uid = ""
+        // Name of Side
+        var name = ""
+        // Price of Side
+        var price = 0.00
+        // isRequired = 0 means Extra, isRequired = 1 means Side
+        var isRequired = 0
+    }
+    
+    var sides = [Side]()
     
     // Get USER ID
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -97,6 +115,36 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
+                                
+                                // Connect the sides in self.sides with self.items based on uid
+                                for i in 0...self.items.count - 1 {
+                                    let indiv_item = self.items[i]
+                                    let item_uid = indiv_item.uid
+                                    for indiv_side in self.sides {
+                                        let side_uid = indiv_side.uid
+                                        if (item_uid == side_uid) {
+                                            print("This is a side", indiv_side.name)
+                                            print("for this item", indiv_item.name)
+                                            
+                                            if (indiv_side.isRequired == 1) {
+                                                let newSides = indiv_item.sides + indiv_side.name + "($" + String(indiv_side.price) + "), "
+                                                self.items[i] = Item(uid: indiv_item.uid, name: indiv_item.name, quantity: indiv_item.quantity, price: indiv_item.price, sides: newSides, extras: indiv_item.extras, specialInstructions: indiv_item.specialInstructions)
+                                                print("newSides : ", newSides)
+                                            } else {
+                                                //indiv_item.extras += indiv_side.name + ", "
+                                                var newExtras = indiv_item.extras + indiv_side.name + "($" + String(indiv_side.price) + "), "
+                                                self.items[i] = Item(uid: indiv_item.uid, name: indiv_item.name, quantity: indiv_item.quantity, price: indiv_item.price, sides: indiv_item.sides, extras: newExtras, specialInstructions: indiv_item.specialInstructions)
+                                                print("newExtras : ", newExtras)
+                                            }
+                                            
+                                            
+                                        }
+                                    }
+                                }
+                                
+                                
+                                
+                                
                                 //THIS IS WHERE WE NEED TO RELOAD EVERYTHING
                                 self.itemsTableView.reloadData()
                                 self.detailsTableView.reloadData()
@@ -151,6 +199,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
+                                
                                 print(addressString!)
                                 self.deliverTo = addressString!
                                 self.detailsTableView.reloadData()
@@ -190,14 +239,116 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     print(Cart["name"] as! String)
                                     print(Cart["price"] as! String)
                                     
+                                    let itemIndex = Int(self.items_ordered.indexOf(id)!);
+                                    
                                     //CHAD! Pull from the db and replace the dummy variables here
-                                    self.items.append(Item(name: Cart["name"] as! String, quantity: 10, price: Double(Cart["price"] as! String)!, sides: "Mashed Potatoes, Truffle Fries", extras: "Extra sauce, Ranch wings", specialInstructions: "Please add a few bags of ketchup."))
+                                    self.items.append(Item(uid: self.items_ordered_cartUID[itemIndex], name: Cart["name"] as! String, quantity: Int(self.items_ordered_quantity[itemIndex])!, price: Double(Cart["price"] as! String)!, sides: "", extras: "", specialInstructions: self.items_ordered_instructions[itemIndex]))
                                     self.service_id = Cart["service_id"] as! String
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 task.resume()
+                                
+                                //THIS IS WHERE WE NEED TO RELOAD EVERYTHING
+                                self.itemsTableView.reloadData()
+                                self.detailsTableView.reloadData()
+                                self.updateViewConstraints()
+                                //task4.resume()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print("Error:" + error.localizedDescription)
+                }
+            } else if let error = error {
+                print("Error:" + error.localizedDescription)
+            }
+        }
+        
+        // search all menu_sides
+        // if the cartUID_side contains the value item_id
+        // save the name, price, required
+        let requestURL6: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSides.php")!
+        let urlRequest6: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL6)
+        let session6 = NSURLSession.sharedSession()
+        let task6 = session6.dataTaskWithRequest(urlRequest6) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Side1 in json as! [Dictionary<String, AnyObject>] {
+                                let side_id = Side1["id"] as! String
+                                for (key, value) in self.cartUID_side {
+                                    if (value == side_id) {
+                                        self.sides.append(Side(uid: key, name: Side1["name"] as! String, price: Double(Side1["price"] as! String)!, isRequired: Int(Side1["required"] as! String)!))
+                                    }
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                for side in self.sides {
+                                    print("Side:", side.uid)
+                                    print("Side:", side.name)
+                                    print("Side:", side.price)
+                                    print("Side:", side.isRequired)
+                                }
+                                //task3.resume()
                                 task4.resume()
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print("Error:" + error.localizedDescription)
+                }
+            } else if let error = error {
+                print("Error:" + error.localizedDescription)
+            }
+        }
+
+        
+        // search all cart_sides
+        // if the cart_entry_uid is contained in self.cartUID_side
+        // then update the value for that uid key with the side_id
+        // Open Connection to PHP Service
+        let requestURL5: NSURL = NSURL(string: "https://www.gobring.it/CHADcartSides.php")!
+        let urlRequest5: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL5)
+        let session5 = NSURLSession.sharedSession()
+        let task5 = session5.dataTaskWithRequest(urlRequest5) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Cart in json as! [Dictionary<String, AnyObject>] {
+                                //var account_id: String?
+                                let cart_entry_uid = Cart["cart_entry_uid"] as! String
+                                if let val = self.cartUID_side[cart_entry_uid] {
+                                    self.cartUID_side.updateValue(Cart["side_id"] as! String, forKey: cart_entry_uid)
+                                }
+                            }
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                for (key, value) in self.cartUID_side {
+                                    //print("Dictionary key \(key) -  Dictionary value \(value)")
+                                }
+                                
+                                // Activate task that will get the side_item name and price from this Dictionary
+                                task6.resume()
+                                
                             }
                         }
                     }
@@ -241,14 +392,30 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     if (active_cart == "1") {
                                         //print(order_id)
                                         self.items_ordered.append(Cart["item_id"] as! String)
+                                        self.items_ordered_quantity.append(Cart["quantity"] as! String)
+                                        self.items_ordered_cartUID.append(Cart["uid"] as! String)
+                                        self.cartUID_side[Cart["uid"] as! String] = "NONE"
+                                        self.items_ordered_instructions.append(Cart["instructions"] as! String)
                                     }
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 for item in self.items_ordered {
-                                    print("Item here:", item)
+                                    //print("Item here:", item)
                                 }
-
+                                
+                                for item in self.items_ordered_quantity {
+                                    //print("Item quantity here:", item)
+                                }
+                                
+                                for (key, value) in self.cartUID_side {
+                                    //print("Dictionary key \(key) -  Dictionary value \(value)")
+                                }
+                                
+                                
+                                
+                                // now activate the cart_side search on if items_ordered_cartUID
+                                task5.resume()
                                 task3.resume()
                             }
                         }
@@ -273,70 +440,70 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // save delivery_fee
         
         /*var addressString: String?
-        
-        // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADaccountAddresses.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
-            if let data = data {
-                do {
-                    let httpResponse = response as! NSHTTPURLResponse
-                    let statusCode = httpResponse.statusCode
-                    
-                    // Check HTTP Response
-                    if (statusCode == 200) {
-                        
-                        do{
-                            // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                            
-                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
-                                //var account_id: String?
-                                let account_id = Restaurant["account_id"] as! String
-                                    if ( account_id.rangeOfString(userID) != nil ) {
-                                        print(userID)
-                                        print(Restaurant["street"] as? String)
-                                        let street = Restaurant["street"] as AnyObject! as! String //+ ", " + Restaurant["apartment"] as AnyObject! as! String
-                                        let apartment = Restaurant["apartment"] as AnyObject! as! String
-                                        addressString = street + ", " + apartment
-                                    }
-                                }
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                print(addressString!)
-                                self.deliverTo = addressString!
-                                self.detailsTableView.reloadData()
-                                self.itemsTableView.reloadData();
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    self.itemsTableView.reloadData()
-                                })
-                                self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
-                            }
-                        }
-                    }
-                } catch let error as NSError {
-                    print("Error:" + error.localizedDescription)
-                }
-            } else if let error = error {
-                print("Error:" + error.localizedDescription)
-            }
-        }*/
+         
+         // Open Connection to PHP Service
+         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADaccountAddresses.php")!
+         let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+         let session = NSURLSession.sharedSession()
+         let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+         if let data = data {
+         do {
+         let httpResponse = response as! NSHTTPURLResponse
+         let statusCode = httpResponse.statusCode
+         
+         // Check HTTP Response
+         if (statusCode == 200) {
+         
+         do{
+         // Parse JSON
+         let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+         
+         for Restaurant in json as! [Dictionary<String, AnyObject>] {
+         //var account_id: String?
+         let account_id = Restaurant["account_id"] as! String
+         if ( account_id.rangeOfString(userID) != nil ) {
+         print(userID)
+         print(Restaurant["street"] as? String)
+         let street = Restaurant["street"] as AnyObject! as! String //+ ", " + Restaurant["apartment"] as AnyObject! as! String
+         let apartment = Restaurant["apartment"] as AnyObject! as! String
+         addressString = street + ", " + apartment
+         }
+         }
+         NSOperationQueue.mainQueue().addOperationWithBlock {
+         print(addressString!)
+         self.deliverTo = addressString!
+         self.detailsTableView.reloadData()
+         self.itemsTableView.reloadData();
+         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+         self.itemsTableView.reloadData()
+         })
+         self.itemsTableView.performSelectorOnMainThread(Selector("reloadData"), withObject: nil, waitUntilDone: true)
+         }
+         }
+         }
+         } catch let error as NSError {
+         print("Error:" + error.localizedDescription)
+         }
+         } else if let error = error {
+         print("Error:" + error.localizedDescription)
+         }
+         }*/
         
         //task.resume()
-
+        
         // Set SAMPLE DATA
         //deliverTo = "1369 Campus Drive"
         payWith = "Food Points"
-
+        
         /*self.itemsTableView.reloadData();
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.itemsTableView.reloadData()
-        })
-        self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)*/
-
+         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+         self.itemsTableView.reloadData()
+         })
+         self.itemsTableView.performSelectorOnMainThread(#selector(UITableView.reloadData), withObject: nil, waitUntilDone: true)*/
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
@@ -347,9 +514,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -361,13 +528,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             totalCost += Double(item.price) * Double(item.quantity)
         }
     }
-
+    
     // MARK: - Table view data source
-
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == itemsTableView {
             return items.count
@@ -411,30 +578,30 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                     size: 13.0)!])
             
             sidesAS.addAttribute(NSFontAttributeName,
-                                    value: UIFont(
+                                 value: UIFont(
                                     name: "Avenir-Heavy",
                                     size: 13.0)!,
-                                    range: NSRange(
+                                 range: NSRange(
                                     location: 0,
                                     length: 6))
             extrasAS.addAttribute(NSFontAttributeName,
-                                 value: UIFont(
+                                  value: UIFont(
                                     name: "Avenir-Heavy",
                                     size: 13.0)!,
-                                 range: NSRange(
+                                  range: NSRange(
                                     location: 0,
                                     length: 7))
             specialInstructionsAS.addAttribute(NSFontAttributeName,
-                                 value: UIFont(
-                                    name: "Avenir-Heavy",
-                                    size: 13.0)!,
-                                 range: NSRange(
-                                    location: 0,
-                                    length: 21))
+                                               value: UIFont(
+                                                name: "Avenir-Heavy",
+                                                size: 13.0)!,
+                                               range: NSRange(
+                                                location: 0,
+                                                length: 21))
             
             cell.sidesLabel.attributedText = sidesAS
-                cell.extrasLabel.attributedText = extrasAS
-                cell.specialInstructionsLabel.attributedText = specialInstructionsAS
+            cell.extrasLabel.attributedText = extrasAS
+            cell.specialInstructionsLabel.attributedText = specialInstructionsAS
             
             return cell
         } else {
@@ -514,9 +681,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         alertController.addAction(cancel)
         
         presentViewController(alertController, animated: true, completion: nil)
-
+        
     }
-
+    
     @IBAction func xButtonPressed(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true);
     }
@@ -546,5 +713,5 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }
     }
-
+    
 }
