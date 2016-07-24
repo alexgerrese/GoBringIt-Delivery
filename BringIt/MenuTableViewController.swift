@@ -199,7 +199,7 @@ class MenuTableViewController: UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
             VC.selectedFoodName = foodNames[indexPath.row]
             VC.selectedFoodDescription = foodDescriptions[indexPath.row]
-            VC.selectedFoodPrice = foodPrices[indexPath.row]
+            VC.selectedFoodPrice = Double(foodPrices[indexPath.row])!
             VC.selectedFoodID = foodIDs[indexPath.row]
             VC.selectedFoodSidesNum = foodSideNums[indexPath.row]
         } else if segue.identifier == "toCheckout" {

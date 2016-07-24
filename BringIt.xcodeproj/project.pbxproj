@@ -24,6 +24,13 @@
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
+		114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */; };
+		114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */; };
+		114FC71D1D44C46F00DB5824 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7171D44C46F00DB5824 /* Side.swift */; };
+		114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */; };
+		114FC71F1D44C46F00DB5824 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7191D44C46F00DB5824 /* Order.swift */; };
+		114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */; };
+		114FC7211D44C46F00DB5824 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71B1D44C46F00DB5824 /* Item.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
 		115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */; };
 		115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC371CEAA3460053E03F /* TabBarController.swift */; };
@@ -89,6 +96,13 @@
 		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		114FC7141D44B82C00DB5824 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Side+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114FC7171D44C46F00DB5824 /* Side.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
+		114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Order+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114FC7191D44C46F00DB5824 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114FC71B1D44C46F00DB5824 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewController.swift; sourceTree = "<group>"; };
 		115ECC371CEAA3460053E03F /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -185,6 +199,7 @@
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
+				114FC7221D44C47A00DB5824 /* Data Model */,
 				110220031CE68A83003D82FB /* Info.plist */,
 				63F1898A1D0BE02B00C464A1 /* BringIt-Bridging-Header.h */,
 			);
@@ -234,6 +249,20 @@
 				11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */,
 			);
 			name = "Deliver To/Paying With";
+			sourceTree = "<group>";
+		};
+		114FC7221D44C47A00DB5824 /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */,
+				114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */,
+				114FC7171D44C46F00DB5824 /* Side.swift */,
+				114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */,
+				114FC7191D44C46F00DB5824 /* Order.swift */,
+				114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */,
+				114FC71B1D44C46F00DB5824 /* Item.swift */,
+			);
+			name = "Data Model";
 			sourceTree = "<group>";
 		};
 		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
@@ -623,9 +652,12 @@
 			files = (
 				115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */,
 				11F6DE4F1CF96B5300662C20 /* ServicesTableViewCell.swift in Sources */,
+				114FC7211D44C46F00DB5824 /* Item.swift in Sources */,
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
+				114FC71D1D44C46F00DB5824 /* Side.swift in Sources */,
+				114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
@@ -640,10 +672,14 @@
 				115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
+				114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */,
 				11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */,
+				114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */,
 				11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */,
 				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
+				114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */,
+				114FC71F1D44C46F00DB5824 /* Order.swift in Sources */,
 				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
@@ -905,6 +941,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				114FC7141D44B82C00DB5824 /* Model.xcdatamodel */,
+			);
+			currentVersion = 114FC7141D44B82C00DB5824 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 11021FEA1CE68A83003D82FB /* Project object */;
 }

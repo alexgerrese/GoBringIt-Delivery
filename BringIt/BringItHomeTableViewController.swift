@@ -8,6 +8,8 @@
 
 import UIKit
 
+var selectedRestaurantName = ""
+
 class BringItHomeTableViewController: UITableViewController {
     
     // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
@@ -143,6 +145,12 @@ class BringItHomeTableViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        selectedRestaurantName = restaurants[indexPath.row].restaurantName
+        
+        return indexPath
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {

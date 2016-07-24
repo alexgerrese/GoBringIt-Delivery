@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 var comingFromOrderPlaced = false
 
@@ -26,7 +27,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
-    var deliveryFee = 0.0
+    var deliveryFee = 2.5 // Pull this from db on AddToOrder!!!
     
     var items_ordered: [String] = []
     var items_ordered_quantity: [String] = []
@@ -38,6 +39,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var service_id = ""
     
     // TO-DO: CHAD! So I've created 3 more fields in the struct for you to put the sides, extras and special instructions in. The way you can format it is to pull all the sides and extras and special instructions associated with one item, and create a single string with all the sides/extras separated by commas. For example, "Mashed Potatoes, Fries, Mac & Cheese". I will deal with other formatting later!
+    /*
     // Data structure
     struct Item {
         var uid = ""
@@ -58,6 +60,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // isRequired = 0 means Extra, isRequired = 1 means Side
         var isRequired = 0
     }
+    */
     
     var sides = [Side]()
     
@@ -66,10 +69,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Start activity indicator
-        myActivityIndicator.startAnimating()
-        self.myActivityIndicator.hidden = false
         
         // Set title
         self.title = "Checkout"
@@ -83,11 +82,15 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
+        // Hide activity indicator
+        myActivityIndicator.hidden = true
+        
         // Get Address of User
         // var userID: String?
         let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
         var addressString: String?
         
+        /*
         // Open Connection to PHP Service
         let requestURL4: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
         let urlRequest4: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL4)
@@ -169,6 +172,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 print("Error:" + error.localizedDescription)
             }
         }
+        */
         
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADaccountAddresses.php")!
@@ -214,6 +218,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         
+        // COMMENTED OUT TO TRY COREDATA
+        
+        /*
         let requestURL3: NSURL = NSURL(string: "http://www.gobring.it/CHADitems.php")!
         let urlRequest3: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL3)
         let session3 = NSURLSession.sharedSession()
@@ -488,8 +495,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
          print("Error:" + error.localizedDescription)
          }
          }*/
-        
-        //task.resume()
+        */
+ 
+        task.resume()
         
         // Set SAMPLE DATA
         //deliverTo = "1369 Campus Drive"
@@ -514,7 +522,55 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
+        print(selectedRestaurantName)
         
+        // CoreData logic
+        
+        // Fetch all active carts, if any
+        // Check if there is an existing active cart from this restaurant
+        let appDelegate =
+            UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        // TO-DO: FInd a way to know which restaurant we're in then uncomment below
+        let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        fetchRequest.predicate = predicate
+        
+        var activeCart = [Order]()
+        
+        do {
+            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                activeCart = fetchResults
+                print(fetchResults.count)
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        // If cart is empty, then load empty state
+        if activeCart.isEmpty {
+            print("CART IS EMPTY")
+        }
+        //If request returns a cart, then display the cart
+        else {
+            let order = activeCart[0] // MAYBE DON'T HARD CODE
+            items = order.items?.allObjects as! [Item]
+            
+            for i in 0..<order.items!.count {
+                print((items[i].name))
+            }
+            
+        }
+        
+        self.calculateTotalCost()
+        self.deliveryFeeLabel.text = String(format: "$%.2f", self.deliveryFee)
+        self.subtotalCostLabel.text = String(format: "$%.2f", self.totalCost)
+        self.totalCostLabel.text = String(format: "$%.2f", self.totalCost + self.deliveryFee)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -525,7 +581,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     func calculateTotalCost() {
         totalCost = 0.0
         for item in items {
-            totalCost += Double(item.price) * Double(item.quantity)
+            var costOfSides = 0.0
+            for side in item.sides?.allObjects as! [Side] {
+                costOfSides += Double(side.price!)
+            }
+            totalCost += (Double(item.price!) + costOfSides) * Double(item.quantity!)
         }
     }
     
@@ -547,14 +607,52 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         if tableView == itemsTableView {
             let cell = tableView.dequeueReusableCellWithIdentifier("checkoutCell", forIndexPath: indexPath) as! CheckoutTableViewCell
             
+            // Set name and quantity labels
             cell.itemNameLabel.text = items[indexPath.row].name
-            cell.itemQuantityLabel.text = String(items[indexPath.row].quantity)
-            let totalItemCost = Double(items[indexPath.row].quantity) * items[indexPath.row].price
+            cell.itemQuantityLabel.text = String(items[indexPath.row].quantity!)
+            
+            // Calculate total item cost
+            var totalItemCost = 0.0
+            var costOfSides = 0.0
+            for side in items[indexPath.row].sides?.allObjects as! [Side] {
+                costOfSides += Double(side.price!)
+            }
+            totalItemCost += (Double(items[indexPath.row].price!) + costOfSides) * Double(items[indexPath.row].quantity!)
             cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
             
-            let sides = "Sides: \(items[indexPath.row].sides)"
-            let extras = "Extras: \(items[indexPath.row].extras)"
-            let specialInstructions = "Special Instructions: \(items[indexPath.row].specialInstructions)"
+            // Format all sides and extras
+            var sides = "Sides: "
+            var extras = "Extras: "
+            let allSides = items[indexPath.row].sides?.allObjects as! [Side]
+            for i in 0..<allSides.count {
+                if ((allSides[i].isRequired) == true) {
+                    if i < allSides.count - 1 {
+                        sides += allSides[i].name! + ", "
+                    } else {
+                        sides += allSides[i].name!
+                    }
+                } else {
+                    if i < allSides.count - 1 {
+                        extras += allSides[i].name! + ", "
+                    } else {
+                        extras += allSides[i].name!
+                    }
+                }
+            }
+            if sides == "Sides: " {
+                sides += "None"
+            }
+            if extras == "Extras: " {
+                extras += "None"
+            }
+            
+            // Format special instructions
+            var specialInstructions = "Special Instructions: "
+            if items[indexPath.row].specialInstructions != "" {
+                specialInstructions += items[indexPath.row].specialInstructions!
+            } else {
+                specialInstructions += "None"
+            }
             
             // Create attributed strings of the extras
             var sidesAS = NSMutableAttributedString()
@@ -631,11 +729,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             if editingStyle == .Delete {
                 // Delete the row from the data source
                 
-                // TO-DO: CHAD! Please remove this item from the cart in the db. This needs to happen here (or we need to store the whole cart locally) in case the user deletes a couple of rows and then clicks X to browse a bit more or quits out of the app.
-                // Write code hereeeeee
+                // TO-DO: ALEX! Save the managed object context when deleting a row!!!
                 
                 items.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                
             }
         }
     }
@@ -706,11 +804,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             let VC = nav.topViewController as! AddToOrderViewController
             
             VC.comingFromCheckoutVC = true
-            
-            // TO-DO: CHAD! Get the item id (or whatever it is) of the selected cell so we can present the AddToOrderVC with all the fields already populated. Let me know what data will be sufficient so that when you pull it form AddToOrderVC, we'll know all about the item (selected sides, special instructions, etc.).
-            // Write code hereeeee
-            
-            
+            VC.passedItem = items[selectedCell]
+            VC.selectedFoodName = items[selectedCell].name!
+            VC.selectedFoodDescription = items[selectedCell].dbDescription!
+            VC.selectedFoodPrice = Double(items[selectedCell].price!)
+            VC.selectedFoodID = items[selectedCell].id!
+            VC.selectedFoodSidesNum = String(items[selectedCell].selectedFoodSidesNum!)
         }
     }
     

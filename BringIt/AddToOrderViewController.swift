@@ -9,8 +9,14 @@
 import UIKit
 import GMStepper
 import IQKeyboardManagerSwift
+import CoreData
 
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    
+    var passedItem: Item?
+    var passedSides: [Side]?
+    var sides = [NSManagedObject]()
+    //var order = Order()
     
     // Create struct to organize data
     struct SideItem {
@@ -33,7 +39,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // DATA
     var sectionNames = [String]() //["DESCRIPTION", "SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
-    var section1 = [String]()
+    var section1 = [SideItem]()
     var section2 = [SideItem]()
     let section3 = "E.g. Easy on the mayo, add bacon"
     
@@ -56,7 +62,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     // Data passed from previous View Controller
     var selectedFoodName = ""
     var selectedFoodDescription = ""
-    var selectedFoodPrice = ""
+    var selectedFoodPrice = 0.0
     var selectedFoodID = ""
     var selectedFoodSidesNum = ""
     
@@ -75,6 +81,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Doing this and the two lines in ViewDidLoad automatically handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
+    
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,224 +124,230 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), forControlEvents: .ValueChanged)
         
         // TO-DO: CHAD! Talk to me before doing this! But basically if you have the data from checkoutVC so that you can pull from the db the details of the item, do it here. There is a bunch of db code you did below so if you can reuse it there's no need to put it in the if statement. If you need new code, we will need to put that in the if true, and then what is below this if statement inside the if false. We should maybe have a quick call to clarify this!
-        // If coming from checkoutVC
+        
         if comingFromCheckoutVC {
-            // Write code hereeee
-        } else {
-            // And hereeee
+            self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
+            stepper.value = Double((self.passedItem?.quantity)!)
         }
-        
-        // Calculate base price
-        calculatePrice()
-        
-        // Check if the required sides have been selected
-        if numberOfSidesSelected == Int(selectedFoodSidesNum) {
-            // Enable the button and make it opaque
-            addToOrderButton.alpha = 1
-            addToOrderButton.enabled = true
             
-            // Enable the stepper and make it opaque
-            stepper.alpha = 1
-            stepper.enabled = true
-        } else {
-            // Disable the button and make it transparent
-            addToOrderButton.alpha = 0.5
-            addToOrderButton.enabled = false
+            /*// Open Connection to PHP Service to carts DB to find an active cart
+             let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
+             let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
+             let session2 = NSURLSession.sharedSession()
+             let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+             if let data = data {
+             do {
+             let httpResponse = response as! NSHTTPURLResponse
+             let statusCode = httpResponse.statusCode
+             
+             // Check HTTP Response
+             if (statusCode == 200) {
+             
+             do{
+             // Parse JSON
+             let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+             
+             for Cart in json as! [Dictionary<String, AnyObject>] {
+             
+             let order_id = Cart["order_id"] as! String
+             if (Int(order_id)! > self.maxCartOrderID) {
+             print( Int(order_id)!)
+             self.maxCartOrderID = Int(order_id)!
+             }
+             
+             let user_id = Cart["user_id"] as! String
+             
+             if (userID == user_id) {
+             let active_cart = Cart["active"] as! String
+             if (active_cart == "1") {
+             print(order_id)
+             self.currentActiveCartOrderID = order_id
+             }
+             }
+             }
+             }
+             }
+             } catch let error as NSError {
+             print("Error:" + error.localizedDescription)
+             }
+             } else if let error = error {
+             print("Error:" + error.localizedDescription)
+             }
+             }
+             
+             task2.resume();*/
             
-            // Disable the stepper and make it transparent
-            stepper.alpha = 0.5
-            stepper.enabled = false
-        }
+            // Open Connection to PHP Service to menuSides
+            let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSides.php")!
+            let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
+            let session1 = NSURLSession.sharedSession()
+            let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
+                if let data = data {
+                    do {
+                        let httpResponse = response as! NSHTTPURLResponse
+                        let statusCode = httpResponse.statusCode
+                        
+                        // Check HTTP Response
+                        if (statusCode == 200) {
+                            
+                            do{
+                                // Parse JSON
+                                let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                                
+                                for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                    let side_id = Restaurant["id"] as! String
+                                    if (self.sidesIDList.contains(side_id)) {
+                                        print(Restaurant["name"] as! String)
+                                        self.sideNames.append(Restaurant["name"] as! String)
+                                        self.sidePrices.append(Restaurant["price"] as! String)
+                                        self.sideRequireds.append(Restaurant["required"] as! String)
+                                        self.sideIDs.append(side_id)
+                                    }
+                                }
+                                
+                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                    // Loop through DB data and append Restaurant objects into restaurants array
+                                    for i in 0..<self.sideNames.count {
+                                        var isSelected = false
+                                        if self.passedSides != nil {
+                                            for j in 0..<self.passedSides!.count {
+                                                if self.sideNames[i] == self.passedSides![j].name {
+                                                    isSelected = true
+                                                    print("A SIDE HAS BEEN SELECTED!")
+                                                }
+                                            }
+                                        }
+                                        self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], sideID: self.sideIDs[i], selected: isSelected))
+                                    }
+                                    
+                                    for i in 0..<self.sideItems.count {
+                                        // If required and price == 0, Section 1
+                                        if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice == "0") {
+                                            self.section1.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
+                                            print("S1:" + self.sideItems[i].sideName)
+                                        }
+                                        // If required and price !=0, Section 2
+                                        if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice != "0") {
+                                            self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
+                                            print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
+                                        }
+                                        // If not required, Section 2
+                                        if (self.sideItems[i].sideRequired == "0") {
+                                            self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
+                                            print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
+                                        }
+                                    }
+                                    
+                                    // Populate sectionNames array
+                                    print("Selected Food ID: " + self.selectedFoodID)
+                                    print("How many sides this food item can have: " + self.selectedFoodSidesNum)
+                                    self.sectionNames.append("Description")
+                                    if self.section1.count > 0 {
+                                        self.sectionNames.append("Sides")
+                                    }
+                                    if self.section2.count > 0 {
+                                        self.sectionNames.append("Extras")
+                                    }
+                                    self.sectionNames.append("Special Instructions")
+                                    self.sectionNames.append("Price")
+
+                                    if let sIndex = self.sectionNames.indexOf("Sides") {
+                                        self.sidesIndex = sIndex
+                                    }
+                                    if let eIndex = self.sectionNames.indexOf("Extras") {
+                                        self.extrasIndex = eIndex
+                                    }
+                                    self.specialInstructionsIndex = self.sectionNames.indexOf("Special Instructions")!
+                                    self.priceIndex = self.sectionNames.indexOf("Price")!
+                                    
+                                    self.calculatePrice()
+                                    self.calculateNumOfSidesSelected()
+                                    
+                                    // Check if the required sides have been selected
+                                    if self.numberOfSidesSelected == Int(self.selectedFoodSidesNum) {
+                                        // Enable the button and make it opaque
+                                        self.addToOrderButton.alpha = 1
+                                        self.addToOrderButton.enabled = true
+                                        
+                                        // Enable the stepper and make it opaque
+                                        self.stepper.alpha = 1
+                                        self.stepper.enabled = true
+                                    } else {
+                                        // Disable the button and make it transparent
+                                        self.addToOrderButton.alpha = 0.5
+                                        self.addToOrderButton.enabled = false
+                                        
+                                        // Disable the stepper and make it transparent
+                                        self.stepper.alpha = 0.5
+                                        self.stepper.enabled = false
+                                    }
+                                    
+                                    // Stop activity indicator
+                                    self.myActivityIndicator.stopAnimating()
+                                    self.myActivityIndicator.hidden = true
+                                }
+                            }
+                        }
+                    } catch let error as NSError {
+                        print("Error:" + error.localizedDescription)
+                    }
+                } else if let error = error {
+                    print("Error:" + error.localizedDescription)
+                }
+            }
+            
+            // Open Connection to PHP Service
+            let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSidesItemLink.php")!
+            let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+            let session = NSURLSession.sharedSession()
+            let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+                if let data = data {
+                    do {
+                        let httpResponse = response as! NSHTTPURLResponse
+                        let statusCode = httpResponse.statusCode
+                        
+                        // Check HTTP Response
+                        if (statusCode == 200) {
+                            
+                            do{
+                                // Parse JSON
+                                let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                                
+                                for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                    var item_id: String?
+                                    item_id = Restaurant["item_id"] as? String
+                                    if (item_id == nil) {
+                                    } else {
+                                        // loop through item_id's and make an array of corresponding sides_id's
+                                        if (self.selectedFoodID == item_id) {
+                                            let sides_id = Restaurant["sides_id"] as! String
+                                            self.sidesIDList.append(sides_id)
+                                        }
+                                    }
+                                }
+                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                    for i in 0..<self.sidesIDList.count {
+                                        print("SidesIDs: " + self.sidesIDList[i])
+                                    }
+                                    
+                                    // Only create list of actual sides after the ID's have been collected
+                                    task1.resume()
+                                }
+                            }
+                        }
+                    } catch let error as NSError {
+                        print("Error:" + error.localizedDescription)
+                    }
+                } else if let error = error {
+                    print("Error:" + error.localizedDescription)
+                }
+            }
+            
+            task.resume()
         
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 55
         self.myTableView.rowHeight = UITableViewAutomaticDimension
-        
-        /*// Open Connection to PHP Service to carts DB to find an active cart
-         let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
-         let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
-         let session2 = NSURLSession.sharedSession()
-         let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
-         if let data = data {
-         do {
-         let httpResponse = response as! NSHTTPURLResponse
-         let statusCode = httpResponse.statusCode
-         
-         // Check HTTP Response
-         if (statusCode == 200) {
-         
-         do{
-         // Parse JSON
-         let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-         
-         for Cart in json as! [Dictionary<String, AnyObject>] {
-         
-         let order_id = Cart["order_id"] as! String
-         if (Int(order_id)! > self.maxCartOrderID) {
-         print( Int(order_id)!)
-         self.maxCartOrderID = Int(order_id)!
-         }
-         
-         let user_id = Cart["user_id"] as! String
-         
-         if (userID == user_id) {
-         let active_cart = Cart["active"] as! String
-         if (active_cart == "1") {
-         print(order_id)
-         self.currentActiveCartOrderID = order_id
-         }
-         }
-         }
-         }
-         }
-         } catch let error as NSError {
-         print("Error:" + error.localizedDescription)
-         }
-         } else if let error = error {
-         print("Error:" + error.localizedDescription)
-         }
-         }
-         
-         task2.resume();*/
-        
-        // Open Connection to PHP Service to menuSides
-        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSides.php")!
-        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
-        let session1 = NSURLSession.sharedSession()
-        let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
-            if let data = data {
-                do {
-                    let httpResponse = response as! NSHTTPURLResponse
-                    let statusCode = httpResponse.statusCode
-                    
-                    // Check HTTP Response
-                    if (statusCode == 200) {
-                        
-                        do{
-                            // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                            
-                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
-                                let side_id = Restaurant["id"] as! String
-                                if (self.sidesIDList.contains(side_id)) {
-                                    print(Restaurant["name"] as! String)
-                                    self.sideNames.append(Restaurant["name"] as! String)
-                                    self.sidePrices.append(Restaurant["price"] as! String)
-                                    self.sideRequireds.append(Restaurant["required"] as! String)
-                                    self.sideIDs.append(side_id)
-                                }
-                            }
-                            
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                // Loop through DB data and append Restaurant objects into restaurants array
-                                for i in 0..<self.sideNames.count {
-                                    self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], sideID: self.sideIDs[i], selected: false))
-                                }
-                                for i in 0..<self.sideItems.count {
-                                    // If required and price == 0, Section 1
-                                    if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice == "0") {
-                                        self.section1.append(self.sideItems[i].sideName)
-                                        print("S1:" + self.sideItems[i].sideName)
-                                    }
-                                    // If required and price !=0, Section 2
-                                    if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice != "0") {
-                                        self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: false))
-                                        print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
-                                    }
-                                    // If not required, Section 2
-                                    if (self.sideItems[i].sideRequired == "0") {
-                                        self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: false))
-                                        print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
-                                    }
-                                }
-                                
-                                // Populate sectionNames array
-                                print("Selected Food ID: " + self.selectedFoodID)
-                                print("How many sides this food item can have: " + self.selectedFoodSidesNum)
-                                self.sectionNames.append("Description")
-                                if self.section1.count > 0 {
-                                    self.sectionNames.append("Sides")
-                                }
-                                if self.section2.count > 0 {
-                                    self.sectionNames.append("Extras")
-                                }
-                                self.sectionNames.append("Special Instructions")
-                                self.sectionNames.append("Price")
-                                
-                                if let sIndex = self.sectionNames.indexOf("Sides") {
-                                    self.sidesIndex = sIndex
-                                }
-                                if let eIndex = self.sectionNames.indexOf("Extras") {
-                                    self.extrasIndex = eIndex
-                                }
-                                self.specialInstructionsIndex = self.sectionNames.indexOf("Special Instructions")!
-                                self.priceIndex = self.sectionNames.indexOf("Price")!
-                                
-                                self.myTableView.reloadData()
-                                
-                                // Stop activity indicator
-                                self.myActivityIndicator.stopAnimating()
-                                self.myActivityIndicator.hidden = true
-                            }
-                        }
-                    }
-                } catch let error as NSError {
-                    print("Error:" + error.localizedDescription)
-                }
-            } else if let error = error {
-                print("Error:" + error.localizedDescription)
-            }
-        }
-        
-        // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSidesItemLink.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
-            if let data = data {
-                do {
-                    let httpResponse = response as! NSHTTPURLResponse
-                    let statusCode = httpResponse.statusCode
-                    
-                    // Check HTTP Response
-                    if (statusCode == 200) {
-                        
-                        do{
-                            // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                            
-                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
-                                var item_id: String?
-                                item_id = Restaurant["item_id"] as? String
-                                if (item_id == nil) {
-                                } else {
-                                    // loop through item_id's and make an array of corresponding sides_id's
-                                    if (self.selectedFoodID == item_id) {
-                                        let sides_id = Restaurant["sides_id"] as! String
-                                        self.sidesIDList.append(sides_id)
-                                    }
-                                }
-                            }
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                for i in 0..<self.sidesIDList.count {
-                                    print("SidesIDs: " + self.sidesIDList[i])
-                                }
-                                
-                                // Only create list of actual sides after the ID's have been collected
-                                task1.resume()
-                            }
-                        }
-                    }
-                } catch let error as NSError {
-                    print("Error:" + error.localizedDescription)
-                }
-            } else if let error = error {
-                print("Error:" + error.localizedDescription)
-            }
-        }
-        
-        task.resume()
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -340,161 +357,257 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
 
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
         
-        // loop through all carts with user_id searching for active
-        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
-        print(userID)
-        
-        // Retrieve special instructions if available
-        let indexPath = NSIndexPath(forRow: 0, inSection: specialInstructionsIndex)
-        let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-        if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
-            specialInstructions = selectedCell.specialInstructionsText.text!
-        }
-        
-        // Retrieve the selected sides and put them in sideIDSelectedArray
-        // For required sides
-        for item in sideItems {
-            if item.selected {
-                sideIDSelectedArray.append(item.sideID)
-            }
-        }
-        // For optional sides
-        for item in section2 {
-            if item.selected {
-                sideIDSelectedArray.append(item.sideID)
-            }
-        }
-        
-        // Open Connection to PHP Service to carts DB to find an active cart
-        let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
-        let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
-        let session2 = NSURLSession.sharedSession()
-        let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
-            if let data = data {
-                do {
-                    let httpResponse = response as! NSHTTPURLResponse
-                    let statusCode = httpResponse.statusCode
-                    
-                    // Check HTTP Response
-                    if (statusCode == 200) {
-                        
-                        do{
-                            // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                            
-                            for Cart in json as! [Dictionary<String, AnyObject>] {
-                                
-                                let order_id = Cart["order_id"] as! String
-                                if (Int(order_id)! > self.maxCartOrderID) {
-                                    self.maxCartOrderID = Int(order_id)!
-                                }
-                                
-                                let user_id = Cart["user_id"] as! String
-                                
-                                if (userID == user_id) {
-                                    let active_cart = Cart["active"] as! String
-                                    if (active_cart == "1") {
-                                        //print(order_id)
-                                        self.currentActiveCartOrderID = order_id
-                                        self.currentActiveCartID = Cart["uid"] as! String
-                                    }
-                                }
-                            }
-                            
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                if (self.currentActiveCartOrderID == "NONE") {
-                                    self.maxCartOrderID = self.maxCartOrderID + 10;
-                                    self.currentActiveCartOrderID = String(self.maxCartOrderID);
-                                } else {
-                                    //print("This is the active cart order id value", self.currentActiveCartOrderID)
-                                }
-                                //print("This is the current max order_id", self.maxCartOrderID)
-                                
-                                // Send main item data to carts DB
-                                
-                                // Create JSON data and configure the request
-                                let params = ["item_id": self.selectedFoodID,
-                                    "user_id": userID,
-                                    "quantity": String(Int(self.stepper.value)),
-                                    "active": "1",
-                                    "instructions": self.specialInstructions,
-                                    "order_id": String(self.currentActiveCartOrderID),
-                                    ]
-                                    as Dictionary<String, String>
-
-                                // create the request & response
-                                let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
-                                
-                                do {
-                                    let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
-                                    request.HTTPBody = jsonData
-                                } catch let error as NSError {
-                                    print(error)
-                                }
-                                request.HTTPMethod = "POST"
-                                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                                
-                                // send the request
-                                let session = NSURLSession.sharedSession()
-                                let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-                                    if let httpResponse = response as? NSHTTPURLResponse {
-                                        if let contentType = httpResponse.allHeaderFields["Party"] as? String {
-                                            // use contentType here
-                                            //print("This is the result of header", contentType)
-                                            
-                                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                                self.currentActiveCartID = contentType
-                                                
-                                                // Send Side Item Data to cart_sides DB
-                                                for sideID in self.sideIDSelectedArray {
-                                                    //print("SideId: ", sideID)
-                                                    //print("Cart's UID2: ",self.currentActiveCartID)
-                                                    
-                                                    // Create JSON data and configure the request
-                                                    
-                                                    // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
-                                                    let params1 = ["cart_entry_uid": self.currentActiveCartID,
-                                                        "side_id": sideID,
-                                                        "quantity": String(self.stepper.value),
-                                                        ]
-                                                        as Dictionary<String, String>
-                                                    
-                                                    // create the request & response
-                                                    let request1 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddSideToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
-                                                    
-                                                    do {
-                                                        let jsonData1 = try NSJSONSerialization.dataWithJSONObject(params1, options: NSJSONWritingOptions.PrettyPrinted)
-                                                        request1.HTTPBody = jsonData1
-                                                    } catch let error1 as NSError {
-                                                        print(error1)
-                                                    }
-                                                    request1.HTTPMethod = "POST"
-                                                    request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                                                    
-                                                    // send the request
-                                                    let session1 = NSURLSession.sharedSession()
-                                                    let task1 = session1.dataTaskWithRequest(request1) {
-                                                        (let data1, let response1, let error1) in
-                                                    }
-                                                    task1.resume()
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                task.resume()
-                            }
-                        }
-                    }
-                } catch let error as NSError {
-                    print("Error:" + error.localizedDescription)
+        if comingFromCheckoutVC {
+            
+        } else {
+            // Check if there is an existing active cart from this restaurant
+            
+            let fetchRequest = NSFetchRequest(entityName: "Order")
+            let firstPredicate = NSPredicate(format: "isActive == %@", true)
+            // TO-DO: FInd a way to know which restaurant we're in then uncomment below
+            let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
+            let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+            fetchRequest.predicate = predicate
+            
+            var activeCart = [Order]()
+            
+            do {
+                if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                    activeCart = fetchResults
+                    print("THERE IS AN EXISTING CART")
                 }
-            } else if let error = error {
-                print("Error:" + error.localizedDescription)
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
             }
+            
+            // If cart is empty, then create new active cart with this restaurant
+            if activeCart.isEmpty {
+                
+                let order = NSEntityDescription.insertNewObjectForEntityForName("Order", inManagedObjectContext: managedContext) as! Order
+                
+                order.isActive = true
+                order.restaurant = selectedRestaurantName
+                order.deliveryFee = 2.5 // PULL THIS FROM THE DB!
+                
+                print(selectedRestaurantName)
+                
+                activeCart.append(order)
+            }
+            
+            // ITEM
+            
+            let itemEntity =  NSEntityDescription.entityForName("Item", inManagedObjectContext:managedContext)
+            let item = NSManagedObject(entity: itemEntity!, insertIntoManagedObjectContext: managedContext) as! Item
+            
+            item.name = selectedFoodName
+            item.id = selectedFoodID
+            item.price = selectedFoodPrice
+            item.quantity = Int(stepper.value)
+            item.selectedFoodSidesNum = Int(selectedFoodSidesNum)
+            item.dbDescription = selectedFoodDescription
+            
+            // Retrieve special instructions if available
+            let indexPath = NSIndexPath(forRow: 0, inSection: specialInstructionsIndex)
+            let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+            if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
+                specialInstructions = selectedCell.specialInstructionsText.text!
+            }
+            item.specialInstructions = specialInstructions
+            item.order = activeCart[0]
+            
+            // SIDES
+            
+            for i in section1 {
+                if i.selected {
+                    
+                    let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
+                    let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                    
+                    side.name = i.sideName
+                    side.id = i.sideID
+                    side.price = Double(i.sidePrice)
+                    side.isRequired = true
+                    
+                    side.item = item
+                    sides.append(side)
+                }
+            }
+            for i in section2 {
+                if i.selected {
+                    
+                    let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
+                    let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                    
+                    side.name = i.sideName
+                    side.id = i.sideID
+                    side.price = Double(i.sidePrice)
+                    side.isRequired = false
+                    
+                    side.item = item
+                    sides.append(side)
+                }
+            }
+            
+            // SAVE
+            
+            do {
+                try managedContext.save()
+            } catch {
+                fatalError("Failure to save context: \(error)")
+            }
+            
+            /*
+             // loop through all carts with user_id searching for active
+             let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+             print(userID)
+             
+             
+             
+             // Retrieve the selected sides and put them in sideIDSelectedArray
+             // For required sides
+             for item in sideItems {
+             if item.selected {
+             sideIDSelectedArray.append(item.sideID)
+             }
+             }
+             // For optional sides
+             for item in section2 {
+             if item.selected {
+             sideIDSelectedArray.append(item.sideID)
+             }
+             }
+             
+             // Open Connection to PHP Service to carts DB to find an active cart
+             let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
+             let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
+             let session2 = NSURLSession.sharedSession()
+             let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+             if let data = data {
+             do {
+             let httpResponse = response as! NSHTTPURLResponse
+             let statusCode = httpResponse.statusCode
+             
+             // Check HTTP Response
+             if (statusCode == 200) {
+             
+             do{
+             // Parse JSON
+             let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+             
+             for Cart in json as! [Dictionary<String, AnyObject>] {
+             
+             let order_id = Cart["order_id"] as! String
+             if (Int(order_id)! > self.maxCartOrderID) {
+             self.maxCartOrderID = Int(order_id)!
+             }
+             
+             let user_id = Cart["user_id"] as! String
+             
+             if (userID == user_id) {
+             let active_cart = Cart["active"] as! String
+             if (active_cart == "1") {
+             //print(order_id)
+             self.currentActiveCartOrderID = order_id
+             self.currentActiveCartID = Cart["uid"] as! String
+             }
+             }
+             }
+             
+             NSOperationQueue.mainQueue().addOperationWithBlock {
+             if (self.currentActiveCartOrderID == "NONE") {
+             self.maxCartOrderID = self.maxCartOrderID + 10;
+             self.currentActiveCartOrderID = String(self.maxCartOrderID);
+             } else {
+             //print("This is the active cart order id value", self.currentActiveCartOrderID)
+             }
+             //print("This is the current max order_id", self.maxCartOrderID)
+             
+             // Send main item data to carts DB
+             
+             // Create JSON data and configure the request
+             let params = ["item_id": self.selectedFoodID,
+             "user_id": userID,
+             "quantity": String(Int(self.stepper.value)),
+             "active": "1",
+             "instructions": self.specialInstructions,
+             "order_id": String(self.currentActiveCartOrderID),
+             ]
+             as Dictionary<String, String>
+             
+             // create the request & response
+             let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+             
+             do {
+             let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
+             request.HTTPBody = jsonData
+             } catch let error as NSError {
+             print(error)
+             }
+             request.HTTPMethod = "POST"
+             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+             
+             // send the request
+             let session = NSURLSession.sharedSession()
+             let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+             if let httpResponse = response as? NSHTTPURLResponse {
+             if let contentType = httpResponse.allHeaderFields["Party"] as? String {
+             // use contentType here
+             //print("This is the result of header", contentType)
+             
+             NSOperationQueue.mainQueue().addOperationWithBlock {
+             self.currentActiveCartID = contentType
+             
+             // Send Side Item Data to cart_sides DB
+             for sideID in self.sideIDSelectedArray {
+             //print("SideId: ", sideID)
+             //print("Cart's UID2: ",self.currentActiveCartID)
+             
+             // Create JSON data and configure the request
+             
+             // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
+             let params1 = ["cart_entry_uid": self.currentActiveCartID,
+             "side_id": sideID,
+             "quantity": String(self.stepper.value),
+             ]
+             as Dictionary<String, String>
+             
+             // create the request & response
+             let request1 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddSideToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+             
+             do {
+             let jsonData1 = try NSJSONSerialization.dataWithJSONObject(params1, options: NSJSONWritingOptions.PrettyPrinted)
+             request1.HTTPBody = jsonData1
+             } catch let error1 as NSError {
+             print(error1)
+             }
+             request1.HTTPMethod = "POST"
+             request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
+             
+             // send the request
+             let session1 = NSURLSession.sharedSession()
+             let task1 = session1.dataTaskWithRequest(request1) {
+             (let data1, let response1, let error1) in
+             }
+             task1.resume()
+             }
+             }
+             }
+             }
+             }
+             task.resume()
+             }
+             }
+             }
+             } catch let error as NSError {
+             print("Error:" + error.localizedDescription)
+             }
+             } else if let error = error {
+             print("Error:" + error.localizedDescription)
+             }
+             }
+             
+             task2.resume();*/
         }
-        
-        task2.resume();
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -504,7 +617,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func calculatePrice() {
-        totalPrice = Double(selectedFoodPrice)!
+        print(selectedFoodPrice)
+        totalPrice = selectedFoodPrice
         for side in section2 {
             if side.selected {
                 totalPrice += Double(side.sidePrice)!
@@ -513,6 +627,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         totalPrice = totalPrice * stepper.value
         
         myTableView.reloadData()
+    }
+    
+    func calculateNumOfSidesSelected() {
+        numberOfSidesSelected = 0
+        for i in section1 {
+            if i.selected {
+                print("SELECTED")
+                numberOfSidesSelected += 1
+            }
+        }
     }
     
     func stepperTapped(sender: GMStepper) {
@@ -553,13 +677,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             
             // Set cell properties
             cell.selectionStyle = .None
-            cell.sideLabel.text = section1[indexPath.row]
+            cell.sideLabel.text = section1[indexPath.row].sideName
             cell.extraCostLabel.hidden = true
             
             //Change cell's tint color
             cell.tintColor = GREEN
             
-            if sideItems[indexPath.row].selected {
+            if section1[indexPath.row].selected {
                 cell.accessoryType = .Checkmark
             } else {
                 cell.accessoryType = .None
@@ -588,6 +712,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         } else if indexPath.section == specialInstructionsIndex {
             let cell = tableView.dequeueReusableCellWithIdentifier("specialInstructionsCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
             
+            // Preload if coming from checkoutVC
+            if comingFromCheckoutVC {
+                cell.specialInstructionsText.text = passedItem?.specialInstructions
+            }
+            
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath) as! AddToOrderPriceTableViewCell
@@ -601,14 +730,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.section == sidesIndex {
-            if !sideItems[indexPath.row].selected {
+            if !section1[indexPath.row].selected {
                 if numberOfSidesSelected < Int(selectedFoodSidesNum) {
-                    sideItems[indexPath.row].selected = true
-                    numberOfSidesSelected += 1
+                    section1[indexPath.row].selected = true
+                    print(numberOfSidesSelected)
                 }
             } else {
-                sideItems[indexPath.row].selected = false
-                numberOfSidesSelected -= 1
+                section1[indexPath.row].selected = false
             }
         } else if indexPath.section == extrasIndex {
             if !section2[indexPath.row].selected {
@@ -617,6 +745,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 section2[indexPath.row].selected = false
             }
         }
+        
+        // Recalculate price and numOfSidesSelected
+        calculatePrice()
+        calculateNumOfSidesSelected()
         
         if numberOfSidesSelected == Int(selectedFoodSidesNum) {
             // Enable the button and make it opaque
@@ -636,8 +768,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             stepper.enabled = false
         }
         
-        // Recalculate price
-        calculatePrice()
+        
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -669,10 +800,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             headerCell.pickXLabel.hidden = false
             if section == sidesIndex {
                 headerCell.pickXLabel.text = "(Pick " + selectedFoodSidesNum + ")"
-            } /*else {
-                headerCell.pickXLabel.textColor = GREEN
-                headerCell.pickXLabel.text = String(format: "$%.2f", totalPrice)
-            }*/
+            }
         }
         
         return headerCell
