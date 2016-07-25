@@ -27,7 +27,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
-    var deliveryFee = 2.5 // Pull this from db on AddToOrder!!!
+    var deliveryFee = 2.5 // TO-DO: CHAD! Please pull this from the db on AddToOrder!!!
     
     var items_ordered: [String] = []
     var items_ordered_quantity: [String] = []
@@ -39,6 +39,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var service_id = ""
     
     var sides = [Side]()
+    var activeCart = [Order]()
     
     // TO-DO: CHAD! So I've created 3 more fields in the struct for you to put the sides, extras and special instructions in. The way you can format it is to pull all the sides and extras and special instructions associated with one item, and create a single string with all the sides/extras separated by commas. For example, "Mashed Potatoes, Fries, Mac & Cheese". I will deal with other formatting later!
     /*
@@ -527,12 +528,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
-        print(selectedRestaurantName)
-        
-        // CoreData logic
-        
-        // Fetch all active carts, if any
-        // Check if there is an existing active cart from this restaurant
+        // Fetch all active carts, if any exist
         
         let fetchRequest = NSFetchRequest(entityName: "Order")
         let firstPredicate = NSPredicate(format: "isActive == %@", true)
@@ -541,7 +537,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
         
-        var activeCart = [Order]()
+        
         
         do {
             if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
@@ -767,6 +763,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.myActivityIndicator.hidden = false
             self.myActivityIndicator.startAnimating()
             
+            // Update and save CoreData
+            self.activeCart[0].dateOrdered = NSDate()
+            self.activeCart[0].isActive = false
+            self.activeCart[0].totalPrice = self.totalCost + self.deliveryFee
+            
+            self.appDelegate.saveContext()
+            
             // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
             // Write code hereeeeee
             
@@ -815,6 +818,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             VC.selectedFoodPrice = Double(items[selectedCell].price!)
             VC.selectedFoodID = items[selectedCell].id!
             VC.selectedFoodSidesNum = String(items[selectedCell].selectedFoodSidesNum!)
+        } else if segue.identifier == "toOrderPlaced" {
+            let nav = segue.destinationViewController as! UINavigationController
+            let VC = nav.topViewController as! OrderPlacedViewController
+            
+            VC.passedOrderTotal = totalCost + deliveryFee
         }
     }
     

@@ -8,10 +8,11 @@
 
 import UIKit
 import CVCalendar
+import CoreData
 
 class ScheduleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    // SAMPLE DATA
+    // ScheduleEntry data structure
     struct ScheduleEntry {
         var date: NSDate
         var serviceType: String
@@ -25,7 +26,8 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         var numOccurences: Int
     }
     
-    var entries = [ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "10:45PM", descriptionLabel: "Sushi Love", priceLabel: "42.59"), ScheduleEntry(date: NSDate(), serviceType: "Room/Apt Clean", timeLabel: "3:15PM", descriptionLabel: "Deluxe", priceLabel: "60.00"), ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "9:30AM", descriptionLabel: "Dunkin' Donuts", priceLabel: "12.67")]
+    //var entries = [ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "10:45PM", descriptionLabel: "Sushi Love", priceLabel: "42.59"), ScheduleEntry(date: NSDate(), serviceType: "Room/Apt Clean", timeLabel: "3:15PM", descriptionLabel: "Deluxe", priceLabel: "60.00"), ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "9:30AM", descriptionLabel: "Dunkin' Donuts", priceLabel: "12.67")]
+    var entries: [Order]?
 
     // MARK: - IBOutlets
     @IBOutlet weak var menuView: CVCalendarMenuView!
@@ -39,8 +41,13 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var switchViewsButton: UISegmentedControl!
     
     var selectedDay: DayView!
-    var selectedDate = ""
-    var selectedOrderID = ""
+    var selectedDate: String?
+    var selectedIndexPath: Int?
+    
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +73,27 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
             // 2. This array will need to be separated into sections by month, with the header of each section being the name of the month and the number of entries for that month (for example, "JUNE (3)"). Please let me know if you need help with this because it is confusing.
             // 3. We need to mark on the calendar which dates have a ScheduleEntry item. If you can give me the dates of each entry formatted as an NSDate, I can mark them on the calendar with a little dot.
         // Insert code hereeeeeeee
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        // Fetch all inactive carts, if any exist
         
+        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let sortDescriptor = NSSortDescriptor(key: "dateOrdered", ascending: false)
+        let firstPredicate = NSPredicate(format: "isActive == %@", false)
+        fetchRequest.predicate = firstPredicate
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                entries = fetchResults
+                print(fetchResults.count)
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        myTableView.reloadData()
     }
     
     // Set up Calendar View
@@ -86,24 +113,40 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
-        return entries.count
+        return entries!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("scheduleCell", forIndexPath: indexPath) as! ScheduleTableViewCell
         
-        // Get date components
+        // Get date components for sorting
         let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.Day, fromDate: entries[indexPath.row].date)
+        let components = calendar.components(.Day, fromDate: entries![indexPath.row].dateOrdered!)
         let monthFormatter = NSDateFormatter()
         monthFormatter.dateFormat = "MMM"
-        let month = monthFormatter.stringFromDate(entries[indexPath.row].date)
+        let month = monthFormatter.stringFromDate(entries![indexPath.row].dateOrdered!)
         cell.monthLabel.text = month
         cell.dayLabel.text = String(components.day)
-        cell.serviceTypeLabel.text = entries[indexPath.row].serviceType
-        cell.timeLabel.text = entries[indexPath.row].timeLabel
-        cell.descriptionLabel.text = entries[indexPath.row].descriptionLabel
-        cell.priceLabel.text = entries[indexPath.row].priceLabel
+        
+        // Display service type
+        if entries![indexPath.row].restaurant != nil {
+            cell.serviceTypeLabel.text = "Food Delivery"
+        } else {
+            cell.serviceTypeLabel.text = "Maid My Day"
+        }
+
+        // Calculate time
+        let timeFormatter = NSDateFormatter()
+        timeFormatter.dateFormat = "H:mm"
+        let time = timeFormatter.stringFromDate(entries![indexPath.row].dateOrdered!)
+        cell.timeLabel.text = time
+        
+        // Display description
+        cell.descriptionLabel.text = entries![indexPath.row].restaurant
+        
+        // Display price
+        cell.priceLabel.text = String(format: "%.2f", entries![indexPath.row].totalPrice!) // BUG: WHY IS THIS NOT WORKINGGGGG?
+        print(String(format: "%.2f", entries![indexPath.row].totalPrice!))
         
         return cell
     }
@@ -133,22 +176,18 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // TO-DO: ALEX! When we have calculated the headers situations (how many months have orders), make this dynamic
-        if section == 0 {
-            return "JUNE (3)"
-        }
         
         return ""
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         
-        // TO-DO: CHAD! Please load the selected cell's orderID into the following dummy variable so we can know which order was selected in the next viewController.
-        // selectedOrderID = //Insert this indexPath.row's orderID here
+         selectedIndexPath = indexPath.row
         
         // Get date components
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .MediumStyle
-        selectedDate = dateFormatter.stringFromDate(entries[indexPath.row].date)
+        selectedDate = dateFormatter.stringFromDate(entries![indexPath.row].dateOrdered!)
         
         return indexPath
     }
@@ -162,8 +201,8 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toScheduleDetail" {
             let VC = segue.destinationViewController as! ScheduleDetailViewController
-            VC.orderID = self.selectedOrderID
-            VC.date = self.selectedDate
+            VC.order = entries![selectedIndexPath!]
+            VC.date = selectedDate!
         }
     }
 }

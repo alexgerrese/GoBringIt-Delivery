@@ -9,6 +9,12 @@
 import UIKit
 
 class OrderPlacedViewController: UIViewController {
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var orderTotalLabel: UILabel!
+    
+    // MARK: - Variables
+    var passedOrderTotal = 0.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +27,9 @@ class OrderPlacedViewController: UIViewController {
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
                 NSForegroundColorAttributeName: UIColor.blackColor()])
+        
+        // Set order total label
+        orderTotalLabel.text = String(format: "$%.2f", passedOrderTotal)
 
         // Do any additional setup after loading the view.
     }

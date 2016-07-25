@@ -360,11 +360,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         if comingFromCheckoutVC {
             
         } else {
-            // Check if there is an existing active cart from this restaurant
             
+            // Check if there is an existing active cart from this restaurant
             let fetchRequest = NSFetchRequest(entityName: "Order")
             let firstPredicate = NSPredicate(format: "isActive == %@", true)
-            // TO-DO: FInd a way to know which restaurant we're in then uncomment below
             let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
             let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
             fetchRequest.predicate = predicate
@@ -387,9 +386,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 order.isActive = true
                 order.restaurant = selectedRestaurantName
-                order.deliveryFee = 2.5 // PULL THIS FROM THE DB!
-                
-                print(selectedRestaurantName)
+                order.deliveryFee = 2.5 // TO-DO: CHAD! PLEASE PULL THIS FROM THE DB!
                 
                 activeCart.append(order)
             }
