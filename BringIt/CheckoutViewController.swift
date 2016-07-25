@@ -34,12 +34,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var items_ordered_cartUID: [String] = []
     var cartUID_side = [String: String]()
     var items_ordered_instructions: [String] = []
-    var items = [Item]()
     
     var service_id = ""
     
-    var sides = [Side]()
+    // CoreData variables
     var activeCart = [Order]()
+    var items = [Item]()
+    var sides = [Side]()
     
     // TO-DO: CHAD! So I've created 3 more fields in the struct for you to put the sides, extras and special instructions in. The way you can format it is to pull all the sides and extras and special instructions associated with one item, and create a single string with all the sides/extras separated by commas. For example, "Mashed Potatoes, Fries, Mac & Cheese". I will deal with other formatting later!
     /*
@@ -771,7 +772,14 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.appDelegate.saveContext()
             
             // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
-            // Write code hereeeeee
+            // I've set up the loops so you can go through all the items and each of their sides. To access the attributes of the items or sides, just write item. or side. and a list of attributes should pop up. Let me know if you need to add any attributes!
+            
+            for item in self.items {
+                // Loop through all items
+                for side in self.sides {
+                    // Loop through the sides for each item
+                }
+            }
             
             // Stop activity indicator again
             self.myActivityIndicator.hidden = true

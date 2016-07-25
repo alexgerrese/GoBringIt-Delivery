@@ -15,6 +15,7 @@ import CoreData
 extension Order {
 
     @NSManaged var isActive: NSNumber?
+    @NSManaged var id: String?
     @NSManaged var totalPrice: NSNumber?
     @NSManaged var dateOrdered: NSDate?
     @NSManaged var deliveryFee: NSNumber?
