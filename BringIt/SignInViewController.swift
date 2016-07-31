@@ -10,16 +10,6 @@ import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 
-extension String {
-    func sha512() -> String {
-        let data = self.dataUsingEncoding(NSUTF8StringEncoding)!
-        var digest = [UInt8](count:Int(CC_SHA512_DIGEST_LENGTH), repeatedValue: 0)
-        CC_SHA512(data.bytes, CC_LONG(data.length), &digest)
-        let hexBytes = digest.map { String(format: "%02hhx", $0) }
-        return hexBytes.joinWithSeparator("")
-    }
-}
-
 class SignInViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - IBOutlets
@@ -86,8 +76,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     
                                     // Update UserDefaults 
                                     self.defaults.setBool(true, forKey: "loggedIn")
-                                    
-                                    // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
                                     self.defaults.setObject(User["uid"] as! String, forKey: "userID")
                                     
                                     self.dismissViewControllerAnimated(true, completion: nil)
