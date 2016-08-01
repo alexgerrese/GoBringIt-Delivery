@@ -21,9 +21,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var subtotalCostLabel: UILabel!
     @IBOutlet weak var totalCostLabel: UILabel!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var checkoutButton: UIButton!
     
     var cameFromVC = ""
-    var deliverTo = ""
+    //var deliverTo = ""
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
@@ -78,6 +79,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var maxCartOrderID = 0
     var reset = false
     var userID = ""
+    var currentAddress = ""
+    //var addresses = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +103,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Get Address of User
         // var userID: String?
         userID = self.defaults.objectForKey("userID") as AnyObject! as! String
-        var addressString: String?
         
         /*
          // Open Connection to PHP Service
@@ -186,6 +188,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
          }
          */
         
+        /* ADDRESSSSSSSSSSS DB PULL
+        
         // Open Connection to PHP Service
         let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADaccountAddresses.php")!
         let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
@@ -211,13 +215,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     print(Restaurant["street"] as? String)
                                     let street = Restaurant["street"] as AnyObject! as! String //+ ", " + Restaurant["apartment"] as AnyObject! as! String
                                     let apartment = Restaurant["apartment"] as AnyObject! as! String
-                                    addressString = street + ", " + apartment
+                                    self.addressString = street + ", " + apartment
                                 }
                             }
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 
-                                print(addressString!)
-                                self.deliverTo = addressString!
+                                print(self.addressString)
+                                self.deliverTo = self.addressString
                                 self.detailsTableView.reloadData()
                             }
                         }
@@ -228,7 +232,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             } else if let error = error {
                 print("Error:" + error.localizedDescription)
             }
-        }
+        }*/
         
         // COMMENTED OUT TO TRY COREDATA
         
@@ -507,9 +511,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
          print("Error:" + error.localizedDescription)
          }
          }*/
-         */
+ 
         
-        task.resume()
+        task.resume()*/
         
         // Set SAMPLE DATA
         //deliverTo = "1369 Campus Drive"
@@ -534,16 +538,34 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
+        // Deselect cells when view appears
+        if let indexPath = itemsTableView.indexPathForSelectedRow {
+            itemsTableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        if let indexPath = detailsTableView.indexPathForSelectedRow {
+            detailsTableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        
+        // DETAIL TABLEVIEW
+        
+        var addresses = [String]()
+        if let addressesArray = defaults.objectForKey("Addresses") {
+            addresses = addressesArray as! [String]
+        }
+        if let index = defaults.objectForKey("CurrentAddressIndex") {
+            currentAddress = addresses[index as! Int]
+        }
+        detailsTableView.reloadData()
+        
+        // ITEMS TABLEVIEW
+        
         // Fetch all active carts, if any exist
         
         let fetchRequest = NSFetchRequest(entityName: "Order")
         let firstPredicate = NSPredicate(format: "isActive == %@", true)
-        // TO-DO: FInd a way to know which restaurant we're in then uncomment below
         let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
         let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
-        
-        
         
         do {
             if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
@@ -568,6 +590,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             
         }
+        
+        itemsTableView.reloadData()
         
         self.calculateTotalCost()
         self.deliveryFeeLabel.text = String(format: "$%.2f", self.deliveryFee)
@@ -600,6 +624,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == itemsTableView {
+            canCheckout()
             return items.count
         } else {
             return 2
@@ -710,7 +735,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Deliver To"
-                cell.detailTextLabel?.text = deliverTo
+                if currentAddress != "" {
+                    cell.detailTextLabel?.text = currentAddress
+                } else {
+                    cell.detailTextLabel?.text = "Add New Address"
+                }
+                
             } else {
                 cell.textLabel?.text = "Pay With"
                 cell.detailTextLabel?.text = payWith
@@ -758,7 +788,18 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    // Check if checkout is possible. If not, disable checkout button and make it more transparent.
+    func canCheckout() {
+        if items.count != 0 && currentAddress != "" {
+            checkoutButton.alpha = 1.0
+            checkoutButton.enabled = true
+        } else {
+            checkoutButton.alpha = 0.5
+            checkoutButton.enabled = false
+        }
+    }
     
+    // Checkout process
     @IBAction func checkoutButtonPressed(sender: UIButton) {
         
         let alertController = UIAlertController(title: "Checkout", message: "Are you sure you want to checkout?", preferredStyle: .ActionSheet)

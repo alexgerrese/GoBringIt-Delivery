@@ -39,6 +39,7 @@
 		115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */; };
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
+		11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */; };
 		11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */; };
 		11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */; };
 		11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */; };
@@ -111,6 +112,7 @@
 		115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressViewController.swift; sourceTree = "<group>"; };
 		11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderPriceTableViewCell.swift; sourceTree = "<group>"; };
 		11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressInfoViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */,
+				11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */,
 			);
 			name = "Deliver To/Paying With";
 			sourceTree = "<group>";
@@ -664,6 +667,7 @@
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
 				115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */,
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
+				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,

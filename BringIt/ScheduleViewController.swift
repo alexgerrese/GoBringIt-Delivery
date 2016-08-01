@@ -76,6 +76,12 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        // Deselect cells when view appears
+        if let indexPath = myTableView.indexPathForSelectedRow {
+            myTableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        
         // Fetch all inactive carts, if any exist
         
         let fetchRequest = NSFetchRequest(entityName: "Order")

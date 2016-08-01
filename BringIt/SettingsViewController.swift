@@ -16,7 +16,11 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var myTableView: UITableView!
     
     // Tableview cells
-    let infoCells = ["Contact Info", "Addresses", "Payment Methods"]
+    var infoCells = ["Contact Info", "Addresses", "Payment Methods"]
+    let contactIndex = 0
+    let addressIndex = 1
+    let paymentIndex = 2
+    
     let helpCells = ["Contact Us", "Become a BringIt Driver"]
     
     // TO-DO: CHAD! Please pull the db data and make these dynamic. See below for where to put the data!
@@ -54,6 +58,19 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Set name
         nameLabel.text = userName
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        // Deselect cells when view appears
+        if let indexPath = myTableView.indexPathForSelectedRow {
+            myTableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        
+        // Get correct count for addresses
+        if let addressesArray = defaults.objectForKey("Addresses") {
+            cellNumbers[addressIndex] = addressesArray.count
+        }
     }
     
     override func didReceiveMemoryWarning() {

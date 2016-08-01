@@ -128,6 +128,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         if comingFromCheckoutVC {
             self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
             stepper.value = Double((self.passedItem?.quantity)!)
+            addToOrderButton.titleLabel?.text = "Update Order"
         }
             
             /*// Open Connection to PHP Service to carts DB to find an active cart
@@ -357,27 +358,87 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
 
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
         
-        if comingFromCheckoutVC {
-            
-        } else {
-            
-            // Check if there is an existing active cart from this restaurant
-            let fetchRequest = NSFetchRequest(entityName: "Order")
-            let firstPredicate = NSPredicate(format: "isActive == %@", true)
-            let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
-            let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
-            fetchRequest.predicate = predicate
-            
-            var activeCart = [Order]()
-            
-            do {
-                if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
-                    activeCart = fetchResults
-                    print("THERE IS AN EXISTING CART")
-                }
-            } catch let error as NSError {
-                print("Could not fetch \(error), \(error.userInfo)")
+        // Check if there is an existing active cart from this restaurant
+        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        fetchRequest.predicate = predicate
+        
+        var activeCart = [Order]()
+        
+        do {
+            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                activeCart = fetchResults
+                print("THERE IS AN EXISTING CART")
             }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        if comingFromCheckoutVC {
+            let items = activeCart[0].items?.allObjects as! [Item]
+            
+            for i in 0..<items.count {
+                if items[i].id == passedItem?.id {
+                    
+                    // UPDATE ITEM
+                    items[i].price = selectedFoodPrice
+                    items[i].quantity = Int(stepper.value)
+                    items[i].selectedFoodSidesNum = Int(selectedFoodSidesNum)
+                    items[i].dbDescription = selectedFoodDescription
+                    
+                    // Retrieve special instructions if available
+                    let indexPath = NSIndexPath(forRow: 0, inSection: specialInstructionsIndex)
+                    let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+                    if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
+                        specialInstructions = selectedCell.specialInstructionsText.text!
+                    }
+                    items[i].specialInstructions = specialInstructions
+                    
+                    // SIDES
+
+                    for i in items[i].sides?.allObjects as! [Side] {
+                        i.item = nil
+                    }
+                    
+                    //sides.removeAll()
+                    
+                    
+                    for s in section1 {
+                        if s.selected {
+                            
+                            let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
+                            let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                            
+                            side.name = s.sideName
+                            side.id = s.sideID
+                            side.price = Double(s.sidePrice)
+                            side.isRequired = true
+                            
+                            side.item = items[i]
+                            sides.append(side)
+                        }
+                    }
+                    for s in section2 {
+                        if s.selected {
+                            
+                            let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
+                            let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                            
+                            side.name = s.sideName
+                            side.id = s.sideID
+                            side.price = Double(s.sidePrice)
+                            side.isRequired = false
+                            
+                            side.item = items[i]
+                            sides.append(side)
+                        }
+                    }
+                    
+                }
+            }
+        } else {
             
             // If cart is empty, then create new active cart with this restaurant
             if activeCart.isEmpty {
@@ -443,14 +504,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     side.item = item
                     sides.append(side)
                 }
-            }
-            
-            // SAVE
-            
-            do {
-                try managedContext.save()
-            } catch {
-                fatalError("Failure to save context: \(error)")
             }
             
             /*
@@ -604,6 +657,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
              }
              
              task2.resume();*/
+        }
+        
+        // SAVE
+        
+        do {
+            try managedContext.save()
+        } catch {
+            fatalError("Failure to save context: \(error)")
         }
         
         self.dismissViewControllerAnimated(true, completion: nil)

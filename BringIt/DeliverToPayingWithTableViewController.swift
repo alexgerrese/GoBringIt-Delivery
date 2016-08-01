@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct Address {
+    var address: String
+    var selected: Bool
+}
+
 class DeliverToPayingWithTableViewController: UITableViewController {
     
     // MARK: - IBOutlets
@@ -16,19 +21,17 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     
     // MARK: - SAMPLE DATA
     
-    struct Address {
-        var address: String
-        var selected: Bool
-    }
-    
     struct PaymentMethod {
         var method: String
         var selected: Bool
         // NOTE: Something to connect to Stripe? Don't know if we need two different structs
     }
     
+    // Enable UserDefaults
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     // Addresses
-    var addresses = [Address(address: "1368 Campus Drive \nDurham, NC \n27708", selected: false), Address(address: "1100 Alexander Drive \nDurham, NC \n27708", selected: true)]
+    var addresses = [String]() //[Address(address: "1368 Campus Drive \nDurham, NC \n27708", selected: false), Address(address: "1100 Alexander Drive \nDurham, NC \n27708", selected: true)]
     // Payment Methods
     var paymentMethods = [PaymentMethod(method: "Food points", selected: true), PaymentMethod(method: "Credit Card", selected: false)]
     
@@ -57,7 +60,22 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         // Only one cell can be selected at a time
         tableView.allowsMultipleSelection = false
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        if let addressesArray = defaults.objectForKey("Addresses") {
+            addresses = addressesArray as! [String]
+        }
+        
+        tableView.reloadData()
+    }
 
+    @IBAction func newButtonPressed(sender: UIButton) {
+        if selectedCell == "Deliver To" {
+            performSegueWithIdentifier("toNewAddress", sender: self)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -81,8 +99,10 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
 
         if selectedCell == "Deliver To" {
-            cell.textLabel?.text = addresses[indexPath.row].address
-            if addresses[indexPath.row].selected {
+            cell.textLabel?.text = addresses[indexPath.row]
+            let selectedRow = defaults.objectForKey("CurrentAddressIndex") as! Int
+            
+            if indexPath.row == selectedRow {
                 cell.accessoryType = .Checkmark
             } else {
                 cell.accessoryType = .None
@@ -103,8 +123,8 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if selectedCell == "Deliver To" {
-            deselectAll()
-            addresses[indexPath.row].selected = true
+            //deselectAll()
+            defaults.setObject(indexPath.row, forKey: "CurrentAddressIndex")
         } else {
             deselectAll()
             paymentMethods[indexPath.row].selected = true
@@ -115,15 +135,18 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     
     // Deselect all cells
     func deselectAll() {
-        if selectedCell == "Deliver To" {
+        /*if selectedCell == "Deliver To" {
             for i in 0..<addresses.count {
                 addresses[i].selected = false
             }
-        } else {
+        }*/ if selectedCell == "Paying With"{
             for i in 0..<paymentMethods.count {
                 paymentMethods[i].selected = false
             }
         }
+    }
+    
+    @IBAction func returnToDeliverTo(segue: UIStoryboardSegue) {
     }
     
 
