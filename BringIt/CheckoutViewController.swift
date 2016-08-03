@@ -574,11 +574,17 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBAction func xButtonPressed(sender: UIBarButtonItem) {
         
         print("X button was pressed!")
+        print(cameFromVC)
         
-        if cameFromVC != "" {
-            self.navigationController?.popViewControllerAnimated(true)
-        } else {
+        if cameFromVC == "" {
             performSegueWithIdentifier("returnToScheduleDetails", sender: self)
+        } else {
+            
+            if let navController = self.navigationController {
+                print("HL")
+                //navController.popViewControllerAnimated(true)
+                navController.popToRootViewControllerAnimated(true)
+            }
         }
     }
     

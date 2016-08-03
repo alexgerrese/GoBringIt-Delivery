@@ -815,7 +815,7 @@
                         <barButtonItem key="rightBarButtonItem" image="Cart" id="vGm-Rg-WU7">
                             <inset key="imageInsets" minX="14" minY="10" maxX="2" maxY="3"/>
                             <connections>
-                                <segue destination="FaF-xA-9tx" kind="show" id="MIb-bQ-wH3"/>
+                                <segue destination="FaF-xA-9tx" kind="show" identifier="toCheckout" id="MIb-bQ-wH3"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -890,10 +890,10 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DGn-Ow-xlB">
-                                <rect key="frame" x="10" y="388" width="395" height="299"/>
+                                <rect key="frame" x="10" y="383" width="395" height="299"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SX2-Sv-p0z">
-                                        <rect key="frame" x="0.0" y="0.0" width="395" height="299"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="395" height="304"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="scheduleCell" rowHeight="90" id="oOx-c8-RGu" customClass="ScheduleTableViewCell" customModule="BringIt" customModuleProvider="target">
@@ -989,9 +989,9 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="SX2-Sv-p0z" firstAttribute="centerX" secondItem="DGn-Ow-xlB" secondAttribute="centerX" id="IJw-AJ-i8E"/>
-                                    <constraint firstAttribute="bottom" secondItem="SX2-Sv-p0z" secondAttribute="bottom" id="P3a-UG-AAJ"/>
+                                    <constraint firstAttribute="bottom" secondItem="SX2-Sv-p0z" secondAttribute="bottom" constant="-5" id="P3a-UG-AAJ"/>
                                     <constraint firstItem="SX2-Sv-p0z" firstAttribute="top" secondItem="DGn-Ow-xlB" secondAttribute="top" id="eQK-yc-hto"/>
-                                    <constraint firstItem="SX2-Sv-p0z" firstAttribute="centerY" secondItem="DGn-Ow-xlB" secondAttribute="centerY" id="keG-Y6-Lny"/>
+                                    <constraint firstItem="SX2-Sv-p0z" firstAttribute="centerY" secondItem="DGn-Ow-xlB" secondAttribute="centerY" constant="2.5" id="keG-Y6-Lny"/>
                                     <constraint firstAttribute="trailing" secondItem="SX2-Sv-p0z" secondAttribute="trailing" id="rni-lc-ayD"/>
                                     <constraint firstItem="SX2-Sv-p0z" firstAttribute="leading" secondItem="DGn-Ow-xlB" secondAttribute="leading" id="tad-Mp-tAl"/>
                                 </constraints>
@@ -1000,13 +1000,13 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Fbe-YZ-fru" firstAttribute="leading" secondItem="7Ao-ax-lzv" secondAttribute="leading" constant="10" id="Awd-Uc-ISY"/>
-                            <constraint firstItem="DGn-Ow-xlB" firstAttribute="bottom" secondItem="fmq-ss-rzT" secondAttribute="top" id="ErM-Nv-8oX"/>
+                            <constraint firstItem="DGn-Ow-xlB" firstAttribute="bottom" secondItem="fmq-ss-rzT" secondAttribute="top" constant="-5" id="ErM-Nv-8oX"/>
                             <constraint firstItem="Fbe-YZ-fru" firstAttribute="leading" secondItem="DGn-Ow-xlB" secondAttribute="leading" id="GWT-gk-5z4"/>
-                            <constraint firstItem="DGn-Ow-xlB" firstAttribute="top" secondItem="7Ao-ax-lzv" secondAttribute="top" constant="388" id="J4W-PW-eRb"/>
+                            <constraint firstItem="DGn-Ow-xlB" firstAttribute="top" secondItem="7Ao-ax-lzv" secondAttribute="top" constant="383" id="J4W-PW-eRb"/>
                             <constraint firstItem="Fbe-YZ-fru" firstAttribute="trailing" secondItem="DGn-Ow-xlB" secondAttribute="trailing" id="SfO-T9-NSz"/>
                             <constraint firstAttribute="trailing" secondItem="Fbe-YZ-fru" secondAttribute="trailing" constant="9" id="ezc-Z9-wQS"/>
                             <constraint firstItem="Fbe-YZ-fru" firstAttribute="top" secondItem="Xd1-H5-tJ1" secondAttribute="bottom" constant="8" id="ubl-Q0-w1M"/>
-                            <constraint firstItem="DGn-Ow-xlB" firstAttribute="top" secondItem="Fbe-YZ-fru" secondAttribute="bottom" constant="13" id="x2a-4i-PpB"/>
+                            <constraint firstItem="DGn-Ow-xlB" firstAttribute="top" secondItem="Fbe-YZ-fru" secondAttribute="bottom" constant="8" id="x2a-4i-PpB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DZX-Ah-Dt6">
@@ -1520,7 +1520,7 @@
                         <barButtonItem key="rightBarButtonItem" image="Cart" id="cIh-Bp-WDk">
                             <inset key="imageInsets" minX="14" minY="10" maxX="2" maxY="3"/>
                             <connections>
-                                <segue destination="FaF-xA-9tx" kind="show" id="bSP-Mp-njt"/>
+                                <segue destination="FaF-xA-9tx" kind="show" identifier="toCheckoutFromMenu" id="bSP-Mp-njt"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -2121,7 +2121,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No gratuity added. We encourage you to tip your driver upon delivery. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPX-Ik-CgV">
-                                                        <rect key="frame" x="79" y="374" width="236" height="45"/>
+                                                        <rect key="frame" x="79" y="380" width="236" height="45"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="REz-xv-2sV"/>
                                                         </constraints>
@@ -2150,6 +2150,9 @@
                                                             <action selector="checkoutButtonPressed:" destination="9Tx-Ga-KEe" eventType="touchUpInside" id="WUU-nX-sBx"/>
                                                         </connections>
                                                     </button>
+                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PhW-mE-6Wu">
+                                                        <rect key="frame" x="187" y="288" width="20" height="20"/>
+                                                    </activityIndicatorView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -2166,11 +2169,12 @@
                                                     <constraint firstItem="LxI-YL-591" firstAttribute="top" secondItem="82g-JW-K5v" secondAttribute="bottom" constant="37" id="Fma-Fx-Ehs"/>
                                                     <constraint firstItem="EGB-eh-Yj5" firstAttribute="top" secondItem="gas-k9-dQr" secondAttribute="bottom" constant="6" id="GXG-Wt-LPS"/>
                                                     <constraint firstItem="u4F-rP-FX5" firstAttribute="top" secondItem="ClW-b5-J5b" secondAttribute="top" constant="82" id="Jxt-L9-tVQ"/>
-                                                    <constraint firstItem="NoJ-8h-i9o" firstAttribute="top" secondItem="bPX-Ik-CgV" secondAttribute="bottom" constant="20" id="KR8-qR-Urz"/>
+                                                    <constraint firstItem="NoJ-8h-i9o" firstAttribute="top" secondItem="bPX-Ik-CgV" secondAttribute="bottom" constant="14" id="KR8-qR-Urz"/>
                                                     <constraint firstItem="p5E-Z7-jjf" firstAttribute="top" secondItem="dmW-gI-x3w" secondAttribute="bottom" constant="-6" id="Kbq-21-jXQ"/>
                                                     <constraint firstItem="ZpY-dd-NcR" firstAttribute="trailing" secondItem="Rra-uC-DOy" secondAttribute="trailing" constant="-1" id="LeB-rD-wwa"/>
                                                     <constraint firstAttribute="trailing" secondItem="dmW-gI-x3w" secondAttribute="trailing" id="MPV-tN-AS6"/>
                                                     <constraint firstItem="gas-k9-dQr" firstAttribute="leading" secondItem="EGB-eh-Yj5" secondAttribute="leading" id="Sv1-fi-EF9"/>
+                                                    <constraint firstItem="5G2-Ij-cnG" firstAttribute="top" secondItem="PhW-mE-6Wu" secondAttribute="bottom" constant="8" symbolic="YES" id="Ugb-vb-eUB"/>
                                                     <constraint firstItem="82g-JW-K5v" firstAttribute="firstBaseline" secondItem="now-ge-fCb" secondAttribute="firstBaseline" id="XsC-vy-Dye"/>
                                                     <constraint firstItem="3DF-m9-WqI" firstAttribute="leading" secondItem="ClW-b5-J5b" secondAttribute="leading" constant="15" id="ZOe-xD-fEJ"/>
                                                     <constraint firstItem="dmW-gI-x3w" firstAttribute="top" secondItem="ZpY-dd-NcR" secondAttribute="bottom" constant="8" symbolic="YES" id="Zsx-e1-8Zt"/>
@@ -2185,10 +2189,11 @@
                                                     <constraint firstItem="p5E-Z7-jjf" firstAttribute="centerY" secondItem="Rra-uC-DOy" secondAttribute="centerY" id="roJ-SM-AD6"/>
                                                     <constraint firstItem="EGB-eh-Yj5" firstAttribute="baseline" secondItem="u4F-rP-FX5" secondAttribute="baseline" id="sF6-US-gpt"/>
                                                     <constraint firstItem="Rra-uC-DOy" firstAttribute="top" secondItem="dmW-gI-x3w" secondAttribute="bottom" constant="-5" id="swL-Tt-VKP"/>
+                                                    <constraint firstItem="PhW-mE-6Wu" firstAttribute="centerX" secondItem="5G2-Ij-cnG" secondAttribute="centerX" id="tEf-PU-E1C"/>
                                                     <constraint firstItem="dmW-gI-x3w" firstAttribute="centerX" secondItem="ClW-b5-J5b" secondAttribute="centerX" id="vfq-Tj-dks"/>
                                                     <constraint firstItem="5G2-Ij-cnG" firstAttribute="centerX" secondItem="dmW-gI-x3w" secondAttribute="centerX" id="wbY-Do-7gO"/>
                                                     <constraint firstItem="NoJ-8h-i9o" firstAttribute="leading" secondItem="dmW-gI-x3w" secondAttribute="leading" id="wfA-XF-PbW"/>
-                                                    <constraint firstItem="bPX-Ik-CgV" firstAttribute="bottom" secondItem="ClW-b5-J5b" secondAttribute="bottomMargin" constant="-62" id="zUD-wm-gVx"/>
+                                                    <constraint firstItem="bPX-Ik-CgV" firstAttribute="bottom" secondItem="ClW-b5-J5b" secondAttribute="bottomMargin" constant="-56" id="zUD-wm-gVx"/>
                                                     <constraint firstItem="EGB-eh-Yj5" firstAttribute="top" secondItem="3DF-m9-WqI" secondAttribute="bottom" constant="19" id="zgc-vh-WLy"/>
                                                 </constraints>
                                             </view>
@@ -2274,9 +2279,6 @@
                                     <constraint firstAttribute="trailing" secondItem="DDP-m5-IM6" secondAttribute="trailing" id="tLx-cd-2KV"/>
                                 </constraints>
                             </scrollView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PhW-mE-6Wu">
-                                <rect key="frame" x="197" y="358" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -2284,9 +2286,7 @@
                             <constraint firstItem="kZn-N8-qYv" firstAttribute="top" secondItem="8wZ-A6-Cyo" secondAttribute="bottom" id="3ld-6y-3Ww"/>
                             <constraint firstItem="kZn-N8-qYv" firstAttribute="top" secondItem="8wZ-A6-Cyo" secondAttribute="bottom" id="3wP-Hl-oex"/>
                             <constraint firstAttribute="trailing" secondItem="kZn-N8-qYv" secondAttribute="trailing" id="A5d-3W-ExU"/>
-                            <constraint firstItem="PhW-mE-6Wu" firstAttribute="centerY" secondItem="IEJ-UZ-xnf" secondAttribute="centerY" id="EaY-G9-Cng"/>
                             <constraint firstItem="kZn-N8-qYv" firstAttribute="leading" secondItem="IEJ-UZ-xnf" secondAttribute="leading" id="Uk1-dQ-Vfu"/>
-                            <constraint firstItem="PhW-mE-6Wu" firstAttribute="centerX" secondItem="kZn-N8-qYv" secondAttribute="centerX" id="ccs-52-mhS"/>
                             <constraint firstItem="kZn-N8-qYv" firstAttribute="leading" secondItem="IEJ-UZ-xnf" secondAttribute="leading" id="hzl-ch-dH5"/>
                             <constraint firstItem="ljc-0z-WyZ" firstAttribute="top" secondItem="kZn-N8-qYv" secondAttribute="bottom" id="oq2-GP-dUQ"/>
                             <constraint firstItem="DDP-m5-IM6" firstAttribute="width" secondItem="IEJ-UZ-xnf" secondAttribute="width" id="qsw-Zx-nay"/>
@@ -2314,6 +2314,7 @@
                         <segue destination="71X-Mw-hR9" kind="show" identifier="toOrderPlaced" id="Gus-qa-YNK"/>
                         <segue destination="wmm-6d-OeC" kind="show" identifier="toChangeOrder" id="qzj-D1-uoN"/>
                         <segue destination="AkB-bX-oop" kind="unwind" identifier="returnToScheduleDetails" unwindAction="returnToScheduleDetails:" id="1Qp-9i-Oov"/>
+                        <segue destination="AkB-bX-oop" kind="unwind" identifier="prepareForUnwind" unwindAction="prepareForUnwind:" id="y1R-HI-iPT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b8v-uy-L3U" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4786,8 +4787,8 @@ with your details shortly.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="zYJ-Ij-Vg9"/>
+        <segue reference="6d4-35-C0q"/>
         <segue reference="qzj-D1-uoN"/>
-        <segue reference="8gT-pj-uyZ"/>
         <segue reference="ai2-H9-Z3b"/>
     </inferredMetricsTieBreakers>
 </document>

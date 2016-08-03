@@ -202,7 +202,7 @@ class MenuTableViewController: UITableViewController {
             VC.selectedFoodPrice = Double(foodPrices[indexPath.row])!
             VC.selectedFoodID = foodIDs[indexPath.row]
             VC.selectedFoodSidesNum = foodSideNums[indexPath.row]
-        } else if segue.identifier == "toCheckout" {
+        } else if segue.identifier == "toCheckoutFromMenu" {
             // Send selected food's data to AddToOrder screen
             let nav = segue.destinationViewController as! UINavigationController
             let VC = nav.topViewController as! CheckoutViewController
