@@ -13,11 +13,14 @@ struct Address {
     var selected: Bool
 }
 
-class DeliverToPayingWithTableViewController: UITableViewController {
+class DeliverToPayingWithViewController: UIViewController {
     
     // MARK: - IBOutlets
     
     @IBOutlet weak var addNewButton: UIButton!
+    @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var pageTitleLabel: UILabel!
+    @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
     
     // MARK: - SAMPLE DATA
     
@@ -45,20 +48,26 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         
         // Set addNewText button
         if selectedCell == "Deliver To" {
-            addNewButton.setTitle("+ New Address", forState: .Normal)
+            addNewButton.setTitle("+ NEW ADDRESS", forState: .Normal)
         } else {
-            addNewButton.setTitle("+ New Payment Method", forState: .Normal)
+            addNewButton.setTitle("+ NEW PAYMENT METHOD", forState: .Normal)
         }
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         // Set tableView cells to custom height and automatically resize if needed
-        tableView.estimatedRowHeight = 50
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        myTableView.estimatedRowHeight = 50
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
         
         // Only one cell can be selected at a time
-        tableView.allowsMultipleSelection = false
+        myTableView.allowsMultipleSelection = false
+        
+        if selectedCell == "Deliver To" {
+            pageTitleLabel.text = "Addresses"
+        } else {
+            pageTitleLabel.text = "Payment Methods"
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -67,7 +76,14 @@ class DeliverToPayingWithTableViewController: UITableViewController {
             addresses = addressesArray as! [String]
         }
         
-        tableView.reloadData()
+        myTableView.reloadData()
+        updateViewConstraints()
+    }
+    
+    // Resize itemsTableView
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        myTableViewHeight.constant = myTableView.contentSize.height
     }
 
     @IBAction func newButtonPressed(sender: UIButton) {
@@ -83,11 +99,11 @@ class DeliverToPayingWithTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if selectedCell == "Deliver To" {
             return addresses.count
         } else {
@@ -95,7 +111,7 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
 
         if selectedCell == "Deliver To" {
@@ -120,7 +136,7 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     }
     
     // MAKE SURE THIS WORKSSSSSSSS
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if selectedCell == "Deliver To" {
             //deselectAll()
@@ -148,42 +164,34 @@ class DeliverToPayingWithTableViewController: UITableViewController {
     
     @IBAction func returnToDeliverTo(segue: UIStoryboardSegue) {
     }
-    
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
+            
             // Delete the row from the data source
+            addresses.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            tableView.reloadData()
+            
+            // Update UserDefaults
+            if addresses.count > 1 {
+                defaults.setObject(indexPath.row - 1, forKey: "CurrentAddressIndex")
+            } else {
+                defaults.setObject(-1, forKey: "CurrentAddressIndex")
+            }
+            
+            defaults.setObject(addresses, forKey: "Addresses")
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
-    */
 
     /*
     // MARK: - Navigation

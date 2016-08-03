@@ -53,7 +53,7 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         // Set title
-        self.navigationItem.title = "Schedule"
+        self.navigationItem.title = "Order History"
         
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
@@ -134,12 +134,12 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         cell.monthLabel.text = month
         cell.dayLabel.text = String(components.day)
         
-        // Display service type
+        /* Display service type
         if entries![indexPath.row].restaurant != nil {
             cell.serviceTypeLabel.text = "Food Delivery"
         } else {
             cell.serviceTypeLabel.text = "Maid My Day"
-        }
+        }*/
 
         // Calculate time
         let timeFormatter = NSDateFormatter()
@@ -151,7 +151,8 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         cell.descriptionLabel.text = entries![indexPath.row].restaurant
         
         // Display price
-        cell.priceLabel.text = String(format: "%.2f", entries![indexPath.row].totalPrice!) // BUG: WHY IS THIS NOT WORKINGGGGG?
+        let price = entries![indexPath.row].totalPrice! as Double
+        cell.priceLabel.text = String(format: "$%.2f", price) // BUG: WHY IS THIS NOT WORKINGGGGG?
         print(String(format: "%.2f", entries![indexPath.row].totalPrice!))
         
         return cell

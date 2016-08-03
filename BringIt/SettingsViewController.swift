@@ -10,10 +10,11 @@ import UIKit
 
 class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet weak var profilePicImage: UIImageView!
+    //@IBOutlet weak var profilePicImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var memberSinceLabel: UILabel!
+    //@IBOutlet weak var memberSinceLabel: UILabel!
     @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
     
     // Tableview cells
     var infoCells = ["Contact Info", "Addresses", "Payment Methods"]
@@ -37,11 +38,11 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set title
         self.navigationItem.title = "Settings"
         
-        // Round profile pic image
+        /* Round profile pic image
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0
-        self.profilePicImage.layer.borderColor = UIColor.lightGrayColor().CGColor
+        self.profilePicImage.layer.borderColor = UIColor.lightGrayColor().CGColor*/
         
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
@@ -77,6 +78,12 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // Resize itemsTableView
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        myTableViewHeight.constant = myTableView.contentSize.height
+    }
 
     // MARK: - Table view data source
     
@@ -111,7 +118,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
-    // Set up custom header
+    /* Set up custom header
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
@@ -126,7 +133,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         } else {
             return "HELP"
         }
-    }
+    }*/
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 1 || indexPath.row == 2 {
@@ -208,7 +215,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toDeliverToPayingWithFromProfile" {
-            let VC = segue.destinationViewController as! DeliverToPayingWithTableViewController
+            let VC = segue.destinationViewController as! DeliverToPayingWithViewController
             if self.selectedCell == 1 {
                 VC.selectedCell = "Deliver To"
             } else if self.selectedCell == 2 {

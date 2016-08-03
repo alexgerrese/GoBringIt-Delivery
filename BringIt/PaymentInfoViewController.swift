@@ -15,12 +15,6 @@ import Stripe
 class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelegate {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var creditRadioButton: DLRadioButton!
-    @IBOutlet weak var debitRadioButton: DLRadioButton!
-    @IBOutlet weak var cardNumberTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var CVCTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var expirationDateTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Passed data

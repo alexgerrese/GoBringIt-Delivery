@@ -94,7 +94,7 @@ class NewAddressViewController: UIViewController {
             }
             
             var newAddress = ""
-            if address2TextField.text == nil {
+            if address2TextField.text == "" {
                 newAddress = address1TextField.text! + "\n" + cityTextField.text! + "\n" + zipTextField.text!
             } else {
                 newAddress = address1TextField.text! + "\n" + address2TextField.text! + "\n" + cityTextField.text! + "\n" + zipTextField.text!

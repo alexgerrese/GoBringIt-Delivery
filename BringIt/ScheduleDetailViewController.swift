@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ScheduleDetailViewController: UIViewController {
 
@@ -26,10 +27,15 @@ class ScheduleDetailViewController: UIViewController {
     //let items = [Item(name: "The Carolina Cockerel", quantity: 2, price: 10.00), Item(name: "Chocolate Milkshake", quantity: 1, price: 4.99), Item(name: "Large Fries", quantity: 2, price: 3.00)]
     
     // MARK: - Variables
-    var order = Order()
-    var items = [Item]()
+    var order: Order?
+    var items: [Item]?
     var date = ""
     var backgroundImageURL = ""
+    
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,11 +60,15 @@ class ScheduleDetailViewController: UIViewController {
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
         // backgroundImageView.image = // Insert image URL here
 
-        items = order.items?.allObjects as! [Item]
+        items = order!.items?.allObjects as? [Item]
         
-        self.deliveryFeeLabel.text = String(format: "$%.2f", order.deliveryFee!)
-        self.subtotalCostLabel.text = String(format: "$%.2f", Double(order.totalPrice!) - Double(order.deliveryFee!))
-        self.totalCostLabel.text = String(format: "$%.2f", order.totalPrice!)
+        let deliveryFee = Double((order?.deliveryFee)!)
+        let subTotal = Double((order?.totalPrice)!) - Double((order?.deliveryFee)!)
+        let totalCost = Double((order?.totalPrice)!)
+        
+        self.deliveryFeeLabel.text = String(format: "$%.2f", deliveryFee )
+        self.subtotalCostLabel.text = String(format: "$%.2f", subTotal)
+        self.totalCostLabel.text = String(format: "$%.2f", totalCost)
         
         // Stop activity indicator
         //TO-DO: Place this so it is executed after the db request is made!
@@ -72,7 +82,45 @@ class ScheduleDetailViewController: UIViewController {
     }
 
     @IBAction func orderAgainButtonPressed(sender: UIButton) {
-        // TO-DO: Chad! When this button is pressed, create a new cart with all the previously ordered items in it. We will load this cart in the next viewcontroller which will be the CheckoutViewController. From there, the user can make changes if needed and then use that viewcontroller as usual.
+        
+        // Check if there is an existing active cart from this restaurant
+        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let secondPredicate = NSPredicate(format: "restaurant == %@", (order?.restaurant)!)
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        fetchRequest.predicate = predicate
+        
+        var activeCart = [Order]()
+        
+        do {
+            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                activeCart = fetchResults
+                print("THERE IS AN EXISTING CART")
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        // Delete current cart (if any exists)
+        // TO-DO: ALEX! Add a warning that current cart will be overwritten?
+        if !activeCart.isEmpty {
+            // Shouldn't be necessary, just a precaution
+            activeCart[0].isActive = false
+            activeCart.removeAll()
+        }
+        
+        var reorder = NSEntityDescription.insertNewObjectForEntityForName("Order", inManagedObjectContext: managedContext) as! Order
+        
+        reorder = order!
+        
+        // Set this cart as the active cart
+        reorder.isActive = true
+        activeCart.append(reorder)
+        
+        // Save changes
+        self.appDelegate.saveContext()
+        
+        performSegueWithIdentifier("toCheckoutFromReorder", sender: self)
     }
     
     // MARK: - Table view data source
@@ -85,29 +133,31 @@ class ScheduleDetailViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return
+            items!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCellWithIdentifier("checkoutCell", forIndexPath: indexPath) as! CheckoutTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("scheduleDetailCell", forIndexPath: indexPath) as! ScheduleDetailTableViewCell
             
             // Set name and quantity labels
-            cell.itemNameLabel.text = items[indexPath.row].name
-            cell.itemQuantityLabel.text = String(items[indexPath.row].quantity!)
-            
+            cell.itemNameLabel.text = items![indexPath.row].name
+            cell.itemQuantityLabel.text = String(items![indexPath.row].quantity!)
+        
             // Calculate total item cost
             var totalItemCost = 0.0
             var costOfSides = 0.0
-            for side in items[indexPath.row].sides?.allObjects as! [Side] {
+            for side in items![indexPath.row].sides?.allObjects as! [Side] {
                 costOfSides += Double(side.price!)
             }
-            totalItemCost += (Double(items[indexPath.row].price!) + costOfSides) * Double(items[indexPath.row].quantity!)
+            totalItemCost += (Double(items![indexPath.row].price!) + costOfSides) * Double(items![indexPath.row].quantity!)
             cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
             
             // Format all sides and extras
             var sides = "Sides: "
             var extras = "Extras: "
-            let allSides = items[indexPath.row].sides?.allObjects as! [Side]
+            let allSides = items![indexPath.row].sides?.allObjects as! [Side]
+        
             for i in 0..<allSides.count {
                 if ((allSides[i].isRequired) == true) {
                     if i < allSides.count - 1 {
@@ -132,8 +182,8 @@ class ScheduleDetailViewController: UIViewController {
             
             // Format special instructions
             var specialInstructions = "Special Instructions: "
-            if items[indexPath.row].specialInstructions != "" {
-                specialInstructions += items[indexPath.row].specialInstructions!
+            if items![indexPath.row].specialInstructions != "" {
+                specialInstructions += items![indexPath.row].specialInstructions!
             } else {
                 specialInstructions += "None"
             }
@@ -193,14 +243,22 @@ class ScheduleDetailViewController: UIViewController {
         super.updateViewConstraints()
         myTableViewHeight.constant = myTableView.contentSize.height
     }
-    /*
+    
+    @IBAction func returnToScheduleDetails(segue: UIStoryboardSegue) {
+    }
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "toCheckoutFromReorder" {
+            
+            selectedRestaurantName = (order?.restaurant)!
+        }
     }
-    */
+    
 
 }
