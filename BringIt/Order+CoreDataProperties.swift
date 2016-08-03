@@ -20,6 +20,8 @@ extension Order {
     @NSManaged var dateOrdered: NSDate?
     @NSManaged var deliveryFee: NSNumber?
     @NSManaged var restaurant: String?
+    // TODO: Alex, I tried this but got an error.
+    //@NSManaged var restaurantID: String?
     @NSManaged var items: NSSet?
 
 }

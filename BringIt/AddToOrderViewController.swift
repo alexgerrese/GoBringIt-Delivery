@@ -473,7 +473,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         let name = Restaurant["name"] as! String
                                         if (name == selectedRestaurantName) {
                                             let deliveryFee = Restaurant["delivery_fee"] as! String
+                                            let serviceID = Restaurant["id"] as! String
                                             order.deliveryFee = Int(deliveryFee) // TO-DO: CHAD! PLEASE PULL THIS FROM THE DB!
+                                            // TODO: Alex please uncomment the line below once you have set-up a restaurantID property for the Order CoreData struct
+                                            //order.restaurantID = serviceID
                                             print("Order DFEE: ", order.deliveryFee)
                                         }
                                         
