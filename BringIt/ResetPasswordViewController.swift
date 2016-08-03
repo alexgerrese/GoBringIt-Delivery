@@ -115,7 +115,6 @@ class ResetPasswordViewController: UIViewController {
                             if self.newPassword1TextField.text == self.newPassword2TextField.text {
                                 self.newPasswordErrorLabel.hidden = true
                                 
-                                print("// CHAD: Send the new password to the db here!")
                                 // Task 2 is used later
                                 // Create JSON data and configure the request
                                 let params = ["uid": userID,
