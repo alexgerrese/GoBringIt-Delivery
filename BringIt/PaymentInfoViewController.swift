@@ -118,7 +118,6 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
                         // Verify email and hashed password
                         if (emailID == self.email && phoneID == self.phoneNumber) {
                             NSOperationQueue.mainQueue().addOperationWithBlock {
-                                // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
                                 self.defaults.setObject(User["uid"] as! String, forKey: "userID")
                                 print((User["uid"] as! String, forKey: "userID"))
                             }
