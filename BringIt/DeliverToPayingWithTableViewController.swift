@@ -21,6 +21,7 @@ class DeliverToPayingWithViewController: UIViewController {
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var pageTitleLabel: UILabel!
     @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     // MARK: - SAMPLE DATA
     
@@ -49,8 +50,12 @@ class DeliverToPayingWithViewController: UIViewController {
         // Set addNewText button
         if selectedCell == "Deliver To" {
             addNewButton.setTitle("+ NEW ADDRESS", forState: .Normal)
+            pageTitleLabel.text = "Addresses"
+            descriptionLabel.text = "Select or add an address to deliver to."
         } else {
             addNewButton.setTitle("+ NEW PAYMENT METHOD", forState: .Normal)
+            pageTitleLabel.text = "Payment Methods"
+            descriptionLabel.text = "Pay with food points upon delivery. Credit/debit card payments coming soon."
         }
         
         // Set custom back button
@@ -64,9 +69,9 @@ class DeliverToPayingWithViewController: UIViewController {
         myTableView.allowsMultipleSelection = false
         
         if selectedCell == "Deliver To" {
-            pageTitleLabel.text = "Addresses"
+            
         } else {
-            pageTitleLabel.text = "Payment Methods"
+            
         }
     }
     

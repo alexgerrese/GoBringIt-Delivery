@@ -35,13 +35,13 @@ class ServicesTableViewController: UITableViewController {
         
         // setup tabbar indicator
         rectShape.fillColor = GREEN.CGColor
-        indicatorWidth = view.bounds.maxX / 3 // count of items
+        //indicatorWidth = view.bounds.maxX / 3 // count of items
         self.tabBarController!.view.layer.addSublayer(rectShape)
-        self.tabBarController?.delegate = self
+        //self.tabBarController?.delegate = self
         
         // initial position
         maxY = view.bounds.maxY - indicatorHeight
-        updateTabbarIndicatorBySelectedTabIndex(0)
+        //updateTabbarIndicatorBySelectedTabIndex(0)
         
 
     }
@@ -87,9 +87,9 @@ class ServicesTableViewController: UITableViewController {
 
 }
 
-extension ServicesTableViewController: UITabBarControllerDelegate {
+/*extension ServicesTableViewController: UITabBarControllerDelegate {
     
     func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
         updateTabbarIndicatorBySelectedTabIndex(tabBarController.selectedIndex)
     }
-}
+}*/

@@ -32,7 +32,7 @@
 		114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */; };
 		114FC7211D44C46F00DB5824 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71B1D44C46F00DB5824 /* Item.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
-		115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */; };
+		115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */; };
 		115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC371CEAA3460053E03F /* TabBarController.swift */; };
 		115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */; };
 		115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */; };
@@ -45,6 +45,8 @@
 		11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */; };
 		11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */; };
 		11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */; };
+		11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFA91D52C10F003290DA /* StatsViewController.swift */; };
+		11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */; };
 		11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */; };
 		11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */; };
 		11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */; };
@@ -106,7 +108,7 @@
 		114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		114FC71B1D44C46F00DB5824 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
-		115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewController.swift; sourceTree = "<group>"; };
+		115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeViewController.swift; sourceTree = "<group>"; };
 		115ECC371CEAA3460053E03F /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewCell.swift; sourceTree = "<group>"; };
 		115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,8 @@
 		11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderPriceTableViewCell.swift; sourceTree = "<group>"; };
 		11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressInfoViewController.swift; sourceTree = "<group>"; };
 		11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
+		11F5FFA91D52C10F003290DA /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
+		11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComingSoonViewController.swift; sourceTree = "<group>"; };
 		11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderViewController.swift; sourceTree = "<group>"; };
 		11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderTableViewCell.swift; sourceTree = "<group>"; };
 		11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderSpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
@@ -294,7 +298,7 @@
 		115ECC411CEABA5F0053E03F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */,
+				115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */,
 				115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */,
 			);
 			name = Home;
@@ -346,6 +350,8 @@
 				1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */,
 				114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */,
 				114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */,
+				11F5FFA91D52C10F003290DA /* StatsViewController.swift */,
+				11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -674,9 +680,10 @@
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
+				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
 				11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */,
-				115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */,
+				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
 				114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */,
@@ -691,6 +698,7 @@
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
 				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
+				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
 				11F6DE471CF6CF1A00662C20 /* CheckoutViewController.swift in Sources */,
 				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */,

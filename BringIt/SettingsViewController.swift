@@ -7,30 +7,37 @@
 //
 
 import UIKit
+import CoreData
+import MessageUI
 
-class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate {
     
-    //@IBOutlet weak var profilePicImage: UIImageView!
+    // MARK: - IBOutlets
+    
     @IBOutlet weak var nameLabel: UILabel!
-    //@IBOutlet weak var memberSinceLabel: UILabel!
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var briefingTextLabel: UILabel!
+    
+    // MARK: - Variables
     
     // Tableview cells
     var infoCells = ["Contact Info", "Addresses", "Payment Methods"]
     let contactIndex = 0
     let addressIndex = 1
     let paymentIndex = 2
-    
-    let helpCells = ["Contact Us", "Become a BringIt Driver"]
-    
-    // TO-DO: CHAD! Please pull the db data and make these dynamic. See below for where to put the data!
-    var cellNumbers = [Int]()
+    let helpCells = ["Coming Soon"]
+    var cellNumbers = [0,0,0]
+    var selectedCell = 0
     var userName = ""
     
+    // UserDefaults
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    var selectedCell = 0
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,9 +60,17 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
-        // CHAD! Here is where you can load the data into the dummy variables
-        cellNumbers = [0, 2, 1] // These represent the number of each that exist (0 means not applicable, then the 2 means the user has 2 addresses, and 1 means the user has one payment method on file).
-        userName = "Alexander Gerrese"
+        // Load the data into dummy variables
+        cellNumbers[0] = 0
+        cellNumbers[2] = 1
+        
+        // TO-DO: CHAD! Please pull this db data 
+        if let name = defaults.objectForKey("userName") {
+            userName = name as! String
+        } else {
+            // Write code hereeee. Should only need to be executed once per login.
+            userName = "Alexander Gerrese"
+        }
         
         // Set name
         nameLabel.text = userName
@@ -71,6 +86,39 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Get correct count for addresses
         if let addressesArray = defaults.objectForKey("Addresses") {
             cellNumbers[addressIndex] = addressesArray.count
+        }
+        
+        // Fetch all inactive carts, if any exist
+        
+        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let sortDescriptor = NSSortDescriptor(key: "dateOrdered", ascending: false)
+        let firstPredicate = NSPredicate(format: "isActive == %@", false)
+        fetchRequest.predicate = firstPredicate
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        var totalCost = 0.0
+        var numOrders = 0
+        var avgOrderCost = 0.0
+        
+        do {
+            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                
+                for i in fetchResults {
+                    totalCost += Double(i.totalPrice!)
+                    numOrders += 1
+                }
+                print(fetchResults.count)
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        avgOrderCost = totalCost / Double(numOrders)
+        
+        if numOrders == 0 {
+            briefingTextLabel.text = "Come back here after you've made some orders to see some stats!"
+        } else {
+            briefingTextLabel.text = "You have spent \(String(format: "$%.2f", totalCost)) on \(numOrders) orders, for an average of \(String(format: "$%.2f", avgOrderCost)) per order."
         }
     }
     
@@ -118,28 +166,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
-    /* Set up custom header
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        
-        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        header.textLabel!.textColor = UIColor.darkGrayColor()
-        header.textLabel?.font = TV_HEADER_FONT
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "INFO"
-        } else {
-            return "HELP"
-        }
-    }*/
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 1 || indexPath.row == 2 {
         performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
         } else if indexPath.row == 0 {
             performSegueWithIdentifier("toContactInfo", sender: self)
+        } else if indexPath.row == 3 {
+            performSegueWithIdentifier("toComingSoon", sender: self)
         }
     }
     
@@ -173,41 +206,35 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBAction func returnToSettings(segue: UIStoryboardSegue) {
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    @IBAction func sendEmailButtonTapped(sender: AnyObject) {
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.presentViewController(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        mailComposerVC.setToRecipients(["info@campusenterprises.org"])
+        mailComposerVC.setSubject("BringIt Contact Form")
+        mailComposerVC.setMessageBody("[Write your email here and we'll get back to  you ASAP!]", isHTML: false)
+        
+        return mailComposerVC
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
-    */
 
     
     // MARK: - Navigation

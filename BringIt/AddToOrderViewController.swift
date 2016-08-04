@@ -56,10 +56,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - IBOutlets
     @IBOutlet weak var myTableView: UITableView!
-    @IBOutlet weak var bottomView: UIView!
+    //@IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var stepper: GMStepper!
     @IBOutlet weak var addToOrderButton: UIButton!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    //@IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
     
     // Data passed from previous View Controller
     var selectedFoodName = ""
@@ -222,16 +223,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 }
                                 
                                 for i in 0..<self.sideItems.count {
-                                    // If required and price == 0, Section 1
-                                    if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice == "0") {
+                                    // If required, Section 1
+                                    if (self.sideItems[i].sideRequired == "1") {
                                         self.section1.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                         print("S1:" + self.sideItems[i].sideName)
                                     }
-                                    // If required and price !=0, Section 2
+                                    /* If required and price !=0, Section 2
                                     if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice != "0") {
                                         self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
-                                        print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
-                                    }
+                                        print("REQUIREDS2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
+                                    }*/
                                     // If not required, Section 2
                                     if (self.sideItems[i].sideRequired == "0") {
                                         self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
@@ -263,6 +264,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 
                                 self.calculatePrice()
                                 self.calculateNumOfSidesSelected()
+                                
+                                print("SIDES")
+                                print(self.section1.count)
                                 
                                 // Check if the required sides have been selected
                                 if self.numberOfSidesSelected == Int(self.selectedFoodSidesNum) {
@@ -355,6 +359,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /* Resize itemsTableView
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        myTableViewHeight.constant = myTableView.contentSize.height
+    }*/
     
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
         
@@ -474,9 +484,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         if (name == selectedRestaurantName) {
                                             let deliveryFee = Restaurant["delivery_fee"] as! String
                                             let serviceID = Restaurant["id"] as! String
-                                            order.deliveryFee = Int(deliveryFee) // TO-DO: CHAD! PLEASE PULL THIS FROM THE DB!
-                                            // TODO: Alex please uncomment the line below once you have set-up a restaurantID property for the Order CoreData struct
-                                            //order.restaurantID = serviceID
+                                            order.deliveryFee = Int(deliveryFee) 
+                                            order.restaurantID = serviceID
                                             print("Order DFEE: ", order.deliveryFee)
                                         }
                                         

@@ -27,7 +27,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
-    var deliveryFee = 2.5 // TO-DO: CHAD! Please pull this from the db on AddToOrder!!!
+    var deliveryFee = 0.0
     
     var items_ordered: [String] = []
     var items_ordered_quantity: [String] = []
@@ -56,7 +56,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     var userID = ""
     var currentAddress = ""
     var serviceID = ""
-    //var addresses = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +78,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Get Address of User
         // var userID: String?
         userID = self.defaults.objectForKey("userID") as AnyObject! as! String
-        
         
         // Set SAMPLE DATA
         //deliverTo = "1369 Campus Drive"
@@ -340,13 +338,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Delete the row from the data source
                 managedContext.deleteObject(items![indexPath.row])
                 appDelegate.saveContext()
-                
                 items!.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 
-                // Reload tableview and adjust tableview height
+                // Reload tableview and adjust tableview height and recalculate costs
                 itemsTableView.reloadData()
                 updateViewConstraints()
+                calculateTotalCost()
             }
         }
     }
@@ -451,7 +449,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     
                                     for item in self.items! {
                                         // Loop through all items
-                                        print("HERERHERHERHE")
                                         print(item.id)
                                         print(item.name)
                                         print(item.quantity)
@@ -546,13 +543,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                 
                                                 let params3 = ["id": String(self.maxCartOrderID),
                                                     "user_id": self.userID,
-                                                    "service_id": "9999",
-                                                    // TODO: Alex can you please somehow get the value of "order.restaurantID" here? Uncomment the line below when you have dont that, and delete the line above!
-                                                    //"service_id": order.restaurantID,
+                                                    "service_id": self.activeCart![0].restaurantID!,
                                                     ]
                                                     as Dictionary<String, String>
-                                                
-                                                //print("currentActiveCartID ", currentActiveCartID)
                                                 
                                                 // create the request & response
                                                 let request3 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddOrder.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
@@ -604,7 +597,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
     }
     
-    // TO-DO: Fix this!!! Doesn't work when coming from reorder
     @IBAction func xButtonPressed(sender: UIBarButtonItem) {
         
         print("X button was pressed!")
@@ -613,12 +605,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         if cameFromVC == "" {
             performSegueWithIdentifier("returnToScheduleDetails", sender: self)
         } else {
-            
-            if let navController = self.navigationController {
-                print("HL")
-                //navController.popViewControllerAnimated(true)
-                navController.popToRootViewControllerAnimated(true)
-            }
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     

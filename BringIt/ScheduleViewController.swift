@@ -10,6 +10,8 @@ import UIKit
 import CVCalendar
 import CoreData
 
+// FUTURE TO-DO: CHAD! Load past carts from web and update CoreData.
+
 class ScheduleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // ScheduleEntry data structure
@@ -39,6 +41,7 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var scrollViewToTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var myViewHeight: NSLayoutConstraint!
     @IBOutlet weak var switchViewsButton: UISegmentedControl!
+    @IBOutlet weak var noOrdersIcon: UIImageView!
     
     var selectedDay: DayView!
     var selectedDate: String?
@@ -67,12 +70,6 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         // Set label to current month
         monthAndYearLabel.text = CVDate(date: NSDate()).globalDescription
         menuView.dayOfWeekTextColor = UIColor.whiteColor()
-        
-        // TO-DO: CHAD! 
-            // 1. Please load all previous orders by this user from the db and put them in an array in the ScheduleEntry struct format above. Please sort them by date, with the most recent on top.
-            // 2. This array will need to be separated into sections by month, with the header of each section being the name of the month and the number of entries for that month (for example, "JUNE (3)"). Please let me know if you need help with this because it is confusing.
-            // 3. We need to mark on the calendar which dates have a ScheduleEntry item. If you can give me the dates of each entry formatted as an NSDate, I can mark them on the calendar with a little dot.
-        // Insert code hereeeeeeee
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -100,6 +97,15 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         myTableView.reloadData()
+        
+        if entries?.count == 0 {
+            self.myTableView.separatorStyle = .None
+            noOrdersIcon.hidden = false
+            
+        } else {
+            self.myTableView.separatorStyle = .SingleLine
+            noOrdersIcon.hidden = true
+        }
     }
     
     // Set up Calendar View

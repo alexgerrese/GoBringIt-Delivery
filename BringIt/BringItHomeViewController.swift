@@ -10,7 +10,20 @@ import UIKit
 
 var selectedRestaurantName = ""
 
-class BringItHomeTableViewController: UITableViewController {
+class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var loadingRestaurantsIcon: UIImageView!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    
+    // Variables
+    let rectShape = CAShapeLayer()
+    let indicatorHeight: CGFloat = 3
+    var indicatorWidth: CGFloat!
+    let indicatorBottomMargin: CGFloat = 2
+    let indicatorLeftMargin: CGFloat = 2
+    var maxY: CGFloat!
     
     // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
     
@@ -47,10 +60,32 @@ class BringItHomeTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Set title
-        self.title = "BringIt"
+        self.navigationItem.title = "Restaurants"
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        // Set nav bar preferences
+        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        navigationController!.navigationBar.titleTextAttributes =
+            ([NSFontAttributeName: TITLE_FONT,
+                NSForegroundColorAttributeName: UIColor.blackColor()])
+        
+        // Start activity indicator and show loading icon
+        myActivityIndicator.startAnimating()
+        self.myActivityIndicator.hidden = false
+        loadingRestaurantsIcon.hidden = false
+        myTableView.hidden = true
+        
+        // setup tabbar indicator
+        rectShape.fillColor = GREEN.CGColor
+        indicatorWidth = view.bounds.maxX / 3 // count of items
+        self.tabBarController!.view.layer.addSublayer(rectShape)
+        self.tabBarController?.delegate = self
+        
+        // initial position
+        maxY = view.bounds.maxY - indicatorHeight
+        updateTabbarIndicatorBySelectedTabIndex(0)
         
         // Get list of coverImages, restaurantNames, id
         
@@ -93,7 +128,13 @@ class BringItHomeTableViewController: UITableViewController {
                                 }
                                 
 
-                                self.tableView.reloadData()
+                                self.myTableView.reloadData()
+                                
+                                // Show tableview, end activity indicator and hide loading icon
+                                self.myTableView.hidden = false
+                                self.loadingRestaurantsIcon.hidden = true
+                                self.myActivityIndicator.stopAnimating()
+                                self.myActivityIndicator.hidden = true
                             }
                         }
                     }
@@ -113,21 +154,35 @@ class BringItHomeTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func updateTabbarIndicatorBySelectedTabIndex(index: Int) -> Void
+    {
+        let updatedBounds = CGRect( x: CGFloat(index) * (indicatorWidth + indicatorLeftMargin),
+                                    y: maxY,
+                                    width: indicatorWidth - indicatorLeftMargin,
+                                    height: indicatorHeight)
+        
+        print(view.bounds.maxY - indicatorHeight)
+        
+        let path = CGPathCreateMutable()
+        CGPathAddRect(path, nil, updatedBounds)
+        rectShape.path = path
+    }
+    
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         
         return restaurants.count
         
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
         
@@ -147,7 +202,7 @@ class BringItHomeTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         selectedRestaurantName = restaurants[indexPath.row].restaurantName
         
         return indexPath
@@ -155,7 +210,7 @@ class BringItHomeTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         
-        let indexPath = tableView.indexPathForSelectedRow?.row
+        let indexPath = myTableView.indexPathForSelectedRow?.row
         let destination = segue.destinationViewController as? RestaurantTableViewController
         destination?.restaurantImageData = restaurants[indexPath!].coverImage;
         destination?.restaurantName = restaurants[indexPath!].restaurantName
@@ -163,7 +218,7 @@ class BringItHomeTableViewController: UITableViewController {
         destination?.restaurantType = restaurants[indexPath!].cuisineType
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    /*override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "- RESTAURANTS -"
     }
     
@@ -173,13 +228,20 @@ class BringItHomeTableViewController: UITableViewController {
         header.textLabel!.textColor = UIColor.darkGrayColor()
         header.textLabel?.font = TV_HEADER_FONT
         header.textLabel?.textAlignment = .Center
-    }
+    }*/
     
     // MARK: - Navigation
     
     @IBAction func returnHome(segue: UIStoryboardSegue) {
     }
     
+}
+
+extension BringItHomeViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        updateTabbarIndicatorBySelectedTabIndex(tabBarController.selectedIndex)
+    }
 }
 
 
