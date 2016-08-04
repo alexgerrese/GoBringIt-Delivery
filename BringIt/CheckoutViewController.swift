@@ -77,14 +77,20 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Get Address of User
         // var userID: String?
-        userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        if let id = self.defaults.objectForKey("userID") {
+            userID = id as! String
+            print("USER ID: \(userID)")
+        }
         
         // Set SAMPLE DATA
         //deliverTo = "1369 Campus Drive"
         payWith = "Food Points"
+        
+        calculateTotalCost()
     }
     
     override func viewWillAppear(animated: Bool) {
+        print("HELLO1")
         if comingFromOrderPlaced == true {
             comingFromOrderPlaced = false
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -100,6 +106,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // DETAIL TABLEVIEW
         
+        print("HELLO2")
+        
         var addresses = [String]()
         if let addressesArray = defaults.objectForKey("Addresses") {
             addresses = addressesArray as! [String]
@@ -113,6 +121,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         detailsTableView.reloadData()
         
+        print("HELLO1")
+        
         // ITEMS TABLEVIEW
         
         // Fetch all active carts, if any exist
@@ -123,6 +133,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
         
+        print("HELLO2")
+        
         do {
             if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
                 activeCart = fetchResults
@@ -131,6 +143,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
+        
+        print("HELLO3")
         
         // If cart is empty, then load empty state
         if activeCart!.isEmpty {
@@ -142,11 +156,15 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         }
             //If request returns a cart, then display the cart
         else {
+            
+            print("HELLO4")
             let order = activeCart![0] // MAYBE DON'T HARD CODE
+            
+            print("HELLO5")
             
             // Set delivery fee
             deliveryFee = Double(order.deliveryFee!)
-            
+            print("HELLO6")
             // Fill items array
             items = order.items?.allObjects as? [Item]
             
@@ -156,15 +174,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 print((items![i].name))
             }
         }
-        
+
+        calculateTotalCost()
         itemsTableView.reloadData()
-        
-        // Calculate and display costs
-        self.calculateTotalCost()
-        self.deliveryFeeLabel.text = String(format: "$%.2f", self.deliveryFee)
-        self.subtotalCostLabel.text = String(format: "$%.2f", self.totalCost)
-        self.totalCostLabel.text = String(format: "$%.2f", self.totalCost + self.deliveryFee)
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -173,6 +185,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func calculateTotalCost() {
+        
+        // Calculate costs
         totalCost = 0.0
         if items != nil {
             for item in items! {
@@ -183,6 +197,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 totalCost += (Double(item.price!) + costOfSides) * Double(item.quantity!)
             }
         }
+        
+        // Display costs
+        self.deliveryFeeLabel.text = String(format: "$%.2f", self.deliveryFee)
+        self.subtotalCostLabel.text = String(format: "$%.2f", self.totalCost)
+        self.totalCostLabel.text = String(format: "$%.2f", self.totalCost + self.deliveryFee)
     }
     
     // MARK: - Table view data source

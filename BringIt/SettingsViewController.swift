@@ -22,12 +22,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Variables
     
     // Tableview cells
-    var infoCells = ["Contact Info", "Addresses", "Payment Methods"]
+    var infoCells = ["Contact Info", "Addresses", "Payment Methods", "Coming Soon"]
     let contactIndex = 0
     let addressIndex = 1
     let paymentIndex = 2
-    let helpCells = ["Coming Soon"]
-    var cellNumbers = [0,0,0]
+    let comingSoonIndex = 3
+    //let helpCells = ["Coming Soon"]
+    var cellNumbers = [0,0,0,0]
     var selectedCell = 0
     var userName = ""
     
@@ -43,7 +44,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         // Set title
-        self.navigationItem.title = "Settings"
+        self.navigationItem.title = "Profile"
         
         /* Round profile pic image
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
@@ -61,8 +62,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
         // Load the data into dummy variables
-        cellNumbers[0] = 0
-        cellNumbers[2] = 1
+        cellNumbers[paymentIndex] = 1
         
         // TO-DO: CHAD! Please pull this db data 
         if let name = defaults.objectForKey("userName") {
@@ -140,12 +140,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return infoCells.count
-        } else {
-            return helpCells.count
-        }
-        
+        return infoCells.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -158,20 +153,19 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             } else {
                 cell.detailTextLabel?.text = String(cellNumbers[indexPath.row])
             }
-        } else {
-            cell.textLabel?.text = helpCells[indexPath.row]
-            cell.detailTextLabel?.text = ""
         }
 
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 1 || indexPath.row == 2 {
-        performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
-        } else if indexPath.row == 0 {
+        
+        print(indexPath.row)
+        if indexPath.row == 0 {
             performSegueWithIdentifier("toContactInfo", sender: self)
-        } else if indexPath.row == 3 {
+        } else if indexPath.row == 1 || indexPath.row == 2 {
+        performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
+        } else {
             performSegueWithIdentifier("toComingSoon", sender: self)
         }
     }

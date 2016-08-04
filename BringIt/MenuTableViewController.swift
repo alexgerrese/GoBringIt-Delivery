@@ -192,6 +192,8 @@ class MenuTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
+        print("PRE SEGUE WORKS")
+        
         if segue.identifier == "toAddToOrder" {
             // Send selected food's data to AddToOrder screen
             let nav = segue.destinationViewController as! UINavigationController
@@ -202,6 +204,8 @@ class MenuTableViewController: UITableViewController {
             VC.selectedFoodPrice = Double(foodPrices[indexPath.row])!
             VC.selectedFoodID = foodIDs[indexPath.row]
             VC.selectedFoodSidesNum = foodSideNums[indexPath.row]
+            
+            print("SEGUE WORKS")
         } else if segue.identifier == "toCheckoutFromMenu" {
             // Send selected food's data to AddToOrder screen
             let nav = segue.destinationViewController as! UINavigationController

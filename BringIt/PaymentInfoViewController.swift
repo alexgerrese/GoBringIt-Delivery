@@ -55,6 +55,25 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         // Show activity indicator
         myActivityIndicator.startAnimating()
         
+        // Save address to UserDefaults
+        var addresses = [String]()
+        
+        if let addressesArray = defaults.objectForKey("Addresses") {
+            addresses = addressesArray as! [String]
+        }
+        
+        var newAddress = ""
+        if address2 == "" {
+            newAddress = address1 + "\n" + city + "\n" + zip
+        } else {
+            newAddress = address1 + "\n" + address2 + "\n" + city + "\n" + zip
+        }
+        
+        addresses.append(newAddress)
+        defaults.setObject(addresses, forKey: "Addresses")
+        defaults.setObject(addresses.count - 1, forKey: "CurrentAddressIndex")
+        defaults.setObject(fullName, forKey: "userName")
+        
         // Create JSON data and configure the request
         let params = ["name": fullName, // from SignUpVC
             "email": email, // from SignUpVC
@@ -90,9 +109,6 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         
         task.resume()
         
-        // Update UserDefaults
-        self.defaults.setBool(true, forKey: "loggedIn")
-        
         // Query accounts DB and get uid for email-phone combination
         // Open Connection to PHP Service
         let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
@@ -118,6 +134,8 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
                         // Verify email and hashed password
                         if (emailID == self.email && phoneID == self.phoneNumber) {
                             NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // Update UserDefaults
+                                self.defaults.setBool(true, forKey: "loggedIn")
                                 self.defaults.setObject(User["uid"] as! String, forKey: "userID")
                                 print((User["uid"] as! String, forKey: "userID"))
                             }

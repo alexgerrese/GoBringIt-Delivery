@@ -129,7 +129,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         if comingFromCheckoutVC {
             self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
             stepper.value = Double((self.passedItem?.quantity)!)
-            addToOrderButton.titleLabel?.text = "Update Order"
+            addToOrderButton.setTitle("UPDATE ORDER", forState: .Normal)
         }
         
         /*// Open Connection to PHP Service to carts DB to find an active cart
@@ -222,9 +222,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], sideID: self.sideIDs[i], selected: isSelected))
                                 }
                                 
+                                
+                                // SOME PROBLEMS HEREEEEEEEEEE. CHECK MAKE YOUR OWN WRAP
                                 for i in 0..<self.sideItems.count {
                                     // If required, Section 1
-                                    if (self.sideItems[i].sideRequired == "1") {
+                                    if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice == "0") {
                                         self.section1.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                         print("S1:" + self.sideItems[i].sideName)
                                     }
@@ -234,7 +236,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         print("REQUIREDS2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
                                     }*/
                                     // If not required, Section 2
-                                    if (self.sideItems[i].sideRequired == "0") {
+                                    if (self.sideItems[i].sideRequired == "0" || self.sideItems[i].sidePrice != "0") {
                                         self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                         print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
                                     }
@@ -411,10 +413,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     for i in items[i].sides?.allObjects as! [Side] {
                         i.item = nil
                     }
-                    
-                    //sides.removeAll()
-                    
-                    
+
                     for s in section1 {
                         if s.selected {
                             
@@ -484,9 +483,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         if (name == selectedRestaurantName) {
                                             let deliveryFee = Restaurant["delivery_fee"] as! String
                                             let serviceID = Restaurant["id"] as! String
-                                            order.deliveryFee = Int(deliveryFee) 
+                                            order.deliveryFee = Double(deliveryFee)
                                             order.restaurantID = serviceID
-                                            print("Order DFEE: ", order.deliveryFee)
+                                            print("Order FEE: ", order.deliveryFee)
                                         }
                                         
                                     }
@@ -532,6 +531,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                                 self.sides.append(side)
                                             }
                                         }
+                                        
+                                        print("ATLEAST1")
                                         for i in self.section2 {
                                             if i.selected {
                                                 
@@ -554,7 +555,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                             fatalError("Failure to save context: \(error)")
                                         }
                                         
-                                        self.dismissViewControllerAnimated(true, completion: nil)
                                     }
                                 }
                             }
@@ -567,11 +567,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
                 
                 task.resume()
-            }
-            
-            // PUT HERE
-            
-            if !activeCart.isEmpty {
+            } else {
                 
                 // ITEM
                 
@@ -634,13 +630,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     fatalError("Failure to save context: \(error)")
                 }
                 
-                self.dismissViewControllerAnimated(true, completion: nil)
+                print("SAVED")
                 
             }
             
         }
         
-        
+        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     

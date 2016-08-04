@@ -149,6 +149,10 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         task.resume()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        updateTabbarIndicatorBySelectedTabIndex(0)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

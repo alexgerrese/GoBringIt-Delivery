@@ -73,6 +73,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     // Reset views
                                     self.loginErrorMessageLabel.hidden = true
                                     self.myActivityIndicator.stopAnimating()
+                                    self.myActivityIndicator.hidden = true
                                     
                                     // Update UserDefaults 
                                     self.defaults.setBool(true, forKey: "loggedIn")
@@ -89,6 +90,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                         NSOperationQueue.mainQueue().addOperationWithBlock {
                             self.loginErrorMessageLabel.hidden = false
                             self.myActivityIndicator.stopAnimating()
+                            self.myActivityIndicator.hidden = true
                         }
                     }
                     

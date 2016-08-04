@@ -55,7 +55,7 @@ class DeliverToPayingWithViewController: UIViewController {
         } else {
             addNewButton.setTitle("+ NEW PAYMENT METHOD", forState: .Normal)
             pageTitleLabel.text = "Payment Methods"
-            descriptionLabel.text = "Pay with food points upon delivery. Credit/debit card payments coming soon."
+            descriptionLabel.text = "Credit/debit card payments coming soon."
         }
         
         // Set custom back button
