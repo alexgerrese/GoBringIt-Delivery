@@ -132,8 +132,8 @@ class RestaurantTableViewController: UITableViewController {
                                     let currentCalendar = NSCalendar.currentCalendar()
                                     let currentDate = NSDate()
                                     let localDate = NSDate(timeInterval: NSTimeInterval(NSTimeZone.systemTimeZone().secondsFromGMT), sinceDate: currentDate)
-                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: currentDate)
-                                    print(currentDate)
+                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: localDate)
+                                    print(localDate)
                                     let componentTime : Float = Float(components.hour - 17) + Float(components.minute) / 60
                                     var estTime : Float
                                     if (componentTime > 4) {
@@ -190,17 +190,6 @@ class RestaurantTableViewController: UITableViewController {
                                                             newTime = newTime! + minuteDecimal
                                                         }
                                                         print("The open time is: ", newTime!)
-                                                        /*var componentsChanged = NSDateComponents()
-                                                         componentsChanged.year = components.year
-                                                         componentsChanged.month = components.month
-                                                         componentsChanged.day = components.day
-                                                         print(components.day)
-                                                         componentsChanged.hour = newTime!
-                                                         print(newTime)
-                                                         componentsChanged.minute = 0
-                                                         componentsChanged.second = 0
-                                                         openDate = currentCalendar.dateFromComponents(componentsChanged)
-                                                         print("OpenDate: ", openDate!)*/
                                                         openDate = newTime!
                                                     } else if (closeDate == nil) {
                                                         var newTime : Float? = nil
@@ -226,31 +215,10 @@ class RestaurantTableViewController: UITableViewController {
                                                             newTime = newTime! + minuteDecimal
                                                         }
                                                         print("The close time is: ", newTime!)
-                                                        /*hours_pieces[j].componentsSeparatedByString("")
-                                                         var componentsChanged = NSDateComponents()
-                                                         componentsChanged.timeZone = components.timeZone
-                                                         componentsChanged.year = components.year
-                                                         componentsChanged.month = components.month
-                                                         componentsChanged.day = components.day
-                                                         var fullString : String = String(components.year) + "/" + String(components.month) + "/" + String(components.day) + " " + String(newTime!) + ":" + String(minuteTime!) + ":" + "00"
-                                                         closeDate = dateMaker.dateFromString(fullString)
-                                                         print(fullString)
-                                                         //print(components.day)
-                                                         //componentsChanged.hour = 1//newTime!
-                                                         //componentsChanged.minute = minuteTime!
-                                                         //componentsChanged.second = 0*/
-                                                        // closeDate = currentCalendar.dateFromComponents(componentsChanged)
-                                                        // print("CloseDate: ", closeDate!)
                                                         closeDate = newTime!
                                                     }
                                                 }
                                             }
-                                            
-                                            // Make a Date Object for open time
-                                            //let openDate = NSDate()
-                                            
-                                            // Make a Date Object for close time
-                                            //let closeDate = NSDate()
                                             
                                             // Check if localDate is between openDate and closeDate
                                             if (estTime > openDate && estTime < closeDate) {

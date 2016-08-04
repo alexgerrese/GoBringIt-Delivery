@@ -50,8 +50,9 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     var cuisineTypes = [String]()
     
     //TODO: CHAD! This is still reliant on sample data. Please pull these from the database!!! Essentially do what you did in the restaurantVC but for each restaurant in the tableview!
-    var openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
-    var isOpen = [true, false, false, true, true, true]
+    //var openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
+    var openHours = [String]()
+    var isOpen = [Bool]()
     var idList = [String]()
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -146,7 +147,171 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
         
-        task.resume()
+        // Get restaurant hours
+        
+        // Open Connection to PHP Service
+        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantHours.php")!
+        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
+        let session1 = NSURLSession.sharedSession()
+        let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            var count = 0
+                            self.openHours.append("")
+                            self.isOpen.append(false)
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                
+
+                                let restaurant_id = Restaurant["restaurant_id"] as? String
+
+                                    let all_hours = Restaurant["open_hours"] as! String
+                                    let hours_byDay = all_hours.componentsSeparatedByString(", ")
+                                    
+                                    let currentCalendar = NSCalendar.currentCalendar()
+                                    let currentDate = NSDate()
+                                    let localDate = NSDate(timeInterval: NSTimeInterval(NSTimeZone.systemTimeZone().secondsFromGMT), sinceDate: currentDate)
+                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: localDate)
+                                    print(currentDate)
+                                    print(localDate)
+                                    let componentTime : Float = Float(components.hour - 17) + Float(components.minute) / 60
+                                    var estTime : Float
+                                    if (componentTime > 4) {
+                                        estTime = componentTime + 20 - 24
+                                    } else {
+                                        estTime = componentTime + 20
+                                    }
+                                    
+                                    let dateFormatter = NSDateFormatter()
+                                    dateFormatter.locale = NSLocale.currentLocale()
+                                    dateFormatter.dateFormat = "EEEE"
+                                    let convertedDate = dateFormatter.stringFromDate(localDate)
+                                    
+                                    var openDate : Float? = nil
+                                    var closeDate : Float? = nil
+                                    
+                                    for i in 0..<hours_byDay.count {
+                                        if (hours_byDay[i].rangeOfString(convertedDate) != nil) {
+                                            print("NOT NIL")
+                                            self.openHours[count] = hours_byDay[i]
+                                            
+                                            // Extract exact hours of operation for this day
+                                            var hours_pieces = hours_byDay[i].componentsSeparatedByString(" ");
+                                            for j in 0..<hours_pieces.count {
+                                                
+                                                // Find time pieces (not the Day, not the "-", just the "time + am" or "time + pm")
+                                                if ((hours_pieces[j].rangeOfString(convertedDate) == nil) && (hours_pieces[j].rangeOfString("-") == nil)) {
+                                                    
+                                                    let dateMaker = NSDateFormatter()
+                                                    dateMaker.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                                                    
+                                                    if (openDate == nil) {
+                                                        var newTime : Float? = nil
+                                                        var minuteTime : Float? = nil
+                                                        if (hours_pieces[j].rangeOfString("pm") != nil) {
+                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
+                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                            newTime = Float(time_pieces[0])! + 12
+                                                            if (hour_minute.count > 1) {
+                                                                minuteTime = Float(hour_minute[1])
+                                                            }
+                                                        }
+                                                        if (hours_pieces[j].rangeOfString("am") != nil) {
+                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("am");
+                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                            newTime = Float(time_pieces[0])!
+                                                            if (hour_minute.count > 1) {
+                                                                minuteTime = Float(hour_minute[1])
+                                                            }
+                                                        }
+                                                        if (minuteTime != nil) {
+                                                            let minuteDecimal : Float = Float(minuteTime!)/60.0
+                                                            newTime = newTime! + minuteDecimal
+                                                        }
+                                                        print("The open time is: ", newTime!)
+                                                        openDate = newTime!
+                                                    } else if (closeDate == nil) {
+                                                        var newTime : Float? = nil
+                                                        var minuteTime : Float? = nil
+                                                        if (hours_pieces[j].rangeOfString("pm") != nil) {
+                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
+                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                            newTime = Float(hour_minute[0])! + 12
+                                                            if (hour_minute.count > 1) {
+                                                                minuteTime = Float(hour_minute[1])
+                                                            }
+                                                        }
+                                                        if (hours_pieces[j].rangeOfString("am") != nil) {
+                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("am");
+                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                            newTime = Float(hour_minute[0])!
+                                                            if (hour_minute.count > 1) {
+                                                                minuteTime = Float(hour_minute[1])
+                                                            }
+                                                        }
+                                                        if (minuteTime != nil) {
+                                                            let minuteDecimal : Float = Float(minuteTime!)/60.0
+                                                            newTime = newTime! + minuteDecimal
+                                                        }
+                                                        print("The close time is: ", newTime!)
+                                                        closeDate = newTime!
+                                                    }
+                                                }
+                                            }
+                                            
+                                            // Check if localDate is between openDate and closeDate
+                                            if (estTime > openDate && estTime < closeDate) {
+                                                print("open")
+                                                self.isOpen[count] = true;
+                                            } else {
+                                                print("close")
+                                                self.isOpen[count] = false;
+                                            }
+                                        }
+                                    }
+                                
+                                print(count)
+                                print(self.openHours[count])
+                                print(self.isOpen[count])
+                                
+                                
+                                //Update count
+                                count += 1
+                                // Add space in arrays
+                                self.isOpen.append(false)
+                                self.openHours.append("")
+
+                                }
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                
+                                for i in self.openHours {
+                                    print(i)
+                                }
+                                
+                                // Only create list of actual sides after the ID's have been collected
+                                task.resume()
+                            }
+                            }
+                        }
+                    
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task1.resume()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -189,10 +354,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
-        
-        // Set up cell properties
-        //let url = NSURL(string: "http://www.gobring.it/images/" + restaurants[indexPath.row].coverImage)
-        //let data = NSData(contentsOfURL: url!)
+
         cell.restaurantBannerImage.image = UIImage(data: restaurants[indexPath.row].coverImage)
         cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
@@ -202,6 +364,8 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         } else {
             cell.openClosedImage.image = UIImage(named: "Closed")
         }
+        
+        print(restaurants[indexPath.row].openHours)
         
         return cell
     }
