@@ -50,7 +50,6 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     var cuisineTypes = [String]()
     
     //TODO: CHAD! This is still reliant on sample data. Please pull these from the database!!! Essentially do what you did in the restaurantVC but for each restaurant in the tableview!
-    //var openHours = ["5:30PM - 10:30PM", "7:00AM - 11:00AM", "10:00AM - 5:00PM", "10:00AM - 8:00PM", "2:30PM - 6:30PM", "12:30PM - 5:30PM"]
     var openHours = [String]()
     var isOpen = [Bool]()
     var idList = [String]()
@@ -201,7 +200,6 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                     
                                     for i in 0..<hours_byDay.count {
                                         if (hours_byDay[i].rangeOfString(convertedDate) != nil) {
-                                            print("NOT NIL")
                                             self.openHours[count] = hours_byDay[i]
                                             
                                             // Extract exact hours of operation for this day
@@ -358,14 +356,12 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         cell.restaurantBannerImage.image = UIImage(data: restaurants[indexPath.row].coverImage)
         cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
-        cell.restaurantHoursLabel.text = restaurants[indexPath.row].openHours
+        cell.restaurantHoursLabel.text = openHours[indexPath.row + 1]
         if restaurants[indexPath.row].isOpen {
             cell.openClosedImage.image = UIImage(named: "Open")
         } else {
             cell.openClosedImage.image = UIImage(named: "Closed")
         }
-        
-        print(restaurants[indexPath.row].openHours)
         
         return cell
     }
