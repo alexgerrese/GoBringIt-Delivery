@@ -858,6 +858,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
+                        <outlet property="cartButton" destination="vGm-Rg-WU7" id="IdR-Vf-4s7"/>
                         <outlet property="cuisineTypeLabel" destination="Uyh-GS-lgW" id="FzG-gI-G0F"/>
                         <outlet property="detailsView" destination="GU0-ca-5cp" id="zwh-dX-5TO"/>
                         <outlet property="isOpenIndicator" destination="8mc-iD-VSg" id="AXe-ey-yMm"/>
@@ -1570,6 +1571,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="cartButton" destination="cIh-Bp-WDk" id="C8Z-90-i5V"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LSv-vD-VUq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -5012,7 +5016,7 @@ with your details shortly.</string>
     <resources>
         <image name="$" width="14" height="26"/>
         <image name="Bring It Background" width="710" height="369"/>
-        <image name="Cart" width="46" height="35"/>
+        <image name="Cart" width="50" height="37"/>
         <image name="Check" width="180" height="180"/>
         <image name="Coming Soon Background" width="710" height="369"/>
         <image name="Dames Background" width="710" height="300"/>
@@ -5041,8 +5045,8 @@ with your details shortly.</string>
         <image name="time" width="30" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MIb-bQ-wH3"/>
-        <segue reference="qzj-D1-uoN"/>
+        <segue reference="bSP-Mp-njt"/>
+        <segue reference="7hD-7e-Rdh"/>
         <segue reference="6d4-35-C0q"/>
     </inferredMetricsTieBreakers>
 </document>

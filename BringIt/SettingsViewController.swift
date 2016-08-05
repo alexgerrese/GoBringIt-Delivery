@@ -46,12 +46,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set title
         self.navigationItem.title = "Profile"
         
-        /* Round profile pic image
-        self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
-        self.profilePicImage.clipsToBounds = true
-        self.profilePicImage.layer.borderWidth = 2.0
-        self.profilePicImage.layer.borderColor = UIColor.lightGrayColor().CGColor*/
-        
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
         navigationController!.navigationBar.titleTextAttributes =
@@ -61,10 +55,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
         // Load the data into dummy variables
         cellNumbers[paymentIndex] = 1
         
-        // TO-DO: CHAD! Please pull this db data 
+        // TO-DO: CHAD! Please pull this db data
         if let name = defaults.objectForKey("userName") {
             userName = name as! String
         } else {
@@ -74,9 +72,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Set name
         nameLabel.text = userName
-    }
-    
-    override func viewWillAppear(animated: Bool) {
         
         // Deselect cells when view appears
         if let indexPath = myTableView.indexPathForSelectedRow {

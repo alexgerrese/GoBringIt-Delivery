@@ -56,8 +56,7 @@ class TabBarController: UITabBarController {
     
     // Check if walkthrough has been shown, then show if needed
     func displayWalkthroughs() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let displayedWalkthrough = userDefaults.boolForKey("displayedWalkthrough")
+        let displayedWalkthrough = defaults.boolForKey("displayedWalkthrough")
         
         if !displayedWalkthrough {
             if let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("PageViewController") {

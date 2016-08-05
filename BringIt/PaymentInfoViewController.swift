@@ -151,6 +151,7 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         
         // Stop animating activity indicator and enter app
         myActivityIndicator.stopAnimating()
+        self.defaults.setBool(true, forKey: "loggedIn")
         performSegueWithIdentifier("toHomeFromSignUp", sender: self)
     }
     

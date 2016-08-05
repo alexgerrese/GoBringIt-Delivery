@@ -26,6 +26,9 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set light status bar
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        
         // Automatically handle all keyboard and textField problems!
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done

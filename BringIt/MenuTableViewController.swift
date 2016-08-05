@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class MenuTableViewController: UITableViewController {
+    
+    @IBOutlet weak var cartButton: UIBarButtonItem!
     
     // Create struct to organize data
     struct MenuItem {
@@ -34,6 +37,11 @@ class MenuTableViewController: UITableViewController {
     
     var titleCell = String()
     var titleID = String()
+    
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +120,37 @@ class MenuTableViewController: UITableViewController {
         task.resume()
         
     }
+        override func viewWillAppear(animated: Bool) {
+            
+            // Deselect cells when view appears
+            if let indexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
+            
+            // Fetch all active carts, if any exist
+            
+            let fetchRequest = NSFetchRequest(entityName: "Order")
+            let firstPredicate = NSPredicate(format: "isActive == %@", true)
+            let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
+            let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+            fetchRequest.predicate = predicate
+            
+            do {
+                if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                    if fetchResults.count > 0 {
+                        let order = fetchResults[0]
+                        if order.items?.count > 0 {
+                            cartButton.tintColor = GREEN
+                        } else {
+                            cartButton.tintColor = UIColor.darkGrayColor()
+                        }
+                    }
+                    print(fetchResults.count)
+                }
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
+        }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

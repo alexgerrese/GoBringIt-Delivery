@@ -106,8 +106,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // DETAIL TABLEVIEW
         
-        print("HELLO2")
-        
         var addresses = [String]()
         if let addressesArray = defaults.objectForKey("Addresses") {
             addresses = addressesArray as! [String]

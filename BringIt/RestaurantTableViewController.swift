@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class RestaurantTableViewController: UITableViewController {
     
@@ -16,6 +17,7 @@ class RestaurantTableViewController: UITableViewController {
     @IBOutlet weak var restaurantHoursLabel: UILabel!
     @IBOutlet weak var isOpenIndicator: UIImageView!
     @IBOutlet weak var detailsView: UIView!
+    @IBOutlet weak var cartButton: UIBarButtonItem!
     
     // Categories
     var restaurantImageData = NSData()
@@ -28,6 +30,11 @@ class RestaurantTableViewController: UITableViewController {
     var menuID = [String]()
     var idList = [String]()
     var isOpen = Bool()
+    
+    // CoreData
+    let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,6 +148,7 @@ class RestaurantTableViewController: UITableViewController {
                                     } else {
                                         estTime = componentTime + 20
                                     }
+                                    print(estTime)
  
                                     let dateFormatter = NSDateFormatter()
                                     dateFormatter.locale = NSLocale.currentLocale()
@@ -254,6 +262,38 @@ class RestaurantTableViewController: UITableViewController {
         
         task1.resume()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        // Deselect cells when view appears
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+        
+        // Fetch all active carts, if any exist
+        
+        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let secondPredicate = NSPredicate(format: "restaurant == %@", restaurantName)
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        fetchRequest.predicate = predicate
+
+        do {
+            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+                if fetchResults.count > 0 {
+                    let order = fetchResults[0]
+                    if order.items?.count > 0 {
+                        cartButton.tintColor = GREEN
+                    } else {
+                        cartButton.tintColor = UIColor.darkGrayColor()
+                    }
+                }
+                print(fetchResults.count)
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
     }
     
     override func didReceiveMemoryWarning() {

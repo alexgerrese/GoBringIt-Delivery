@@ -278,6 +278,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                     }
                                 
                                 print(count)
+                                print(estTime)
                                 print(self.openHours[count])
                                 print(self.isOpen[count])
                                 
@@ -357,7 +358,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
         cell.restaurantHoursLabel.text = openHours[indexPath.row + 1]
-        if restaurants[indexPath.row].isOpen {
+        if isOpen[indexPath.row + 1] {
             cell.openClosedImage.image = UIImage(named: "Open")
         } else {
             cell.openClosedImage.image = UIImage(named: "Closed")
