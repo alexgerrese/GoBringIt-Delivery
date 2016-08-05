@@ -47,10 +47,10 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationItem.title = "Profile"
         
         /* Round profile pic image
-        self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
-        self.profilePicImage.clipsToBounds = true
-        self.profilePicImage.layer.borderWidth = 2.0
-        self.profilePicImage.layer.borderColor = UIColor.lightGrayColor().CGColor*/
+         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
+         self.profilePicImage.clipsToBounds = true
+         self.profilePicImage.layer.borderWidth = 2.0
+         self.profilePicImage.layer.borderColor = UIColor.lightGrayColor().CGColor*/
         
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
@@ -64,12 +64,50 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Load the data into dummy variables
         cellNumbers[paymentIndex] = 1
         
-        // TO-DO: CHAD! Please pull this db data 
+        // TO-DO: CHAD! Please pull this db data
+        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        
         if let name = defaults.objectForKey("userName") {
             userName = name as! String
         } else {
             // Write code hereeee. Should only need to be executed once per login.
-            userName = "Alexander Gerrese"
+            
+            
+            
+            // Make call to accounts DB
+            // Check if uid == userID
+            // Pull name, email, phone
+            let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
+            let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
+            let session1 = NSURLSession.sharedSession()
+            let task1 = session1.dataTaskWithRequest(urlRequest1) {
+                (data, response, error) -> Void in
+                
+                let httpResponse = response as! NSHTTPURLResponse
+                let statusCode = httpResponse.statusCode
+                
+                // Check HTTP Response
+                if (statusCode == 200) {
+                    
+                    do{
+                        // Parse JSON
+                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                        
+                        for User in json as! [Dictionary<String, AnyObject>] {
+                            let user_id = User["uid"] as! String
+                            if (user_id == userID) {
+                                let fullname = User["name"] as! String
+                                self.userName = fullname
+                            }
+                            //  NSOperationQueue.mainQueue().addOperationWithBlock
+                        }
+                    } catch {
+                        print("Error with Json: \(error)")
+                    }
+                }
+            }
+            task1.resume()
+            
         }
         
         // Set name
@@ -132,7 +170,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         super.updateViewConstraints()
         myTableViewHeight.constant = myTableView.contentSize.height
     }
-
+    
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -145,7 +183,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell", forIndexPath: indexPath)
-
+        
         if indexPath.section == 0 {
             cell.textLabel?.text = infoCells[indexPath.row]
             if cellNumbers[indexPath.row] == 0 {
@@ -154,7 +192,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.detailTextLabel?.text = String(cellNumbers[indexPath.row])
             }
         }
-
+        
         return cell
     }
     
@@ -164,7 +202,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         if indexPath.row == 0 {
             performSegueWithIdentifier("toContactInfo", sender: self)
         } else if indexPath.row == 1 || indexPath.row == 2 {
-        performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
+            performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
         } else {
             performSegueWithIdentifier("toComingSoon", sender: self)
         }
@@ -229,10 +267,10 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toDeliverToPayingWithFromProfile" {
@@ -245,5 +283,5 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-
+    
 }

@@ -34,6 +34,9 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     // Doing this and the two lines in ViewDidLoad automatically handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    var userID = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,15 +61,57 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         invalidPhoneNumberLabel.hidden = true
         phoneNumberTextField.delegate = self
         
-        // TO-DO: CHAD! Please preload the user's db data so we can populate the fields!
-        let fullname = ""
-        let email = ""
-        let phoneNum = ""
+        userID = self.defaults.objectForKey("userID") as AnyObject! as! String
         
-        //WRITE YOUR CODE HEREEEE
-
+        
+        // TO-DO: CHAD! Please preload the user's db data so we can populate the fields!
+        var fullname = ""
+        var email = ""
+        var phoneNum = ""
+        
+        // Make call to accounts DB
+        // Check if uid == userID
+        // Pull name, email, phone
+        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
+        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
+        let session1 = NSURLSession.sharedSession()
+        let task1 = session1.dataTaskWithRequest(urlRequest1) {
+            (data, response, error) -> Void in
+            
+            let httpResponse = response as! NSHTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            // Check HTTP Response
+            if (statusCode == 200) {
+                
+                do{
+                    // Parse JSON
+                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    
+                    for User in json as! [Dictionary<String, AnyObject>] {
+                        let user_id = User["uid"] as! String
+                        if (user_id == self.userID) {
+                            fullname = User["name"] as! String
+                            email = User["email"] as! String
+                            phoneNum = User["phone"] as! String
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                // I think this should reload the labels, not sure
+                                self.fullNameTextField.reloadInputViews()
+                                self.emailTextField.reloadInputViews()
+                                self.phoneNumberTextField.reloadInputViews()
+                            }
+                        }
+                    }
+                } catch {
+                    print("Error with Json: \(error)")
+                }
+            }
+        }
+        task1.resume()
+        
     }
-
+    
     // MARK: - Image Picker Methods
     
     @IBAction func chooseImageClicked(sender: AnyObject) {
@@ -220,23 +265,58 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         }
         
         if canContinue {
-        // Hide error messages
-        self.invalidNameLabel.hidden = true
-        self.invalidEmailLabel.hidden = true
-        self.invalidPhoneNumberLabel.hidden = true
+            // Hide error messages
+            self.invalidNameLabel.hidden = true
+            self.invalidEmailLabel.hidden = true
+            self.invalidPhoneNumberLabel.hidden = true
             
-        // TO-DO: CHAD! Please save the new user data to the db here!!!
-        //WRITE CODE HEREEEEE
-            
-        // Reset canContinue variable
-        canContinue = false
-            
-        // End activity indicator animation
-        self.myActivityIndicator.stopAnimating()
-            
-        // Perform unwind segue
-        self.performSegueWithIdentifier("returnToSettings", sender: self)
+            // TO-DO: CHAD! Please save the new user data to the db here!!!
 
+            
+            // Create JSON data and configure the request
+            let params = ["uid": userID,
+                          "name": self.fullNameTextField.text!,
+                          "phone": self.phoneNumberTextField.text!,
+                          "email": self.emailTextField.text!,
+                          ]
+                as Dictionary<String, String>
+            
+            // create the request & response
+            let request2 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdateAccount.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+            
+            do {
+                let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
+                request2.HTTPBody = jsonData
+            } catch let error as NSError {
+                print(error)
+            }
+            request2.HTTPMethod = "POST"
+            request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            // send the request
+            let session2 = NSURLSession.sharedSession()
+            let task2 = session2.dataTaskWithRequest(request2) {
+                (let data, let response, let error) in
+                
+                print(data)
+                print(response)
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock {
+                    // Reset canContinue variable
+                    canContinue = false
+                    
+                    // End activity indicator animation
+                    self.myActivityIndicator.stopAnimating()
+                    
+                    // Perform unwind segue
+                    self.performSegueWithIdentifier("returnToSettings", sender: self)
+                }
+            }
+            
+            task2.resume()
+            
+            
+            
         } else {
             // End activity indicator animation
             self.myActivityIndicator.stopAnimating()
@@ -255,17 +335,17 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     // MARK: - Navigation
     
     /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        if segue.identifier == "toAddressInfo" {
-            // Send initial data to next screen
-            let VC = segue.destinationViewController as! AddressInfoViewController
-            
-            VC.fullName = fullNameTextField.text!
-            VC.email = emailTextField.text!
-            VC.password = passwordTextField.text!
-            VC.phoneNumber = phoneNumberTextField.text!
-        }
-        
-    }*/
+     
+     if segue.identifier == "toAddressInfo" {
+     // Send initial data to next screen
+     let VC = segue.destinationViewController as! AddressInfoViewController
+     
+     VC.fullName = fullNameTextField.text!
+     VC.email = emailTextField.text!
+     VC.password = passwordTextField.text!
+     VC.phoneNumber = phoneNumberTextField.text!
+     }
+     
+     }*/
     
 }

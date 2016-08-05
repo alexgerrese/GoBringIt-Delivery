@@ -127,8 +127,6 @@ class ResetPasswordViewController: UIViewController {
                                 print(self.currentPasswordTextField.text!)
                                 print(passSalt)
                                 
-                                // This is not being saved anywhere: PaymentInfoVC: card_type, card_number, card_zip, card_cvc, card_exp
-                                
                                 // create the request & response
                                 let request2 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdatePassword.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
                                 
