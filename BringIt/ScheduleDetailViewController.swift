@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class ScheduleDetailViewController: UIViewController {
-
+    
     // MARK: - IBOutlets
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var myTableView: UITableView!
@@ -58,8 +58,58 @@ class ScheduleDetailViewController: UIViewController {
         
         
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
-        // backgroundImageView.image = // Insert image URL here
-
+        var restaurantID = order!.restaurantID
+        
+        // DB Call to category_items
+        // check if restaurantID == id, save image
+        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+            if let data = data {
+                do {
+                    let httpResponse = response as! NSHTTPURLResponse
+                    let statusCode = httpResponse.statusCode
+                    
+                    // Check HTTP Response
+                    if (statusCode == 200) {
+                        
+                        do{
+                            // Parse JSON
+                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            
+                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+                                let id = Restaurant["id"] as! String
+                                if (id == restaurantID) {
+                                    let image = Restaurant["image"] as! String
+                                    let url = NSURL(string: "http://www.gobring.it/images/" + image)
+                                    let data = NSData(contentsOfURL: url!)
+                                    let backPic = UIImage(data: data!)
+                                    self.backgroundImageView.image = backPic!
+                                }
+                            }
+                            
+                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                self.myTableView.reloadData()
+                                // Stop activity indicator
+                                //TO-DO: Place this so it is executed after the db request is made!
+                                self.myActivityIndicator.stopAnimating()
+                                self.myActivityIndicator.hidden = true
+                                
+                            }
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        task.resume()
+        
+        
         items = order!.items?.allObjects as? [Item]
         
         let deliveryFee = Double((order?.deliveryFee)!)
@@ -70,17 +120,13 @@ class ScheduleDetailViewController: UIViewController {
         self.subtotalCostLabel.text = String(format: "$%.2f", subTotal)
         self.totalCostLabel.text = String(format: "$%.2f", totalCost)
         
-        // Stop activity indicator
-        //TO-DO: Place this so it is executed after the db request is made!
-        self.myActivityIndicator.stopAnimating()
-        self.myActivityIndicator.hidden = true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func orderAgainButtonPressed(sender: UIButton) {
         
         // Check if there is an existing active cart from this restaurant
@@ -138,104 +184,104 @@ class ScheduleDetailViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCellWithIdentifier("scheduleDetailCell", forIndexPath: indexPath) as! ScheduleDetailTableViewCell
-            
-            // Set name and quantity labels
-            cell.itemNameLabel.text = items![indexPath.row].name
-            cell.itemQuantityLabel.text = String(items![indexPath.row].quantity!)
+        let cell = tableView.dequeueReusableCellWithIdentifier("scheduleDetailCell", forIndexPath: indexPath) as! ScheduleDetailTableViewCell
         
-            // Calculate total item cost
-            var totalItemCost = 0.0
-            var costOfSides = 0.0
-            for side in items![indexPath.row].sides?.allObjects as! [Side] {
-                costOfSides += Double(side.price!)
-            }
-            totalItemCost += (Double(items![indexPath.row].price!) + costOfSides) * Double(items![indexPath.row].quantity!)
-            cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
-            
-            // Format all sides and extras
-            var sides = "Sides: "
-            var extras = "Extras: "
-            let allSides = items![indexPath.row].sides?.allObjects as! [Side]
+        // Set name and quantity labels
+        cell.itemNameLabel.text = items![indexPath.row].name
+        cell.itemQuantityLabel.text = String(items![indexPath.row].quantity!)
         
-            for i in 0..<allSides.count {
-                if ((allSides[i].isRequired) == true) {
-                    if i < allSides.count - 1 {
-                        sides += allSides[i].name! + ", "
-                    } else {
-                        sides += allSides[i].name!
-                    }
+        // Calculate total item cost
+        var totalItemCost = 0.0
+        var costOfSides = 0.0
+        for side in items![indexPath.row].sides?.allObjects as! [Side] {
+            costOfSides += Double(side.price!)
+        }
+        totalItemCost += (Double(items![indexPath.row].price!) + costOfSides) * Double(items![indexPath.row].quantity!)
+        cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
+        
+        // Format all sides and extras
+        var sides = "Sides: "
+        var extras = "Extras: "
+        let allSides = items![indexPath.row].sides?.allObjects as! [Side]
+        
+        for i in 0..<allSides.count {
+            if ((allSides[i].isRequired) == true) {
+                if i < allSides.count - 1 {
+                    sides += allSides[i].name! + ", "
                 } else {
-                    if i < allSides.count - 1 {
-                        extras += allSides[i].name! + ", "
-                    } else {
-                        extras += allSides[i].name!
-                    }
+                    sides += allSides[i].name!
+                }
+            } else {
+                if i < allSides.count - 1 {
+                    extras += allSides[i].name! + ", "
+                } else {
+                    extras += allSides[i].name!
                 }
             }
-            if sides == "Sides: " {
-                sides += "None"
-            }
-            if extras == "Extras: " {
-                extras += "None"
-            }
-            
-            // Format special instructions
-            var specialInstructions = "Special Instructions: "
-            if items![indexPath.row].specialInstructions != "" {
-                specialInstructions += items![indexPath.row].specialInstructions!
-            } else {
-                specialInstructions += "None"
-            }
-            
-            // Create attributed strings of the extras
-            var sidesAS = NSMutableAttributedString()
-            var extrasAS = NSMutableAttributedString()
-            var specialInstructionsAS = NSMutableAttributedString()
-            
-            sidesAS = NSMutableAttributedString(
-                string: sides,
-                attributes: [NSFontAttributeName:UIFont(
-                    name: "Avenir",
-                    size: 13.0)!])
-            extrasAS = NSMutableAttributedString(
-                string: extras,
-                attributes: [NSFontAttributeName:UIFont(
-                    name: "Avenir",
-                    size: 13.0)!])
-            specialInstructionsAS = NSMutableAttributedString(
-                string: specialInstructions,
-                attributes: [NSFontAttributeName:UIFont(
-                    name: "Avenir",
-                    size: 13.0)!])
-            
-            sidesAS.addAttribute(NSFontAttributeName,
-                                 value: UIFont(
-                                    name: "Avenir-Heavy",
-                                    size: 13.0)!,
-                                 range: NSRange(
-                                    location: 0,
-                                    length: 6))
-            extrasAS.addAttribute(NSFontAttributeName,
-                                  value: UIFont(
-                                    name: "Avenir-Heavy",
-                                    size: 13.0)!,
-                                  range: NSRange(
-                                    location: 0,
-                                    length: 7))
-            specialInstructionsAS.addAttribute(NSFontAttributeName,
-                                               value: UIFont(
-                                                name: "Avenir-Heavy",
-                                                size: 13.0)!,
-                                               range: NSRange(
-                                                location: 0,
-                                                length: 21))
-            
-            cell.sidesLabel.attributedText = sidesAS
-            cell.extrasLabel.attributedText = extrasAS
-            cell.specialInstructionsLabel.attributedText = specialInstructionsAS
-            
-            return cell
+        }
+        if sides == "Sides: " {
+            sides += "None"
+        }
+        if extras == "Extras: " {
+            extras += "None"
+        }
+        
+        // Format special instructions
+        var specialInstructions = "Special Instructions: "
+        if items![indexPath.row].specialInstructions != "" {
+            specialInstructions += items![indexPath.row].specialInstructions!
+        } else {
+            specialInstructions += "None"
+        }
+        
+        // Create attributed strings of the extras
+        var sidesAS = NSMutableAttributedString()
+        var extrasAS = NSMutableAttributedString()
+        var specialInstructionsAS = NSMutableAttributedString()
+        
+        sidesAS = NSMutableAttributedString(
+            string: sides,
+            attributes: [NSFontAttributeName:UIFont(
+                name: "Avenir",
+                size: 13.0)!])
+        extrasAS = NSMutableAttributedString(
+            string: extras,
+            attributes: [NSFontAttributeName:UIFont(
+                name: "Avenir",
+                size: 13.0)!])
+        specialInstructionsAS = NSMutableAttributedString(
+            string: specialInstructions,
+            attributes: [NSFontAttributeName:UIFont(
+                name: "Avenir",
+                size: 13.0)!])
+        
+        sidesAS.addAttribute(NSFontAttributeName,
+                             value: UIFont(
+                                name: "Avenir-Heavy",
+                                size: 13.0)!,
+                             range: NSRange(
+                                location: 0,
+                                length: 6))
+        extrasAS.addAttribute(NSFontAttributeName,
+                              value: UIFont(
+                                name: "Avenir-Heavy",
+                                size: 13.0)!,
+                              range: NSRange(
+                                location: 0,
+                                length: 7))
+        specialInstructionsAS.addAttribute(NSFontAttributeName,
+                                           value: UIFont(
+                                            name: "Avenir-Heavy",
+                                            size: 13.0)!,
+                                           range: NSRange(
+                                            location: 0,
+                                            length: 21))
+        
+        cell.sidesLabel.attributedText = sidesAS
+        cell.extrasLabel.attributedText = extrasAS
+        cell.specialInstructionsLabel.attributedText = specialInstructionsAS
+        
+        return cell
     }
     
     // Resize itemsTableView
@@ -249,7 +295,7 @@ class ScheduleDetailViewController: UIViewController {
     
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
@@ -260,5 +306,5 @@ class ScheduleDetailViewController: UIViewController {
         }
     }
     
-
+    
 }
