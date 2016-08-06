@@ -403,6 +403,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             self.myActivityIndicator.hidden = false
             self.myActivityIndicator.startAnimating()
             
+            print("HELLO1")
+            
             // Update and save CoreData
             self.activeCart![0].dateOrdered = NSDate()
             self.activeCart![0].isActive = false
@@ -416,6 +418,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             // 1. Get 10 + order_id (task 2)
             // 2. (task)addItem using that order_id (), save the Party response header
             // 3. addSide (side-id, cart entry-id, quantity)
+            
+            print("HELLO1")
             
             let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
             let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
@@ -493,6 +497,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                         request.HTTPMethod = "POST"
                                         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                         
+                                        print("HELLO3")
+                                        
                                         // send the request
                                         let session = NSURLSession.sharedSession()
                                         let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
@@ -554,7 +560,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                             
                                             self.performSegueWithIdentifier("toOrderPlaced", sender: self)
                                             
-                                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                                            /*NSOperationQueue.mainQueue().addOperationWithBlock {
                                                 // Send String(self.maxCartOrderID) as id,self.userID as user_id, restaurant id as service_id
                                                 // Create JSON data and configure the request
                                                 
@@ -585,7 +591,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                 }
                                                 task3.resume()
 
-                                            }
+                                            }*/
                                         }
                                         task.resume()
                                     }
@@ -600,7 +606,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 }
             }
             
+            print("HELLO4")
+            
             task2.resume();
+            
+            print("HELLO5")
             
         })
         let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
@@ -655,6 +665,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             let VC = nav.topViewController as! OrderPlacedViewController
             
             VC.passedOrderTotal = totalCost + deliveryFee
+            VC.passedRestaurantName = activeCart![0].restaurant!
         }
     }
     

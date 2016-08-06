@@ -37,7 +37,7 @@ class DeliverToPayingWithViewController: UIViewController {
     // Addresses
     var addresses = [String]() //[Address(address: "1368 Campus Drive \nDurham, NC \n27708", selected: false), Address(address: "1100 Alexander Drive \nDurham, NC \n27708", selected: true)]
     // Payment Methods
-    var paymentMethods = [PaymentMethod(method: "Food points", selected: true), PaymentMethod(method: "Credit Card", selected: false)]
+    var paymentMethods = [PaymentMethod(method: "Food points", selected: true)]
     
     var selectedCell = ""
 
@@ -67,12 +67,6 @@ class DeliverToPayingWithViewController: UIViewController {
         
         // Only one cell can be selected at a time
         myTableView.allowsMultipleSelection = false
-        
-        if selectedCell == "Deliver To" {
-            
-        } else {
-            
-        }
     }
     
     override func viewWillAppear(animated: Bool) {

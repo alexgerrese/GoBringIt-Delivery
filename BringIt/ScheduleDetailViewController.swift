@@ -21,11 +21,6 @@ class ScheduleDetailViewController: UIViewController {
     @IBOutlet weak var deliveryFeeLabel: UILabel!
     @IBOutlet weak var subtotalCostLabel: UILabel!
     
-    // FOR CHAD - Uncomment this when you finish the data loading
-    // var items = [Item]()
-    // FOR CHAD - Delete this when you finish the data loading
-    //let items = [Item(name: "The Carolina Cockerel", quantity: 2, price: 10.00), Item(name: "Chocolate Milkshake", quantity: 1, price: 4.99), Item(name: "Large Fries", quantity: 2, price: 3.00)]
-    
     // MARK: - Variables
     var order: Order?
     var items: [Item]?
@@ -58,7 +53,8 @@ class ScheduleDetailViewController: UIViewController {
         
         
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
-        var restaurantID = order!.restaurantID
+        let restaurantID = order!.restaurantID
+        var backPic: UIImage?
         
         // DB Call to category_items
         // check if restaurantID == id, save image
@@ -84,8 +80,10 @@ class ScheduleDetailViewController: UIViewController {
                                     let image = Restaurant["image"] as! String
                                     let url = NSURL(string: "http://www.gobring.it/images/" + image)
                                     let data = NSData(contentsOfURL: url!)
-                                    let backPic = UIImage(data: data!)
-                                    self.backgroundImageView.image = backPic!
+                                    backPic = UIImage(data: data!)
+                                    
+                                    
+                                    print("ID MATCHES")
                                 }
                             }
                             
@@ -93,6 +91,7 @@ class ScheduleDetailViewController: UIViewController {
                                 self.myTableView.reloadData()
                                 // Stop activity indicator
                                 //TO-DO: Place this so it is executed after the db request is made!
+                                self.backgroundImageView.image = backPic!
                                 self.myActivityIndicator.stopAnimating()
                                 self.myActivityIndicator.hidden = true
                                 
@@ -111,6 +110,13 @@ class ScheduleDetailViewController: UIViewController {
         
         
         items = order!.items?.allObjects as? [Item]
+        print("HEIGHT1: \(myTableViewHeight.constant)")
+        
+        myTableView.reloadData()
+        updateViewConstraints()
+        
+        print("NUM ITEMS: \(items!.count)")
+        print("HEIGHT2: \(myTableViewHeight.constant)")
         
         let deliveryFee = Double((order?.deliveryFee)!)
         let subTotal = Double((order?.totalPrice)!) - Double((order?.deliveryFee)!)

@@ -15,6 +15,7 @@ class OrderPlacedViewController: UIViewController {
     
     // MARK: - Variables
     var passedOrderTotal = 0.0
+    var passedRestaurantName = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,7 @@ class OrderPlacedViewController: UIViewController {
                 NSForegroundColorAttributeName: UIColor.blackColor()])
         
         // Set order total label
-        orderTotalLabel.text = String(format: "$%.2f", passedOrderTotal)
+        orderTotalLabel.text = "Including delivery fee, you spent \(String(format: "$%.2f", passedOrderTotal)) at \(passedRestaurantName)."
 
         // Do any additional setup after loading the view.
     }

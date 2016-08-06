@@ -31,6 +31,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     var cellNumbers = [0,0,0,0]
     var selectedCell = 0
     var userName = ""
+    var userID = ""
     
     // UserDefaults
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -62,13 +63,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Load the data into dummy variables
         cellNumbers[paymentIndex] = 1
         
+        userID = defaults.objectForKey("userID") as! String
+        
         // TO-DO: CHAD! Please pull this db data
         if let name = defaults.objectForKey("userName") {
             userName = name as! String
+            // Set name
+            nameLabel.text = userName
         } else {
-            // Write code hereeee. Should only need to be executed once per login.
-            
-            
             
             // Make call to accounts DB
             // Check if uid == userID
@@ -91,12 +93,18 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                         
                         for User in json as! [Dictionary<String, AnyObject>] {
                             let user_id = User["uid"] as! String
-                            if (user_id == userID) {
+                            if (user_id == self.userID) {
                                 let fullname = User["name"] as! String
                                 self.userName = fullname
+                                // Save to userDefaults
+                                self.defaults.setObject(fullname, forKey: "userName")
                             }
                             //  NSOperationQueue.mainQueue().addOperationWithBlock
                         }
+                        
+                        // Set name
+                        self.nameLabel.text = self.userName
+                        
                     } catch {
                         print("Error with Json: \(error)")
                     }
@@ -105,9 +113,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             task1.resume()
             
         }
-        
-        // Set name
-        nameLabel.text = userName
         
         // Deselect cells when view appears
         if let indexPath = myTableView.indexPathForSelectedRow {

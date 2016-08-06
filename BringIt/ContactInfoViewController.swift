@@ -61,13 +61,15 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         invalidPhoneNumberLabel.hidden = true
         phoneNumberTextField.delegate = self
         
+        // Set userID
         userID = self.defaults.objectForKey("userID") as AnyObject! as! String
         
-        
-        // TO-DO: CHAD! Please preload the user's db data so we can populate the fields!
         var fullname = ""
         var email = ""
         var phoneNum = ""
+        
+        // Start activity indicator
+        myActivityIndicator.startAnimating()
         
         // Make call to accounts DB
         // Check if uid == userID
@@ -97,9 +99,12 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
                             
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 // I think this should reload the labels, not sure
-                                self.fullNameTextField.reloadInputViews()
-                                self.emailTextField.reloadInputViews()
-                                self.phoneNumberTextField.reloadInputViews()
+                                self.fullNameTextField.text = fullname
+                                self.emailTextField.text = email
+                                self.phoneNumberTextField.text = phoneNum
+                                
+                                // Start activity indicator
+                                self.myActivityIndicator.stopAnimating()
                             }
                         }
                     }
@@ -230,7 +235,6 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
             let remainder = decimalStr.substringFromIndex(index)
             formattedString.appendString(remainder)
             textField.text = formattedString as String
-            print("HELLO")
         }
         
         return false
@@ -269,9 +273,6 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
             self.invalidNameLabel.hidden = true
             self.invalidEmailLabel.hidden = true
             self.invalidPhoneNumberLabel.hidden = true
-            
-            // TO-DO: CHAD! Please save the new user data to the db here!!!
-
             
             // Create JSON data and configure the request
             let params = ["uid": userID,
@@ -314,9 +315,7 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
             }
             
             task2.resume()
-            
-            
-            
+        
         } else {
             // End activity indicator animation
             self.myActivityIndicator.stopAnimating()
