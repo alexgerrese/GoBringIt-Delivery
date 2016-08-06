@@ -412,6 +412,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             
             self.appDelegate.saveContext()
             
+            let addresses = self.defaults.objectForKey("Addresses") as! [String]
+            let addressIndex = self.defaults.objectForKey("CurrentAddressIndex") as! Int
+            
             // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
             // I've set up the loops so you can go through all the items and each of their sides. To access the attributes of the items or sides, just write item. or side. and a list of attributes should pop up. Let me know if you need to add any attributes!
             
@@ -560,7 +563,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                             
                                             self.performSegueWithIdentifier("toOrderPlaced", sender: self)
                                             
-                                            /*NSOperationQueue.mainQueue().addOperationWithBlock {
+                                            NSOperationQueue.mainQueue().addOperationWithBlock {
                                                 // Send String(self.maxCartOrderID) as id,self.userID as user_id, restaurant id as service_id
                                                 // Create JSON data and configure the request
                                                 
@@ -588,10 +591,51 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                     (let data3, let response3, let error3) in
                                                     print("data3", data3)
                                                     print("response3", response3)
+                                                    
+                                                    // Update Customer Address
+                                                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                                                        
+                                                        
+                                                        let addressToSend = addresses[addressIndex]
+                                                        
+                                                        // TODO Alex, can you put in the portions of the address here?
+                                                        let params4 = ["account_id": self.userID,
+                                                            "street": "TODO street here",
+                                                            "apartment": "TODO address 2 here",
+                                                            "city": "TODO city here",
+                                                            "state": "NC",
+                                                            "zip": "TODO zip here",
+                                                            ]
+                                                            as Dictionary<String, String>
+                                                        
+                                                        // create the request & response
+                                                        let request4 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdateAddress.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                                        
+                                                        do {
+                                                            let jsonData4 = try NSJSONSerialization.dataWithJSONObject(params4, options: NSJSONWritingOptions.PrettyPrinted)
+                                                            request4.HTTPBody = jsonData4
+                                                        } catch let error1 as NSError {
+                                                            print(error1)
+                                                        }
+                                                        request4.HTTPMethod = "POST"
+                                                        request4.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                                                        
+                                                        // send the request
+                                                        let session4 = NSURLSession.sharedSession()
+                                                        let task4 = session4.dataTaskWithRequest(request4) {
+                                                            (let data4, let response4, let error4) in
+                                                            
+                                                        }
+                                                        
+                                                        task4.resume()
+                                                       
+                                                    }
+                                                    
                                                 }
-                                                task3.resume()
+                                                // TODO: UNCOMMENT THIS LINE FOR ORDERING TO WORK
+                                                //task3.resume()
 
-                                            }*/
+                                            }
                                         }
                                         task.resume()
                                     }

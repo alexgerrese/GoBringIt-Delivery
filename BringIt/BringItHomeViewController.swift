@@ -260,7 +260,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                             let minuteDecimal : Float = Float(minuteTime!)/60.0
                                                             newTime = newTime! + minuteDecimal
                                                         }
-                                                        print("The close time is: ", newTime!)
+                                                        //print("The close time is: ", newTime?)
                                                         closeDate = newTime!
                                                     }
                                                 }
