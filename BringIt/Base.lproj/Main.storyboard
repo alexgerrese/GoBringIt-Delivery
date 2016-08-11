@@ -940,7 +940,9 @@
                                     <constraint firstItem="yso-qN-630" firstAttribute="top" secondItem="1nP-bm-6Tl" secondAttribute="top" constant="227" id="KBW-Eo-px0"/>
                                     <constraint firstAttribute="bottom" secondItem="yso-qN-630" secondAttribute="bottom" id="ScZ-8l-xfK"/>
                                     <constraint firstAttribute="bottom" secondItem="yso-qN-630" secondAttribute="bottom" constant="-1" id="Vwd-vx-6P0"/>
+                                    <constraint firstAttribute="trailing" secondItem="gh6-ki-Xxc" secondAttribute="trailing" constant="9" id="ZPO-q2-ED3"/>
                                     <constraint firstAttribute="bottom" secondItem="1nP-bm-6Tl" secondAttribute="bottom" constant="-50" id="bvZ-wI-1c3"/>
+                                    <constraint firstItem="gh6-ki-Xxc" firstAttribute="leading" secondItem="PKa-8Z-bQy" secondAttribute="trailing" constant="20" id="crl-o0-3fd"/>
                                     <constraint firstItem="yso-qN-630" firstAttribute="leading" secondItem="iq8-Wv-srM" secondAttribute="leading" constant="9" id="duc-bB-ysf"/>
                                     <constraint firstAttribute="bottom" secondItem="yso-qN-630" secondAttribute="bottom" constant="-9" id="fiO-t5-nC8"/>
                                     <constraint firstItem="yso-qN-630" firstAttribute="top" secondItem="iq8-Wv-srM" secondAttribute="top" constant="235" id="j0A-sG-lIC"/>
@@ -956,6 +958,7 @@
                                         <exclude reference="fiO-t5-nC8"/>
                                         <exclude reference="mzL-wL-9QH"/>
                                         <exclude reference="tDd-73-uW9"/>
+                                        <exclude reference="crl-o0-3fd"/>
                                     </mask>
                                 </variation>
                             </scrollView>

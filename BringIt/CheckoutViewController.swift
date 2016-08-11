@@ -655,7 +655,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                     
                                                 }
                                                 // TODO: UNCOMMENT THIS LINE FOR ORDERING TO WORK
-                                                //task3.resume()
+                                                task3.resume()
 
                                             }
                                         }
