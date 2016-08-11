@@ -14,10 +14,6 @@ import IQKeyboardManagerSwift
 class AddressInfoViewController: UIViewController {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var westRadioButton: DLRadioButton!
-    @IBOutlet weak var centralRadioButton: DLRadioButton!
-    @IBOutlet weak var eastRadioButton: DLRadioButton!
-    @IBOutlet weak var offCampusRadioButton: DLRadioButton!
     @IBOutlet weak var address1TextField: B68UIFloatLabelTextField!
     @IBOutlet weak var address2TextField: B68UIFloatLabelTextField!
     @IBOutlet weak var cityTextField: B68UIFloatLabelTextField!
@@ -120,7 +116,7 @@ class AddressInfoViewController: UIViewController {
             VC.email = self.email
             VC.password = self.password
             VC.phoneNumber = self.phoneNumber
-            VC.campusLocation = (westRadioButton.selectedButton()?.currentTitle)!
+            //VC.campusLocation = (westRadioButton.selectedButton()?.currentTitle)!
             VC.address1 = address1TextField.text!
             if address2TextField.text!.isBlank {
                 VC.address2 = ""

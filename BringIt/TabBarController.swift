@@ -17,7 +17,7 @@ class TabBarController: UITabBarController {
         
         // Setting GREEN color as selected tab bar item color
         for item in self.tabBar.items! as [UITabBarItem] {
-            if let image = item.image {
+            if item.image != nil {
                 if let selectedImage = item.selectedImage {
                     item.selectedImage = selectedImage.imageWithColor(GREEN).imageWithRenderingMode(.AlwaysOriginal)
                 }

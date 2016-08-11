@@ -111,15 +111,19 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             addresses = addressesArray as! [String]
         }
         if let index = defaults.objectForKey("CurrentAddressIndex") {
-            if (index as! Int) != -1 {
+            if index as! Int != -1 {
                 currentAddress = addresses[index as! Int]
+                checkoutButton.alpha = 1
+                checkoutButton.enabled = true
             } else {
-                currentAddress = "None"
+                checkoutButton.alpha = 0.5
+                checkoutButton.enabled = false
             }
+        } else {
+            checkoutButton.alpha = 0.5
+            checkoutButton.enabled = false
         }
         detailsTableView.reloadData()
-        
-        print("HELLO1")
         
         // ITEMS TABLEVIEW
         
@@ -356,7 +360,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 managedContext.deleteObject(items![indexPath.row])
                 appDelegate.saveContext()
                 items!.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 
                 // Reload tableview and adjust tableview height and recalculate costs
                 itemsTableView.reloadData()
@@ -402,8 +406,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             // Start activity indicator again
             self.myActivityIndicator.hidden = false
             self.myActivityIndicator.startAnimating()
-            
-            print("HELLO1")
             
             // Update and save CoreData
             self.activeCart![0].dateOrdered = NSDate()
@@ -555,12 +557,14 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                         }
                                                     }
                                                 }
+                                                
                                             }
                                             
                                             // Stop activity indicator again
                                             self.myActivityIndicator.hidden = true
                                             self.myActivityIndicator.stopAnimating()
                                             
+                                            print("SEGUE TIMEEEEEEE")
                                             self.performSegueWithIdentifier("toOrderPlaced", sender: self)
                                             
                                             NSOperationQueue.mainQueue().addOperationWithBlock {
@@ -597,14 +601,32 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                         
                                                         
                                                         let addressToSend = addresses[addressIndex]
+                                                        var addressInParts = [String]()
+                                                        
+                                                        var address1 = ""
+                                                        var address2 = ""
+                                                        var city = ""
+                                                        var zip = ""
+                                                        
+                                                        addressToSend.enumerateLines { addressInParts.append($0.line) }
+                                                        if addressInParts.count == 3 {
+                                                            address1 = addressInParts[0]
+                                                            city = addressInParts[1]
+                                                            zip = addressInParts[2]
+                                                        } else {
+                                                            address1 = addressInParts[0]
+                                                            address2 = addressInParts[1]
+                                                            city = addressInParts[2]
+                                                            zip = addressInParts[3]
+                                                        }
                                                         
                                                         // TODO Alex, can you put in the portions of the address here?
                                                         let params4 = ["account_id": self.userID,
-                                                            "street": "TODO street here",
-                                                            "apartment": "TODO address 2 here",
-                                                            "city": "TODO city here",
+                                                            "street": address1,
+                                                            "apartment": address2,
+                                                            "city": city,
                                                             "state": "NC",
-                                                            "zip": "TODO zip here",
+                                                            "zip": zip,
                                                             ]
                                                             as Dictionary<String, String>
                                                         
@@ -683,10 +705,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "prepareForUnwind" {
+        /*if segue.identifier == "prepareForUnwind" {
             let VC = segue.destinationViewController as! MenuTableViewController
             VC.backToVC = cameFromVC
-        } else if segue.identifier == "toDeliverToPayingWith" {
+        } else*/ if segue.identifier == "toDeliverToPayingWith" {
             let VC = segue.destinationViewController as! DeliverToPayingWithViewController
             if self.selectedCell == 0 {
                 VC.selectedCell = "Deliver To"

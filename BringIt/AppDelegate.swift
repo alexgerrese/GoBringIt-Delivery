@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.sharedManager().keyboardDistanceFromTextField = CGFloat(50)
         IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = true
+        IQKeyboardManager.sharedManager().preventShowingBottomBlankSpace = true
         
         return true
     }

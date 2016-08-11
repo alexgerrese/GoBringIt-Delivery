@@ -25,12 +25,6 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     let indicatorLeftMargin: CGFloat = 2
     var maxY: CGFloat!
     
-    // MARK: - SAMPLE DATA - CHAD REPLACE WITH BACKEND
-    
-    /* The best way to do this would be to grab it from the database and store it in an array of objects like below. If you use the same variable names, they should automatically work with the front end.
-     NOTE: Here, the "images" are actually just image names referencing locally stored images. If we are pulling images from the DB (we'll talk about this later cuz we need new pictures), we will need to change a couple of things.
-     NOTE 2: isOpen will need to be calculated on the fly, but we need to deal with the format of the open hours so our app understands what each time means, and this will take a bit of time later. */
-    
     // Create struct to organize data
     struct Restaurant {
         var coverImage: NSData
@@ -49,7 +43,6 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     var restaurantNames = [String]()
     var cuisineTypes = [String]()
     
-    //TODO: CHAD! This is still reliant on sample data. Please pull these from the database!!! Essentially do what you did in the restaurantVC but for each restaurant in the tableview!
     var openHours = [String]()
     var isOpen = [Bool]()
     var idList = [String]()
@@ -171,7 +164,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 
 
-                                let restaurant_id = Restaurant["restaurant_id"] as? String
+                                //let restaurant_id = Restaurant["restaurant_id"] as? String
 
                                     let all_hours = Restaurant["open_hours"] as! String
                                     let hours_byDay = all_hours.componentsSeparatedByString(", ")
@@ -179,21 +172,21 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                     let currentCalendar = NSCalendar.currentCalendar()
                                     let currentDate = NSDate()
                                     let localDate = NSDate(timeInterval: NSTimeInterval(NSTimeZone.systemTimeZone().secondsFromGMT), sinceDate: currentDate)
-                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: localDate)
+                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: currentDate)
                                     print(currentDate)
                                     print(localDate)
-                                    let componentTime : Float = Float(components.hour - 17) + Float(components.minute) / 60
+                                    let componentTime : Float = Float(components.hour) + Float(components.minute) / 60
                                     var estTime : Float
                                     if (componentTime > 4) {
-                                        estTime = componentTime + 20 - 24
+                                        estTime = componentTime
                                     } else {
-                                        estTime = componentTime + 20
+                                        estTime = componentTime
                                     }
                                     
                                     let dateFormatter = NSDateFormatter()
                                     dateFormatter.locale = NSLocale.currentLocale()
                                     dateFormatter.dateFormat = "EEEE"
-                                    let convertedDate = dateFormatter.stringFromDate(localDate)
+                                    let convertedDate = dateFormatter.stringFromDate(currentDate)
                                     
                                     var openDate : Float? = nil
                                     var closeDate : Float? = nil
@@ -218,7 +211,12 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                         if (hours_pieces[j].rangeOfString("pm") != nil) {
                                                             let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
                                                             let hour_minute = time_pieces[0].componentsSeparatedByString(":");
-                                                            newTime = Float(time_pieces[0])! + 12
+                                                            if time_pieces[0] == "12" {
+                                                                newTime = Float(time_pieces[0])
+                                                            } else {
+                                                                newTime = Float(time_pieces[0])! + 12
+                                                            }
+                                                            
                                                             if (hour_minute.count > 1) {
                                                                 minuteTime = Float(hour_minute[1])
                                                             }
@@ -243,7 +241,12 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                         if (hours_pieces[j].rangeOfString("pm") != nil) {
                                                             let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
                                                             let hour_minute = time_pieces[0].componentsSeparatedByString(":");
-                                                            newTime = Float(hour_minute[0])! + 12
+                                                            if time_pieces[0] == "12" {
+                                                                newTime = Float(hour_minute[0])
+                                                            } else {
+                                                                newTime = Float(hour_minute[0])! + 12
+                                                            }
+
                                                             if (hour_minute.count > 1) {
                                                                 minuteTime = Float(hour_minute[1])
                                                             }
@@ -277,7 +280,8 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                         }
                                     }
                                 
-                                print(count)
+                                print(openDate)
+                                print(closeDate)
                                 print(estTime)
                                 print(self.openHours[count])
                                 print(self.isOpen[count])
@@ -355,7 +359,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
 
         cell.restaurantBannerImage.image = UIImage(data: restaurants[indexPath.row].coverImage)
-        cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
+        //cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
         cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
         cell.restaurantHoursLabel.text = openHours[indexPath.row + 1]
         if isOpen[indexPath.row + 1] {
@@ -374,13 +378,14 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        
+        let nav = segue.destinationViewController as! UINavigationController
+        let VC = nav.topViewController as! RestaurantViewController
         let indexPath = myTableView.indexPathForSelectedRow?.row
-        let destination = segue.destinationViewController as? RestaurantTableViewController
-        destination?.restaurantImageData = restaurants[indexPath!].coverImage;
-        destination?.restaurantName = restaurants[indexPath!].restaurantName
-        destination?.restaurantID = restaurants[indexPath!].id
-        destination?.restaurantType = restaurants[indexPath!].cuisineType
+        //let destination = segue.destinationViewController as? RestaurantTableViewController
+        VC.restaurantImageData = restaurants[indexPath!].coverImage;
+        VC.restaurantName = restaurants[indexPath!].restaurantName
+        VC.restaurantID = restaurants[indexPath!].id
+        VC.restaurantType = restaurants[indexPath!].cuisineType
     }
     
     /*override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

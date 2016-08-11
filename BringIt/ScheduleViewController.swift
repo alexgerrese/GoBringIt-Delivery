@@ -28,18 +28,17 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         var numOccurences: Int
     }
     
-    //var entries = [ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "10:45PM", descriptionLabel: "Sushi Love", priceLabel: "42.59"), ScheduleEntry(date: NSDate(), serviceType: "Room/Apt Clean", timeLabel: "3:15PM", descriptionLabel: "Deluxe", priceLabel: "60.00"), ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "9:30AM", descriptionLabel: "Dunkin' Donuts", priceLabel: "12.67")]
     var entries: [Order]?
 
     // MARK: - IBOutlets
     @IBOutlet weak var menuView: CVCalendarMenuView!
     @IBOutlet weak var calendarView: CVCalendarView!
     @IBOutlet weak var monthAndYearLabel: UILabel!
-    @IBOutlet weak var myView: UIView!
+    //@IBOutlet weak var myView: UIView!
     @IBOutlet weak var myTableView: UITableView!
-    @IBOutlet weak var myScrollView: UIScrollView!
-    @IBOutlet weak var scrollViewToTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var myViewHeight: NSLayoutConstraint!
+    //@IBOutlet weak var myScrollView: UIScrollView!
+    @IBOutlet weak var tableViewToTopConstraint: NSLayoutConstraint!
+    //@IBOutlet weak var myViewHeight: NSLayoutConstraint!
     @IBOutlet weak var switchViewsButton: UISegmentedControl!
     @IBOutlet weak var noOrdersIcon: UIImageView!
     
@@ -70,6 +69,15 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         // Set label to current month
         monthAndYearLabel.text = CVDate(date: NSDate()).globalDescription
         menuView.dayOfWeekTextColor = UIColor.whiteColor()
+        
+        menuView.sizeToFit()
+        //calendarView.clipsToBounds = true
+        calendarView.sizeToFit()
+        //myView.sizeToFit()
+        
+        //print("VIEW WIDTH: \(myView.frame.width)")
+        print("CALENDAR FRAME WIDTH: \(calendarView.frame.width)")
+        print("TABLEVIEW WIDTH: \(myTableView.frame.width)")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -119,12 +127,10 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
         return entries!.count
     }
     
@@ -139,13 +145,6 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         let month = monthFormatter.stringFromDate(entries![indexPath.row].dateOrdered!)
         cell.monthLabel.text = month
         cell.dayLabel.text = String(components.day)
-        
-        /* Display service type
-        if entries![indexPath.row].restaurant != nil {
-            cell.serviceTypeLabel.text = "Food Delivery"
-        } else {
-            cell.serviceTypeLabel.text = "Maid My Day"
-        }*/
 
         // Calculate time
         let timeFormatter = NSDateFormatter()
@@ -158,7 +157,7 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Display price
         let price = entries![indexPath.row].totalPrice! as Double
-        cell.priceLabel.text = String(format: "$%.2f", price) // BUG: WHY IS THIS NOT WORKINGGGGG?
+        cell.priceLabel.text = String(format: "$%.2f", price) 
         print(String(format: "%.2f", entries![indexPath.row].totalPrice!))
         
         return cell
@@ -166,12 +165,12 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBAction func switchViewsButtonClicked(sender: AnyObject) {
         if switchViewsButton.selectedSegmentIndex == 0 {
-            scrollViewToTopConstraint.constant = 397 // TO-DO: ALEX! CHANGE THIS, SHOULDN'T BE CONSTANT!!!
+            tableViewToTopConstraint.constant = 319
             UIView.animateWithDuration(0.4) {
                 self.view.layoutIfNeeded()
             }
         } else {
-            scrollViewToTopConstraint.constant = 64
+            tableViewToTopConstraint.constant = 0
             UIView.animateWithDuration(0.4) {
                 self.view.layoutIfNeeded()
             }
@@ -185,12 +184,6 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         header.contentView.backgroundColor = UIColor.groupTableViewBackgroundColor()
         header.textLabel!.textColor = UIColor.darkGrayColor()
         header.textLabel?.font = TV_HEADER_FONT
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        // TO-DO: ALEX! When we have calculated the headers situations (how many months have orders), make this dynamic
-        
-        return ""
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -255,7 +248,48 @@ extension ScheduleViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     
     func presentedDateUpdated(date: Date) {
         monthAndYearLabel.text = date.globalDescription
-        myView.sizeToFit()
+        //myView.sizeToFit()
+        
+        if entries != nil {
+            for i in 0..<entries!.count {
+                let calendar = NSCalendar.currentCalendar()
+                let dateComponents = calendar.components([NSCalendarUnit.Day, NSCalendarUnit.Month, NSCalendarUnit.Year], fromDate: entries![i].dateOrdered!)
+                let day = dateComponents.day
+                let month = dateComponents.month
+                let year = dateComponents.year
+                
+                if day == date.day && month == date.month &&  year == date.year {
+                    self.myTableView.scrollToRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0), atScrollPosition: .Top, animated: true)
+                    break
+                }
+            }
+        }
+    }
+    
+    func dotMarker(shouldShowOnDayView dayView: DayView) -> Bool {
+        if entries != nil {
+            for entry in entries! {
+                let calendar = NSCalendar.currentCalendar()
+                let dateComponents = calendar.components([NSCalendarUnit.Day, NSCalendarUnit.Month, NSCalendarUnit.Year], fromDate: entry.dateOrdered!)
+                let day = dateComponents.day
+                let month = dateComponents.month
+                let year = dateComponents.year
+
+                if day == dayView.date.day && month == dayView.date.month &&  year == dayView.date.year {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+    
+    func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat {
+        return 12
+    }
+    
+    func dotMarker(colorOnDayView dayView: DayView) -> [UIColor] {
+        return [UIColor.whiteColor()]
     }
     
     /// Required method to implement!
@@ -289,6 +323,7 @@ extension ScheduleViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
         let resultDate = calendar.dateFromComponents(components)!
         
         self.calendarView.toggleViewWithDate(resultDate)
+        updateViewConstraints()
     }
 }
 

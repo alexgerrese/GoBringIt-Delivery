@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ScheduleDetailViewController: UIViewController {
+class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -50,7 +50,6 @@ class ScheduleDetailViewController: UIViewController {
         orderView.layer.shadowOpacity = 0.5
         orderView.layer.shadowOffset = CGSizeZero
         orderView.layer.shadowRadius = 1
-        
         
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
         let restaurantID = order!.restaurantID
@@ -157,12 +156,12 @@ class ScheduleDetailViewController: UIViewController {
         // TO-DO: ALEX! Add a warning that current cart will be overwritten?
         if !activeCart.isEmpty {
             // Shouldn't be necessary, just a precaution
-            activeCart[0].isActive = false
+            print("ACTIVE CART IS NOT EMPTY")
+            //ctiveCart[0].isActive = false
             activeCart.removeAll()
         }
         
         var reorder = NSEntityDescription.insertNewObjectForEntityForName("Order", inManagedObjectContext: managedContext) as! Order
-        
         reorder = order!
         
         // Set this cart as the active cart

@@ -12,10 +12,11 @@ class WalkthroughViewController: UIViewController {
     
     // IBOutlets
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var walkthroughText: UITextView!
+    @IBOutlet weak var walkthroughText: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var getStartedButton: UIButton!
+    @IBOutlet weak var comingSoonLabel: UILabel!
     
     // Variables
     var index = 0
@@ -33,6 +34,7 @@ class WalkthroughViewController: UIViewController {
         // Hide and show buttons as needed
         getStartedButton.hidden = (index == 2) ? false : true
         nextButton.hidden = (index == 2) ? true : false
+        comingSoonLabel.hidden = (index == 1) ? false : true
     }
     
     override func prefersStatusBarHidden() -> Bool {

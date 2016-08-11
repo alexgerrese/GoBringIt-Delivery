@@ -55,7 +55,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,7 +64,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         userID = defaults.objectForKey("userID") as! String
         
-        // TO-DO: CHAD! Please pull this db data
+        // Get and display user's name
         if let name = defaults.objectForKey("userName") {
             userName = name as! String
             // Set name
@@ -122,6 +121,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Get correct count for addresses
         if let addressesArray = defaults.objectForKey("Addresses") {
             cellNumbers[addressIndex] = addressesArray.count
+            myTableView.reloadData()
         }
         
         // Fetch all inactive carts, if any exist
@@ -235,6 +235,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBAction func returnToSettings(segue: UIStoryboardSegue) {
     }
+    
+    // MARK: - Compose Email Methods
     
     @IBAction func sendEmailButtonTapped(sender: AnyObject) {
         let mailComposeViewController = configuredMailComposeViewController()

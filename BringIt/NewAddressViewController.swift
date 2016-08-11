@@ -14,10 +14,7 @@ import IQKeyboardManagerSwift
 class NewAddressViewController: UIViewController {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var westRadioButton: DLRadioButton!
-    @IBOutlet weak var centralRadioButton: DLRadioButton!
-    @IBOutlet weak var eastRadioButton: DLRadioButton!
-    @IBOutlet weak var offCampusRadioButton: DLRadioButton!
+    @IBOutlet weak var campusSegmentedControl: UISegmentedControl!
     @IBOutlet weak var address1TextField: B68UIFloatLabelTextField!
     @IBOutlet weak var address2TextField: B68UIFloatLabelTextField!
     @IBOutlet weak var cityTextField: B68UIFloatLabelTextField!

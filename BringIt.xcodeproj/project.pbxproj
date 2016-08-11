@@ -31,14 +31,17 @@
 		114FC71F1D44C46F00DB5824 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7191D44C46F00DB5824 /* Order.swift */; };
 		114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */; };
 		114FC7211D44C46F00DB5824 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71B1D44C46F00DB5824 /* Item.swift */; };
+		1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
 		115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */; };
 		115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC371CEAA3460053E03F /* TabBarController.swift */; };
 		115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */; };
-		115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */; };
 		115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */; };
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
+		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
+		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
+		11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */; };
 		11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */; };
 		11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */; };
 		11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */; };
@@ -107,14 +110,17 @@
 		114FC7191D44C46F00DB5824 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		114FC71B1D44C46F00DB5824 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BecomeADriverViewController.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeViewController.swift; sourceTree = "<group>"; };
 		115ECC371CEAA3460053E03F /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewCell.swift; sourceTree = "<group>"; };
-		115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantViewController.swift; sourceTree = "<group>"; };
+		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
+		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
 		11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressViewController.swift; sourceTree = "<group>"; };
 		11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -316,7 +322,9 @@
 		1193E72C1CEACDDD00299D8B /* Restaurant */ = {
 			isa = PBXGroup;
 			children = (
-				115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */,
+				11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */,
+				11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */,
+				11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */,
 			);
 			name = Restaurant;
 			sourceTree = "<group>";
@@ -352,6 +360,7 @@
 				114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */,
 				11F5FFA91D52C10F003290DA /* StatsViewController.swift */,
 				11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */,
+				1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -407,12 +416,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1102201C1CE68A83003D82FB /* Build configuration list for PBXNativeTarget "BringIt" */;
 			buildPhases = (
-				8AFE1A02F96558E3B337DAD7 /* 📦 Check Pods Manifest.lock */,
+				8AFE1A02F96558E3B337DAD7 /* [CP] Check Pods Manifest.lock */,
 				11021FEE1CE68A83003D82FB /* Sources */,
 				11021FEF1CE68A83003D82FB /* Frameworks */,
 				11021FF01CE68A83003D82FB /* Resources */,
-				B718A82B7254511D102664DF /* 📦 Embed Pods Frameworks */,
-				E243B62F19348DD74F38A5D2 /* 📦 Copy Pods Resources */,
+				B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */,
+				E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -427,12 +436,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1102201F1CE68A83003D82FB /* Build configuration list for PBXNativeTarget "BringItTests" */;
 			buildPhases = (
-				650176CBFE8A86089C22DE88 /* 📦 Check Pods Manifest.lock */,
+				650176CBFE8A86089C22DE88 /* [CP] Check Pods Manifest.lock */,
 				110220041CE68A83003D82FB /* Sources */,
 				110220051CE68A83003D82FB /* Frameworks */,
 				110220061CE68A83003D82FB /* Resources */,
-				0045021002990CB18D224269 /* 📦 Embed Pods Frameworks */,
-				6C8491E23EBF050DC80F0B70 /* 📦 Copy Pods Resources */,
+				0045021002990CB18D224269 /* [CP] Embed Pods Frameworks */,
+				6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -448,11 +457,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 110220221CE68A83003D82FB /* Build configuration list for PBXNativeTarget "BringItUITests" */;
 			buildPhases = (
-				7D8FCC92878615CA9FAD458D /* 📦 Check Pods Manifest.lock */,
+				7D8FCC92878615CA9FAD458D /* [CP] Check Pods Manifest.lock */,
 				1102200F1CE68A83003D82FB /* Sources */,
 				110220101CE68A83003D82FB /* Frameworks */,
 				110220111CE68A83003D82FB /* Resources */,
-				49E4ED84F97608E3B3DB38AD /* 📦 Copy Pods Resources */,
+				49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -476,6 +485,7 @@
 				TargetAttributes = {
 					11021FF11CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = T95S69L6BP;
 					};
 					110220071CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
@@ -535,14 +545,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0045021002990CB18D224269 /* 📦 Embed Pods Frameworks */ = {
+		0045021002990CB18D224269 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -550,14 +560,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		49E4ED84F97608E3B3DB38AD /* 📦 Copy Pods Resources */ = {
+		49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,14 +575,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		650176CBFE8A86089C22DE88 /* 📦 Check Pods Manifest.lock */ = {
+		650176CBFE8A86089C22DE88 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -580,14 +590,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6C8491E23EBF050DC80F0B70 /* 📦 Copy Pods Resources */ = {
+		6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,14 +605,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7D8FCC92878615CA9FAD458D /* 📦 Check Pods Manifest.lock */ = {
+		7D8FCC92878615CA9FAD458D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -610,14 +620,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8AFE1A02F96558E3B337DAD7 /* 📦 Check Pods Manifest.lock */ = {
+		8AFE1A02F96558E3B337DAD7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,14 +635,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		B718A82B7254511D102664DF /* 📦 Embed Pods Frameworks */ = {
+		B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -640,14 +650,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringIt/Pods-BringIt-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E243B62F19348DD74F38A5D2 /* 📦 Copy Pods Resources */ = {
+		E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -664,6 +674,7 @@
 			files = (
 				115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */,
 				11F6DE4F1CF96B5300662C20 /* ServicesTableViewCell.swift in Sources */,
+				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
 				114FC7211D44C46F00DB5824 /* Item.swift in Sources */,
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
@@ -674,7 +685,6 @@
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
-				115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */,
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
 				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
@@ -683,6 +693,7 @@
 				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
 				11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */,
+				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
 				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
@@ -691,6 +702,7 @@
 				114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */,
 				11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */,
 				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
+				11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
 				114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */,
 				114FC71F1D44C46F00DB5824 /* Order.swift in Sources */,
@@ -699,6 +711,7 @@
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
 				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
 				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
+				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
 				11F6DE471CF6CF1A00662C20 /* CheckoutViewController.swift in Sources */,
 				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */,
@@ -845,6 +858,7 @@
 			baseConfigurationReference = DE2BA22A3EE99C6B60B11CD9 /* Pods-BringIt.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringIt;
@@ -858,6 +872,7 @@
 			baseConfigurationReference = 79E26E758EB8418E7DE19F36 /* Pods-BringIt.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringIt;

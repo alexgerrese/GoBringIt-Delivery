@@ -1,11 +1,11 @@
 PODS:
   - B68UIFloatLabelTextField (0.1.2)
   - CVCalendar (1.2.9)
-  - DLRadioButton (1.4.8)
+  - DLRadioButton (1.4.9)
   - EZSwiftExtensions (1.5)
   - GMStepper (1.2.0)
-  - IQKeyboardManagerSwift (4.0.3)
-  - Stripe (7.0.2)
+  - IQKeyboardManagerSwift (4.0.4)
+  - Stripe (8.0.4)
 
 DEPENDENCIES:
   - B68UIFloatLabelTextField (~> 0.1.0)
@@ -19,12 +19,12 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   B68UIFloatLabelTextField: 337894ff837df84e19636c99f3f5f88c4fad60d7
   CVCalendar: 0799256e0bc3b43e83b7e86c0729ce9ff0624cb6
-  DLRadioButton: 8fe4865b3ea8a5236e1d114dd283dd0884d3dc46
+  DLRadioButton: 7bb8a6e3768b572469ace553391ab4d2af6f9c19
   EZSwiftExtensions: fe78d7d4ac34f5c8c36415d4acee49ba67c9732a
   GMStepper: e743b5648ae5fe877e33d3b51b5aa2df432f179d
-  IQKeyboardManagerSwift: b6883b720b0e76473692fdc80828442566e1075f
-  Stripe: d1eae5522cf993590f962ac1829a56c2096cf486
+  IQKeyboardManagerSwift: e0964d04d6a29b71016fd346dca13ecb80a2823a
+  Stripe: c3e325e0309dcdcb478191dbd298082823a210c1
 
 PODFILE CHECKSUM: ac49e2087d64d048c4bdae04628cd04f8c1e1c47
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1

@@ -132,53 +132,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             addToOrderButton.setTitle("UPDATE ORDER", forState: .Normal)
         }
         
-        /*// Open Connection to PHP Service to carts DB to find an active cart
-         let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
-         let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
-         let session2 = NSURLSession.sharedSession()
-         let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
-         if let data = data {
-         do {
-         let httpResponse = response as! NSHTTPURLResponse
-         let statusCode = httpResponse.statusCode
-         
-         // Check HTTP Response
-         if (statusCode == 200) {
-         
-         do{
-         // Parse JSON
-         let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-         
-         for Cart in json as! [Dictionary<String, AnyObject>] {
-         
-         let order_id = Cart["order_id"] as! String
-         if (Int(order_id)! > self.maxCartOrderID) {
-         print( Int(order_id)!)
-         self.maxCartOrderID = Int(order_id)!
-         }
-         
-         let user_id = Cart["user_id"] as! String
-         
-         if (userID == user_id) {
-         let active_cart = Cart["active"] as! String
-         if (active_cart == "1") {
-         print(order_id)
-         self.currentActiveCartOrderID = order_id
-         }
-         }
-         }
-         }
-         }
-         } catch let error as NSError {
-         print("Error:" + error.localizedDescription)
-         }
-         } else if let error = error {
-         print("Error:" + error.localizedDescription)
-         }
-         }
-         
-         task2.resume();*/
-        
         // Open Connection to PHP Service to menuSides
         let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSides.php")!
         let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
@@ -362,12 +315,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    /* Resize itemsTableView
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-        myTableViewHeight.constant = myTableView.contentSize.height
-    }*/
-    
     @IBAction func addToOrderButtonPressed(sender: UIButton) {
         
         // Check if there is an existing active cart from this restaurant
@@ -447,7 +394,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                 }
             }
-            
+            self.dismissViewControllerAnimated(true, completion: nil)
             
         } else {
             
@@ -551,6 +498,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         
                                         do {
                                             try self.managedContext.save()
+                                            self.dismissViewControllerAnimated(true, completion: nil)
                                         } catch {
                                             fatalError("Failure to save context: \(error)")
                                         }
@@ -626,6 +574,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 // SAVE
                 do {
                     try managedContext.save()
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 } catch {
                     fatalError("Failure to save context: \(error)")
                 }
@@ -636,7 +585,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        
         
     }
     
