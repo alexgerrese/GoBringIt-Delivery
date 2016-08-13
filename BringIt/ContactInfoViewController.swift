@@ -62,7 +62,9 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         phoneNumberTextField.delegate = self
         
         // Set userID
-        userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        if let id = self.defaults.objectForKey("userID") {
+            userID = id as! String
+        }
         
         var fullname = ""
         var email = ""

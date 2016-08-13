@@ -107,15 +107,11 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         
         task.resume()
         
-        
         items = order!.items?.allObjects as? [Item]
         print("HEIGHT1: \(myTableViewHeight.constant)")
         
         myTableView.reloadData()
         updateViewConstraints()
-        
-        print("NUM ITEMS: \(items!.count)")
-        print("HEIGHT2: \(myTableViewHeight.constant)")
         
         let deliveryFee = Double((order?.deliveryFee)!)
         let subTotal = Double((order?.totalPrice)!) - Double((order?.deliveryFee)!)

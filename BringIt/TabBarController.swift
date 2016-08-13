@@ -36,9 +36,6 @@ class TabBarController: UITabBarController {
     override func viewDidAppear(animated: Bool) {
         // Display walkthrough if first launch
         displayWalkthroughs()
-        
-        // Check if user is already logged in
-        checkLoggedIn()
     }
     
     override func didReceiveMemoryWarning() {
@@ -46,13 +43,7 @@ class TabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    // Check if user is already logged in. If not, present SignInViewController.
-    func checkLoggedIn() {
-        let loggedIn = defaults.boolForKey("loggedIn")
-        if !loggedIn {
-            performSegueWithIdentifier("toSignIn", sender: self)
-        }
-    }
+
     
     // Check if walkthrough has been shown, then show if needed
     func displayWalkthroughs() {
@@ -98,3 +89,4 @@ extension UIImage {
         return newImage
     }
 }
+

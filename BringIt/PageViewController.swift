@@ -12,7 +12,7 @@ class PageViewController: UIPageViewController {
     
     // Hard-coded walkthrough data
     let pageImages = ["WT 1", "WT 2", "WT 3"]
-    let pageDescriptions = ["Order delicious food from your dorm on food points with BringIt.", "Schedule a clean of your dorm/apartment with Maid My Day.", "Meet Campus Enterprises, Duke University’s on-demand economy."]
+    let pageDescriptions = ["Order delicious food from your dorm on food points with BringIt.", "Schedule a clean of your dorm or apartment with Maid My Day.", "Meet Campus Enterprises, Duke University’s on-demand economy."]
 
     override func viewDidLoad() {
         super.viewDidLoad()

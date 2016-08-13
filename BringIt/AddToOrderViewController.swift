@@ -48,6 +48,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var numberOfSidesSelected = 0
     var totalPrice = 0.0
     
+    // To check database correctness
+    var anySidesRequired = false
+    
     // Get indexes of each section (in case some aren't added because there are no rows to show)
     var sidesIndex = -1
     var extrasIndex = -1
@@ -96,9 +99,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Start activity indicator
         myActivityIndicator.startAnimating()
         self.myActivityIndicator.hidden = false
-        
-        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
-        print(userID)
         
         // Set title
         self.title = selectedFoodName
@@ -168,10 +168,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         for j in 0..<self.passedSides!.count {
                                             if self.sideNames[i] == self.passedSides![j].name {
                                                 isSelected = true
-                                                print("A SIDE HAS BEEN SELECTED!")
                                             }
                                         }
                                     }
+                                    // If anything is required, set this to true
+                                    if self.sideRequireds[i] == "1"
+                                    {
+                                        self.anySidesRequired = true
+                                    }
+                                    
+                                    // Append the item
                                     self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], sideID: self.sideIDs[i], selected: isSelected))
                                 }
                                 
@@ -179,7 +185,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 // SOME PROBLEMS HEREEEEEEEEEE. CHECK MAKE YOUR OWN WRAP
                                 for i in 0..<self.sideItems.count {
                                     // If required, Section 1
-                                    if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice == "0") {
+                                    if (self.sideItems[i].sideRequired == "1" && (self.sideItems[i].sidePrice == "0" || self.sideItems[i].sidePrice == "0.00")) {
                                         self.section1.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                         print("S1:" + self.sideItems[i].sideName)
                                     }
@@ -189,7 +195,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         print("REQUIREDS2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
                                     }*/
                                     // If not required, Section 2
-                                    if (self.sideItems[i].sideRequired == "0" || self.sideItems[i].sidePrice != "0") {
+                                    if (self.sideItems[i].sideRequired == "0" || (self.sideItems[i].sidePrice != "0" && self.sideItems[i].sidePrice != "0.00")) {
                                         self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                         print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
                                     }
@@ -219,28 +225,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 
                                 self.calculatePrice()
                                 self.calculateNumOfSidesSelected()
+                                self.checkRequiredSides()
                                 
                                 print("SIDES")
                                 print(self.section1.count)
-                                
-                                // Check if the required sides have been selected
-                                if self.numberOfSidesSelected == Int(self.selectedFoodSidesNum) {
-                                    // Enable the button and make it opaque
-                                    self.addToOrderButton.alpha = 1
-                                    self.addToOrderButton.enabled = true
-                                    
-                                    // Enable the stepper and make it opaque
-                                    self.stepper.alpha = 1
-                                    self.stepper.enabled = true
-                                } else {
-                                    // Disable the button and make it transparent
-                                    self.addToOrderButton.alpha = 0.5
-                                    self.addToOrderButton.enabled = false
-                                    
-                                    // Disable the stepper and make it transparent
-                                    self.stepper.alpha = 0.5
-                                    self.stepper.enabled = false
-                                }
                                 
                                 // Stop activity indicator
                                 self.myActivityIndicator.stopAnimating()
@@ -726,8 +714,32 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Recalculate price and numOfSidesSelected
         calculatePrice()
         calculateNumOfSidesSelected()
-        
-        if numberOfSidesSelected == Int(selectedFoodSidesNum) {
+        checkRequiredSides()
+    }
+    
+    func checkRequiredSides() {
+        if anySidesRequired {
+            print("SOMETHING IS REQUIRED")
+            print(numberOfSidesSelected)
+            print(selectedFoodSidesNum)
+            if numberOfSidesSelected == Int(selectedFoodSidesNum) {
+                // Enable the button and make it opaque
+                addToOrderButton.alpha = 1
+                addToOrderButton.enabled = true
+                
+                // Enable the stepper and make it opaque
+                stepper.alpha = 1
+                stepper.enabled = true
+            } else {
+                // Disable the button and make it transparent
+                addToOrderButton.alpha = 0.5
+                addToOrderButton.enabled = false
+                
+                // Disable the stepper and make it transparent
+                stepper.alpha = 0.5
+                stepper.enabled = false
+            }
+        } else {
             // Enable the button and make it opaque
             addToOrderButton.alpha = 1
             addToOrderButton.enabled = true
@@ -735,17 +747,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             // Enable the stepper and make it opaque
             stepper.alpha = 1
             stepper.enabled = true
-        } else {
-            // Disable the button and make it transparent
-            addToOrderButton.alpha = 0.5
-            addToOrderButton.enabled = false
-            
-            // Disable the stepper and make it transparent
-            stepper.alpha = 0.5
-            stepper.enabled = false
         }
-        
-        
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021CEA1AE426967542CFE0C9 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
 		11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF51CE68A83003D82FB /* AppDelegate.swift */; };
 		11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF91CE68A83003D82FB /* ScheduleViewController.swift */; };
 		11021FFD1CE68A83003D82FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11021FFB1CE68A83003D82FB /* Main.storyboard */; };
@@ -17,7 +18,6 @@
 		110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220321CE7FC18003D82FB /* WalkthroughViewController.swift */; };
 		110220351CE83307003D82FB /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220341CE83307003D82FB /* PageViewController.swift */; };
 		110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220361CE83EB7003D82FB /* SignInViewController.swift */; };
-		11210CBE1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */; };
 		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
 		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
@@ -59,7 +59,6 @@
 		11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */; };
 		2F60BF5113DA47831CD710EA /* Pods_BringItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */; };
 		545F366974300B6D9693022C /* Pods_BringItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */; };
-		6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +77,19 @@
 			remoteInfo = BringIt;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		11D4D0DC1D5D00CE00E19D9C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		11021FF21CE68A83003D82FB /* BringIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BringIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +133,13 @@
 		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantViewController.swift; sourceTree = "<group>"; };
 		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
+		11D4D0DF1D5D019A00E19D9C /* CVCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CVCalendar.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/CVCalendar/CVCalendar.framework"; sourceTree = "<group>"; };
+		11D4D0E11D5D019E00E19D9C /* DLRadioButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DLRadioButton.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/DLRadioButton/DLRadioButton.framework"; sourceTree = "<group>"; };
+		11D4D0E31D5D01A100E19D9C /* EZSwiftExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EZSwiftExtensions.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/EZSwiftExtensions/EZSwiftExtensions.framework"; sourceTree = "<group>"; };
+		11D4D0E51D5D01A500E19D9C /* GMStepper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GMStepper.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/GMStepper/GMStepper.framework"; sourceTree = "<group>"; };
+		11D4D0E71D5D01A900E19D9C /* IDZSwiftCommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IDZSwiftCommonCrypto.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework"; sourceTree = "<group>"; };
+		11D4D0E91D5D01AD00E19D9C /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"; sourceTree = "<group>"; };
+		11D4D0EB1D5D01B300E19D9C /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/Stripe/Stripe.framework"; sourceTree = "<group>"; };
 		11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressViewController.swift; sourceTree = "<group>"; };
 		11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -153,8 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11210CBE1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework in Frameworks */,
-				6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */,
+				021CEA1AE426967542CFE0C9 /* Pods_BringIt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +406,13 @@
 		172FBED42052A1B1057FB38A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11D4D0EB1D5D01B300E19D9C /* Stripe.framework */,
+				11D4D0E91D5D01AD00E19D9C /* IQKeyboardManagerSwift.framework */,
+				11D4D0E71D5D01A900E19D9C /* IDZSwiftCommonCrypto.framework */,
+				11D4D0E51D5D01A500E19D9C /* GMStepper.framework */,
+				11D4D0E31D5D01A100E19D9C /* EZSwiftExtensions.framework */,
+				11D4D0E11D5D019E00E19D9C /* DLRadioButton.framework */,
+				11D4D0DF1D5D019A00E19D9C /* CVCalendar.framework */,
 				11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */,
 				3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */,
 				A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */,
@@ -422,6 +447,7 @@
 				11021FF01CE68A83003D82FB /* Resources */,
 				B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */,
 				E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */,
+				11D4D0DC1D5D00CE00E19D9C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -860,8 +886,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringIt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BringIt/BringIt-Bridging-Header.h";
 			};
@@ -874,8 +901,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringIt;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BringIt/BringIt-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";

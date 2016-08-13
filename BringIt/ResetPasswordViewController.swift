@@ -9,14 +9,19 @@
 import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
+import IDZSwiftCommonCrypto
 
 extension String {
     func sha512() -> String {
         let data = self.dataUsingEncoding(NSUTF8StringEncoding)!
-        var digest = [UInt8](count:Int(CC_SHA512_DIGEST_LENGTH), repeatedValue: 0)
-        CC_SHA512(data.bytes, CC_LONG(data.length), &digest)
-        let hexBytes = digest.map { String(format: "%02hhx", $0) }
-        return hexBytes.joinWithSeparator("")
+        let sha : Digest = Digest(algorithm:.SHA512)
+        sha.update(data)
+        let digest = sha.final()
+        //var digest = [UInt8](count:Int(CC_SHA512_DIGEST_LENGTH), repeatedValue: 0)
+        //CC_SHA512(data.bytes, CC_LONG(data.length), &digest)
+        return hexStringFromArray(digest)
+        //let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        //return hexBytes.joinWithSeparator("")
     }
 }
 
@@ -167,7 +172,7 @@ class ResetPasswordViewController: UIViewController {
                         if canContinue {
                             print("CAN CONTINUEEEEE")
                             self.performSegueWithIdentifier("returnToContactInfo", sender: self)
-                            
+                            self.navigationController?.popViewControllerAnimated(true)
                         } else {
                             print ("don't send the passowrd2")
                         }
@@ -179,7 +184,6 @@ class ResetPasswordViewController: UIViewController {
                 }
             }
         }
-        
         task.resume()
     }
     

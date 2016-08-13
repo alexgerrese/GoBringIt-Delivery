@@ -38,6 +38,14 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         myActivityIndicator.stopAnimating()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let loggedIn = defaults.boolForKey("loggedIn")
+        if loggedIn {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
     // Sign in if credentials match with existing backend entry
     @IBAction func signInButtonClicked(sender: UIButton) {
     
@@ -80,6 +88,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     
                                     // Update UserDefaults 
                                     self.defaults.setBool(true, forKey: "loggedIn")
+                                    self.defaults.setObject(User["name"] as! String, forKey: "userName")
                                     self.defaults.setObject(User["uid"] as! String, forKey: "userID")
                                     
                                     self.dismissViewControllerAnimated(true, completion: nil)
@@ -104,6 +113,11 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         }
         
         task.resume()
+    }
+    
+    @IBAction func xButtonPressed(sender: UIButton) {
+        comingFromSignIn = true
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func rewindFromSignUp(segue: UIStoryboardSegue) {

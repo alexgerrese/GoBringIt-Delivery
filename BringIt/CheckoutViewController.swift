@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 var comingFromOrderPlaced = false
+var comingFromSignIn = false
 
 class CheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -72,25 +73,38 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
+        // Set tableView cells to custom height and automatically resize if needed
+        itemsTableView.estimatedRowHeight = 110
+        itemsTableView.rowHeight = UITableViewAutomaticDimension
+        
         // Hide activity indicator
         myActivityIndicator.hidden = true
         
-        // Get Address of User
-        // var userID: String?
-        if let id = self.defaults.objectForKey("userID") {
-            userID = id as! String
-            print("USER ID: \(userID)")
-        }
-        
-        // Set SAMPLE DATA
-        //deliverTo = "1369 Campus Drive"
+        // TO-DO: When credit card is added, stop hard-coding this
         payWith = "Food Points"
         
         calculateTotalCost()
     }
     
     override func viewWillAppear(animated: Bool) {
-        print("HELLO1")
+        
+        // Check if coming from SignInVC
+        if comingFromSignIn {
+            let loggedIn = defaults.boolForKey("loggedIn")
+            if !loggedIn {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+        
+        // Check if user is already logged in
+        checkLoggedIn()
+        
+        // Get userID
+        if let id = self.defaults.objectForKey("userID") {
+            userID = id as! String
+        }
+        
+        // Check if coming from OrderPlacedVC
         if comingFromOrderPlaced == true {
             comingFromOrderPlaced = false
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -699,6 +713,16 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             performSegueWithIdentifier("returnToScheduleDetails", sender: self)
         } else {
             self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    // Check if user is already logged in. If not, present SignInViewController.
+    func checkLoggedIn() {
+        let loggedIn = defaults.boolForKey("loggedIn")
+        if !loggedIn {
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("signIn") as! SignInViewController
+            self.presentViewController(vc, animated: true, completion: nil)
+            //performSegueWithIdentifier("toSignIn", sender: self)
         }
     }
     

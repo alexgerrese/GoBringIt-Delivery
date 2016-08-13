@@ -59,10 +59,17 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(animated: Bool) {
         
+        // Check if user is already logged in
+        checkLoggedIn()
+        
         // Load the data into dummy variables
         cellNumbers[paymentIndex] = 1
         
-        userID = defaults.objectForKey("userID") as! String
+        if let id = defaults.objectForKey("userID") {
+            userID = id  as! String
+        } else {
+            self.tabBarController?.selectedIndex = 0
+        }
         
         // Get and display user's name
         if let name = defaults.objectForKey("userName") {
@@ -221,7 +228,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             print("SignOut Button Pressed")
             self.defaults.setBool(false, forKey: "loggedIn")
             self.defaults.setObject(nil, forKey: "userID")
-            (self.tabBarController as! TabBarController).checkLoggedIn()
+            self.checkLoggedIn()
         })
         let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
             print("Cancel Button Pressed")
@@ -234,6 +241,16 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     @IBAction func returnToSettings(segue: UIStoryboardSegue) {
+    }
+    
+    // Check if user is already logged in. If not, present SignInViewController.
+    func checkLoggedIn() {
+        let loggedIn = defaults.boolForKey("loggedIn")
+        if !loggedIn {
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("signIn") as! SignInViewController
+            self.presentViewController(vc, animated: true, completion: nil)
+            //performSegueWithIdentifier("toSignIn", sender: self)
+        }
     }
     
     // MARK: - Compose Email Methods

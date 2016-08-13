@@ -11,24 +11,38 @@ import CoreData
 
 class RestaurantViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    //@IBOutlet weak var restaurantNameLabel: UILabel!
+    // MARK: - IBOutlets
+    
+    // Regular Outlets
     @IBOutlet weak var restaurantBackgroundImage: UIImageView!
     @IBOutlet weak var cuisineTypeLabel: UILabel!
     @IBOutlet weak var restaurantHoursLabel: UILabel!
     @IBOutlet weak var isOpenIndicator: UIImageView!
     @IBOutlet weak var detailsView: UIView!
     @IBOutlet weak var cartButton: UIButton!
-    @IBOutlet weak var categoriesTableView: UITableView!
-    @IBOutlet weak var menuItemsTableView: UITableView!
     @IBOutlet weak var myScrollView: UIScrollView!
     @IBOutlet weak var selectedCategoryNameLabel: UILabel!
     @IBOutlet weak var cartView: UIView!
     @IBOutlet weak var myCategoriesActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var myMenuItemsActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var totalPriceLabel: UILabel!
+    
+    // TableView Outlets
+    @IBOutlet weak var categoriesTableView: UITableView!
+    @IBOutlet weak var menuItemsTableView: UITableView!
+    
+    // Layout Constraint Outlets
+    // Width
     @IBOutlet weak var categoriesTableViewWidth: NSLayoutConstraint!
     @IBOutlet weak var menuItemsTableViewWidth: NSLayoutConstraint!
-    @IBOutlet weak var totalPriceLabel: UILabel!
+    //To Bottom
+    @IBOutlet weak var categoriesTableViewToBottom: NSLayoutConstraint!
+    @IBOutlet weak var menuItemsTableViewToBottom: NSLayoutConstraint!
+    @IBOutlet weak var cartViewToBottom: NSLayoutConstraint!
+    
 
+    // MARK: - Variables
+    
     // Categories
     var restaurantImageData = NSData()
     var restaurantName = String()
@@ -70,9 +84,9 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Variables
     var backToVC = ""
-    
     var titleCell = String()
     var titleID = String()
+    var hasActiveCart = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -359,17 +373,38 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                         }
                         totalPriceLabel.text = String(format: "$%.2f", totalCost)
                         
-                        cartView.hidden = false
+                        hasActiveCart = true
                     } else {
-                        cartView.hidden = true
+                        hasActiveCart = false
                     }
                 } else {
-                    cartView.hidden = true
+                    hasActiveCart = false
                 }
-                print(fetchResults.count)
             }
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        // Update view constraints
+        updateViewConstraints()
+    }
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        if hasActiveCart {
+            cartViewToBottom.constant = 0
+            categoriesTableViewToBottom.constant = 0
+            menuItemsTableViewToBottom.constant = 50
+            UIView.animateWithDuration(0.4) {
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            cartViewToBottom.constant = -50
+            categoriesTableViewToBottom.constant = -45
+            menuItemsTableViewToBottom.constant = 0
+            UIView.animateWithDuration(0.4) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
@@ -500,7 +535,8 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
             
             cell.menuItemLabel.text = menuItems[indexPath.row].foodName
             cell.itemDescriptionLabel.text = menuItems[indexPath.row].foodDescription
-            cell.itemPriceLabel.text = menuItems[indexPath.row].foodPrice
+            let price = Double(menuItems[indexPath.row].foodPrice)
+            cell.itemPriceLabel.text = String(format: "$%.2f", price!)
             
             return cell
         }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DLRadioButton
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 import Stripe
@@ -152,7 +151,9 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         // Stop animating activity indicator and enter app
         myActivityIndicator.stopAnimating()
         self.defaults.setBool(true, forKey: "loggedIn")
-        performSegueWithIdentifier("toHomeFromSignUp", sender: self)
+        //performSegueWithIdentifier("toHomeFromSignUp", sender: self)
+        comingFromSignIn = true
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
