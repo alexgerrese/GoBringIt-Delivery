@@ -32,6 +32,9 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var menuItemsTableView: UITableView!
     
     // Layout Constraint Outlets
+    // Height
+    @IBOutlet weak var menuItemsViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var categoriesViewHeight: NSLayoutConstraint!
     // Width
     @IBOutlet weak var categoriesTableViewWidth: NSLayoutConstraint!
     @IBOutlet weak var menuItemsTableViewWidth: NSLayoutConstraint!
@@ -391,16 +394,19 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func updateViewConstraints() {
         super.updateViewConstraints()
+        menuItemsViewHeight.constant = UIScreen.mainScreen().bounds.height - 10
+        categoriesViewHeight.constant = UIScreen.mainScreen().bounds.height - 237
+        
         if hasActiveCart {
             cartViewToBottom.constant = 0
-            categoriesTableViewToBottom.constant = 0
+            categoriesTableViewToBottom.constant = 50
             menuItemsTableViewToBottom.constant = 50
             UIView.animateWithDuration(0.4) {
                 self.view.layoutIfNeeded()
             }
         } else {
             cartViewToBottom.constant = -50
-            categoriesTableViewToBottom.constant = -45
+            categoriesTableViewToBottom.constant = 0
             menuItemsTableViewToBottom.constant = 0
             UIView.animateWithDuration(0.4) {
                 self.view.layoutIfNeeded()
@@ -578,6 +584,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
             let nav = segue.destinationViewController as! UINavigationController
             let VC = nav.topViewController as! CheckoutViewController
             VC.cameFromVC = "Restaurant"
+            VC.isOpen = self.isOpen
         } else if segue.identifier == "toTable" {
             let VC = segue.destinationViewController as! RestaurantTableViewController
             VC.restaurantImageData = self.restaurantImageData

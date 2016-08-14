@@ -23,19 +23,20 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var totalCostLabel: UILabel!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var checkoutButton: UIButton!
+    @IBOutlet weak var checkoutErrorLabel: UILabel!
     
     var cameFromVC = ""
     var payWith = ""
     var totalCost = 0.0
     var selectedCell = 0
     var deliveryFee = 0.0
+    var isOpen = false
     
     var items_ordered: [String] = []
     var items_ordered_quantity: [String] = []
     var items_ordered_cartUID: [String] = []
     var cartUID_side = [String: String]()
     var items_ordered_instructions: [String] = []
-    
     var service_id = ""
     
     // CoreData variables
@@ -118,6 +119,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             detailsTableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         
+        // Hide error message
+        checkoutErrorLabel.hidden = true
+        
         // DETAIL TABLEVIEW
         
         var addresses = [String]()
@@ -127,15 +131,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         if let index = defaults.objectForKey("CurrentAddressIndex") {
             if index as! Int != -1 {
                 currentAddress = addresses[index as! Int]
-                checkoutButton.alpha = 1
-                checkoutButton.enabled = true
-            } else {
-                checkoutButton.alpha = 0.5
-                checkoutButton.enabled = false
             }
-        } else {
-            checkoutButton.alpha = 0.5
-            checkoutButton.enabled = false
         }
         detailsTableView.reloadData()
         
@@ -148,8 +144,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
         let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
-        
-        print("HELLO2")
         
         do {
             if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
@@ -228,7 +222,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == itemsTableView {
-            canCheckout()
             if let numItems = items?.count {
                 return numItems
             }
@@ -397,310 +390,323 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // Check if checkout is possible. If not, disable checkout button and make it more transparent.
-    func canCheckout() {
+    // Determine if checkout is possible, and display appropriate error messages if not
+    func canCheckout() -> Bool {
+        print(currentAddress)
         if items != nil {
-            if !(items?.isEmpty)! && currentAddress != "" {
-                checkoutButton.alpha = 1.0
-                checkoutButton.enabled = true
+            if (items?.isEmpty)! {
+                checkoutErrorLabel.hidden = false
+                checkoutErrorLabel.text = "Please add some food and try again."
+                return false
+            } else if currentAddress == "" {
+                checkoutErrorLabel.hidden = false
+                checkoutErrorLabel.text = "Please add an address and try again."
+                return false
+            } else if !isOpen {
+                checkoutErrorLabel.hidden = false
+                checkoutErrorLabel.text = "Please wait until the restaurant is open and try again."
+                return false
+            } else {
+                checkoutErrorLabel.hidden = true
+                return true
             }
         } else {
-            checkoutButton.alpha = 0.5
-            checkoutButton.enabled = false
+            checkoutErrorLabel.hidden = false
+            checkoutErrorLabel.text = "Please add some food and try again."
+            return false
         }
     }
     
     // Checkout process
     @IBAction func checkoutButtonPressed(sender: UIButton) {
-        
-        let alertController = UIAlertController(title: "Checkout", message: "Are you sure you want to checkout?", preferredStyle: .ActionSheet)
-        let checkout = UIAlertAction(title: "Yes, bring me my food!", style: .Default, handler: { (action) -> Void in
-            print("Checkout Button Pressed")
-            
-            // Start activity indicator again
-            self.myActivityIndicator.hidden = false
-            self.myActivityIndicator.startAnimating()
-            
-            // Update and save CoreData
-            self.activeCart![0].dateOrdered = NSDate()
-            self.activeCart![0].isActive = false
-            self.activeCart![0].totalPrice = self.totalCost + self.deliveryFee
-            
-            self.appDelegate.saveContext()
-            
-            let addresses = self.defaults.objectForKey("Addresses") as! [String]
-            let addressIndex = self.defaults.objectForKey("CurrentAddressIndex") as! Int
-            
-            // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
-            // I've set up the loops so you can go through all the items and each of their sides. To access the attributes of the items or sides, just write item. or side. and a list of attributes should pop up. Let me know if you need to add any attributes!
-            
-            // 1. Get 10 + order_id (task 2)
-            // 2. (task)addItem using that order_id (), save the Party response header
-            // 3. addSide (side-id, cart entry-id, quantity)
-            
-            print("HELLO1")
-            
-            let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
-            let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
-            let session2 = NSURLSession.sharedSession()
-            let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
-                if let data = data {
-                    do {
-                        let httpResponse = response as! NSHTTPURLResponse
-                        let statusCode = httpResponse.statusCode
-                        
-                        // Check HTTP Response
-                        if (statusCode == 200) {
+        if canCheckout() {
+            let alertController = UIAlertController(title: "Checkout", message: "Are you sure you want to checkout?", preferredStyle: .ActionSheet)
+            let checkout = UIAlertAction(title: "Yes, bring me my food!", style: .Default, handler: { (action) -> Void in
+                print("Checkout Button Pressed")
+                
+                // Start activity indicator again
+                self.myActivityIndicator.hidden = false
+                self.myActivityIndicator.startAnimating()
+                
+                // Update and save CoreData
+                self.activeCart![0].dateOrdered = NSDate()
+                self.activeCart![0].isActive = false
+                self.activeCart![0].totalPrice = self.totalCost + self.deliveryFee
+                
+                self.appDelegate.saveContext()
+                
+                let addresses = self.defaults.objectForKey("Addresses") as! [String]
+                let addressIndex = self.defaults.objectForKey("CurrentAddressIndex") as! Int
+                
+                // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
+                // I've set up the loops so you can go through all the items and each of their sides. To access the attributes of the items or sides, just write item. or side. and a list of attributes should pop up. Let me know if you need to add any attributes!
+                
+                // 1. Get 10 + order_id (task 2)
+                // 2. (task)addItem using that order_id (), save the Party response header
+                // 3. addSide (side-id, cart entry-id, quantity)
+                
+                print("HELLO1")
+                
+                let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
+                let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
+                let session2 = NSURLSession.sharedSession()
+                let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+                    if let data = data {
+                        do {
+                            let httpResponse = response as! NSHTTPURLResponse
+                            let statusCode = httpResponse.statusCode
                             
-                            do{
+                            // Check HTTP Response
+                            if (statusCode == 200) {
                                 
-                                if (self.maxCartOrderID == 0) {
-                                    self.reset = true
-                                }
-                                // Parse JSON
-                                let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
-                                
-                                for Cart in json as! [Dictionary<String, AnyObject>] {
+                                do{
                                     
-                                    let order_id = Cart["order_id"] as! String
-                                    if (Int(order_id)! > self.maxCartOrderID) {
-                                        self.maxCartOrderID = Int(order_id)!
+                                    if (self.maxCartOrderID == 0) {
+                                        self.reset = true
                                     }
+                                    // Parse JSON
+                                    let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
                                     
-                                    /*let user_id = Cart["user_id"] as! String
-                                     
-                                     if (userID == user_id) {
-                                     let active_cart = Cart["active"] as! String
-                                     if (active_cart == "1") {
-                                     print(order_id)
-                                     self.currentActiveCartOrderID = order_id
-                                     }
-                                     }*/
-                                }
-                                
-                                NSOperationQueue.mainQueue().addOperationWithBlock {
-                                    if (self.reset == true) {
-                                        self.maxCartOrderID = self.maxCartOrderID + 10;
-                                    }
-                                    
-                                    print("This is the current max order_id", self.maxCartOrderID)
-                                    
-                                    // STEP 2: loop through all items and add them to cart
-                                    
-                                    for item in self.items! {
-                                        // Loop through all items
-                                        print(item.id)
-                                        print(item.name)
-                                        print(item.quantity)
+                                    for Cart in json as! [Dictionary<String, AnyObject>] {
                                         
-                                        // Create JSON data and configure the request
-                                        let params = ["item_id": item.id!,
-                                            "user_id": self.userID,
-                                            "quantity": String(item.quantity!),
-                                            "active": "0",
-                                            "instructions": item.specialInstructions!,
-                                            "order_id": String(self.maxCartOrderID),
-                                            ]
-                                            as Dictionary<String, String>
-                                        
-                                        // create the request & response
-                                        let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
-                                        
-                                        do {
-                                            let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
-                                            request.HTTPBody = jsonData
-                                            
-                                        } catch let error as NSError {
-                                            print(error)
+                                        let order_id = Cart["order_id"] as! String
+                                        if (Int(order_id)! > self.maxCartOrderID) {
+                                            self.maxCartOrderID = Int(order_id)!
                                         }
-                                        request.HTTPMethod = "POST"
-                                        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                         
-                                        print("HELLO3")
+                                        /*let user_id = Cart["user_id"] as! String
+                                         
+                                         if (userID == user_id) {
+                                         let active_cart = Cart["active"] as! String
+                                         if (active_cart == "1") {
+                                         print(order_id)
+                                         self.currentActiveCartOrderID = order_id
+                                         }
+                                         }*/
+                                    }
+                                    
+                                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                                        if (self.reset == true) {
+                                            self.maxCartOrderID = self.maxCartOrderID + 10;
+                                        }
                                         
-                                        // send the request
-                                        let session = NSURLSession.sharedSession()
-                                        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-                                            if let httpResponse = response as? NSHTTPURLResponse {
-                                                if let contentType = httpResponse.allHeaderFields["Party"] as? String {
-                                                    // use contentType here
-                                                    print("This is the result of header", contentType)
+                                        print("This is the current max order_id", self.maxCartOrderID)
+                                        
+                                        // STEP 2: loop through all items and add them to cart
+                                        
+                                        for item in self.items! {
+                                            // Loop through all items
+                                            print(item.id)
+                                            print(item.name)
+                                            print(item.quantity)
+                                            
+                                            // Create JSON data and configure the request
+                                            let params = ["item_id": item.id!,
+                                                "user_id": self.userID,
+                                                "quantity": String(item.quantity!),
+                                                "active": "0",
+                                                "instructions": item.specialInstructions!,
+                                                "order_id": String(self.maxCartOrderID),
+                                                ]
+                                                as Dictionary<String, String>
+                                            
+                                            // create the request & response
+                                            let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                            
+                                            do {
+                                                let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
+                                                request.HTTPBody = jsonData
+                                                
+                                            } catch let error as NSError {
+                                                print(error)
+                                            }
+                                            request.HTTPMethod = "POST"
+                                            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                                            
+                                            print("HELLO3")
+                                            
+                                            // send the request
+                                            let session = NSURLSession.sharedSession()
+                                            let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                                                if let httpResponse = response as? NSHTTPURLResponse {
+                                                    if let contentType = httpResponse.allHeaderFields["Party"] as? String {
+                                                        // use contentType here
+                                                        print("This is the result of header", contentType)
+                                                        
+                                                        //NSOperationQueue.mainQueue().addOperationWithBlock {
+                                                        let currentActiveCartID = contentType
+                                                        print("currentActiveCartID", currentActiveCartID)
+                                                        
+                                                        // Send Side Item Data to cart_sides DB
+                                                        
+                                                        // Loop through the sides for each item
+                                                        
+                                                        for i in self.items! {
+                                                            self.sides = i.self.sides!.allObjects as? [Side]
+                                                            print("elements in side array", self.sides!.count)
+                                                            for side in self.sides! {
+                                                                
+                                                                // Create JSON data and configure the request
+                                                                
+                                                                // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
+                                                                let params1 = ["cart_entry_uid": currentActiveCartID,
+                                                                    "side_id": side.id!,
+                                                                    "quantity": String(item.quantity),
+                                                                    ]
+                                                                    as Dictionary<String, String>
+                                                                
+                                                                print("currentActiveCartID ", currentActiveCartID)
+                                                                
+                                                                // create the request & response
+                                                                let request1 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddSideToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                                                
+                                                                do {
+                                                                    let jsonData1 = try NSJSONSerialization.dataWithJSONObject(params1, options: NSJSONWritingOptions.PrettyPrinted)
+                                                                    request1.HTTPBody = jsonData1
+                                                                } catch let error1 as NSError {
+                                                                    print(error1)
+                                                                }
+                                                                request1.HTTPMethod = "POST"
+                                                                request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                                                                
+                                                                // send the request
+                                                                let session1 = NSURLSession.sharedSession()
+                                                                let task1 = session1.dataTaskWithRequest(request1) {
+                                                                    (let data1, let response1, let error1) in
+                                                                }
+                                                                task1.resume()
+                                                            }
+                                                        }
+                                                    }
                                                     
-                                                    //NSOperationQueue.mainQueue().addOperationWithBlock {
-                                                    let currentActiveCartID = contentType
-                                                    print("currentActiveCartID", currentActiveCartID)
+                                                }
+                                                
+                                                // Stop activity indicator again
+                                                self.myActivityIndicator.hidden = true
+                                                self.myActivityIndicator.stopAnimating()
+                                                
+                                                print("SEGUE TIMEEEEEEE")
+                                                self.performSegueWithIdentifier("toOrderPlaced", sender: self)
+                                                
+                                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                                    // Send String(self.maxCartOrderID) as id,self.userID as user_id, restaurant id as service_id
+                                                    // Create JSON data and configure the request
                                                     
-                                                    // Send Side Item Data to cart_sides DB
+                                                    let params3 = ["id": String(self.maxCartOrderID),
+                                                        "user_id": self.userID,
+                                                        "service_id": self.activeCart![0].restaurantID!,
+                                                        ]
+                                                        as Dictionary<String, String>
                                                     
-                                                    // Loop through the sides for each item
+                                                    // create the request & response
+                                                    let request3 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddOrder.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
                                                     
-                                                    for i in self.items! {
-                                                        self.sides = i.self.sides!.allObjects as? [Side]
-                                                        print("elements in side array", self.sides!.count)
-                                                        for side in self.sides! {
+                                                    do {
+                                                        let jsonData3 = try NSJSONSerialization.dataWithJSONObject(params3, options: NSJSONWritingOptions.PrettyPrinted)
+                                                        request3.HTTPBody = jsonData3
+                                                    } catch let error1 as NSError {
+                                                        print(error1)
+                                                    }
+                                                    request3.HTTPMethod = "POST"
+                                                    request3.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                                                    
+                                                    // send the request
+                                                    let session3 = NSURLSession.sharedSession()
+                                                    let task3 = session3.dataTaskWithRequest(request3) {
+                                                        (let data3, let response3, let error3) in
+                                                        print("data3", data3)
+                                                        print("response3", response3)
+                                                        
+                                                        // Update Customer Address
+                                                        NSOperationQueue.mainQueue().addOperationWithBlock {
                                                             
-                                                            // Create JSON data and configure the request
                                                             
-                                                            // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
-                                                            let params1 = ["cart_entry_uid": currentActiveCartID,
-                                                                "side_id": side.id!,
-                                                                "quantity": String(item.quantity),
+                                                            let addressToSend = addresses[addressIndex]
+                                                            var addressInParts = [String]()
+                                                            
+                                                            var address1 = ""
+                                                            var address2 = ""
+                                                            var city = ""
+                                                            var zip = ""
+                                                            
+                                                            addressToSend.enumerateLines { addressInParts.append($0.line) }
+                                                            if addressInParts.count == 3 {
+                                                                address1 = addressInParts[0]
+                                                                city = addressInParts[1]
+                                                                zip = addressInParts[2]
+                                                            } else {
+                                                                address1 = addressInParts[0]
+                                                                address2 = addressInParts[1]
+                                                                city = addressInParts[2]
+                                                                zip = addressInParts[3]
+                                                            }
+                                                            
+                                                            // TODO Alex, can you put in the portions of the address here?
+                                                            let params4 = ["account_id": self.userID,
+                                                                "street": address1,
+                                                                "apartment": address2,
+                                                                "city": city,
+                                                                "state": "NC",
+                                                                "zip": zip,
                                                                 ]
                                                                 as Dictionary<String, String>
                                                             
-                                                            print("currentActiveCartID ", currentActiveCartID)
-                                                            
                                                             // create the request & response
-                                                            let request1 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddSideToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                                            let request4 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdateAddress.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
                                                             
                                                             do {
-                                                                let jsonData1 = try NSJSONSerialization.dataWithJSONObject(params1, options: NSJSONWritingOptions.PrettyPrinted)
-                                                                request1.HTTPBody = jsonData1
+                                                                let jsonData4 = try NSJSONSerialization.dataWithJSONObject(params4, options: NSJSONWritingOptions.PrettyPrinted)
+                                                                request4.HTTPBody = jsonData4
                                                             } catch let error1 as NSError {
                                                                 print(error1)
                                                             }
-                                                            request1.HTTPMethod = "POST"
-                                                            request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                                                            request4.HTTPMethod = "POST"
+                                                            request4.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                                             
                                                             // send the request
-                                                            let session1 = NSURLSession.sharedSession()
-                                                            let task1 = session1.dataTaskWithRequest(request1) {
-                                                                (let data1, let response1, let error1) in
+                                                            let session4 = NSURLSession.sharedSession()
+                                                            let task4 = session4.dataTaskWithRequest(request4) {
+                                                                (let data4, let response4, let error4) in
+                                                                
                                                             }
-                                                            task1.resume()
-                                                        }
-                                                    }
-                                                }
-                                                
-                                            }
-                                            
-                                            // Stop activity indicator again
-                                            self.myActivityIndicator.hidden = true
-                                            self.myActivityIndicator.stopAnimating()
-                                            
-                                            print("SEGUE TIMEEEEEEE")
-                                            self.performSegueWithIdentifier("toOrderPlaced", sender: self)
-                                            
-                                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                                // Send String(self.maxCartOrderID) as id,self.userID as user_id, restaurant id as service_id
-                                                // Create JSON data and configure the request
-                                                
-                                                let params3 = ["id": String(self.maxCartOrderID),
-                                                    "user_id": self.userID,
-                                                    "service_id": self.activeCart![0].restaurantID!,
-                                                    ]
-                                                    as Dictionary<String, String>
-                                                
-                                                // create the request & response
-                                                let request3 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddOrder.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
-                                                
-                                                do {
-                                                    let jsonData3 = try NSJSONSerialization.dataWithJSONObject(params3, options: NSJSONWritingOptions.PrettyPrinted)
-                                                    request3.HTTPBody = jsonData3
-                                                } catch let error1 as NSError {
-                                                    print(error1)
-                                                }
-                                                request3.HTTPMethod = "POST"
-                                                request3.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                                                
-                                                // send the request
-                                                let session3 = NSURLSession.sharedSession()
-                                                let task3 = session3.dataTaskWithRequest(request3) {
-                                                    (let data3, let response3, let error3) in
-                                                    print("data3", data3)
-                                                    print("response3", response3)
-                                                    
-                                                    // Update Customer Address
-                                                    NSOperationQueue.mainQueue().addOperationWithBlock {
-                                                        
-                                                        
-                                                        let addressToSend = addresses[addressIndex]
-                                                        var addressInParts = [String]()
-                                                        
-                                                        var address1 = ""
-                                                        var address2 = ""
-                                                        var city = ""
-                                                        var zip = ""
-                                                        
-                                                        addressToSend.enumerateLines { addressInParts.append($0.line) }
-                                                        if addressInParts.count == 3 {
-                                                            address1 = addressInParts[0]
-                                                            city = addressInParts[1]
-                                                            zip = addressInParts[2]
-                                                        } else {
-                                                            address1 = addressInParts[0]
-                                                            address2 = addressInParts[1]
-                                                            city = addressInParts[2]
-                                                            zip = addressInParts[3]
-                                                        }
-                                                        
-                                                        // TODO Alex, can you put in the portions of the address here?
-                                                        let params4 = ["account_id": self.userID,
-                                                            "street": address1,
-                                                            "apartment": address2,
-                                                            "city": city,
-                                                            "state": "NC",
-                                                            "zip": zip,
-                                                            ]
-                                                            as Dictionary<String, String>
-                                                        
-                                                        // create the request & response
-                                                        let request4 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdateAddress.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
-                                                        
-                                                        do {
-                                                            let jsonData4 = try NSJSONSerialization.dataWithJSONObject(params4, options: NSJSONWritingOptions.PrettyPrinted)
-                                                            request4.HTTPBody = jsonData4
-                                                        } catch let error1 as NSError {
-                                                            print(error1)
-                                                        }
-                                                        request4.HTTPMethod = "POST"
-                                                        request4.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                                                        
-                                                        // send the request
-                                                        let session4 = NSURLSession.sharedSession()
-                                                        let task4 = session4.dataTaskWithRequest(request4) {
-                                                            (let data4, let response4, let error4) in
+                                                            
+                                                            task4.resume()
                                                             
                                                         }
                                                         
-                                                        task4.resume()
-                                                       
                                                     }
+                                                    // TODO: UNCOMMENT THIS LINE FOR ORDERING TO WORK
+                                                    task3.resume()
                                                     
                                                 }
-                                                // TODO: UNCOMMENT THIS LINE FOR ORDERING TO WORK
-                                                task3.resume()
-
                                             }
+                                            task.resume()
                                         }
-                                        task.resume()
                                     }
                                 }
                             }
+                        } catch let error as NSError {
+                            print("Error:" + error.localizedDescription)
                         }
-                    } catch let error as NSError {
+                    } else if let error = error {
                         print("Error:" + error.localizedDescription)
                     }
-                } else if let error = error {
-                    print("Error:" + error.localizedDescription)
                 }
-            }
+                
+                print("HELLO4")
+                
+                task2.resume();
+                
+            })
+            let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
+                print("Cancel Button Pressed")
+            })
             
-            print("HELLO4")
+            alertController.addAction(checkout)
+            alertController.addAction(cancel)
             
-            task2.resume();
-            
-            print("HELLO5")
-            
-        })
-        let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
-            print("Cancel Button Pressed")
-        })
-        
-        alertController.addAction(checkout)
-        alertController.addAction(cancel)
-        
-        presentViewController(alertController, animated: true, completion: nil)
+            presentViewController(alertController, animated: true, completion: nil)
+        }
         
     }
     

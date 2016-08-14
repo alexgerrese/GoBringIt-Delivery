@@ -11,44 +11,42 @@ import GMStepper
 import IQKeyboardManagerSwift
 import CoreData
 
-// TO-DO: - FIX BUG: Find out a way to update items when they are changed
-
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
+    // Passed data
     var passedItem: Item?
     var passedSides: [Side]?
     var sides = [NSManagedObject]()
-    //var order = Order()
-    
-    // Create struct to organize data
+    var sideNames = [String]()
+    var sidePrices = [String]()
+    var sideRequireds = [String]()
+    var sideGroupings = [String]()
+    var sideIDs = [String]()
+    var sideIDSelectedArray = [String]()
+
+    // Specific sideItem structure
     struct SideItem {
         var sideName: String
         var sidePrice: String
         var sideRequired: String
+        var sideGrouping: String
         var sideID: String
         var selected: Bool
     }
     
     // Create empty array of Restaurants to be filled in ViewDidLoad
+    var sectionNames = [String]()
     var sideItems: [SideItem] = []
-    
-    // DATA
-    var sideNames = [String]()
-    var sidePrices = [String]()
-    var sideRequireds = [String]()
-    var sideIDs = [String]()
-    var sideIDSelectedArray = [String]()
-    
-    // DATA
-    var sectionNames = [String]() //["DESCRIPTION", "SIDES (PICK 2)", "EXTRAS", "SPECIAL INSTRUCTIONS"]
-    var section1 = [SideItem]()
-    var section2 = [SideItem]()
+    var requiredSideTitles = [String]()
+    var requiredSides = [[SideItem]]()
+    var extras = [SideItem]()
     let section3 = "E.g. Easy on the mayo, add bacon"
-    
-    var numberOfSidesSelected = 0
+
+    var numberOfSidesRequired = [Int]()
+    var numberOfSidesSelected = [Int]()
     var totalPrice = 0.0
     
-    // To check database correctness
+    // To double check database correctness
     var anySidesRequired = false
     
     // Get indexes of each section (in case some aren't added because there are no rows to show)
@@ -59,11 +57,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - IBOutlets
     @IBOutlet weak var myTableView: UITableView!
-    //@IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var stepper: GMStepper!
     @IBOutlet weak var addToOrderButton: UIButton!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
-    //@IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
     
     // Data passed from previous View Controller
     var selectedFoodName = ""
@@ -93,6 +89,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         UIApplication.sharedApplication().delegate as! AppDelegate
     let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
+    override func viewWillAppear(animated: Bool) {
+        print("VIEW WILL APPEAAR BABY")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -157,6 +156,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     self.sidePrices.append(Restaurant["price"] as! String)
                                     self.sideRequireds.append(Restaurant["required"] as! String)
                                     self.sideIDs.append(side_id)
+                                    if let grouping = Restaurant["grouping"] {
+                                        self.sideGroupings.append(grouping as! String)
+                                    } else {
+                                        self.sideGroupings.append("")
+                                    }
                                 }
                             }
                             
@@ -178,37 +182,54 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     }
                                     
                                     // Append the item
-                                    self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], sideID: self.sideIDs[i], selected: isSelected))
+                                    self.sideItems.append(SideItem(sideName: self.sideNames[i], sidePrice: self.sidePrices[i], sideRequired: self.sideRequireds[i], sideGrouping: self.sideGroupings[i], sideID: self.sideIDs[i], selected: isSelected))
                                 }
                                 
                                 
-                                // SOME PROBLEMS HEREEEEEEEEEE. CHECK MAKE YOUR OWN WRAP
+                                // Sort sides and extras into their respective sections
                                 for i in 0..<self.sideItems.count {
-                                    // If required, Section 1
-                                    if (self.sideItems[i].sideRequired == "1" && (self.sideItems[i].sidePrice == "0" || self.sideItems[i].sidePrice == "0.00")) {
-                                        self.section1.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
-                                        print("S1:" + self.sideItems[i].sideName)
-                                    }
-                                    /* If required and price !=0, Section 2
-                                    if (self.sideItems[i].sideRequired == "1" && self.sideItems[i].sidePrice != "0") {
-                                        self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
-                                        print("REQUIREDS2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
-                                    }*/
-                                    // If not required, Section 2
-                                    if (self.sideItems[i].sideRequired == "0" || (self.sideItems[i].sidePrice != "0" && self.sideItems[i].sidePrice != "0.00")) {
-                                        self.section2.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
-                                        print("S2:" + self.sideItems[i].sideName + "S2Price:" + self.sideItems[i].sidePrice)
+                                    // If a side grouping exists
+                                    if self.sideItems[i].sideGrouping != "" {
+                                        // If a side grouping section is already present, add SideItem to that section
+                                        if let index = self.requiredSideTitles.indexOf(self.sideItems[i].sideGrouping) {
+                                            self.requiredSides[index].append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: self.sideItems[i].sideGrouping, sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
+                                        } else {
+                                            // Create section
+                                            self.requiredSideTitles.append(self.sideItems[i].sideGrouping)
+                                            self.numberOfSidesRequired.append(1)
+                                            self.requiredSides.append([SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: self.sideItems[i].sideGrouping, sideID: self.sideIDs[i], selected: self.sideItems[i].selected)])
+                                        }
+                                    } else {
+                                        // If required, add to general sides
+                                        if (self.sideItems[i].sideRequired == "1" && (self.sideItems[i].sidePrice == "0" || self.sideItems[i].sidePrice == "0.00")) {
+                                            if let index = self.requiredSideTitles.indexOf("Sides") {
+                                                self.requiredSides[index].append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: "Sides", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
+                                            } else {
+                                                self.requiredSideTitles.append("Sides")
+                                                self.numberOfSidesRequired.append(-1) // I put a negative so I can quickly find this index and recalculate the correct amount (general required sides - # of groupings)
+                                                self.requiredSides.append([SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: "Sides", sideID: self.sideIDs[i], selected: self.sideItems[i].selected)])
+                                            }
+                                            
+                                            print("S1:" + self.sideItems[i].sideName + self.sideItems[i].sideGrouping)
+                                        }
+                                        // If not required, add to extras
+                                        if (self.sideItems[i].sideRequired == "0" || (self.sideItems[i].sidePrice != "0" && self.sideItems[i].sidePrice != "0.00")) {
+                                            self.extras.append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: "Extras", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
+                                            print("S2:" + self.sideItems[i].sideName + self.sideItems[i].sideGrouping)
+                                        }
                                     }
                                 }
                                 
                                 // Populate sectionNames array
                                 print("Selected Food ID: " + self.selectedFoodID)
                                 print("How many sides this food item can have: " + self.selectedFoodSidesNum)
+                                
+                                // Populate sectionNames array
                                 self.sectionNames.append("Description")
-                                if self.section1.count > 0 {
-                                    self.sectionNames.append("Sides")
+                                for i in self.requiredSideTitles {
+                                    self.sectionNames.append(i)
                                 }
-                                if self.section2.count > 0 {
+                                if self.extras.count > 0 {
                                     self.sectionNames.append("Extras")
                                 }
                                 self.sectionNames.append("Special Instructions")
@@ -226,9 +247,6 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 self.calculatePrice()
                                 self.calculateNumOfSidesSelected()
                                 self.checkRequiredSides()
-                                
-                                print("SIDES")
-                                print(self.section1.count)
                                 
                                 // Stop activity indicator
                                 self.myActivityIndicator.stopAnimating()
@@ -349,22 +367,25 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                         i.item = nil
                     }
 
-                    for s in section1 {
-                        if s.selected {
-                            
-                            let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
-                            let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
-                            
-                            side.name = s.sideName
-                            side.id = s.sideID
-                            side.price = Double(s.sidePrice)
-                            side.isRequired = true
-                            
-                            side.item = items[i]
-                            sides.append(side)
+                    for r in requiredSides {
+                        for s in r {
+                            if s.selected {
+                                
+                                let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
+                                let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                                
+                                side.name = s.sideName
+                                side.id = s.sideID
+                                side.price = Double(s.sidePrice)
+                                side.isRequired = true
+                                
+                                side.item = items[i]
+                                sides.append(side)
+                            }
                         }
                     }
-                    for s in section2 {
+                    
+                    for s in extras {
                         if s.selected {
                             
                             let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
@@ -451,24 +472,25 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         
                                         // SIDES
                                         
-                                        for i in self.section1 {
-                                            if i.selected {
-                                                
-                                                let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:self.managedContext)
-                                                let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: self.managedContext) as! Side
-                                                
-                                                side.name = i.sideName
-                                                side.id = i.sideID
-                                                side.price = Double(i.sidePrice)
-                                                side.isRequired = true
-                                                
-                                                side.item = item
-                                                self.sides.append(side)
+                                        for r in self.requiredSides {
+                                            for i in r {
+                                                if i.selected {
+                                                    
+                                                    let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:self.managedContext)
+                                                    let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: self.managedContext) as! Side
+                                                    
+                                                    side.name = i.sideName
+                                                    side.id = i.sideID
+                                                    side.price = Double(i.sidePrice)
+                                                    side.isRequired = true
+                                                    
+                                                    side.item = item
+                                                    self.sides.append(side)
+                                                }
                                             }
                                         }
-                                        
-                                        print("ATLEAST1")
-                                        for i in self.section2 {
+
+                                        for i in self.extras {
                                             if i.selected {
                                                 
                                                 let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:self.managedContext)
@@ -528,22 +550,25 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // SIDES
                 
-                for i in section1 {
-                    if i.selected {
-                        
-                        let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
-                        let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
-                        
-                        side.name = i.sideName
-                        side.id = i.sideID
-                        side.price = Double(i.sidePrice)
-                        side.isRequired = true
-                        
-                        side.item = item
-                        sides.append(side)
+                for r in requiredSides {
+                    for i in r {
+                        if i.selected {
+                            
+                            let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
+                            let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                            
+                            side.name = i.sideName
+                            side.id = i.sideID
+                            side.price = Double(i.sidePrice)
+                            side.isRequired = true
+                            
+                            side.item = item
+                            sides.append(side)
+                        }
                     }
                 }
-                for i in section2 {
+                
+                for i in extras {
                     if i.selected {
                         
                         let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
@@ -570,11 +595,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 print("SAVED")
                 
             }
-            
         }
-        
-        
-        
     }
     
     @IBAction func xButtonClicked(sender: AnyObject) {
@@ -584,7 +605,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     func calculatePrice() {
         print(selectedFoodPrice)
         totalPrice = selectedFoodPrice
-        for side in section2 {
+        for side in extras {
             if side.selected {
                 totalPrice += Double(side.sidePrice)!
             }
@@ -595,11 +616,25 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func calculateNumOfSidesSelected() {
-        numberOfSidesSelected = 0
-        for i in section1 {
-            if i.selected {
-                print("SELECTED")
-                numberOfSidesSelected += 1
+        
+        if numberOfSidesSelected.count == 0 {
+            // Initialize all values to 0
+            for _ in requiredSides {
+                numberOfSidesSelected.append(0)
+            }
+        } else {
+            // Reset value
+            for i in 0..<requiredSides.count {
+                numberOfSidesSelected[i] = 0
+            }
+        }
+        
+        // Recalculate values
+        for section in 0..<requiredSides.count {
+            for index in 0..<requiredSides[section].count {
+                if requiredSides[section][index].selected {
+                    numberOfSidesSelected[section] += 1
+                }
             }
         }
     }
@@ -619,14 +654,15 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if section == 0 { // Description
             return 1
-        } else if section == sidesIndex { // Sides
-            return section1.count
         } else if section == extrasIndex { // Extras
-            return section2.count
+            return extras.count
         } else if section == specialInstructionsIndex { // Special Instructions
             return 1
-        } else { // Price
+        } else if section == priceIndex { // Price
             return 1
+        } else {
+            print(section)
+            return requiredSides[section - 1].count
         }
     }
     
@@ -634,24 +670,10 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("descriptionCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
             
-            cell.textLabel?.text = selectedFoodDescription
-            
-            return cell
-        } else if indexPath.section == sidesIndex {
-            let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
-            
-            // Set cell properties
-            cell.selectionStyle = .None
-            cell.sideLabel.text = section1[indexPath.row].sideName
-            cell.extraCostLabel.hidden = true
-            
-            //Change cell's tint color
-            cell.tintColor = GREEN
-            
-            if section1[indexPath.row].selected {
-                cell.accessoryType = .Checkmark
+            if selectedFoodDescription == "" || selectedFoodDescription == "No Description" {
+                cell.textLabel?.text = "No description, but we promise it's good."
             } else {
-                cell.accessoryType = .None
+                cell.textLabel?.text = selectedFoodDescription
             }
             
             return cell
@@ -660,14 +682,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             
             // Set cell properties
             cell.selectionStyle = .None
-            cell.sideLabel.text = section2[indexPath.row].sideName
+            cell.sideLabel.text = extras[indexPath.row].sideName
             cell.extraCostLabel.hidden = false
-            cell.extraCostLabel.text = "+$\(section2[indexPath.row].sidePrice)"
+            let price = Double(extras[indexPath.row].sidePrice)
+            cell.extraCostLabel.text = String(format: "+$%.2f", price!)
+
             
             //Change cell's tint color
             cell.tintColor = GREEN
             
-            if section2[indexPath.row].selected {
+            if extras[indexPath.row].selected {
                 cell.accessoryType = .Checkmark
             } else {
                 cell.accessoryType = .None
@@ -683,31 +707,59 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             return cell
-        } else {
+        } else if indexPath.section == priceIndex {
             let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath) as! AddToOrderPriceTableViewCell
             
             cell.priceLabel.text = String(format: "$%.2f", totalPrice)
+            
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
+            
+            // Set cell properties
+            cell.selectionStyle = .None
+            cell.sideLabel.text = requiredSides[indexPath.section - 1][indexPath.row].sideName
+            cell.extraCostLabel.hidden = true
+            
+            //Change cell's tint color
+            cell.tintColor = GREEN
+            
+            if requiredSides[indexPath.section - 1][indexPath.row].selected {
+                cell.accessoryType = .Checkmark
+            } else {
+                cell.accessoryType = .None
+            }
             
             return cell
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        calculateNumOfSidesSelected()
         
-        if indexPath.section == sidesIndex {
-            if !section1[indexPath.row].selected {
-                if numberOfSidesSelected < Int(selectedFoodSidesNum) {
-                    section1[indexPath.row].selected = true
-                    print(numberOfSidesSelected)
+        if indexPath.section == extrasIndex {
+            if !extras[indexPath.row].selected {
+                extras[indexPath.row].selected = true
+            } else {
+                extras[indexPath.row].selected = false
+            }
+        } else if indexPath.section == priceIndex || indexPath.section == specialInstructionsIndex || indexPath.section == extrasIndex || indexPath.section == 0 {
+        } else {
+            if !requiredSides[indexPath.section - 1][indexPath.row].selected {
+                if requiredSides[indexPath.section - 1][indexPath.row].sideGrouping != "Sides" {
+                    if numberOfSidesSelected[indexPath.section - 1] < 1 {
+                        requiredSides[indexPath.section - 1][indexPath.row].selected = true
+                    }
+                } else {
+                    print(indexPath.section)
+                    print(numberOfSidesSelected.count)
+                    print((Int(selectedFoodSidesNum)! - requiredSideTitles.count + 1))
+                    if numberOfSidesSelected[indexPath.section - 1] < (Int(selectedFoodSidesNum)! - requiredSideTitles.count + 1) {
+                        requiredSides[indexPath.section - 1][indexPath.row].selected = true
+                    }
                 }
             } else {
-                section1[indexPath.row].selected = false
-            }
-        } else if indexPath.section == extrasIndex {
-            if !section2[indexPath.row].selected {
-                section2[indexPath.row].selected = true
-            } else {
-                section2[indexPath.row].selected = false
+                requiredSides[indexPath.section - 1][indexPath.row].selected = false
             }
         }
         
@@ -719,35 +771,42 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func checkRequiredSides() {
         if anySidesRequired {
-            print("SOMETHING IS REQUIRED")
-            print(numberOfSidesSelected)
-            print(selectedFoodSidesNum)
-            if numberOfSidesSelected == Int(selectedFoodSidesNum) {
-                // Enable the button and make it opaque
-                addToOrderButton.alpha = 1
-                addToOrderButton.enabled = true
-                
-                // Enable the stepper and make it opaque
-                stepper.alpha = 1
-                stepper.enabled = true
+            
+            // Calculate number of sides selected
+            var totalSidesSelected = 0
+            for i in numberOfSidesSelected {
+                totalSidesSelected += i
+            }
+            
+            // Check if all required sides have been selected
+            if totalSidesSelected == Int(selectedFoodSidesNum) {
+                enableAddToOrder()
             } else {
-                // Disable the button and make it transparent
-                addToOrderButton.alpha = 0.5
-                addToOrderButton.enabled = false
-                
-                // Disable the stepper and make it transparent
-                stepper.alpha = 0.5
-                stepper.enabled = false
+                disableAddToOrder()
             }
         } else {
-            // Enable the button and make it opaque
-            addToOrderButton.alpha = 1
-            addToOrderButton.enabled = true
-            
-            // Enable the stepper and make it opaque
-            stepper.alpha = 1
-            stepper.enabled = true
+            enableAddToOrder()
         }
+    }
+    
+    func enableAddToOrder() {
+        // Enable the button and make it opaque
+        addToOrderButton.alpha = 1
+        addToOrderButton.enabled = true
+        
+        // Enable the stepper and make it opaque
+        stepper.alpha = 1
+        stepper.enabled = true
+    }
+    
+    func disableAddToOrder() {
+        // Disable the button and make it transparent
+        addToOrderButton.alpha = 0.5
+        addToOrderButton.enabled = false
+        
+        // Disable the stepper and make it transparent
+        stepper.alpha = 0.5
+        stepper.enabled = false
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -773,12 +832,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set header text
         headerCell.titleLabel.text = sectionNames[section]
         
-        if section != sidesIndex && section != priceIndex {
+        if section == priceIndex || section == specialInstructionsIndex || section == extrasIndex || section == 0 {
             headerCell.pickXLabel.hidden = true
         } else {
             headerCell.pickXLabel.hidden = false
-            if section == sidesIndex {
-                headerCell.pickXLabel.text = "(Pick " + selectedFoodSidesNum + ")"
+            if sectionNames[section] != "Sides" {
+                headerCell.pickXLabel.text = "(Pick 1)"
+            } else {
+                headerCell.pickXLabel.text = "(Pick \(Int(selectedFoodSidesNum)! - requiredSideTitles.count + 1))"
             }
         }
         
