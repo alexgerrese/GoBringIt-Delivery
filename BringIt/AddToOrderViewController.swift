@@ -88,10 +88,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
     let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-    
-    override func viewWillAppear(animated: Bool) {
-        print("VIEW WILL APPEAAR BABY")
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

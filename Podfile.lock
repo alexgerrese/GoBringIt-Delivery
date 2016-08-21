@@ -5,7 +5,6 @@ PODS:
   - GMStepper (1.2.0)
   - IDZSwiftCommonCrypto (0.7.3)
   - IQKeyboardManagerSwift (4.0.4)
-  - Stripe (8.0.4)
 
 DEPENDENCIES:
   - B68UIFloatLabelTextField (~> 0.1.0)
@@ -14,7 +13,6 @@ DEPENDENCIES:
   - GMStepper
   - IDZSwiftCommonCrypto (~> 0.7)
   - IQKeyboardManagerSwift
-  - Stripe
 
 SPEC CHECKSUMS:
   B68UIFloatLabelTextField: 337894ff837df84e19636c99f3f5f88c4fad60d7
@@ -23,8 +21,7 @@ SPEC CHECKSUMS:
   GMStepper: e743b5648ae5fe877e33d3b51b5aa2df432f179d
   IDZSwiftCommonCrypto: f4271e731bdeefa85832d425629134fc01efd659
   IQKeyboardManagerSwift: e0964d04d6a29b71016fd346dca13ecb80a2823a
-  Stripe: c3e325e0309dcdcb478191dbd298082823a210c1
 
-PODFILE CHECKSUM: cb26b9aa4afc5d11dab642f9900eb077b0efc5e2
+PODFILE CHECKSUM: 797296ecd86ef8197091a9fb655e3cfa3fdbdd9f
 
 COCOAPODS: 1.0.1

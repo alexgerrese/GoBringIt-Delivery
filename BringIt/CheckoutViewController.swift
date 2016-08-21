@@ -94,6 +94,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             let loggedIn = defaults.boolForKey("loggedIn")
             if !loggedIn {
                 self.dismissViewControllerAnimated(true, completion: nil)
+                return
             }
         }
         
@@ -154,8 +155,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Could not fetch \(error), \(error.userInfo)")
         }
         
-        print("HELLO3")
-        
         // If cart is empty, then load empty state
         if activeCart!.isEmpty {
             print("CART IS EMPTY")
@@ -166,15 +165,17 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         }
             //If request returns a cart, then display the cart
         else {
-            
-            print("HELLO4")
-            let order = activeCart![0] // MAYBE DON'T HARD CODE
-            
-            print("HELLO5")
+            let order = activeCart![0]
             
             // Set delivery fee
+            // Check if alreadyOrdered, and update deliveryFee if not
+            if let alreadyOrdered = self.defaults.objectForKey("alreadyOrdered") {
+                if !(alreadyOrdered as! Bool){
+                    self.activeCart![0].deliveryFee = 0.00
+                }
+            }
             deliveryFee = Double(order.deliveryFee!)
-            print("HELLO6")
+
             // Fill items array
             items = order.items?.allObjects as? [Item]
             
@@ -438,9 +439,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 let addresses = self.defaults.objectForKey("Addresses") as! [String]
                 let addressIndex = self.defaults.objectForKey("CurrentAddressIndex") as! Int
                 
-                // TO-DO: CHAD! When you get checkout working, this is where you should make the final call!
-                // I've set up the loops so you can go through all the items and each of their sides. To access the attributes of the items or sides, just write item. or side. and a list of attributes should pop up. Let me know if you need to add any attributes!
-                
                 // 1. Get 10 + order_id (task 2)
                 // 2. (task)addItem using that order_id (), save the Party response header
                 // 3. addSide (side-id, cart entry-id, quantity)
@@ -473,16 +471,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                         if (Int(order_id)! > self.maxCartOrderID) {
                                             self.maxCartOrderID = Int(order_id)!
                                         }
-                                        
-                                        /*let user_id = Cart["user_id"] as! String
-                                         
-                                         if (userID == user_id) {
-                                         let active_cart = Cart["active"] as! String
-                                         if (active_cart == "1") {
-                                         print(order_id)
-                                         self.currentActiveCartOrderID = order_id
-                                         }
-                                         }*/
                                     }
                                     
                                     NSOperationQueue.mainQueue().addOperationWithBlock {
@@ -522,8 +510,6 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                             }
                                             request.HTTPMethod = "POST"
                                             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                                            
-                                            print("HELLO3")
                                             
                                             // send the request
                                             let session = NSURLSession.sharedSession()
@@ -578,14 +564,12 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                             }
                                                         }
                                                     }
-                                                    
                                                 }
                                                 
                                                 // Stop activity indicator again
                                                 self.myActivityIndicator.hidden = true
                                                 self.myActivityIndicator.stopAnimating()
-                                                
-                                                print("SEGUE TIMEEEEEEE")
+
                                                 self.performSegueWithIdentifier("toOrderPlaced", sender: self)
                                                 
                                                 NSOperationQueue.mainQueue().addOperationWithBlock {
@@ -692,9 +676,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                         print("Error:" + error.localizedDescription)
                     }
                 }
-                
-                print("HELLO4")
-                
+
                 task2.resume();
                 
             })

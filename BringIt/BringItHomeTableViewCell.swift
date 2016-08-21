@@ -12,10 +12,9 @@ class BringItHomeTableViewCell: UITableViewCell {
 
     // MARK: - IBOutlets
     @IBOutlet weak var restaurantBannerImage: UIImageView!
-    @IBOutlet weak var restaurantNameLabel: UILabel!
+    //@IBOutlet weak var restaurantNameLabel: UILabel!
     @IBOutlet weak var cuisineTypeLabel: UILabel!
     @IBOutlet weak var restaurantHoursLabel: UILabel!
-    @IBOutlet weak var openClosedImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -97,8 +97,8 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         self.cuisineTypeLabel.text = restaurantType
         
         // Set tableView widths
-        categoriesTableViewWidth.constant = view.frame.width * 0.95
-        menuItemsTableViewWidth.constant = view.frame.width * 0.95
+        categoriesTableViewWidth.constant = view.frame.width - 20
+        menuItemsTableViewWidth.constant = view.frame.width - 20
         
         //let url = NSURL(string: restaurantImageURL)
         //let data = NSData(contentsOfURL: url!)
@@ -540,7 +540,12 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
             let cell = tableView.dequeueReusableCellWithIdentifier("menuCell", forIndexPath: indexPath) as! MenuTableViewCell
             
             cell.menuItemLabel.text = menuItems[indexPath.row].foodName
-            cell.itemDescriptionLabel.text = menuItems[indexPath.row].foodDescription
+            if menuItems[indexPath.row].foodDescription != "No Description" {
+                cell.itemDescriptionLabel.text = menuItems[indexPath.row].foodDescription
+            } else {
+                cell.itemDescriptionLabel.text = ""
+            }
+        
             let price = Double(menuItems[indexPath.row].foodPrice)
             cell.itemPriceLabel.text = String(format: "$%.2f", price!)
             

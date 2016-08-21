@@ -90,7 +90,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/GMStepper/GMStepper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Stripe/Stripe.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/B68UIFloatLabelTextField/B68UIFloatLabelTextField.framework"
@@ -99,5 +98,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/GMStepper/GMStepper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Stripe/Stripe.framework"
 fi

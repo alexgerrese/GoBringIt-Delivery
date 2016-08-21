@@ -37,15 +37,19 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     
     // Create empty array of Restaurants to be filled in ViewDidLoad
     var restaurants: [Restaurant] = []
+    var openRestaurants: [Restaurant] = []
+    var closedRestaurants: [Restaurant] = []
     
     // DB DATA
     var coverImages = [String]()
     var restaurantNames = [String]()
     var cuisineTypes = [String]()
-    
     var openHours = [String]()
     var isOpen = [Bool]()
     var idList = [String]()
+    
+    var showThanksMessage = false
+   // var showThanksMessageIndexPath: NSindex
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
@@ -53,7 +57,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         
         // Set title
-        self.navigationItem.title = "Restaurants"
+        self.navigationItem.title = "BringIt"
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -76,9 +80,17 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         self.tabBarController!.view.layer.addSublayer(rectShape)
         self.tabBarController?.delegate = self
         
+        // Set tableView cells to custom height and automatically resize if needed
+        //self.imageHeight.constant = UIScreen.mainScreen().bounds.height * 0.25
+        self.myTableView.estimatedRowHeight = 235
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        
         // initial position
         maxY = view.bounds.maxY - indicatorHeight
         updateTabbarIndicatorBySelectedTabIndex(0)
+        
+        // Check if should show thanksMessageLabel
+        showThanksMessage = checkShowThanksMessage()
         
         // Get list of coverImages, restaurantNames, id
         
@@ -120,7 +132,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                     self.restaurants.append(Restaurant(coverImage: data!, restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
                                 }
                                 
-
+                                self.reorganizeRestaurants()
                                 self.myTableView.reloadData()
                                 
                                 // Show tableview, end activity indicator and hide loading icon
@@ -277,6 +289,8 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                 print("close")
                                                 self.isOpen[count] = false;
                                             }
+                                            
+                                            
                                         }
                                     }
                                 
@@ -285,7 +299,6 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                 print(estTime)
                                 print(self.openHours[count])
                                 print(self.isOpen[count])
-                                
                                 
                                 //Update count
                                 count += 1
@@ -326,6 +339,37 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         // Dispose of any resources that can be recreated.
     }
     
+    func reorganizeRestaurants() {
+        for r in restaurants {
+            if r.isOpen {
+                openRestaurants.append(r)
+            } else {
+                closedRestaurants.append(r)
+            }
+        }
+    }
+    
+    func checkShowThanksMessage() -> Bool {
+        if let alreadyOrdered = self.defaults.objectForKey("alreadyOrdered") {
+            if (alreadyOrdered as! Bool){
+                return false
+            }
+        }
+        if let shown = self.defaults.objectForKey("thanksMessageShown") {
+            if shown as! Bool {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func xButtonPressed(button: UIButton) {
+        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+        showThanksMessage = false
+        myTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        self.defaults.setObject(true, forKey: "thanksMessageShown")
+    }
+    
     func updateTabbarIndicatorBySelectedTabIndex(index: Int) -> Void
     {
         let updatedBounds = CGRect( x: CGFloat(index) * (indicatorWidth + indicatorLeftMargin),
@@ -343,49 +387,111 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 3
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
-        return restaurants.count
-        
+        if section == 0 {
+            if showThanksMessage {
+                return 1
+            }
+            return 0
+        } else if section == 1 {
+            return openRestaurants.count
+        } else {
+            return closedRestaurants.count
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
-
-        cell.restaurantBannerImage.image = UIImage(data: restaurants[indexPath.row].coverImage)
-        //cell.restaurantNameLabel.text = restaurants[indexPath.row].restaurantName.uppercaseString
-        cell.cuisineTypeLabel.text = restaurants[indexPath.row].cuisineType
-        cell.restaurantHoursLabel.text = openHours[indexPath.row + 1]
-        if isOpen[indexPath.row + 1] {
-            cell.openClosedImage.image = UIImage(named: "Open")
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("thanksCell", forIndexPath: indexPath) as! ThanksTableViewCell
+            
+            cell.gotItButton.addTarget(self, action: #selector(BringItHomeViewController.xButtonPressed(_:)), forControlEvents: .TouchUpInside)
+            
+            return cell
+        } else if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
+            
+            cell.restaurantBannerImage.image = UIImage(data: openRestaurants[indexPath.row].coverImage)
+            cell.cuisineTypeLabel.text = openRestaurants[indexPath.row].cuisineType
+            cell.restaurantHoursLabel.text = openRestaurants[indexPath.row].openHours
+            /*if isOpen[indexPath.row] {
+                cell.openClosedImage.image = UIImage(named: "Open")
+            } else {
+                cell.openClosedImage.image = UIImage(named: "Closed")
+            }*/
+            
+            return cell
         } else {
-            cell.openClosedImage.image = UIImage(named: "Closed")
+            let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
+            
+            cell.restaurantBannerImage.image = UIImage(data: closedRestaurants[indexPath.row].coverImage)
+            cell.cuisineTypeLabel.text = closedRestaurants[indexPath.row].cuisineType
+            cell.restaurantHoursLabel.text = closedRestaurants[indexPath.row].openHours
+            /*if isOpen[indexPath.row] {
+                cell.openClosedImage.image = UIImage(named: "Open")
+            } else {
+                cell.openClosedImage.image = UIImage(named: "Closed")
+            }*/
+            
+            return cell
         }
-        
-        return cell
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        selectedRestaurantName = restaurants[indexPath.row].restaurantName
+        if indexPath.section == 1 {
+            selectedRestaurantName = openRestaurants[indexPath.row].restaurantName
+        } else if indexPath.section == 2 {
+            selectedRestaurantName = closedRestaurants[indexPath.row].restaurantName
+        }
         
         return indexPath
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return ""
+        } else if section == 1 {
+            return "- Open Restaurants -"
+        } else {
+            return "- Closed Restaurants -"
+        }
+    }
+    
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont(name: "Avenir-Black", size: 15)!
+        header.textLabel?.textColor = UIColor.darkGrayColor()
+        header.textLabel?.textAlignment = .Center
+        header.backgroundView?.backgroundColor = UIColor.groupTableViewBackgroundColor()
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0
+        }
+        return 25
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         let nav = segue.destinationViewController as! UINavigationController
         let VC = nav.topViewController as! RestaurantViewController
-        let indexPath = myTableView.indexPathForSelectedRow?.row
+        
+        let indexPath = myTableView.indexPathForSelectedRow
         //let destination = segue.destinationViewController as? RestaurantTableViewController
-        VC.restaurantImageData = restaurants[indexPath!].coverImage;
-        VC.restaurantName = restaurants[indexPath!].restaurantName
-        VC.restaurantID = restaurants[indexPath!].id
-        VC.restaurantType = restaurants[indexPath!].cuisineType
+        if indexPath?.section == 1 {
+            VC.restaurantImageData = openRestaurants[indexPath!.row].coverImage
+            VC.restaurantName = openRestaurants[indexPath!.row].restaurantName
+            VC.restaurantID = openRestaurants[indexPath!.row].id
+            VC.restaurantType = openRestaurants[indexPath!.row].cuisineType
+        } else if indexPath?.section == 2 {
+            VC.restaurantImageData = closedRestaurants[indexPath!.row].coverImage;
+            VC.restaurantName = closedRestaurants[indexPath!.row].restaurantName
+            VC.restaurantID = closedRestaurants[indexPath!.row].id
+            VC.restaurantType = closedRestaurants[indexPath!.row].cuisineType
+        }
+        
     }
     
     /*override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -42,6 +42,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         let defaults = NSUserDefaults.standardUserDefaults()
         let loggedIn = defaults.boolForKey("loggedIn")
         if loggedIn {
+            checkIfFirstOrder()
             dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -90,6 +91,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                                     self.defaults.setBool(true, forKey: "loggedIn")
                                     self.defaults.setObject(User["name"] as! String, forKey: "userName")
                                     self.defaults.setObject(User["uid"] as! String, forKey: "userID")
+                                    self.checkIfFirstOrder()
                                     
                                     self.dismissViewControllerAnimated(true, completion: nil)
                                 }
@@ -118,6 +120,59 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     @IBAction func xButtonPressed(sender: UIButton) {
         comingFromSignIn = true
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func checkIfFirstOrder() {
+        var alreadyO = true
+        if let aO = defaults.objectForKey("alreadyOrdered") {
+            alreadyO = aO as! Bool
+        } else {
+            alreadyO = false
+        }
+        if alreadyO {
+            print("First order has already been saved to userDefaults.")
+        } else {
+            // Query accounts DB and get uid for email-phone combination
+            // Open Connection to PHP Service
+            let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
+            let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
+            let session1 = NSURLSession.sharedSession()
+            let task1 = session1.dataTaskWithRequest(urlRequest1) {
+                (data, response, error) -> Void in
+                
+                let httpResponse = response as! NSHTTPURLResponse
+                let statusCode = httpResponse.statusCode
+                
+                // Check HTTP Response
+                if (statusCode == 200) {
+                    
+                    do{
+                        // Parse JSON
+                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                        
+                        for User in json as! [Dictionary<String, AnyObject>] {
+                            let userID = User["uid"] as! String
+                            
+                            // Verify email and hashed password
+                            if (self.defaults.objectForKey("userID") as! String == userID) {
+                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                    let alreadyOrdered = User["already_ordered"] as! String
+                                    if alreadyOrdered == "0" {
+                                        // Update UserDefaults
+                                        self.defaults.setBool(false, forKey: "alreadyOrdered")
+                                        print("First order has now been saved to userDefaults")
+                                    }
+                                }
+                            }
+                        }
+                    } catch {
+                        print("Error with Json: \(error)")
+                    }
+                }
+            }
+            
+            task1.resume()
+        }
     }
     
     @IBAction func rewindFromSignUp(segue: UIStoryboardSegue) {

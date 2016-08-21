@@ -9,9 +9,8 @@
 import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
-import Stripe
 
-class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelegate {
+class PaymentInfoViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
@@ -151,7 +150,6 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         // Stop animating activity indicator and enter app
         myActivityIndicator.stopAnimating()
         self.defaults.setBool(true, forKey: "loggedIn")
-        //performSegueWithIdentifier("toHomeFromSignUp", sender: self)
         comingFromSignIn = true
         self.dismissViewControllerAnimated(true, completion: nil)
     }

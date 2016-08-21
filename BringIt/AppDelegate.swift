@@ -8,7 +8,6 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-import Stripe
 import CoreData
 
 // MARK: - UNIVERSAL CONSTANTS
