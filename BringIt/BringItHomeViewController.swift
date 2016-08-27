@@ -56,6 +56,8 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(defaults.objectForKey("userID"))
+        
         // Set title
         self.navigationItem.title = "BringIt"
         

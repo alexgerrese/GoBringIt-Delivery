@@ -9,6 +9,8 @@
 import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
+import AFNetworking
+import Stripe
 
 class SignInViewController: UIViewController, UITextFieldDelegate {
     
@@ -22,6 +24,9 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     let defaults = NSUserDefaults.standardUserDefaults()
     
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
+    var name = ""
+    var email = ""
+    var uid = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,7 +127,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func checkIfFirstOrder() {
+    func checkIfFirstOrder() {        
         var alreadyO = true
         if let aO = defaults.objectForKey("alreadyOrdered") {
             alreadyO = aO as! Bool
@@ -156,6 +161,20 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
                             // Verify email and hashed password
                             if (self.defaults.objectForKey("userID") as! String == userID) {
                                 NSOperationQueue.mainQueue().addOperationWithBlock {
+                                    self.name = User["name"] as! String
+                                    
+                                    // Create Stripe customer if doesn't already exist
+                                    if let stripeID = User["stripe_cust_id"] as? String {
+                                        print("Is Stripe Customer with id: \(stripeID)")
+                                        self.defaults.setObject(stripeID, forKey: "stripeCustomerID")
+                                    } else {
+                                        print("IS not a Stripe Customer")
+                                        self.defaults.setObject("", forKey: "stripeCustomerID")
+                                    }
+                                    
+                                    print(self.defaults.objectForKey("stripeCustomerID")) 
+                                    
+                                    // Set alreadyOrdered
                                     let alreadyOrdered = User["already_ordered"] as! String
                                     if alreadyOrdered == "0" {
                                         // Update UserDefaults

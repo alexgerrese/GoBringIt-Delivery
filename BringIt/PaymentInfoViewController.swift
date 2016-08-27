@@ -81,11 +81,15 @@ class PaymentInfoViewController: UIViewController {
             "apartment": address2, // from AddressInfoVC
             "city": city, // from AddressInfoVC
             "state": "NC", // from AddressInfoVC
-            "zip": zip, // from AddressInfoVC
-            "campus_loc": campusLocation] // from AddressInfoVC
-            as Dictionary<String, String>
+            "zip": zip] // from AddressInfoVC
+            as Dictionary<String, String>//"campus_loc": campusLocation] // from AddressInfoVC
         
-        // This is not being saved anywhere: PaymentInfoVC: card_type, card_number, card_zip, card_cvc, card_exp
+        print(fullName)
+        print(address1)
+        print(city)
+        print(zip)
+        print(campusLocation)
+        
         
         // create the request & response
         let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddUser.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
@@ -132,10 +136,23 @@ class PaymentInfoViewController: UIViewController {
                         // Verify email and hashed password
                         if (emailID == self.email && phoneID == self.phoneNumber) {
                             NSOperationQueue.mainQueue().addOperationWithBlock {
+                                
+                                print("SUCCESSFULLY RETRIEVED NEWLY CREATED USER! WOOHOO!")
+                                
                                 // Update UserDefaults
+                                self.defaults.setObject("", forKey: "stripeCustomerID")
                                 self.defaults.setBool(true, forKey: "loggedIn")
                                 self.defaults.setObject(User["uid"] as! String, forKey: "userID")
                                 print((User["uid"] as! String, forKey: "userID"))
+                                print(self.defaults.objectForKey("stripeCustomerID"))
+                                print(self.defaults.objectForKey("loggedIn"))
+                                print(self.defaults.objectForKey("userID"))
+                                
+                                // Stop animating activity indicator and enter app
+                                self.myActivityIndicator.stopAnimating()
+                                //self.defaults.setBool(true, forKey: "loggedIn")
+                                comingFromSignIn = true
+                                self.dismissViewControllerAnimated(true, completion: nil)
                             }
                         }
                     }
@@ -147,11 +164,7 @@ class PaymentInfoViewController: UIViewController {
         
         task1.resume()
         
-        // Stop animating activity indicator and enter app
-        myActivityIndicator.stopAnimating()
-        self.defaults.setBool(true, forKey: "loggedIn")
-        comingFromSignIn = true
-        self.dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
     override func didReceiveMemoryWarning() {

@@ -22,22 +22,12 @@ class DeliverToPayingWithViewController: UIViewController {
     @IBOutlet weak var pageTitleLabel: UILabel!
     @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var descriptionLabel: UILabel!
-    
-    // MARK: - SAMPLE DATA
-    
-    struct PaymentMethod {
-        var method: String
-        var selected: Bool
-        // NOTE: Something to connect to Stripe? Don't know if we need two different structs
-    }
-    
+
     // Enable UserDefaults
     let defaults = NSUserDefaults.standardUserDefaults()
     
     // Addresses
-    var addresses = [String]() //[Address(address: "1368 Campus Drive \nDurham, NC \n27708", selected: false), Address(address: "1100 Alexander Drive \nDurham, NC \n27708", selected: true)]
-    // Payment Methods
-    var paymentMethods = [PaymentMethod(method: "Food points", selected: true)]
+    var addresses = [String]()
     
     var selectedCell = ""
 
@@ -45,18 +35,18 @@ class DeliverToPayingWithViewController: UIViewController {
         super.viewDidLoad()
         
         // Set title
-        self.title = selectedCell
+        self.title = "Address Info"
         
         // Set addNewText button
         if selectedCell == "Deliver To" {
             addNewButton.setTitle("+ NEW ADDRESS", forState: .Normal)
             pageTitleLabel.text = "Addresses"
             descriptionLabel.text = "Select or add an address to deliver to."
-        } else {
+        } /*else {
             addNewButton.setTitle("+ NEW PAYMENT METHOD", forState: .Normal)
             pageTitleLabel.text = "Payment Methods"
             descriptionLabel.text = "Credit/debit card payments coming soon."
-        }
+        }*/
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -86,9 +76,7 @@ class DeliverToPayingWithViewController: UIViewController {
     }
 
     @IBAction func newButtonPressed(sender: UIButton) {
-        if selectedCell == "Deliver To" {
             performSegueWithIdentifier("toNewAddress", sender: self)
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -103,32 +91,22 @@ class DeliverToPayingWithViewController: UIViewController {
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if selectedCell == "Deliver To" {
             return addresses.count
-        } else {
-            return paymentMethods.count
-        }
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
 
-        if selectedCell == "Deliver To" {
-            cell.textLabel?.text = addresses[indexPath.row]
-            let selectedRow = defaults.objectForKey("CurrentAddressIndex") as! Int
-            
-            if indexPath.row == selectedRow {
-                cell.accessoryType = .Checkmark
-            } else {
-                cell.accessoryType = .None
-            }
+        cell.textLabel?.text = addresses[indexPath.row]
+        let selectedRow = defaults.objectForKey("CurrentAddressIndex") as! Int
+        
+        //Change cell's tint color
+        cell.tintColor = GREEN
+        
+        if indexPath.row == selectedRow {
+            cell.accessoryType = .Checkmark
         } else {
-            cell.textLabel?.text = paymentMethods[indexPath.row].method
-            if paymentMethods[indexPath.row].selected {
-                cell.accessoryType = .Checkmark
-            } else {
-                cell.accessoryType = .None
-            }
+            cell.accessoryType = .None
         }
 
         return cell
@@ -136,29 +114,9 @@ class DeliverToPayingWithViewController: UIViewController {
     
     // MAKE SURE THIS WORKSSSSSSSS
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if selectedCell == "Deliver To" {
-            //deselectAll()
-            defaults.setObject(indexPath.row, forKey: "CurrentAddressIndex")
-        } else {
-            deselectAll()
-            paymentMethods[indexPath.row].selected = true
-            }
+        defaults.setObject(indexPath.row, forKey: "CurrentAddressIndex")
         
         tableView.reloadData()
-    }
-    
-    // Deselect all cells
-    func deselectAll() {
-        /*if selectedCell == "Deliver To" {
-            for i in 0..<addresses.count {
-                addresses[i].selected = false
-            }
-        }*/ if selectedCell == "Paying With"{
-            for i in 0..<paymentMethods.count {
-                paymentMethods[i].selected = false
-            }
-        }
     }
     
     @IBAction func returnToDeliverTo(segue: UIStoryboardSegue) {

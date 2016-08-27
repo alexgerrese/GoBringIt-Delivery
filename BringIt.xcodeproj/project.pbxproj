@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		021CEA1AE426967542CFE0C9 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
+		110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */; };
 		11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF51CE68A83003D82FB /* AppDelegate.swift */; };
 		11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF91CE68A83003D82FB /* ScheduleViewController.swift */; };
 		11021FFD1CE68A83003D82FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11021FFB1CE68A83003D82FB /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
 		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
+		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
 		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
 		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
 		11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */; };
@@ -91,6 +93,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayingWithViewController.swift; sourceTree = "<group>"; };
 		11021FF21CE68A83003D82FB /* BringIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BringIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11021FF51CE68A83003D82FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11021FF91CE68A83003D82FB /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -130,6 +133,7 @@
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantViewController.swift; sourceTree = "<group>"; };
 		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
@@ -156,7 +160,6 @@
 		360769A0669582F28FBB8124 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		63F1898A1D0BE02B00C464A1 /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		79E26E758EB8418E7DE19F36 /* Pods-BringIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringIt.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringIt/Pods-BringIt.release.xcconfig"; sourceTree = "<group>"; };
 		8150EF7ED512FAD1501DDB27 /* Pods-BringItUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,8 +232,8 @@
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
 				114FC7221D44C47A00DB5824 /* Data Model */,
+				118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */,
 				110220031CE68A83003D82FB /* Info.plist */,
-				63F1898A1D0BE02B00C464A1 /* BringIt-Bridging-Header.h */,
 			);
 			path = BringIt;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */,
+				110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */,
 				11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */,
 			);
 			name = "Deliver To/Paying With";
@@ -710,6 +714,7 @@
 				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
 				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
+				110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
 				114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */,
 				11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */,
@@ -718,6 +723,7 @@
 				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
 				11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
+				118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */,
 				114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */,
 				114FC71F1D44C46F00DB5824 /* Order.swift in Sources */,
 				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
@@ -878,7 +884,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "BringIt/BringIt-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "BringIt-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BringIt-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -894,8 +901,9 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "BringIt/BringIt-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "BringIt-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BringIt-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -62,9 +62,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Check if user is already logged in
         checkLoggedIn()
         
-        // Load the data into dummy variables
-        cellNumbers[paymentIndex] = 1
-        
         if let id = defaults.objectForKey("userID") {
             userID = id  as! String
         } else {
@@ -202,32 +199,28 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        print(indexPath.row)
         if indexPath.row == 0 {
             performSegueWithIdentifier("toContactInfo", sender: self)
-        } else if indexPath.row == 1 || indexPath.row == 2 {
+        } else if indexPath.row == 1 {
             performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
+        } else if indexPath.row == 2 {
+            performSegueWithIdentifier("toPaymentMethods", sender: self)
         } else {
             performSegueWithIdentifier("toComingSoon", sender: self)
         }
     }
     
-    // Find out which cell was selected and sent to prepareForSegue
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        selectedCell = indexPath.row
-        
-        return indexPath
-    }
-    
-    // BUG - If you log out then back in, you will come back here, not home.
     @IBAction func logOutButtonClicked(sender: UIButton) {
         
         let alertController = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .ActionSheet)
         let signOut = UIAlertAction(title: "Yes, sign me out", style: .Default, handler: { (action) -> Void in
             print("SignOut Button Pressed")
+            
+            // RESET SENSITIVE INFO
             self.defaults.setBool(false, forKey: "loggedIn")
             self.defaults.setObject(nil, forKey: "userID")
+            self.defaults.setObject("", forKey: "stripeCustomerID")
+            
             self.checkLoggedIn()
         })
         let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
@@ -249,7 +242,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         if !loggedIn {
             let vc = self.storyboard?.instantiateViewControllerWithIdentifier("signIn") as! SignInViewController
             self.presentViewController(vc, animated: true, completion: nil)
-            //performSegueWithIdentifier("toSignIn", sender: self)
         }
     }
     
@@ -289,7 +281,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toDeliverToPayingWithFromProfile" {
             let VC = segue.destinationViewController as! DeliverToPayingWithViewController
             if self.selectedCell == 1 {
@@ -298,7 +290,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                 VC.selectedCell = "Paying With"
             }
         }
-    }
+    }*/
     
     
 }

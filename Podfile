@@ -14,6 +14,8 @@ pod 'IDZSwiftCommonCrypto', '~> 0.7'
 pod 'CVCalendar', '~> 1.2.9'
 pod 'GMStepper'
 pod 'Stripe'
+pod ‘AFNetworking'
+
 
   target 'BringItTests' do
     inherit! :search_paths

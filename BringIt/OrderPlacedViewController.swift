@@ -33,7 +33,7 @@ class OrderPlacedViewController: UIViewController {
                 NSForegroundColorAttributeName: UIColor.blackColor()])
         
         // Set order total label
-        orderTotalLabel.text = "Including delivery fee, you spent \(String(format: "$%.2f", passedOrderTotal)) at \(passedRestaurantName)."
+        orderTotalLabel.text = "Including delivery fee and tip, you spent \(String(format: "$%.2f", passedOrderTotal)) at \(passedRestaurantName)."
         
         updateFirstOrderStatus()
 

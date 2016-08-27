@@ -9,6 +9,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import CoreData
+import Stripe
 
 // MARK: - UNIVERSAL CONSTANTS
 
@@ -41,6 +42,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = true
         IQKeyboardManager.sharedManager().preventShowingBottomBlankSpace = true
+        
+        // Stripe Configuration
+        Stripe.setDefaultPublishableKey("pk_live_UGdTD7Uq8SdIYMhknwzoH3ER")
+        STPTheme.defaultTheme().accentColor = GREEN
+        STPTheme.defaultTheme().secondaryForegroundColor = UIColor.darkGrayColor()
+        STPTheme.defaultTheme().font = UIFont(name: "Avenir-Book", size: 17)!
+ 
         
         return true
     }

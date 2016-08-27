@@ -18,6 +18,7 @@ class AddressInfoViewController: UIViewController {
     @IBOutlet weak var cityTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var campus: UISegmentedControl!
     
     // Error messages
     @IBOutlet weak var invalidAddressLabel: UILabel!
@@ -115,7 +116,8 @@ class AddressInfoViewController: UIViewController {
             VC.email = self.email
             VC.password = self.password
             VC.phoneNumber = self.phoneNumber
-            //VC.campusLocation = (westRadioButton.selectedButton()?.currentTitle)!
+            let index = campus.selectedSegmentIndex
+            VC.campusLocation = campus.titleForSegmentAtIndex(index)!
             VC.address1 = address1TextField.text!
             if address2TextField.text!.isBlank {
                 VC.address2 = ""
