@@ -31,6 +31,11 @@ public struct ez {
         return NSBundle.mainBundle().objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String
     }
 
+    /// EZSE: Return app's bundle ID
+    public static var appBundleID: String? {
+        return NSBundle.mainBundle().bundleIdentifier
+    }
+
     /// EZSE: Returns both app's version and build numbers "v0.3(7)"
     public static var appVersionAndBuild: String? {
         if appVersion != nil && appBuild != nil {
@@ -90,24 +95,20 @@ public struct ez {
 
     /// EZSE: Returns the top ViewController
     public static var topMostVC: UIViewController? {
-        var presentedVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-        while let pVC = presentedVC?.presentedViewController {
-            presentedVC = pVC
-        }
-
-        if presentedVC == nil {
+        let topVC = UIApplication.topViewController()
+        if topVC == nil {
             print("EZSwiftExtensions Error: You don't have any views set. You may be calling them in viewDidLoad. Try viewDidAppear instead.")
         }
-        return presentedVC
+        return topVC
     }
 
     #if os(iOS)
-    
+
     /// EZSE: Returns current screen orientation
     public static var screenOrientation: UIInterfaceOrientation {
         return UIApplication.sharedApplication().statusBarOrientation
     }
-    
+
     #endif
 
     /// EZSwiftExtensions
@@ -122,40 +123,40 @@ public struct ez {
 
     /// EZSE: Returns screen width
     public static var screenWidth: CGFloat {
-        
+
         #if os(iOS)
-            
+
         if UIInterfaceOrientationIsPortrait(screenOrientation) {
             return UIScreen.mainScreen().bounds.size.width
         } else {
             return UIScreen.mainScreen().bounds.size.height
         }
-        
+
         #elseif os(tvOS)
-            
+
         return UIScreen.mainScreen().bounds.size.width
-        
+
         #endif
     }
 
     /// EZSE: Returns screen height
     public static var screenHeight: CGFloat {
-        
+
         #if os(iOS)
-        
+
         if UIInterfaceOrientationIsPortrait(screenOrientation) {
             return UIScreen.mainScreen().bounds.size.height
         } else {
             return UIScreen.mainScreen().bounds.size.width
         }
-        
+
         #elseif os(tvOS)
-            
+
             return UIScreen.mainScreen().bounds.size.height
-            
+
         #endif
     }
-    
+
     #if os(iOS)
 
     /// EZSE: Returns StatusBar height
@@ -171,7 +172,7 @@ public struct ez {
             return UIScreen.mainScreen().bounds.size.width - screenStatusBarHeight
         }
     }
-    
+
     #endif
 
     /// EZSE: Returns the locale country code. An example value might be "ES". //TODO: Add to readme
@@ -188,8 +189,27 @@ public struct ez {
         }
     }
 
+    //TODO: Document this, add tests to this, find a way to remove ++
+    /// EZSE: Iterates through enum elements, use with (for element in ez.iterateEnum(myEnum))
+    public static func iterateEnum<T: Hashable>(_: T.Type) -> AnyGenerator<T> {
+        var i = 0
+        return AnyGenerator {
+            let next = withUnsafePointer(&i) { UnsafePointer<T>($0).memory }
+            return next.hashValue == i++ ? next : nil
+        }
+    }
+
     // MARK: - Dispatch
 
+    /// EZSE: Runs the function after x seconds
+    public static func dispatchDelay(second: Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(second * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
 
     /// EZSE: Runs function after x seconds
     public static func runThisAfterDelay(seconds seconds: Double, after: () -> ()) {
@@ -219,6 +239,36 @@ public struct ez {
         let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, seconds, 0, 0, handler)
         CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
         return timer
+    }
+
+    /// EZSE: Gobal main queue
+    public var globalMainQueue: dispatch_queue_t {
+        return dispatch_get_main_queue()
+    }
+
+    /// EZSE: Gobal queue with user interactive priority
+    public var globalUserInteractiveQueue: dispatch_queue_t {
+        return dispatch_get_global_queue(Int(QOS_CLASS_USER_INTERACTIVE.rawValue), 0)
+    }
+
+    /// EZSE: Gobal queue with user initiated priority
+    public var globalUserInitiatedQueue: dispatch_queue_t {
+        return dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)
+    }
+
+    /// EZSE: Gobal queue with utility priority
+    public var globalUtilityQueue: dispatch_queue_t {
+        return dispatch_get_global_queue(Int(QOS_CLASS_UTILITY.rawValue), 0)
+    }
+
+    /// EZSE: Gobal queue with background priority
+    public var globalBackgroundQueue: dispatch_queue_t {
+        return dispatch_get_global_queue(Int(QOS_CLASS_BACKGROUND.rawValue), 0)
+    }
+
+    /// EZSE: Gobal queue with default priority
+    public var globalQueue: dispatch_queue_t {
+        return dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
     }
 
     // MARK: - DownloadTask

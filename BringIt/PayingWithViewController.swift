@@ -203,7 +203,7 @@ class PayingWithViewController: UIViewController, STPPaymentContextDelegate {
             components.day = 1
             components.month = 01
             components.year = 2016
-            components.hour = 19
+            components.hour = 16
             components.minute = 50
             let eightPM = calendar.dateFromComponents(components)
             

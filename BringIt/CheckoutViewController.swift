@@ -537,11 +537,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                 checkoutErrorLabel.hidden = false
                 checkoutErrorLabel.text = "Please add an address and try again."
                 return false
-            } /*else if !isOpen {
+            } else if !isOpen {
                 checkoutErrorLabel.hidden = false
                 checkoutErrorLabel.text = "Please wait until the restaurant is open and try again."
                 return false
-            }*/ else {
+            } else {
                 if totalCost + deliveryFee < 10 {
                     checkoutErrorLabel.hidden = false
                     checkoutErrorLabel.text = "Please make sure your total is over $10 and try again."
@@ -909,7 +909,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             components.day = 1
             components.month = 01
             components.year = 2016
-            components.hour = 19
+            components.hour = 16
             components.minute = 50
             let eightPM = calendar.dateFromComponents(components)
             

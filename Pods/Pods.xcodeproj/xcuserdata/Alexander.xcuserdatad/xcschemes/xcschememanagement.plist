@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Stripe-Stripe.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Stripe.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,6 +82,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>3E386C086DFA43145C70AD6F5EAFD1DB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>425236C8907BA1C38D10174C763AB941</key>
 		<dict>
 			<key>primary</key>
@@ -92,17 +102,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6D46ACCA4C3F2BE3B8F9A9E35B37F4A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>733CBF12858E959339DE85B144E4D27C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>BA14B622689766F6B8A4F42FD9DE552F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BF529704E2D57A46A0B88D09BCBD9804</key>
 		<dict>
 			<key>primary</key>
 			<true/>

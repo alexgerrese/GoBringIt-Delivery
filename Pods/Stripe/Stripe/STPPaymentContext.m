@@ -8,7 +8,6 @@
 
 #import <PassKit/PassKit.h>
 #import <objc/runtime.h>
-#import "NSDecimalNumber+Stripe_Currency.h"
 #import "PKPaymentAuthorizationViewController+Stripe_Blocks.h"
 #import "UIViewController+Stripe_ParentViewController.h"
 #import "STPPromise.h"
@@ -19,6 +18,8 @@
 #import "UIViewController+Stripe_Alerts.h"
 #import "UINavigationController+Stripe_Completion.h"
 #import "STPPaymentConfiguration+Private.h"
+#import "STPWeakStrongMacros.h"
+#import "STPPaymentContextAmountModel.h"
 
 #define FAUXPAS_IGNORED_IN_METHOD(...)
 
@@ -37,6 +38,8 @@
 @property(nonatomic, weak)STPPaymentMethodsViewController *paymentMethodsViewController;
 @property(nonatomic)id<STPPaymentMethod> selectedPaymentMethod;
 @property(nonatomic)NSArray<id<STPPaymentMethod>> *paymentMethods;
+
+@property(nonatomic)STPPaymentContextAmountModel *paymentAmountModel;
 
 @end
 
@@ -60,6 +63,8 @@
         _didAppearPromise = [STPVoidPromise new];
         _apiClient = [[STPAPIClient alloc] initWithPublishableKey:configuration.publishableKey];
         _paymentCurrency = @"USD";
+        _paymentAmountModel = [[STPPaymentContextAmountModel alloc] initWithAmount:0];
+        _modalPresentationStyle = UIModalPresentationFullScreen;
         [self retryLoading];
     }
     return self;
@@ -69,29 +74,32 @@
     if (self.loadingPromise && self.loadingPromise.value) {
         return;
     }
-    __weak typeof(self) weakself = self;
+    WEAK(self);
     self.loadingPromise = [[[STPPromise<STPPaymentMethodTuple *> new] onSuccess:^(STPPaymentMethodTuple *tuple) {
-        weakself.paymentMethods = tuple.paymentMethods;
-        weakself.selectedPaymentMethod = tuple.selectedPaymentMethod;
+        STRONG(self);
+        self.paymentMethods = tuple.paymentMethods;
+        self.selectedPaymentMethod = tuple.selectedPaymentMethod;
     }] onFailure:^(NSError * _Nonnull error) {
-        if (weakself.hostViewController) {
-            [weakself.didAppearPromise onSuccess:^(__unused id value) {
-                if (weakself.paymentMethodsViewController) {
-                    [weakself appropriatelyDismissPaymentMethodsViewController:weakself.paymentMethodsViewController completion:^{
-                        [weakself.delegate paymentContext:weakself didFailToLoadWithError:error];
+        STRONG(self);
+        if (self.hostViewController) {
+            [self.didAppearPromise onSuccess:^(__unused id value) {
+                if (self.paymentMethodsViewController) {
+                    [self appropriatelyDismissPaymentMethodsViewController:self.paymentMethodsViewController completion:^{
+                        [self.delegate paymentContext:self didFailToLoadWithError:error];
                     }];
                 } else {
-                    [weakself.delegate paymentContext:weakself didFailToLoadWithError:error];
+                    [self.delegate paymentContext:self didFailToLoadWithError:error];
                 }
             }];
         }
     }];
     [self.apiAdapter retrieveCustomer:^(STPCustomer * _Nullable customer, NSError * _Nullable error) {
-        if (!weakself) {
+        STRONG(self);
+        if (!self) {
             return;
         }
         if (error) {
-            [weakself.loadingPromise fail:error];
+            [self.loadingPromise fail:error];
             return;
         }
         STPCard *selectedCard;
@@ -106,8 +114,8 @@
             }
         }
         STPCardTuple *tuple = [STPCardTuple tupleWithSelectedCard:selectedCard cards:cards];
-        STPPaymentMethodTuple *paymentTuple = [STPPaymentMethodTuple tupleWithCardTuple:tuple applePayEnabled:weakself.configuration.applePayEnabled];
-        [weakself.loadingPromise succeed:paymentTuple];
+        STPPaymentMethodTuple *paymentTuple = [STPPaymentMethodTuple tupleWithCardTuple:tuple applePayEnabled:self.configuration.applePayEnabled];
+        [self.loadingPromise succeed:paymentTuple];
     }];
 }
 
@@ -125,18 +133,21 @@
 
 - (void)setDelegate:(id<STPPaymentContextDelegate>)delegate {
     _delegate = delegate;
-    __weak typeof(self) weakself = self;
+    WEAK(self);
     [self.willAppearPromise voidOnSuccess:^{
-        if (weakself.delegate == delegate) {
-            [delegate paymentContextDidChange:weakself];
+        STRONG(self);
+        if (self.delegate == delegate) {
+            [delegate paymentContextDidChange:self];
         }
     }];
 }
 
 - (STPPromise<STPPaymentMethodTuple *> *)currentValuePromise {
-    __weak typeof(self) weakself = self;
+    WEAK(self);
     return (STPPromise<STPPaymentMethodTuple *> *)[self.loadingPromise map:^id _Nonnull(__unused STPPaymentMethodTuple *value) {
-        return [STPPaymentMethodTuple tupleWithPaymentMethods:weakself.paymentMethods selectedPaymentMethod:weakself.selectedPaymentMethod];
+        STRONG(self);
+        return [STPPaymentMethodTuple tupleWithPaymentMethods:self.paymentMethods
+                                        selectedPaymentMethod:self.selectedPaymentMethod];
     }];
 }
 
@@ -167,16 +178,38 @@
     }
 }
 
+
+- (void)setPaymentAmount:(NSInteger)paymentAmount {
+    self.paymentAmountModel = [[STPPaymentContextAmountModel alloc] initWithAmount:paymentAmount];
+}
+
+- (NSInteger)paymentAmount {
+    return [self.paymentAmountModel paymentAmountWithCurrency:self.paymentCurrency];
+}
+
+- (void)setPaymentSummaryItems:(NSArray<PKPaymentSummaryItem *> *)paymentSummaryItems {
+    FAUXPAS_IGNORED_IN_METHOD(APIAvailability)
+    self.paymentAmountModel = [[STPPaymentContextAmountModel alloc] initWithPaymentSummaryItems:paymentSummaryItems];
+}
+
+- (NSArray<PKPaymentSummaryItem *> *)paymentSummaryItems {
+    FAUXPAS_IGNORED_IN_METHOD(APIAvailability)
+    return [self.paymentAmountModel paymentSummaryItemsWithCurrency:self.paymentCurrency
+                                                        companyName:self.configuration.companyName];
+}
+
 - (void)presentPaymentMethodsViewController {
     NSCAssert(self.hostViewController != nil, @"hostViewController must not be nil on STPPaymentContext when calling pushPaymentMethodsViewController on it. Next time, set the hostViewController property first!");
-    __weak typeof(self)weakself = self;
+    WEAK(self);
     [self.didAppearPromise voidOnSuccess:^{
-        STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithPaymentContext:weakself];
-        weakself.paymentMethodsViewController = paymentMethodsViewController;
-        paymentMethodsViewController.prefilledInformation = weakself.prefilledInformation;
+        STRONG(self);
+        STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithPaymentContext:self];
+        self.paymentMethodsViewController = paymentMethodsViewController;
+        paymentMethodsViewController.prefilledInformation = self.prefilledInformation;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:paymentMethodsViewController];
-        [navigationController.navigationBar stp_setTheme:weakself.theme];
-        [weakself.hostViewController presentViewController:navigationController animated:YES completion:nil];
+        [navigationController.navigationBar stp_setTheme:self.theme];
+        navigationController.modalPresentationStyle = self.modalPresentationStyle;
+        [self.hostViewController presentViewController:navigationController animated:YES completion:nil];
     }];
 }
 
@@ -189,11 +222,12 @@
         navigationController = self.hostViewController.navigationController;
     }
     NSCAssert(self.hostViewController != nil, @"The payment context's hostViewController is not a navigation controller, or is not contained in one. Either make sure it is inside a navigation controller before calling pushPaymentMethodsViewController, or call presentPaymentMethodsViewController instead.");
-    __weak typeof(self) weakself = self;
+    WEAK(self);
     [self.didAppearPromise voidOnSuccess:^{
-        STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithPaymentContext:weakself];
-        weakself.paymentMethodsViewController = paymentMethodsViewController;
-        paymentMethodsViewController.prefilledInformation = weakself.prefilledInformation;
+        STRONG(self);
+        STPPaymentMethodsViewController *paymentMethodsViewController = [[STPPaymentMethodsViewController alloc] initWithPaymentContext:self];
+        self.paymentMethodsViewController = paymentMethodsViewController;
+        paymentMethodsViewController.prefilledInformation = self.prefilledInformation;
         [navigationController pushViewController:paymentMethodsViewController animated:YES];
     }];
 }
@@ -235,46 +269,48 @@
 
 - (void)requestPayment {
     FAUXPAS_IGNORED_IN_METHOD(APIAvailability);
-    __weak typeof(self) weakSelf = self;
+    WEAK(self);
     [[[self.didAppearPromise voidFlatMap:^STPPromise * _Nonnull{
-        return weakSelf.loadingPromise;
+        STRONG(self);
+        return self.loadingPromise;
     }] onSuccess:^(__unused STPPaymentMethodTuple *tuple) {
-        if (!weakSelf) {
+        STRONG(self);
+        if (!self) {
             return;
         }
-        if (!weakSelf.selectedPaymentMethod) {
+        if (!self.selectedPaymentMethod) {
             STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:self.configuration theme:self.theme];
             addCardViewController.delegate = self;
             addCardViewController.prefilledInformation = self.prefilledInformation;
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
-            [navigationController.navigationBar stp_setTheme:weakSelf.theme];
-            [weakSelf.hostViewController presentViewController:navigationController animated:YES completion:nil];
+            [navigationController.navigationBar stp_setTheme:self.theme];
+            navigationController.modalPresentationStyle = self.modalPresentationStyle;
+            [self.hostViewController presentViewController:navigationController animated:YES completion:nil];
         }
-        else if ([weakSelf.selectedPaymentMethod isKindOfClass:[STPCard class]]) {
-            STPPaymentResult *result = [[STPPaymentResult alloc] initWithSource:(STPCard *)weakSelf.selectedPaymentMethod];
-            [weakSelf.delegate paymentContext:weakSelf didCreatePaymentResult:result completion:^(NSError * _Nullable error) {
+        else if ([self.selectedPaymentMethod isKindOfClass:[STPCard class]]) {
+            STPPaymentResult *result = [[STPPaymentResult alloc] initWithSource:(STPCard *)self.selectedPaymentMethod];
+            [self.delegate paymentContext:self didCreatePaymentResult:result completion:^(NSError * _Nullable error) {
                 if (error) {
-                    [weakSelf.delegate paymentContext:weakSelf didFinishWithStatus:STPPaymentStatusError error:error];
+                    [self.delegate paymentContext:self didFinishWithStatus:STPPaymentStatusError error:error];
                 } else {
-                    [weakSelf.delegate paymentContext:weakSelf didFinishWithStatus:STPPaymentStatusSuccess error:nil];
+                    [self.delegate paymentContext:self didFinishWithStatus:STPPaymentStatusSuccess error:nil];
                 }
             }];
         }
-        else if ([weakSelf.selectedPaymentMethod isKindOfClass:[STPApplePayPaymentMethod class]]) {
+        else if ([self.selectedPaymentMethod isKindOfClass:[STPApplePayPaymentMethod class]]) {
             PKPaymentRequest *paymentRequest = [self buildPaymentRequest];
             STPApplePayTokenHandlerBlock applePayTokenHandler = ^(STPToken *token, STPErrorBlock tokenCompletion) {
-                [weakSelf.apiAdapter attachSourceToCustomer:token completion:^(NSError *tokenError) {
+                [self.apiAdapter attachSourceToCustomer:token completion:^(NSError *tokenError) {
                     if (tokenError) {
                         tokenCompletion(tokenError);
                     } else {
                         STPPaymentResult *result = [[STPPaymentResult alloc] initWithSource:token.card];
-                        [weakSelf.delegate paymentContext:weakSelf didCreatePaymentResult:result completion:^(NSError * error) {
+                        [self.delegate paymentContext:self didCreatePaymentResult:result completion:^(NSError * error) {
+                            // for Apple Pay, the didFinishWithStatus callback is fired later when Apple Pay VC finishes
                             if (error) {
                                 tokenCompletion(error);
-                                [weakSelf.delegate paymentContext:weakSelf didFinishWithStatus:STPPaymentStatusError error:error];
                             } else {
                                 tokenCompletion(nil);
-                                [weakSelf.delegate paymentContext:weakSelf didFinishWithStatus:STPPaymentStatusSuccess error:nil];
                             }
                         }];
                     }
@@ -283,21 +319,22 @@
             PKPaymentAuthorizationViewController *paymentAuthVC;
             paymentAuthVC = [PKPaymentAuthorizationViewController
                              stp_controllerWithPaymentRequest:paymentRequest
-                                                    apiClient:weakSelf.apiClient
+                                                    apiClient:self.apiClient
                                               onTokenCreation:applePayTokenHandler
                                                      onFinish:^(STPPaymentStatus status, NSError * _Nullable error) {
-                                                         [weakSelf.hostViewController dismissViewControllerAnimated:YES completion:^{
-                                                             [weakSelf.delegate paymentContext:weakSelf
+                                                         [self.hostViewController dismissViewControllerAnimated:YES completion:^{
+                                                             [self.delegate paymentContext:self
                                                                            didFinishWithStatus:status
                                                                                          error:error];
                                                          }];
                                                      }];
-            [weakSelf.hostViewController presentViewController:paymentAuthVC
+            [self.hostViewController presentViewController:paymentAuthVC
                                                       animated:YES
                                                     completion:nil];
         }
     }]onFailure:^(NSError *error) {
-        [weakSelf.delegate paymentContext:weakSelf didFinishWithStatus:STPPaymentStatusError error:error];
+        STRONG(self);
+        [self.delegate paymentContext:self didFinishWithStatus:STPPaymentStatusError error:error];
     }];
 }
 
@@ -307,11 +344,9 @@
         return nil;
     }
     PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:self.configuration.appleMerchantIdentifier];
-    NSDecimalNumber *amount = [NSDecimalNumber stp_decimalNumberWithAmount:self.paymentAmount
-                                                                  currency:self.paymentCurrency];
-    PKPaymentSummaryItem *totalItem = [PKPaymentSummaryItem summaryItemWithLabel:self.configuration.companyName
-                                                                          amount:amount];
-    paymentRequest.paymentSummaryItems = @[totalItem];
+    
+    NSArray<PKPaymentSummaryItem *> *summaryItems = self.paymentSummaryItems;
+    paymentRequest.paymentSummaryItems = summaryItems;
     paymentRequest.requiredBillingAddressFields = [STPAddress applePayAddressFieldsFromBillingAddressFields:self.configuration.requiredBillingAddressFields];
     paymentRequest.currencyCode = self.paymentCurrency.uppercaseString;
     return paymentRequest;
@@ -348,3 +383,5 @@ static char kSTPPaymentCoordinatorAssociatedObjectKey;
 }
 
 @end
+
+

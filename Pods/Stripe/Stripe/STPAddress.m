@@ -8,6 +8,7 @@
 
 #import "STPAddress.h"
 #import "STPCardValidator.h"
+#import "STPPostalCodeValidator.h"
 
 @implementation STPAddress
 
@@ -22,10 +23,15 @@
         NSString *first = firstName ?: @"";
         NSString *last = lastName ?: @"";
         _name = [@[first, last] componentsJoinedByString:@" "];
+        
         ABMultiValueRef emailValues = ABRecordCopyValue(record, kABPersonEmailProperty);
-        _email = (__bridge NSString *)(ABMultiValueCopyValueAtIndex(emailValues, 0));
+        _email = (__bridge_transfer NSString *)(ABMultiValueCopyValueAtIndex(emailValues, 0));
+        CFRelease(emailValues);
+        
         ABMultiValueRef phoneValues = ABRecordCopyValue(record, kABPersonPhoneProperty);
-        NSString *phone = (__bridge NSString *)(ABMultiValueCopyValueAtIndex(phoneValues, 0));
+        NSString *phone = (__bridge_transfer NSString *)(ABMultiValueCopyValueAtIndex(phoneValues, 0));
+        CFRelease(phoneValues);
+        
         _phone = [STPCardValidator sanitizedNumericStringForString:phone];
 
         ABMultiValueRef addressValues = ABRecordCopyValue(record, kABPersonAddressProperty);
@@ -68,7 +74,8 @@
         case STPBillingAddressFieldsNone:
             return YES;
         case STPBillingAddressFieldsZip:
-            return self.postalCode.length > 0;
+            return [STPPostalCodeValidator stringIsValidPostalCode:self.postalCode 
+                                                       countryCode:self.country];
         case STPBillingAddressFieldsFull:
             return [self hasValidPostalAddress];
     }
@@ -79,8 +86,9 @@
     return self.line1.length > 0 &&
     self.city.length > 0 &&
     self.state.length > 0 &&
-    self.postalCode.length > 0 &&
-    self.country.length > 0;
+    self.country.length > 0 &&
+    [STPPostalCodeValidator stringIsValidPostalCode:self.postalCode 
+                                        countryCode:self.country];
 }
 
 + (PKAddressField)applePayAddressFieldsFromBillingAddressFields:(STPBillingAddressFields)billingAddressFields {

@@ -16,6 +16,8 @@
 #import "UIViewController+Stripe_KeyboardAvoiding.h"
 #import "STPPhoneNumberValidator.h"
 #import "STPColorUtils.h"
+#import "STPWeakStrongMacros.h"
+#import "STPLocalizationUtils.h"
 
 @interface STPSMSCodeViewController()<STPSMSCodeTextFieldDelegate>
 
@@ -60,14 +62,14 @@
     [super viewDidLoad];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    self.navigationItem.title = NSLocalizedString(@"Verification Code", nil);
+    self.navigationItem.title = STPLocalizedString(@"Verification Code", nil);
     
     UIScrollView *scrollView = [UIScrollView new];
     [self.view addSubview:scrollView];
     self.scrollView = scrollView;
     
     UILabel *topLabel = [UILabel new];
-    topLabel.text = NSLocalizedString(@"Enter the verification code to use the payment info you stored with Stripe.", nil);
+    topLabel.text = STPLocalizedString(@"Enter the verification code to use the payment info you stored with Stripe.", nil);
     topLabel.textAlignment = NSTextAlignmentCenter;
     topLabel.numberOfLines = 0;
     [self.scrollView addSubview:topLabel];
@@ -80,14 +82,14 @@
     
     UILabel *bottomLabel = [UILabel new];
     bottomLabel.textAlignment = NSTextAlignmentCenter;
-    bottomLabel.text = NSLocalizedString(@"Didn't receive the code?", nil);
+    bottomLabel.text = STPLocalizedString(@"Didn't receive the code?", nil);
     bottomLabel.alpha = 0;
     [self.scrollView addSubview:bottomLabel];
     self.bottomLabel = bottomLabel;
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
     cancelButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [cancelButton setTitle:NSLocalizedString(@"Fill in your card details manually", nil) forState:UIControlStateNormal];
+    [cancelButton setTitle:STPLocalizedString(@"Fill in your card details manually", nil) forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     cancelButton.alpha = 0;
     [self.scrollView addSubview:cancelButton];
@@ -96,21 +98,21 @@
     UILabel *errorLabel = [UILabel new];
     errorLabel.textAlignment = NSTextAlignmentCenter;
     errorLabel.alpha = 0;
-    errorLabel.text = NSLocalizedString(@"Invalid Code", nil);
+    errorLabel.text = STPLocalizedString(@"Invalid Code", nil);
     [self.scrollView addSubview:errorLabel];
     self.errorLabel = errorLabel;
 
     UILabel *smsSentLabel = [UILabel new];
     smsSentLabel.textAlignment = NSTextAlignmentCenter;
     smsSentLabel.numberOfLines = 2;
-    NSString *sentString = NSLocalizedString(@"We just sent a text message to:", nil);
+    NSString *sentString = STPLocalizedString(@"We just sent a text message to:", nil);
     smsSentLabel.text = [NSString stringWithFormat:@"%@\n%@", sentString, [STPPhoneNumberValidator formattedRedactedPhoneNumberForString:self.redactedPhone]];
     [self.scrollView addSubview:smsSentLabel];
     self.smsSentLabel = smsSentLabel;
     
     UIButton *pasteFromClipboardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     pasteFromClipboardButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [pasteFromClipboardButton setTitle:NSLocalizedString(@"Paste copied code?", nil) forState:UIControlStateNormal];
+    [pasteFromClipboardButton setTitle:STPLocalizedString(@"Paste copied code?", nil) forState:UIControlStateNormal];
     [pasteFromClipboardButton addTarget:self action:@selector(pasteCodeFromClipboard) forControlEvents:UIControlEventTouchUpInside];
     pasteFromClipboardButton.alpha = 0;
     pasteFromClipboardButton.hidden = YES;
@@ -227,19 +229,20 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    __weak typeof(self) weakself = self;
+    WEAK(self);
     [self stp_beginObservingKeyboardAndInsettingScrollView:self.scrollView
                                              onChangeBlock:^(__unused CGRect keyboardFrame, __unused UIView * _Nullable currentlyEditedField) {
-                                                 CGFloat scrollOffsetY = weakself.scrollView.contentOffset.y + weakself.scrollView.contentInset.top;
-                                                 CGFloat topLabelDistanceFromOffset = CGRectGetMinY(weakself.topLabel.frame) - scrollOffsetY;
+                                                 STRONG(self);
+                                                 CGFloat scrollOffsetY = self.scrollView.contentOffset.y + self.scrollView.contentInset.top;
+                                                 CGFloat topLabelDistanceFromOffset = CGRectGetMinY(self.topLabel.frame) - scrollOffsetY;
                                                  
                                                  if (topLabelDistanceFromOffset > 0
-                                                     && [weakself contentMaxY] > weakself.scrollView.contentOffset.y + CGRectGetHeight(weakself.scrollView.bounds) - weakself.scrollView.contentInset.bottom) {
+                                                     && [self contentMaxY] > self.scrollView.contentOffset.y + CGRectGetHeight(self.scrollView.bounds) - self.scrollView.contentInset.bottom) {
                                                      // We have extra whitespace on top but the bottom of our content is cut off, so scroll a bit
                                                      
-                                                     CGPoint contentOffset = weakself.scrollView.contentOffset;
+                                                     CGPoint contentOffset = self.scrollView.contentOffset;
                                                      contentOffset.y += (topLabelDistanceFromOffset - 2);
-                                                     weakself.scrollView.contentOffset = contentOffset;
+                                                     self.scrollView.contentOffset = contentOffset;
                                                  }
                                              }];
     [self.codeField becomeFirstResponder];
@@ -256,37 +259,39 @@
 
 - (void)codeTextField:(STPSMSCodeTextField *)codeField
          didEnterCode:(NSString *)code {
-    __weak typeof(self) weakself = self;
+    WEAK(self);
     self.loading = YES;
     [self.codeField resignFirstResponder];
     STPCheckoutAPIClient *client = self.checkoutAPIClient;
     [[[client submitSMSCode:code forVerification:self.verification] onSuccess:^(STPCheckoutAccount *account) {
-        [weakself.delegate smsCodeViewController:weakself didAuthenticateAccount:account];
+        STRONG(self);
+        [self.delegate smsCodeViewController:self didAuthenticateAccount:account];
     }] onFailure:^(NSError *error) {
-        if (!weakself) {
+        STRONG(self);
+        if (!self) {
             return;
         }
-        weakself.loading = NO;
+        self.loading = NO;
         BOOL tooManyTries = error.code == STPCheckoutTooManyAttemptsError;
         if (tooManyTries) {
-            weakself.errorLabel.text = NSLocalizedString(@"Too many incorrect attempts", nil);
+            self.errorLabel.text = STPLocalizedString(@"Too many incorrect attempts", nil);
         }
         [codeField shakeAndClear];
-        [weakself.hideSMSSentLabelTimer invalidate];
+        [self.hideSMSSentLabelTimer invalidate];
         [UIView animateWithDuration:0.2f animations:^{
-            weakself.smsSentLabel.alpha = 0;
-            weakself.bottomLabel.alpha = 0;
-            weakself.cancelButton.alpha = 0;
-            weakself.errorLabel.alpha = 1.0f;
+            self.smsSentLabel.alpha = 0;
+            self.bottomLabel.alpha = 0;
+            self.cancelButton.alpha = 0;
+            self.errorLabel.alpha = 1.0f;
         }];
         [UIView animateWithDuration:0.2f delay:0.3f options:0 animations:^{
-            weakself.bottomLabel.alpha = 1.0f;
-            weakself.cancelButton.alpha = 1.0f;
-            weakself.errorLabel.alpha = 0;
+            self.bottomLabel.alpha = 1.0f;
+            self.cancelButton.alpha = 1.0f;
+            self.errorLabel.alpha = 0;
         } completion:^(__unused BOOL finished) {
-            [weakself.codeField becomeFirstResponder];
+            [self.codeField becomeFirstResponder];
             if (tooManyTries) {
-                [weakself.delegate smsCodeViewControllerDidCancel:weakself];
+                [self.delegate smsCodeViewControllerDidCancel:self];
             }
         }];
     }];
