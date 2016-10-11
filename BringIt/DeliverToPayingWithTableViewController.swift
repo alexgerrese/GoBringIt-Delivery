@@ -24,7 +24,7 @@ class DeliverToPayingWithViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
 
     // Enable UserDefaults
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     // Addresses
     var addresses = [String]()
@@ -39,7 +39,7 @@ class DeliverToPayingWithViewController: UIViewController {
         
         // Set addNewText button
         if selectedCell == "Deliver To" {
-            addNewButton.setTitle("+ NEW ADDRESS", forState: .Normal)
+            addNewButton.setTitle("+ NEW ADDRESS", for: UIControlState())
             pageTitleLabel.text = "Addresses"
             descriptionLabel.text = "Select or add an address to deliver to."
         } /*else {
@@ -49,7 +49,7 @@ class DeliverToPayingWithViewController: UIViewController {
         }*/
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 50
@@ -59,9 +59,9 @@ class DeliverToPayingWithViewController: UIViewController {
         myTableView.allowsMultipleSelection = false
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
-        if let addressesArray = defaults.objectForKey("Addresses") {
+        if let addressesArray = defaults.object(forKey: "Addresses") {
             addresses = addressesArray as! [String]
         }
         
@@ -75,8 +75,8 @@ class DeliverToPayingWithViewController: UIViewController {
         myTableViewHeight.constant = myTableView.contentSize.height
     }
 
-    @IBAction func newButtonPressed(sender: UIButton) {
-            performSegueWithIdentifier("toNewAddress", sender: self)
+    @IBAction func newButtonPressed(_ sender: UIButton) {
+            performSegue(withIdentifier: "toNewAddress", sender: self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,67 +86,67 @@ class DeliverToPayingWithViewController: UIViewController {
 
     // MARK: - Table view data source
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return addresses.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "deliverToPayingWithCell", for: indexPath)
 
-        cell.textLabel?.text = addresses[indexPath.row]
-        let selectedRow = defaults.objectForKey("CurrentAddressIndex") as! Int
+        cell.textLabel?.text = addresses[(indexPath as NSIndexPath).row]
+        let selectedRow = defaults.object(forKey: "CurrentAddressIndex") as! Int
         
         //Change cell's tint color
         cell.tintColor = GREEN
         
-        if indexPath.row == selectedRow {
-            cell.accessoryType = .Checkmark
+        if (indexPath as NSIndexPath).row == selectedRow {
+            cell.accessoryType = .checkmark
         } else {
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
 
         return cell
     }
     
     // MAKE SURE THIS WORKSSSSSSSS
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        defaults.setObject(indexPath.row, forKey: "CurrentAddressIndex")
+    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+        defaults.set((indexPath as NSIndexPath).row, forKey: "CurrentAddressIndex")
         
         tableView.reloadData()
     }
     
-    @IBAction func returnToDeliverTo(segue: UIStoryboardSegue) {
+    @IBAction func returnToDeliverTo(_ segue: UIStoryboardSegue) {
     }
 
     // Override to support editing the table view.
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
+        if editingStyle == .delete {
             
             // Delete the row from the data source
-            addresses.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            addresses.remove(at: (indexPath as NSIndexPath).row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadData()
             
             // Update UserDefaults
             if addresses.count > 1 {
-                defaults.setObject(indexPath.row - 1, forKey: "CurrentAddressIndex")
+                defaults.set((indexPath as NSIndexPath).row - 1, forKey: "CurrentAddressIndex")
             } else {
-                defaults.setObject(-1, forKey: "CurrentAddressIndex")
+                defaults.set(-1, forKey: "CurrentAddressIndex")
             }
             
-            defaults.setObject(addresses, forKey: "Addresses")
+            defaults.set(addresses, forKey: "Addresses")
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 

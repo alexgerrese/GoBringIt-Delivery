@@ -8,6 +8,26 @@
 
 import UIKit
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class RestaurantViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -47,7 +67,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Variables
     
     // Categories
-    var restaurantImageData = NSData()
+    var restaurantImageData = Data()
     var restaurantName = String()
     var restaurantID = String()
     var restaurantType = String()
@@ -60,8 +80,8 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // CoreData
     let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
-    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     
     // FOR MENU ITEMS
@@ -105,12 +125,12 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         self.restaurantBackgroundImage.image = UIImage(data: restaurantImageData)
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Add shadow to detailsView
-        detailsView.layer.shadowColor = UIColor.darkGrayColor().CGColor
+        detailsView.layer.shadowColor = UIColor.darkGray.cgColor
         detailsView.layer.shadowOpacity = 0.5
-        detailsView.layer.shadowOffset = CGSizeZero
+        detailsView.layer.shadowOffset = CGSize.zero
         detailsView.layer.shadowRadius = 1.5
         
         // Set tableView cells to custom height and automatically resize if needed
@@ -125,16 +145,16 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Start activity indicator
         myCategoriesActivityIndicator.startAnimating()
-        self.myCategoriesActivityIndicator.hidden = false
+        self.myCategoriesActivityIndicator.isHidden = false
         
         // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuCategories.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADmenuCategories.php")!
+        let urlRequest = URLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -142,7 +162,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 
@@ -157,7 +177,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                 }
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 self.categoriesTableView.reloadData()
                                 self.updateViewConstraints()
                             }
@@ -169,18 +189,18 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if let error = error {
                 print(error.localizedDescription)
             }
-        }
+        }) 
         
         task.resume()
 
         // Open Connection to PHP Service
-        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantHours.php")!
-        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
-        let session1 = NSURLSession.sharedSession()
-        let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
+        let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADrestaurantHours.php")!
+        let urlRequest1 = URLRequest(url: requestURL1)
+        let session1 = URLSession.shared
+        let task1 = session1.dataTask(with: urlRequest1, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -188,7 +208,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 
@@ -197,15 +217,15 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                 if (restaurant_id == self.restaurantID) {
 
                                     let all_hours = Restaurant["open_hours"] as! String
-                                    let hours_byDay = all_hours.componentsSeparatedByString(", ")
+                                    let hours_byDay = all_hours.components(separatedBy: ", ")
                                     
-                                    let currentCalendar = NSCalendar.currentCalendar()
-                                    let currentDate = NSDate()
-                                    let localDate = NSDate(timeInterval: NSTimeInterval(NSTimeZone.systemTimeZone().secondsFromGMT), sinceDate: currentDate)
-                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: currentDate)
+                                    let currentCalendar = Calendar.current
+                                    let currentDate = Date()
+                                    let localDate = Date(timeInterval: TimeInterval(NSTimeZone.system.secondsFromGMT()), since: currentDate)
+                                    let components = (currentCalendar as NSCalendar).components([.year, .month, .day, .timeZone, .hour, .minute], from: currentDate)
                                     print(currentDate)
                                     print(localDate)
-                                    let componentTime : Float = Float(components.hour) + Float(components.minute) / 60
+                                    let componentTime : Float = Float(components.hour!) + Float(components.minute!) / 60
                                     var estTime : Float
                                     if (componentTime > 4) {
                                         estTime = componentTime
@@ -213,34 +233,34 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                         estTime = componentTime
                                     }
                                     
-                                    let dateFormatter = NSDateFormatter()
-                                    dateFormatter.locale = NSLocale.currentLocale()
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.locale = Locale.current
                                     dateFormatter.dateFormat = "EEEE"
-                                    let convertedDate = dateFormatter.stringFromDate(currentDate)
+                                    let convertedDate = dateFormatter.string(from: currentDate)
                                     
                                     var openDate : Float? = nil
                                     var closeDate : Float? = nil
                                     
                                     for i in 0..<hours_byDay.count {
-                                        if (hours_byDay[i].rangeOfString(convertedDate) != nil) {
+                                        if (hours_byDay[i].range(of: convertedDate) != nil) {
                                             self.open_hours = hours_byDay[i]
                                             
                                             // Extract exact hours of operation for this day
-                                            var hours_pieces = hours_byDay[i].componentsSeparatedByString(" ");
+                                            var hours_pieces = hours_byDay[i].components(separatedBy: " ");
                                             for j in 0..<hours_pieces.count {
                                                 
                                                 // Find time pieces (not the Day, not the "-", just the "time + am" or "time + pm")
-                                                if ((hours_pieces[j].rangeOfString(convertedDate) == nil) && (hours_pieces[j].rangeOfString("-") == nil)) {
+                                                if ((hours_pieces[j].range(of: convertedDate) == nil) && (hours_pieces[j].range(of: "-") == nil)) {
                                                     
-                                                    let dateMaker = NSDateFormatter()
+                                                    let dateMaker = DateFormatter()
                                                     dateMaker.dateFormat = "yyyy/MM/dd HH:mm:ss"
                                                     
                                                     if (openDate == nil) {
                                                         var newTime : Float? = nil
                                                         var minuteTime : Float? = nil
-                                                        if (hours_pieces[j].rangeOfString("pm") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "pm") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "pm");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             if time_pieces[0] == "12" {
                                                                 newTime = Float(time_pieces[0])
                                                             } else {
@@ -251,9 +271,9 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                                                 minuteTime = Float(hour_minute[1])
                                                             }
                                                         }
-                                                        if (hours_pieces[j].rangeOfString("am") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("am");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "am") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "am");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             newTime = Float(time_pieces[0])!
                                                             if (hour_minute.count > 1) {
                                                                 minuteTime = Float(hour_minute[1])
@@ -268,9 +288,9 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                                     } else if (closeDate == nil) {
                                                         var newTime : Float? = nil
                                                         var minuteTime : Float? = nil
-                                                        if (hours_pieces[j].rangeOfString("pm") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "pm") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "pm");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             if time_pieces[0] == "12" {
                                                                 newTime = Float(hour_minute[0])
                                                             } else {
@@ -281,9 +301,9 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                                                 minuteTime = Float(hour_minute[1])
                                                             }
                                                         }
-                                                        if (hours_pieces[j].rangeOfString("am") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("am");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "am") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "am");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             newTime = Float(hour_minute[0])!
                                                             if (hour_minute.count > 1) {
                                                                 minuteTime = Float(hour_minute[1])
@@ -312,7 +332,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                 }
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 if (self.isOpen) {
                                     self.isOpenIndicator.image = UIImage(named: "oval-green");
                                 } else {
@@ -324,7 +344,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                 
                                 // Stop activity indicator
                                 self.myCategoriesActivityIndicator.stopAnimating()
-                                self.myCategoriesActivityIndicator.hidden = true
+                                self.myCategoriesActivityIndicator.isHidden = true
                             }
                         }
                     }
@@ -334,31 +354,31 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if let error = error {
                 print(error.localizedDescription)
             }
-        }
+        }) 
         
         task1.resume()
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         // Hide nav bar
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         
         // Deselect cells when view appears
         if let indexPath = menuItemsTableView.indexPathForSelectedRow {
-            menuItemsTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            menuItemsTableView.deselectRow(at: indexPath, animated: true)
         }
         
         // Fetch all active carts, if any exist
-        let fetchRequest = NSFetchRequest(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
         let secondPredicate = NSPredicate(format: "restaurant == %@", restaurantName)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
         
         do {
-            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
                 if fetchResults.count > 0 {
                     let order = fetchResults[0]
                     if order.items?.count > 0 {
@@ -394,23 +414,23 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func updateViewConstraints() {
         super.updateViewConstraints()
-        menuItemsViewHeight.constant = UIScreen.mainScreen().bounds.height - 10
-        categoriesViewHeight.constant = UIScreen.mainScreen().bounds.height - 237
+        menuItemsViewHeight.constant = UIScreen.main.bounds.height - 10
+        categoriesViewHeight.constant = UIScreen.main.bounds.height - 237
         
         if hasActiveCart {
             cartViewToBottom.constant = 0
             categoriesTableViewToBottom.constant = 50
             menuItemsTableViewToBottom.constant = 50
-            UIView.animateWithDuration(0.4) {
+            UIView.animate(withDuration: 0.4, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }) 
         } else {
             cartViewToBottom.constant = -50
             categoriesTableViewToBottom.constant = 0
             menuItemsTableViewToBottom.constant = 0
-            UIView.animateWithDuration(0.4) {
+            UIView.animate(withDuration: 0.4, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }) 
         }
     }
     
@@ -418,7 +438,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // Start activity indicator
         self.myMenuItemsActivityIndicator.startAnimating()
-        self.myMenuItemsActivityIndicator.hidden = false
+        self.myMenuItemsActivityIndicator.isHidden = false
         
         self.foodNames.removeAll()
         self.foodDescriptions.removeAll()
@@ -430,13 +450,13 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         self.selectedCategoryNameLabel.text = self.titleCell
 
         // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuItems.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADmenuItems.php")!
+        let urlRequest = URLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -444,7 +464,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             // print(json)
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 let category_id = Restaurant["category_id"] as! String
@@ -467,7 +487,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                 }
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 // Loop through DB data and append Restaurant objects into restaurants array
                                 for i in 0..<self.foodNames.count {
                                     self.menuItems.append(MenuItem(foodName: self.foodNames[i], foodDescription: self.foodDescriptions[i], foodPrice: self.foodPrices[i], foodID: self.foodIDs[i], foodSideNum: self.foodSideNums[i]))
@@ -476,7 +496,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
                                 
                                 // Stop activity indicator
                                 self.myMenuItemsActivityIndicator.stopAnimating()
-                                self.myMenuItemsActivityIndicator.hidden = true
+                                self.myMenuItemsActivityIndicator.isHidden = true
                             }
                         }
                     }
@@ -486,14 +506,14 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if let error = error {
                 print("Error:" + error.localizedDescription)
             }
-        }
+        }) 
         
         task.resume()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         // Show nav bar
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -501,25 +521,25 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
 
-    @IBAction func xButtonPressed(sender: UIButton) {
+    @IBAction func xButtonPressed(_ sender: UIButton) {
         print("X BUTTON PRESSED")
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+    @IBAction func prepareForUnwind(_ segue: UIStoryboardSegue) {
     }
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if tableView == categoriesTableView {
             return menuCategories.count
@@ -528,25 +548,25 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == categoriesTableView {
-            let cell = tableView.dequeueReusableCellWithIdentifier("menuCategories", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategories", for: indexPath)
             
             // Set up cell properties
-            cell.textLabel?.text = menuCategories[indexPath.row]
+            cell.textLabel?.text = menuCategories[(indexPath as NSIndexPath).row]
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("menuCell", forIndexPath: indexPath) as! MenuTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath) as! MenuTableViewCell
             
-            cell.menuItemLabel.text = menuItems[indexPath.row].foodName
-            if menuItems[indexPath.row].foodDescription != "No Description" {
-                cell.itemDescriptionLabel.text = menuItems[indexPath.row].foodDescription
+            cell.menuItemLabel.text = menuItems[(indexPath as NSIndexPath).row].foodName
+            if menuItems[(indexPath as NSIndexPath).row].foodDescription != "No Description" {
+                cell.itemDescriptionLabel.text = menuItems[(indexPath as NSIndexPath).row].foodDescription
             } else {
                 cell.itemDescriptionLabel.text = ""
             }
         
-            let price = Double(menuItems[indexPath.row].foodPrice)
+            let price = Double(menuItems[(indexPath as NSIndexPath).row].foodPrice)
             cell.itemPriceLabel.text = String(format: "$%.2f", price!)
             
             return cell
@@ -554,58 +574,58 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == categoriesTableView {
             titleCell = ""
             titleID = ""
             
             myScrollView.setContentOffset(CGPoint(x: myScrollView.contentOffset.x + myScrollView.frame.width, y: -myScrollView.contentInset.top), animated: true)
-            titleCell = menuCategories[indexPath.row]
-            titleID = menuID[indexPath.row]
+            titleCell = menuCategories[(indexPath as NSIndexPath).row]
+            titleID = menuID[(indexPath as NSIndexPath).row]
             getMenuItems()
             menuItemsTableView.reloadData()
         }
     }
     
-    @IBAction func backButtonPressed(sender: AnyObject) {
-        UIScreen.mainScreen().bounds.width
+    @IBAction func backButtonPressed(_ sender: AnyObject) {
+        UIScreen.main.bounds.width
         myScrollView.setContentOffset(CGPoint(x: myScrollView.contentOffset.x - myScrollView.frame.width, y: myScrollView.contentOffset.y), animated: true)
         myScrollView.scrollToTop()
         
         // Deselect cells when view appears
         if let indexPath = categoriesTableView.indexPathForSelectedRow {
-            categoriesTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            categoriesTableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "toCheckout" {
             // Send selected food's data to AddToOrder screen
-            let nav = segue.destinationViewController as! UINavigationController
+            let nav = segue.destination as! UINavigationController
             let VC = nav.topViewController as! CheckoutViewController
             VC.cameFromVC = "Restaurant"
             VC.isOpen = self.isOpen
         } else if segue.identifier == "toTable" {
-            let VC = segue.destinationViewController as! RestaurantTableViewController
+            let VC = segue.destination as! RestaurantTableViewController
             VC.restaurantImageData = self.restaurantImageData
             VC.restaurantName = self.restaurantName
             VC.restaurantID = self.restaurantID
             VC.restaurantType = self.restaurantType
         } else if segue.identifier == "toAddToOrder" {
             // Send selected food's data to AddToOrder screen
-            let nav = segue.destinationViewController as! UINavigationController
+            let nav = segue.destination as! UINavigationController
             let VC = nav.topViewController as! AddToOrderViewController
             let indexPath = self.menuItemsTableView.indexPathForSelectedRow!
-            VC.selectedFoodName = foodNames[indexPath.row]
-            VC.selectedFoodDescription = foodDescriptions[indexPath.row]
-            VC.selectedFoodPrice = Double(foodPrices[indexPath.row])!
-            VC.selectedFoodID = foodIDs[indexPath.row]
-            VC.selectedFoodSidesNum = foodSideNums[indexPath.row]
+            VC.selectedFoodName = foodNames[(indexPath as NSIndexPath).row]
+            VC.selectedFoodDescription = foodDescriptions[(indexPath as NSIndexPath).row]
+            VC.selectedFoodPrice = Double(foodPrices[(indexPath as NSIndexPath).row])!
+            VC.selectedFoodID = foodIDs[(indexPath as NSIndexPath).row]
+            VC.selectedFoodSidesNum = foodSideNums[(indexPath as NSIndexPath).row]
             
             print("SEGUE WORKS")
         }

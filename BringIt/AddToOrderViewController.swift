@@ -76,7 +76,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var specialInstructions = ""
     
     // Get USER ID
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     // Coming from checkoutVC?
     var comingFromCheckoutVC = false
@@ -86,15 +86,15 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // CoreData
     let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
-    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Start activity indicator
         myActivityIndicator.startAnimating()
-        self.myActivityIndicator.hidden = false
+        self.myActivityIndicator.isHidden = false
         
         // Set title
         self.title = selectedFoodName
@@ -102,13 +102,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set custom nav bar font
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+                NSForegroundColorAttributeName: UIColor.black])
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Set tableView cells to custom height and automatically resize if needed
         myTableView.estimatedRowHeight = 50
@@ -120,22 +120,22 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set stepper font
         stepper.labelFont = UIFont(name: "Avenir-Medium", size: 20)!
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
-        stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), forControlEvents: .ValueChanged)
+        stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), for: .valueChanged)
         
         if comingFromCheckoutVC {
             self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
             stepper.value = Double((self.passedItem?.quantity)!)
-            addToOrderButton.setTitle("UPDATE ORDER", forState: .Normal)
+            addToOrderButton.setTitle("UPDATE ORDER", for: UIControlState())
         }
         
         // Open Connection to PHP Service to menuSides
-        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSides.php")!
-        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
-        let session1 = NSURLSession.sharedSession()
-        let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
+        let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADmenuSides.php")!
+        let urlRequest1 = URLRequest(url: requestURL1)
+        let session1 = URLSession.shared
+        let task1 = session1.dataTask(with: urlRequest1, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -143,7 +143,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 let side_id = Restaurant["id"] as! String
@@ -161,7 +161,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 }
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 // Loop through DB data and append Restaurant objects into restaurants array
                                 for i in 0..<self.sideNames.count {
                                     var isSelected = false
@@ -188,7 +188,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     // If a side grouping exists
                                     if self.sideItems[i].sideGrouping != "" {
                                         // If a side grouping section is already present, add SideItem to that section
-                                        if let index = self.requiredSideTitles.indexOf(self.sideItems[i].sideGrouping) {
+                                        if let index = self.requiredSideTitles.index(of: self.sideItems[i].sideGrouping) {
                                             self.requiredSides[index].append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: self.sideItems[i].sideGrouping, sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                         } else {
                                             // Create section
@@ -199,7 +199,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     } else {
                                         // If required, add to general sides
                                         if (self.sideItems[i].sideRequired == "1" && (self.sideItems[i].sidePrice == "0" || self.sideItems[i].sidePrice == "0.00")) {
-                                            if let index = self.requiredSideTitles.indexOf("Sides") {
+                                            if let index = self.requiredSideTitles.index(of: "Sides") {
                                                 self.requiredSides[index].append(SideItem(sideName: self.sideItems[i].sideName, sidePrice: self.sideItems[i].sidePrice, sideRequired: "0", sideGrouping: "Sides", sideID: self.sideIDs[i], selected: self.sideItems[i].selected))
                                             } else {
                                                 self.requiredSideTitles.append("Sides")
@@ -232,14 +232,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 self.sectionNames.append("Special Instructions")
                                 self.sectionNames.append("Price")
                                 
-                                if let sIndex = self.sectionNames.indexOf("Sides") {
+                                if let sIndex = self.sectionNames.index(of: "Sides") {
                                     self.sidesIndex = sIndex
                                 }
-                                if let eIndex = self.sectionNames.indexOf("Extras") {
+                                if let eIndex = self.sectionNames.index(of: "Extras") {
                                     self.extrasIndex = eIndex
                                 }
-                                self.specialInstructionsIndex = self.sectionNames.indexOf("Special Instructions")!
-                                self.priceIndex = self.sectionNames.indexOf("Price")!
+                                self.specialInstructionsIndex = self.sectionNames.index(of: "Special Instructions")!
+                                self.priceIndex = self.sectionNames.index(of: "Price")!
                                 
                                 self.calculatePrice()
                                 self.calculateNumOfSidesSelected()
@@ -247,7 +247,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 
                                 // Stop activity indicator
                                 self.myActivityIndicator.stopAnimating()
-                                self.myActivityIndicator.hidden = true
+                                self.myActivityIndicator.isHidden = true
                             }
                         }
                     }
@@ -257,16 +257,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if let error = error {
                 print("Error:" + error.localizedDescription)
             }
-        }
+        }) 
         
         // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADmenuSidesItemLink.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADmenuSidesItemLink.php")!
+        let urlRequest = URLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -274,7 +274,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 var item_id: String?
@@ -288,7 +288,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                     }
                                 }
                             }
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 for i in 0..<self.sidesIDList.count {
                                     print("SidesIDs: " + self.sidesIDList[i])
                                 }
@@ -304,7 +304,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             } else if let error = error {
                 print("Error:" + error.localizedDescription)
             }
-        }
+        }) 
         
         task.resume()
         
@@ -318,19 +318,19 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func addToOrderButtonPressed(sender: UIButton) {
+    @IBAction func addToOrderButtonPressed(_ sender: UIButton) {
         
         // Check if there is an existing active cart from this restaurant
-        let fetchRequest = NSFetchRequest(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
         let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
         
         var activeCart = [Order]()
         
         do {
-            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
                 activeCart = fetchResults
                 print("THERE IS AN EXISTING CART")
             }
@@ -345,16 +345,16 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 if items[i].id == passedItem?.id {
                     
                     // UPDATE ITEM
-                    items[i].price = selectedFoodPrice
-                    items[i].quantity = Int(stepper.value)
-                    items[i].selectedFoodSidesNum = Int(selectedFoodSidesNum)
+                    items[i].price = selectedFoodPrice as NSNumber?
+                    items[i].quantity = Int(stepper.value) as NSNumber?
+                    items[i].selectedFoodSidesNum = Int(selectedFoodSidesNum) as NSNumber?
                     items[i].dbDescription = selectedFoodDescription
                     
                     // Retrieve special instructions if available
-                    let indexPath = NSIndexPath(forRow: 0, inSection: specialInstructionsIndex)
-                    let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-                    if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
-                        specialInstructions = selectedCell.specialInstructionsText.text!
+                    let indexPath = IndexPath(row: 0, section: specialInstructionsIndex)
+                    let selectedCell = myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+                    if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
+                        specialInstructions = (selectedCell?.specialInstructionsText.text!)!
                     }
                     items[i].specialInstructions = specialInstructions
                     
@@ -368,12 +368,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                         for s in r {
                             if s.selected {
                                 
-                                let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
-                                let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                                let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+                                let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
                                 
                                 side.name = s.sideName
                                 side.id = s.sideID
-                                side.price = Double(s.sidePrice)
+                                side.price = Double(s.sidePrice) as NSNumber?
                                 side.isRequired = true
                                 
                                 side.item = items[i]
@@ -385,12 +385,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     for s in extras {
                         if s.selected {
                             
-                            let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
-                            let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                            let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+                            let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
                             
                             side.name = s.sideName
                             side.id = s.sideID
-                            side.price = Double(s.sidePrice)
+                            side.price = Double(s.sidePrice) as NSNumber?
                             side.isRequired = false
                             
                             side.item = items[i]
@@ -400,14 +400,14 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                 }
             }
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             
         } else {
             
             // If cart is empty, then create new active cart with this restaurant
             if activeCart.isEmpty {
                 
-                let order = NSEntityDescription.insertNewObjectForEntityForName("Order", inManagedObjectContext: managedContext) as! Order
+                let order = NSEntityDescription.insertNewObject(forEntityName: "Order", into: managedContext) as! Order
                 
                 order.isActive = true
                 order.restaurant = selectedRestaurantName
@@ -415,13 +415,13 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Make DB Call to category_items and save delivery_fee if (selectedRestaurantName == name)
                 // Open Connection to PHP Service
-                let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
-                let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-                let session = NSURLSession.sharedSession()
-                let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+                let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
+                let urlRequest = URLRequest(url: requestURL)
+                let session = URLSession.shared
+                let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
                     if let data = data {
                         do {
-                            let httpResponse = response as! NSHTTPURLResponse
+                            let httpResponse = response as! HTTPURLResponse
                             let statusCode = httpResponse.statusCode
                             
                             // Check HTTP Response
@@ -429,40 +429,40 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                 
                                 do{
                                     // Parse JSON
-                                    let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                                    let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                                     
                                     for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                         let name = Restaurant["name"] as! String
                                         if (name == selectedRestaurantName) {
                                             let deliveryFee = Restaurant["delivery_fee"] as! String
                                             let serviceID = Restaurant["id"] as! String
-                                            order.deliveryFee = Double(deliveryFee)
+                                            order.deliveryFee = Double(deliveryFee) as NSNumber?
                                             order.restaurantID = serviceID
                                             print("Order FEE: ", order.deliveryFee)
                                         }
                                         
                                     }
                                     
-                                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                                    OperationQueue.main.addOperation {
                                         activeCart.append(order)
                                         
                                         // ITEM
                                         
-                                        let itemEntity =  NSEntityDescription.entityForName("Item", inManagedObjectContext:self.managedContext)
-                                        let item = NSManagedObject(entity: itemEntity!, insertIntoManagedObjectContext: self.managedContext) as! Item
+                                        let itemEntity =  NSEntityDescription.entity(forEntityName: "Item", in:self.managedContext)
+                                        let item = NSManagedObject(entity: itemEntity!, insertInto: self.managedContext) as! Item
                                         
                                         item.name = self.selectedFoodName
                                         item.id = self.selectedFoodID
-                                        item.price = self.selectedFoodPrice
-                                        item.quantity = Int(self.stepper.value)
-                                        item.selectedFoodSidesNum = Int(self.selectedFoodSidesNum)
+                                        item.price = self.selectedFoodPrice as NSNumber?
+                                        item.quantity = Int(self.stepper.value) as NSNumber?
+                                        item.selectedFoodSidesNum = Int(self.selectedFoodSidesNum) as NSNumber?
                                         item.dbDescription = self.selectedFoodDescription
                                         
                                         // Retrieve special instructions if available
-                                        let indexPath = NSIndexPath(forRow: 0, inSection: self.specialInstructionsIndex)
-                                        let selectedCell = self.myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-                                        if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
-                                            self.specialInstructions = selectedCell.specialInstructionsText.text!
+                                        let indexPath = IndexPath(row: 0, section: self.specialInstructionsIndex)
+                                        let selectedCell = self.myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+                                        if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
+                                            self.specialInstructions = (selectedCell?.specialInstructionsText.text!)!
                                         }
                                         item.specialInstructions = self.specialInstructions
                                         item.order = activeCart[0]
@@ -473,12 +473,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                             for i in r {
                                                 if i.selected {
                                                     
-                                                    let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:self.managedContext)
-                                                    let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: self.managedContext) as! Side
+                                                    let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:self.managedContext)
+                                                    let side = NSManagedObject(entity: sideEntity!, insertInto: self.managedContext) as! Side
                                                     
                                                     side.name = i.sideName
                                                     side.id = i.sideID
-                                                    side.price = Double(i.sidePrice)
+                                                    side.price = Double(i.sidePrice) as NSNumber?
                                                     side.isRequired = true
                                                     
                                                     side.item = item
@@ -490,12 +490,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         for i in self.extras {
                                             if i.selected {
                                                 
-                                                let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:self.managedContext)
-                                                let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: self.managedContext) as! Side
+                                                let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:self.managedContext)
+                                                let side = NSManagedObject(entity: sideEntity!, insertInto: self.managedContext) as! Side
                                                 
                                                 side.name = i.sideName
                                                 side.id = i.sideID
-                                                side.price = Double(i.sidePrice)
+                                                side.price = Double(i.sidePrice) as NSNumber?
                                                 side.isRequired = false
                                                 
                                                 side.item = item
@@ -505,7 +505,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                                         
                                         do {
                                             try self.managedContext.save()
-                                            self.dismissViewControllerAnimated(true, completion: nil)
+                                            self.dismiss(animated: true, completion: nil)
                                         } catch {
                                             fatalError("Failure to save context: \(error)")
                                         }
@@ -519,28 +519,28 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     } else if let error = error {
                         print(error.localizedDescription)
                     }
-                }
+                }) 
                 
                 task.resume()
             } else {
                 
                 // ITEM
                 
-                let itemEntity =  NSEntityDescription.entityForName("Item", inManagedObjectContext:managedContext)
-                let item = NSManagedObject(entity: itemEntity!, insertIntoManagedObjectContext: managedContext) as! Item
+                let itemEntity =  NSEntityDescription.entity(forEntityName: "Item", in:managedContext)
+                let item = NSManagedObject(entity: itemEntity!, insertInto: managedContext) as! Item
                 
                 item.name = selectedFoodName
                 item.id = selectedFoodID
-                item.price = selectedFoodPrice
-                item.quantity = Int(stepper.value)
-                item.selectedFoodSidesNum = Int(selectedFoodSidesNum)
+                item.price = selectedFoodPrice as NSNumber?
+                item.quantity = Int(stepper.value) as NSNumber?
+                item.selectedFoodSidesNum = Int(selectedFoodSidesNum) as NSNumber?
                 item.dbDescription = selectedFoodDescription
                 
                 // Retrieve special instructions if available
-                let indexPath = NSIndexPath(forRow: 0, inSection: specialInstructionsIndex)
-                let selectedCell = myTableView.cellForRowAtIndexPath(indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-                if selectedCell != nil && selectedCell.specialInstructionsText.text != nil {
-                    specialInstructions = selectedCell.specialInstructionsText.text!
+                let indexPath = IndexPath(row: 0, section: specialInstructionsIndex)
+                let selectedCell = myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+                if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
+                    specialInstructions = (selectedCell?.specialInstructionsText.text!)!
                 }
                 item.specialInstructions = specialInstructions
                 item.order = activeCart[0]
@@ -551,12 +551,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     for i in r {
                         if i.selected {
                             
-                            let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
-                            let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                            let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+                            let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
                             
                             side.name = i.sideName
                             side.id = i.sideID
-                            side.price = Double(i.sidePrice)
+                            side.price = Double(i.sidePrice) as NSNumber?
                             side.isRequired = true
                             
                             side.item = item
@@ -568,12 +568,12 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 for i in extras {
                     if i.selected {
                         
-                        let sideEntity =  NSEntityDescription.entityForName("Side", inManagedObjectContext:managedContext)
-                        let side = NSManagedObject(entity: sideEntity!, insertIntoManagedObjectContext: managedContext) as! Side
+                        let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+                        let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
                         
                         side.name = i.sideName
                         side.id = i.sideID
-                        side.price = Double(i.sidePrice)
+                        side.price = Double(i.sidePrice) as NSNumber?
                         side.isRequired = false
                         
                         side.item = item
@@ -584,7 +584,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                 // SAVE
                 do {
                     try managedContext.save()
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 } catch {
                     fatalError("Failure to save context: \(error)")
                 }
@@ -595,8 +595,8 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    @IBAction func xButtonClicked(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonClicked(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func calculatePrice() {
@@ -636,18 +636,18 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func stepperTapped(sender: GMStepper) {
+    func stepperTapped(_ sender: GMStepper) {
         // Recalculate price
         calculatePrice()
     }
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return sectionNames.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 { // Description
             return 1
@@ -663,9 +663,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("descriptionCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath as NSIndexPath).section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
             
             if selectedFoodDescription == "" || selectedFoodDescription == "No Description" {
                 cell.textLabel?.text = "No description, but we promise it's good."
@@ -674,29 +674,29 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             return cell
-        } else if indexPath.section == extrasIndex {
-            let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
+        } else if (indexPath as NSIndexPath).section == extrasIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addToOrderCell", for: indexPath) as! AddToOrderTableViewCell
             
             // Set cell properties
-            cell.selectionStyle = .None
-            cell.sideLabel.text = extras[indexPath.row].sideName
-            cell.extraCostLabel.hidden = false
-            let price = Double(extras[indexPath.row].sidePrice)
+            cell.selectionStyle = .none
+            cell.sideLabel.text = extras[(indexPath as NSIndexPath).row].sideName
+            cell.extraCostLabel.isHidden = false
+            let price = Double(extras[(indexPath as NSIndexPath).row].sidePrice)
             cell.extraCostLabel.text = String(format: "+$%.2f", price!)
 
             
             //Change cell's tint color
             cell.tintColor = GREEN
             
-            if extras[indexPath.row].selected {
-                cell.accessoryType = .Checkmark
+            if extras[(indexPath as NSIndexPath).row].selected {
+                cell.accessoryType = .checkmark
             } else {
-                cell.accessoryType = .None
+                cell.accessoryType = .none
             }
             
             return cell
-        } else if indexPath.section == specialInstructionsIndex {
-            let cell = tableView.dequeueReusableCellWithIdentifier("specialInstructionsCell", forIndexPath: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
+        } else if (indexPath as NSIndexPath).section == specialInstructionsIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "specialInstructionsCell", for: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
             
             // Preload if coming from checkoutVC
             if comingFromCheckoutVC {
@@ -704,59 +704,59 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             return cell
-        } else if indexPath.section == priceIndex {
-            let cell = tableView.dequeueReusableCellWithIdentifier("priceCell", forIndexPath: indexPath) as! AddToOrderPriceTableViewCell
+        } else if (indexPath as NSIndexPath).section == priceIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "priceCell", for: indexPath) as! AddToOrderPriceTableViewCell
             
             cell.priceLabel.text = String(format: "$%.2f", totalPrice)
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("addToOrderCell", forIndexPath: indexPath) as! AddToOrderTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addToOrderCell", for: indexPath) as! AddToOrderTableViewCell
             
             // Set cell properties
-            cell.selectionStyle = .None
-            cell.sideLabel.text = requiredSides[indexPath.section - 1][indexPath.row].sideName
-            cell.extraCostLabel.hidden = true
+            cell.selectionStyle = .none
+            cell.sideLabel.text = requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].sideName
+            cell.extraCostLabel.isHidden = true
             
             //Change cell's tint color
             cell.tintColor = GREEN
             
-            if requiredSides[indexPath.section - 1][indexPath.row].selected {
-                cell.accessoryType = .Checkmark
+            if requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].selected {
+                cell.accessoryType = .checkmark
             } else {
-                cell.accessoryType = .None
+                cell.accessoryType = .none
             }
             
             return cell
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         calculateNumOfSidesSelected()
         
-        if indexPath.section == extrasIndex {
-            if !extras[indexPath.row].selected {
-                extras[indexPath.row].selected = true
+        if (indexPath as NSIndexPath).section == extrasIndex {
+            if !extras[(indexPath as NSIndexPath).row].selected {
+                extras[(indexPath as NSIndexPath).row].selected = true
             } else {
-                extras[indexPath.row].selected = false
+                extras[(indexPath as NSIndexPath).row].selected = false
             }
-        } else if indexPath.section == priceIndex || indexPath.section == specialInstructionsIndex || indexPath.section == extrasIndex || indexPath.section == 0 {
+        } else if (indexPath as NSIndexPath).section == priceIndex || (indexPath as NSIndexPath).section == specialInstructionsIndex || (indexPath as NSIndexPath).section == extrasIndex || (indexPath as NSIndexPath).section == 0 {
         } else {
-            if !requiredSides[indexPath.section - 1][indexPath.row].selected {
-                if requiredSides[indexPath.section - 1][indexPath.row].sideGrouping != "Sides" {
-                    if numberOfSidesSelected[indexPath.section - 1] < 1 {
-                        requiredSides[indexPath.section - 1][indexPath.row].selected = true
+            if !requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].selected {
+                if requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].sideGrouping != "Sides" {
+                    if numberOfSidesSelected[(indexPath as NSIndexPath).section - 1] < 1 {
+                        requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].selected = true
                     }
                 } else {
-                    print(indexPath.section)
+                    print((indexPath as NSIndexPath).section)
                     print(numberOfSidesSelected.count)
                     print((Int(selectedFoodSidesNum)! - requiredSideTitles.count + 1))
-                    if numberOfSidesSelected[indexPath.section - 1] < (Int(selectedFoodSidesNum)! - requiredSideTitles.count + 1) {
-                        requiredSides[indexPath.section - 1][indexPath.row].selected = true
+                    if numberOfSidesSelected[(indexPath as NSIndexPath).section - 1] < (Int(selectedFoodSidesNum)! - requiredSideTitles.count + 1) {
+                        requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].selected = true
                     }
                 }
             } else {
-                requiredSides[indexPath.section - 1][indexPath.row].selected = false
+                requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].selected = false
             }
         }
         
@@ -789,50 +789,50 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     func enableAddToOrder() {
         // Enable the button and make it opaque
         addToOrderButton.alpha = 1
-        addToOrderButton.enabled = true
+        addToOrderButton.isEnabled = true
         
         // Enable the stepper and make it opaque
         stepper.alpha = 1
-        stepper.enabled = true
+        stepper.isEnabled = true
     }
     
     func disableAddToOrder() {
         // Disable the button and make it transparent
         addToOrderButton.alpha = 0.5
-        addToOrderButton.enabled = false
+        addToOrderButton.isEnabled = false
         
         // Disable the stepper and make it transparent
         stepper.alpha = 0.5
-        stepper.enabled = false
+        stepper.isEnabled = false
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section != priceIndex {
             return 55
         } else {
-            return CGFloat.min
+            return CGFloat.leastNormalMagnitude
         }
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let headerCell = tableView.dequeueReusableCellWithIdentifier("headerCell") as! HeaderTableViewCell
+        let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! HeaderTableViewCell
         
         // Set header text
         headerCell.titleLabel.text = sectionNames[section]
         
         if section == priceIndex || section == specialInstructionsIndex || section == extrasIndex || section == 0 {
-            headerCell.pickXLabel.hidden = true
+            headerCell.pickXLabel.isHidden = true
         } else {
-            headerCell.pickXLabel.hidden = false
+            headerCell.pickXLabel.isHidden = false
             if sectionNames[section] != "Sides" {
                 headerCell.pickXLabel.text = "(Pick 1)"
             } else {

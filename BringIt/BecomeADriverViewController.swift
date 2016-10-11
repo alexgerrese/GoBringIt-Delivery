@@ -27,10 +27,10 @@ class BecomeADriverViewController: UIViewController, MFMailComposeViewController
     
     // MARK: - Compose Email Methods
     
-    @IBAction func applyNowButtonPressed(sender: UIButton) {
+    @IBAction func applyNowButtonPressed(_ sender: UIButton) {
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
-            self.presentViewController(mailComposeViewController, animated: true, completion: nil)
+            self.present(mailComposeViewController, animated: true, completion: nil)
         } else {
             self.showSendMailErrorAlert()
         }
@@ -53,8 +53,8 @@ class BecomeADriverViewController: UIViewController, MFMailComposeViewController
     }
     
     // MARK: MFMailComposeViewControllerDelegate Method
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 
     /*

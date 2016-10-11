@@ -34,12 +34,12 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     var userID = ""
     
     // UserDefaults
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     // CoreData
     let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
-    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,28 +48,28 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationItem.title = "Profile"
         
         // Set nav bar preferences
-        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+                NSForegroundColorAttributeName: UIColor.black])
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         // Check if user is already logged in
         checkLoggedIn()
         
-        if let id = defaults.objectForKey("userID") {
+        if let id = defaults.object(forKey: "userID") {
             userID = id  as! String
         } else {
             self.tabBarController?.selectedIndex = 0
         }
         
         // Get and display user's name
-        if let name = defaults.objectForKey("userName") {
+        if let name = defaults.object(forKey: "userName") {
             userName = name as! String
             // Set name
             nameLabel.text = userName
@@ -78,13 +78,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             // Make call to accounts DB
             // Check if uid == userID
             // Pull name, email, phone
-            let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
-            let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
-            let session1 = NSURLSession.sharedSession()
-            let task1 = session1.dataTaskWithRequest(urlRequest1) {
+            let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
+            let urlRequest1 = URLRequest(url: requestURL1)
+            let session1 = URLSession.shared
+            let task1 = session1.dataTask(with: urlRequest1, completionHandler: {
                 (data, response, error) -> Void in
                 
-                let httpResponse = response as! NSHTTPURLResponse
+                let httpResponse = response as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 
                 // Check HTTP Response
@@ -92,7 +92,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                     
                     do{
                         // Parse JSON
-                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                        let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
                         
                         for User in json as! [Dictionary<String, AnyObject>] {
                             let user_id = User["uid"] as! String
@@ -100,7 +100,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                                 let fullname = User["name"] as! String
                                 self.userName = fullname
                                 // Save to userDefaults
-                                self.defaults.setObject(fullname, forKey: "userName")
+                                self.defaults.set(fullname, forKey: "userName")
                             }
                             //  NSOperationQueue.mainQueue().addOperationWithBlock
                         }
@@ -112,27 +112,27 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                         print("Error with Json: \(error)")
                     }
                 }
-            }
+            }) 
             task1.resume()
             
         }
         
         // Deselect cells when view appears
         if let indexPath = myTableView.indexPathForSelectedRow {
-            myTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            myTableView.deselectRow(at: indexPath, animated: true)
         }
         
         // Get correct count for addresses
-        if let addressesArray = defaults.objectForKey("Addresses") {
-            cellNumbers[addressIndex] = addressesArray.count
+        if let addressesArray = defaults.object(forKey: "Addresses") {
+            cellNumbers[addressIndex] = (addressesArray as AnyObject).count
             myTableView.reloadData()
         }
         
         // Fetch all inactive carts, if any exist
         
-        let fetchRequest = NSFetchRequest(entityName: "Order")
+        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
         let sortDescriptor = NSSortDescriptor(key: "dateOrdered", ascending: false)
-        let firstPredicate = NSPredicate(format: "isActive == %@", false)
+        let firstPredicate = NSPredicate(format: "isActive == %@", false as CVarArg)
         fetchRequest.predicate = firstPredicate
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -141,7 +141,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         var avgOrderCost = 0.0
         
         do {
-            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
                 
                 for i in fetchResults {
                     totalCost += Double(i.totalPrice!)
@@ -175,82 +175,82 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return infoCells.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
         
-        if indexPath.section == 0 {
-            cell.textLabel?.text = infoCells[indexPath.row]
-            if cellNumbers[indexPath.row] == 0 {
+        if (indexPath as NSIndexPath).section == 0 {
+            cell.textLabel?.text = infoCells[(indexPath as NSIndexPath).row]
+            if cellNumbers[(indexPath as NSIndexPath).row] == 0 {
                 cell.detailTextLabel?.text = ""
             } else {
-                cell.detailTextLabel?.text = String(cellNumbers[indexPath.row])
+                cell.detailTextLabel?.text = String(cellNumbers[(indexPath as NSIndexPath).row])
             }
         }
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 0 {
-            performSegueWithIdentifier("toContactInfo", sender: self)
-        } else if indexPath.row == 1 {
-            performSegueWithIdentifier("toDeliverToPayingWithFromProfile", sender: self)
-        } else if indexPath.row == 2 {
-            performSegueWithIdentifier("toPaymentMethods", sender: self)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath as NSIndexPath).row == 0 {
+            performSegue(withIdentifier: "toContactInfo", sender: self)
+        } else if (indexPath as NSIndexPath).row == 1 {
+            performSegue(withIdentifier: "toDeliverToPayingWithFromProfile", sender: self)
+        } else if (indexPath as NSIndexPath).row == 2 {
+            performSegue(withIdentifier: "toPaymentMethods", sender: self)
         } else {
-            performSegueWithIdentifier("toComingSoon", sender: self)
+            performSegue(withIdentifier: "toComingSoon", sender: self)
         }
     }
     
-    @IBAction func logOutButtonClicked(sender: UIButton) {
+    @IBAction func logOutButtonClicked(_ sender: UIButton) {
         
-        let alertController = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .ActionSheet)
-        let signOut = UIAlertAction(title: "Yes, sign me out", style: .Default, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .actionSheet)
+        let signOut = UIAlertAction(title: "Yes, sign me out", style: .default, handler: { (action) -> Void in
             print("SignOut Button Pressed")
             
             // RESET SENSITIVE INFO
-            self.defaults.setBool(false, forKey: "loggedIn")
-            self.defaults.setObject(nil, forKey: "userID")
-            self.defaults.setObject("", forKey: "stripeCustomerID")
+            self.defaults.set(false, forKey: "loggedIn")
+            self.defaults.set(nil, forKey: "userID")
+            self.defaults.set("", forKey: "stripeCustomerID")
             
             self.checkLoggedIn()
         })
-        let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
+        let cancel = UIAlertAction(title: "No, cancel", style: .cancel, handler: { (action) -> Void in
             print("Cancel Button Pressed")
         })
         
         alertController.addAction(signOut)
         alertController.addAction(cancel)
         
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
-    @IBAction func returnToSettings(segue: UIStoryboardSegue) {
+    @IBAction func returnToSettings(_ segue: UIStoryboardSegue) {
     }
     
     // Check if user is already logged in. If not, present SignInViewController.
     func checkLoggedIn() {
-        let loggedIn = defaults.boolForKey("loggedIn")
+        let loggedIn = defaults.bool(forKey: "loggedIn")
         if !loggedIn {
-            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("signIn") as! SignInViewController
-            self.presentViewController(vc, animated: true, completion: nil)
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "signIn") as! SignInViewController
+            self.present(vc, animated: true, completion: nil)
         }
     }
     
     // MARK: - Compose Email Methods
     
-    @IBAction func sendEmailButtonTapped(sender: AnyObject) {
+    @IBAction func sendEmailButtonTapped(_ sender: AnyObject) {
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
-            self.presentViewController(mailComposeViewController, animated: true, completion: nil)
+            self.present(mailComposeViewController, animated: true, completion: nil)
         } else {
             self.showSendMailErrorAlert()
         }
@@ -273,8 +273,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: MFMailComposeViewControllerDelegate Method
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     

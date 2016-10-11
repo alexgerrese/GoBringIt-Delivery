@@ -18,19 +18,19 @@ class MyAPIClient: NSObject, STPBackendAPIAdapter {
     var sources: [STPCard] = []
     
     // Set up UserDefaults
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
-    func completeCharge(result: STPPaymentResult, amount: Int, completion: STPErrorBlock) {
+    func completeCharge(_ result: STPPaymentResult, amount: Int, completion: @escaping STPErrorBlock) {
         
         let params: [String: AnyObject] = [
-            "source": result.source.stripeID,
-            "amount": amount,
-            "customerID": customerID
+            "source": result.source.stripeID as AnyObject,
+            "amount": amount as AnyObject,
+            "customerID": customerID as AnyObject
         ]
-        let URL = "https://www.gobring.it/payment.php"
+        let URL = "http://www.gobringit.com/payment.php"
         let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFHTTPResponseSerializer()
-        manager.POST(URL, parameters: params, success: { (operation, responseObject) -> Void in
+        manager.post(URL, parameters: params, success: { (operation, responseObject) -> Void in
             
             if let response = responseObject as? [String: String] {
                 UIAlertView(title: response["status"],
@@ -39,86 +39,77 @@ class MyAPIClient: NSObject, STPBackendAPIAdapter {
                     cancelButtonTitle: "OK").show()
             }
             
-        }) { (operation, error) -> Void in
-            self.handleError(error)
-        }
+        })
     }
     
-    func retrieveCustomer(completion: STPCustomerCompletionBlock) {
+    func retrieveCustomer(_ completion: @escaping STPCustomerCompletionBlock) {
         print("RETRIEVE CUSTOMER")
-        if let userID = defaults.objectForKey("userID") {
+        if let userID = defaults.object(forKey: "userID") {
             print("USER HAS ALREADY LOGGED IN AND HAS USERID")
-            print(defaults.objectForKey("stripeCustomerID"))
+            print(defaults.object(forKey: "stripeCustomerID"))
             
             let params = ["uid" : userID as! String,
                           "customerID": customerID
                 ] as Dictionary<String,String>
             print("PARAMS ARE \(params["uid"]) and \(params["customerID"])")
             print(customerID)
-            let URL = "https://www.gobring.it/STRIPEretrieve_customer.php"
+            let URL = "http://www.gobringit.com/STRIPEretrieve_customer.php"
             let manager = AFHTTPSessionManager()
             manager.responseSerializer = AFJSONResponseSerializer()
             manager.requestSerializer = AFHTTPRequestSerializer()
-            manager.GET(URL, parameters:
+            manager.get(URL, parameters:
                 params,
-                        progress: .None,
+                        progress: .none,
                         success: { (operation, responseObject) in
                             print("RC success")
-                            let deserializer = STPCustomerDeserializer(JSONResponse: responseObject!)
+                            let deserializer = STPCustomerDeserializer(jsonResponse: responseObject!)
                             print(deserializer.customer?.stripeID)
                             completion(deserializer.customer, nil)
                             
                             // Save customerID to userDefaults
-                            self.defaults.setObject(deserializer.customer?.stripeID, forKey: "stripeCustomerID")
+                            self.defaults.set(deserializer.customer?.stripeID, forKey: "stripeCustomerID")
                             
-                },
-                        failure: { (operation, error) -> Void in
-                            self.handleError(error)
-            })
+                })
         }
         
         
     }
     
-    func selectDefaultCustomerSource(source: STPSource, completion: STPErrorBlock) {
+    func selectDefaultCustomerSource(_ source: STPSource, completion: @escaping STPErrorBlock) {
         
         print("SELECT DEFAULT")
         
         let params: [String: AnyObject] = [
-            "customerID": customerID,
-            "source": source.stripeID
+            "customerID": customerID as AnyObject,
+            "source": source.stripeID as AnyObject
         ]
-        let URL = "https://www.gobring.it/STRIPEdefault_source.php"
+        let URL = "http://www.gobringit.com/STRIPEdefault_source.php"
         let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFHTTPResponseSerializer()
-        manager.POST(URL, parameters: params, success: { (operation, responseObject) -> Void in
+        manager.post(URL, parameters: params, success: { (operation, responseObject) -> Void in
             
             
-        }) { (operation, error) -> Void in
-            self.handleError(error)
-        }
+        })
         
     }
     
-    func attachSourceToCustomer(source: STPSource, completion: STPErrorBlock) {
+    func attachSource(toCustomer source: STPSource, completion: @escaping STPErrorBlock) {
         
         print("Attach SOURCE")
         
         let params: [String: AnyObject] = [
-            "customerID": customerID,
-            "source": source.stripeID
+            "customerID": customerID as AnyObject,
+            "source": source.stripeID as AnyObject
         ]
-        let URL = "https://www.gobring.it/STRIPEcreate_card.php"
+        let URL = "http://www.gobringit.com/STRIPEcreate_card.php"
         let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFHTTPResponseSerializer()
-        manager.POST(URL, parameters: params, success: { (operation, responseObject) -> Void in
+        manager.post(URL, parameters: params, success: { (operation, responseObject) -> Void in
             completion(nil)
-        }) { (operation, error) -> Void in
-            self.handleError(error)
-        }
+        }) 
     }
     
-    func handleError(error: NSError) {
+    func handleError(_ error: NSError) {
         print(error)
         UIAlertView(title: "Please Try Again",
                     message: error.localizedDescription,

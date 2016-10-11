@@ -18,7 +18,7 @@ class OrderPlacedViewController: UIViewController {
     var passedRestaurantName = ""
     
     // Set up userDefaults
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +27,10 @@ class OrderPlacedViewController: UIViewController {
         self.title = "Thank You!"
         
         // Set nav bar preferences
-        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+                NSForegroundColorAttributeName: UIColor.black])
         
         // Set order total label
         orderTotalLabel.text = "Including delivery fee and tip, you spent \(String(format: "$%.2f", passedOrderTotal)) at \(passedRestaurantName)."
@@ -40,8 +40,8 @@ class OrderPlacedViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    @IBAction func finishAndClosedButtonPressed(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func finishAndClosedButtonPressed(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         comingFromOrderPlaced = true
     }
     
@@ -51,12 +51,12 @@ class OrderPlacedViewController: UIViewController {
     }
     
     func updateFirstOrderStatus() {
-        let userID = defaults.objectForKey("userID")
-        let alreadyOrdered = defaults.boolForKey("alreadyOrdered")
+        let userID = defaults.object(forKey: "userID")
+        let alreadyOrdered = defaults.bool(forKey: "alreadyOrdered")
         
         if !alreadyOrdered {
             // Update value to false in userDefaults
-            defaults.setBool(true, forKey: "alreadyOrdered")
+            defaults.set(true, forKey: "alreadyOrdered")
             print("This was the user's first order")
             
             // Update value on db
@@ -66,22 +66,22 @@ class OrderPlacedViewController: UIViewController {
                 as Dictionary<String, String>
             
             // create the request & response
-            let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdateFirstOrder.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+            var request = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdateFirstOrder.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
             
             do {
-                let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
-                request.HTTPBody = jsonData
+                let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+                request.httpBody = jsonData
             } catch let error as NSError {
                 print(error)
             }
-            request.HTTPMethod = "POST"
+            request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
             // send the request
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(request) {
-                (let data, let response, let error) in
-            }
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: {
+                (data, response, error) in
+            }) 
             
             task.resume()
         }

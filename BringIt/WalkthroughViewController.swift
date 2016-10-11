@@ -32,26 +32,26 @@ class WalkthroughViewController: UIViewController {
         pageControl.currentPage = index
         
         // Hide and show buttons as needed
-        getStartedButton.hidden = (index == 2) ? false : true
-        nextButton.hidden = (index == 2) ? true : false
-        comingSoonLabel.hidden = (index == 1) ? false : true
+        getStartedButton.isHidden = (index == 2) ? false : true
+        nextButton.isHidden = (index == 2) ? true : false
+        comingSoonLabel.isHidden = (index == 1) ? false : true
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
     // Set firstLaunch to false in UserDefaults - walkthrough has been shown
-    @IBAction func startClicked(sender: AnyObject) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setBool(true, forKey: "displayedWalkthrough")
+    @IBAction func startClicked(_ sender: AnyObject) {
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(true, forKey: "displayedWalkthrough")
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     // Goes to next slide with button instead of swipe
-    @IBAction func nextClicked(sender: AnyObject) {
-        let pageViewController = self.parentViewController as! PageViewController
+    @IBAction func nextClicked(_ sender: AnyObject) {
+        let pageViewController = self.parent as! PageViewController
         pageViewController.nextPageWithIndex(index)
     }
 

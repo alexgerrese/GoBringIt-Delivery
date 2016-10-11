@@ -15,33 +15,33 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - B68UIFloatLabelTextField (0.1.2)
-  - CVCalendar (1.2.9)
-  - EZSwiftExtensions (1.6)
-  - GMStepper (1.2.0)
-  - IDZSwiftCommonCrypto (0.7.3)
-  - IQKeyboardManagerSwift (4.0.5)
-  - Stripe (8.0.6)
+  - CVCalendar (1.4.0)
+  - EZSwiftExtensions (1.7)
+  - GMStepper (2.0.0)
+  - IDZSwiftCommonCrypto (0.9.0)
+  - IQKeyboardManagerSwift (4.0.6)
+  - Stripe (9.0.0)
 
 DEPENDENCIES:
   - AFNetworking
-  - B68UIFloatLabelTextField (~> 0.1.0)
-  - CVCalendar (~> 1.2.9)
-  - EZSwiftExtensions (~> 1.4)
+  - B68UIFloatLabelTextField
+  - CVCalendar
+  - EZSwiftExtensions
   - GMStepper
-  - IDZSwiftCommonCrypto (~> 0.7)
+  - IDZSwiftCommonCrypto
   - IQKeyboardManagerSwift
   - Stripe
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   B68UIFloatLabelTextField: 337894ff837df84e19636c99f3f5f88c4fad60d7
-  CVCalendar: 0799256e0bc3b43e83b7e86c0729ce9ff0624cb6
-  EZSwiftExtensions: 6c5e29ae473b3d2edbf5472eab0a3d7bdb20215c
-  GMStepper: e743b5648ae5fe877e33d3b51b5aa2df432f179d
-  IDZSwiftCommonCrypto: f4271e731bdeefa85832d425629134fc01efd659
-  IQKeyboardManagerSwift: 41fd3a45a2cdb2a0e031af697708a95b865068a1
-  Stripe: 7b3f1406c6bbc2f872a5781259da824750a7ee9c
+  CVCalendar: ec1a06a508f99d8e5067258754f811a8a1433a3f
+  EZSwiftExtensions: 4afef248066a036903d8496bf07bc355b22ce766
+  GMStepper: 6aff0c881afac2f432e5c9b0df71e44e14110a06
+  IDZSwiftCommonCrypto: 60f14492730da20117ce5875b890c7a6fc38ab8c
+  IQKeyboardManagerSwift: b3015e819559ca76381f87a0833f44d178564603
+  Stripe: 935c6deb5e96cbd29d247074bf3aa98a8438e22c
 
-PODFILE CHECKSUM: ef30bd3bacb0b43aee226ba2209a4c00be35d197
+PODFILE CHECKSUM: 5c109c2d69e3d6b7f9f3ee1c99016091a794d488
 
 COCOAPODS: 1.0.1

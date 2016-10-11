@@ -11,7 +11,7 @@ import UIKit
 class RestaurantTableViewController: UITableViewController {
     
     // Categories
-    var restaurantImageData = NSData()
+    var restaurantImageData = Data()
     var restaurantName = String()
     var restaurantID = String()
     var restaurantType = String()
@@ -28,11 +28,11 @@ class RestaurantTableViewController: UITableViewController {
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         // Deselect cells when view appears
         if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 
@@ -43,22 +43,22 @@ class RestaurantTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         print(menuCategories.count)
         return menuCategories.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("menuCategories", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategories", for: indexPath)
         
         // Set up cell properties
-        cell.textLabel?.text = menuCategories[indexPath.row]
+        cell.textLabel?.text = menuCategories[(indexPath as NSIndexPath).row]
         
         return cell
     }

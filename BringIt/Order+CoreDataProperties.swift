@@ -17,7 +17,7 @@ extension Order {
     @NSManaged var isActive: NSNumber?
     @NSManaged var id: String?
     @NSManaged var totalPrice: NSNumber?
-    @NSManaged var dateOrdered: NSDate?
+    @NSManaged var dateOrdered: Date?
     @NSManaged var deliveryFee: NSNumber?
     @NSManaged var restaurant: String?
     @NSManaged var restaurantID: String?

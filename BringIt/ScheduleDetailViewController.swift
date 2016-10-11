@@ -29,26 +29,26 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
     
     // CoreData
     let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
-    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Start activity indicator
         myActivityIndicator.startAnimating()
-        self.myActivityIndicator.hidden = false
+        self.myActivityIndicator.isHidden = false
         
         // Set title
         self.title = date
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Add shadow to orderView
-        orderView.layer.shadowColor = UIColor.darkGrayColor().CGColor
+        orderView.layer.shadowColor = UIColor.darkGray.cgColor
         orderView.layer.shadowOpacity = 0.5
-        orderView.layer.shadowOffset = CGSizeZero
+        orderView.layer.shadowOffset = CGSize.zero
         orderView.layer.shadowRadius = 1
         
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
@@ -57,13 +57,13 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         
         // DB Call to category_items
         // check if restaurantID == id, save image
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
+        let urlRequest = URLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -71,14 +71,14 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 let id = Restaurant["id"] as! String
                                 if (id == restaurantID) {
                                     let image = Restaurant["image"] as! String
-                                    let url = NSURL(string: "http://www.gobring.it/images/" + image)
-                                    let data = NSData(contentsOfURL: url!)
+                                    let url = URL(string: "http://www.gobringit.com/images/" + image)
+                                    let data = try? Data(contentsOf: url!)
                                     backPic = UIImage(data: data!)
                                     
                                     
@@ -86,13 +86,13 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
                                 }
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 self.myTableView.reloadData()
                                 // Stop activity indicator
                                 //TO-DO: Place this so it is executed after the db request is made!
                                 self.backgroundImageView.image = backPic!
                                 self.myActivityIndicator.stopAnimating()
-                                self.myActivityIndicator.hidden = true
+                                self.myActivityIndicator.isHidden = true
                                 
                             }
                         }
@@ -103,7 +103,7 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
             } else if let error = error {
                 print(error.localizedDescription)
             }
-        }
+        }) 
         
         task.resume()
         
@@ -128,19 +128,19 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func orderAgainButtonPressed(sender: UIButton) {
+    @IBAction func orderAgainButtonPressed(_ sender: UIButton) {
         
         // Check if there is an existing active cart from this restaurant
-        let fetchRequest = NSFetchRequest(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
         let secondPredicate = NSPredicate(format: "restaurant == %@", (order?.restaurant)!)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
         
         var activeCart = [Order]()
         
         do {
-            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
                 activeCart = fetchResults
                 print("THERE IS AN EXISTING CART")
             }
@@ -157,7 +157,7 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
             activeCart.removeAll()
         }
         
-        var reorder = NSEntityDescription.insertNewObjectForEntityForName("Order", inManagedObjectContext: managedContext) as! Order
+        var reorder = NSEntityDescription.insertNewObject(forEntityName: "Order", into: managedContext) as! Order
         reorder = order!
         
         // Set this cart as the active cart
@@ -167,7 +167,7 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         // Save changes
         self.appDelegate.saveContext()
         
-        performSegueWithIdentifier("toCheckoutFromReorder", sender: self)
+        performSegue(withIdentifier: "toCheckoutFromReorder", sender: self)
     }
     
     // MARK: - Table view data source
@@ -175,35 +175,35 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return
             items!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("scheduleDetailCell", forIndexPath: indexPath) as! ScheduleDetailTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "scheduleDetailCell", for: indexPath) as! ScheduleDetailTableViewCell
         
         // Set name and quantity labels
-        cell.itemNameLabel.text = items![indexPath.row].name
-        cell.itemQuantityLabel.text = String(items![indexPath.row].quantity!)
+        cell.itemNameLabel.text = items![(indexPath as NSIndexPath).row].name
+        cell.itemQuantityLabel.text = String(describing: items![(indexPath as NSIndexPath).row].quantity!)
         
         // Calculate total item cost
         var totalItemCost = 0.0
         var costOfSides = 0.0
-        for side in items![indexPath.row].sides?.allObjects as! [Side] {
+        for side in items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side] {
             costOfSides += Double(side.price!)
         }
-        totalItemCost += (Double(items![indexPath.row].price!) + costOfSides) * Double(items![indexPath.row].quantity!)
+        totalItemCost += (Double(items![(indexPath as NSIndexPath).row].price!) + costOfSides) * Double(items![(indexPath as NSIndexPath).row].quantity!)
         cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
         
         // Format all sides and extras
         var sides = "Sides: "
         var extras = "Extras: "
-        let allSides = items![indexPath.row].sides?.allObjects as! [Side]
+        let allSides = items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side]
         
         for i in 0..<allSides.count {
             if ((allSides[i].isRequired) == true) {
@@ -229,8 +229,8 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         
         // Format special instructions
         var specialInstructions = "Special Instructions: "
-        if items![indexPath.row].specialInstructions != "" {
-            specialInstructions += items![indexPath.row].specialInstructions!
+        if items![(indexPath as NSIndexPath).row].specialInstructions != "" {
+            specialInstructions += items![(indexPath as NSIndexPath).row].specialInstructions!
         } else {
             specialInstructions += "None"
         }
@@ -291,14 +291,14 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         myTableViewHeight.constant = myTableView.contentSize.height
     }
     
-    @IBAction func returnToScheduleDetails(segue: UIStoryboardSegue) {
+    @IBAction func returnToScheduleDetails(_ segue: UIStoryboardSegue) {
     }
     
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "toCheckoutFromReorder" {

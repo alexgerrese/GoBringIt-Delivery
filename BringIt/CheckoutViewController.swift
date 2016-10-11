@@ -38,7 +38,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // Tip View
     @IBOutlet weak var tipDriverView: UIView!
     @IBOutlet weak var tipStepper: GMStepper!
-    var blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    var blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     
     // MARK: - Variables
     
@@ -73,11 +73,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // Set up CoreData
     let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
-    let managedContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     // Set up UserDefaults
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,25 +86,25 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         self.title = "Checkout"
         
         // Set nav bar preferences
-        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+                NSForegroundColorAttributeName: UIColor.black])
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Set tableView cells to custom height and automatically resize if needed
         itemsTableView.estimatedRowHeight = 110
         itemsTableView.rowHeight = UITableViewAutomaticDimension
         
         // Hide activity indicator
-        myActivityIndicator.hidden = true
+        myActivityIndicator.isHidden = true
         
         // Add shadow to tipDriverView
-        tipDriverView.layer.shadowColor = UIColor.darkGrayColor().CGColor
+        tipDriverView.layer.shadowColor = UIColor.darkGray.cgColor
         tipDriverView.layer.shadowOpacity = 0.5
-        tipDriverView.layer.shadowOffset = CGSizeZero
+        tipDriverView.layer.shadowOffset = CGSize.zero
         tipDriverView.layer.shadowRadius = 5
         
         // Set font of tipStepper
@@ -113,20 +113,23 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         calculateTotalCost()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        
+        print("CHECKOUT VC")
         
         // Check if coming from OrderPlacedVC
         if comingFromOrderPlaced == true {
             comingFromOrderPlaced = false
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             return
         }
         
         // Check if coming from SignInVC
         if comingFromSignIn {
-            let loggedIn = defaults.boolForKey("loggedIn")
+            print("COMING FROM SIGN IN")
+            let loggedIn = defaults.bool(forKey: "loggedIn")
             if !loggedIn {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
                 return
             }
         }
@@ -134,28 +137,40 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         // Check if user is already logged in
         checkLoggedIn()
         
-        // Stripe Setup
-        customerID = self.defaults.objectForKey("stripeCustomerID") as! String
-        MyAPIClient.sharedClient.customerID = self.customerID
+        print("BEFORE STRIPE SETUP")
         
-        // Set up PaymentContext
-        let paymentContext = STPPaymentContext(APIAdapter: MyAPIClient.sharedClient)
-        let userInformation = STPUserInformation()
-        paymentContext.prefilledInformation = userInformation
-        paymentContext.paymentCurrency = self.paymentCurrency
-        self.paymentContext = paymentContext
-        self.paymentContext.delegate = self
-        paymentContext.hostViewController = self
+        // Stripe Setup
+        if let customerID = self.defaults.object(forKey: "stripeCustomerID") {
+            print("1")
+            MyAPIClient.sharedClient.customerID = self.customerID as String
+            print("2")
+            
+            // Set up PaymentContext
+            let paymentContext = STPPaymentContext(apiAdapter: MyAPIClient.sharedClient)
+            print("3")
+            let userInformation = STPUserInformation()
+            print("4")
+            paymentContext.prefilledInformation = userInformation
+            print("5")
+            paymentContext.paymentCurrency = self.paymentCurrency
+            print("6")
+            self.paymentContext = paymentContext
+            self.paymentContext.delegate = self
+            paymentContext.hostViewController = self
+        }
+        
+        
+        print("AFTER STRIPE SETUP")
         
         // Get userID
-        if let id = self.defaults.objectForKey("userID") {
+        if let id = self.defaults.object(forKey: "userID") {
             userID = id as! String
         }
         
         // Check if usingFoodPoints
         usingFoodPoints = checkIfUsingFoodPoints()
         
-        if let paymentMethod = defaults.objectForKey("selectedPaymentMethod") {
+        if let paymentMethod = defaults.object(forKey: "selectedPaymentMethod") {
             paymentMethodLabel = paymentMethod as! String
             print(paymentMethodLabel)
         } else {
@@ -169,22 +184,22 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Deselect cells when view appears
         if let indexPath = itemsTableView.indexPathForSelectedRow {
-            itemsTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            itemsTableView.deselectRow(at: indexPath, animated: true)
         }
         if let indexPath = detailsTableView.indexPathForSelectedRow {
-            detailsTableView.deselectRowAtIndexPath(indexPath, animated: true)
+            detailsTableView.deselectRow(at: indexPath, animated: true)
         }
         
         // Hide error message
-        checkoutErrorLabel.hidden = true
+        checkoutErrorLabel.isHidden = true
         
         // DETAIL TABLEVIEW
         
         var addresses = [String]()
-        if let addressesArray = defaults.objectForKey("Addresses") {
+        if let addressesArray = defaults.object(forKey: "Addresses") {
             addresses = addressesArray as! [String]
         }
-        if let index = defaults.objectForKey("CurrentAddressIndex") {
+        if let index = defaults.object(forKey: "CurrentAddressIndex") {
             if index as! Int != -1 {
                 currentAddress = addresses[index as! Int]
             }
@@ -195,14 +210,14 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Fetch all active carts, if any exist
         
-        let fetchRequest = NSFetchRequest(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true)
+        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
         let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: [firstPredicate, secondPredicate])
+        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
         fetchRequest.predicate = predicate
         
         do {
-            if let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [Order] {
+            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
                 activeCart = fetchResults
                 print(fetchResults.count)
             }
@@ -224,7 +239,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // Set delivery fee
             // Check if alreadyOrdered, and update deliveryFee if not
-            if let alreadyOrdered = self.defaults.objectForKey("alreadyOrdered") {
+            if let alreadyOrdered = self.defaults.object(forKey: "alreadyOrdered") {
                 if !(alreadyOrdered as! Bool){
                     self.activeCart![0].deliveryFee = 0.00
                 }
@@ -260,11 +275,11 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == itemsTableView {
             if let numItems = items?.count {
                 return numItems
@@ -275,27 +290,27 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == itemsTableView {
-            let cell = tableView.dequeueReusableCellWithIdentifier("checkoutCell", forIndexPath: indexPath) as! CheckoutTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "checkoutCell", for: indexPath) as! CheckoutTableViewCell
             
             // Set name and quantity labels
-            cell.itemNameLabel.text = items![indexPath.row].name
-            cell.itemQuantityLabel.text = String(items![indexPath.row].quantity!)
+            cell.itemNameLabel.text = items![(indexPath as NSIndexPath).row].name
+            cell.itemQuantityLabel.text = String(describing: items![(indexPath as NSIndexPath).row].quantity!)
             
             // Calculate total item cost
             var totalItemCost = 0.0
             var costOfSides = 0.0
-            for side in items![indexPath.row].sides?.allObjects as! [Side] {
+            for side in items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side] {
                 costOfSides += Double(side.price!)
             }
-            totalItemCost += (Double(items![indexPath.row].price!) + costOfSides) * Double(items![indexPath.row].quantity!)
+            totalItemCost += (Double(items![(indexPath as NSIndexPath).row].price!) + costOfSides) * Double(items![(indexPath as NSIndexPath).row].quantity!)
             cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
             
             // Format all sides and extras
             var sides = "Sides: "
             var extras = "Extras: "
-            let allSides = items![indexPath.row].sides?.allObjects as! [Side]
+            let allSides = items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side]
             for i in 0..<allSides.count {
                 if ((allSides[i].isRequired) == true) {
                     if i < allSides.count - 1 {
@@ -320,8 +335,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // Format special instructions
             var specialInstructions = "Special Instructions: "
-            if items![indexPath.row].specialInstructions != "" {
-                specialInstructions += items![indexPath.row].specialInstructions!
+            if items![(indexPath as NSIndexPath).row].specialInstructions != "" {
+                specialInstructions += items![(indexPath as NSIndexPath).row].specialInstructions!
             } else {
                 specialInstructions += "None"
             }
@@ -377,9 +392,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("checkoutDetailsCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "checkoutDetailsCell", for: indexPath)
             
-            if indexPath.row == 0 {
+            if (indexPath as NSIndexPath).row == 0 {
                 cell.textLabel?.text = "Deliver To"
                 if currentAddress != "" {
                     cell.detailTextLabel?.text = currentAddress
@@ -398,15 +413,15 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // Override to support editing the table view.
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if tableView == itemsTableView {
-            if editingStyle == .Delete {
+            if editingStyle == .delete {
                 
                 // Delete the row from the data source
-                managedContext.deleteObject(items![indexPath.row])
+                managedContext.delete(items![(indexPath as NSIndexPath).row])
                 appDelegate.saveContext()
-                items!.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                items!.remove(at: (indexPath as NSIndexPath).row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
                 
                 // Reload tableview and adjust tableview height and recalculate costs
                 itemsTableView.reloadData()
@@ -417,20 +432,20 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // Find out which cell was selected and sent to prepareForSegue
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        selectedCell = indexPath.row
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        selectedCell = (indexPath as NSIndexPath).row
         
         return indexPath
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == itemsTableView {
-            performSegueWithIdentifier("toChangeOrder", sender: self)
+            performSegue(withIdentifier: "toChangeOrder", sender: self)
         } else {
-            if indexPath.row == 0 {
-                performSegueWithIdentifier("toDeliverToPayingWith", sender: self)
+            if (indexPath as NSIndexPath).row == 0 {
+                performSegue(withIdentifier: "toDeliverToPayingWith", sender: self)
             } else {
-                performSegueWithIdentifier("toPayingWith", sender: self)
+                performSegue(withIdentifier: "toPayingWith", sender: self)
             }
         }
     }
@@ -440,48 +455,48 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // IBActions
     
     // Checkout process
-    @IBAction func checkoutButtonPressed(sender: UIButton) {
+    @IBAction func checkoutButtonPressed(_ sender: UIButton) {
         if canCheckout() {
-            let alertController = UIAlertController(title: "Checkout", message: "Are you sure you want to checkout?", preferredStyle: .ActionSheet)
-            let checkout = UIAlertAction(title: "Yes, bring me my food!", style: .Default, handler: { (action) -> Void in
+            let alertController = UIAlertController(title: "Checkout", message: "Are you sure you want to checkout?", preferredStyle: .actionSheet)
+            let checkout = UIAlertAction(title: "Yes, bring me my food!", style: .default, handler: { (action) -> Void in
                 print("Checkout Button Pressed")
                 
                 // Present tip view
                 self.presentTipView()
                 
             })
-            let cancel = UIAlertAction(title: "No, cancel", style: .Cancel, handler: { (action) -> Void in
+            let cancel = UIAlertAction(title: "No, cancel", style: .cancel, handler: { (action) -> Void in
                 print("Cancel Button Pressed")
             })
             
             alertController.addAction(checkout)
             alertController.addAction(cancel)
             
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         }
         
     }
     
-    @IBAction func xButtonPressed(sender: UIBarButtonItem) {
+    @IBAction func xButtonPressed(_ sender: UIBarButtonItem) {
         
         print("X button was pressed!")
         print(cameFromVC)
         
         if cameFromVC == "" {
-            performSegueWithIdentifier("returnToScheduleDetails", sender: self)
+            performSegue(withIdentifier: "returnToScheduleDetails", sender: self)
         } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
-    @IBAction func noThanksPressed(sender: UIButton) {
+    @IBAction func noThanksPressed(_ sender: UIButton) {
         // Update total price
         totalCost += self.deliveryFee
         
         finishOrder()
     }
     
-    @IBAction func addTipPressed(sender: UIButton) {
+    @IBAction func addTipPressed(_ sender: UIButton) {
         // Update total price with tip value
         tipAmount = totalCost * (tipStepper.value / 100)
         totalCost += tipAmount + self.deliveryFee
@@ -501,7 +516,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Animate tip view off screen before performing segue
         hideTipView()
-        self.performSegueWithIdentifier("toOrderPlaced", sender: self)
+        self.performSegue(withIdentifier: "toOrderPlaced", sender: self)
     }
     
     // Functions
@@ -530,28 +545,28 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     func canCheckout() -> Bool {
         if items != nil {
             if (items?.isEmpty)! {
-                checkoutErrorLabel.hidden = false
+                checkoutErrorLabel.isHidden = false
                 checkoutErrorLabel.text = "Please add some food and try again."
                 return false
             } else if currentAddress == "" {
-                checkoutErrorLabel.hidden = false
+                checkoutErrorLabel.isHidden = false
                 checkoutErrorLabel.text = "Please add an address and try again."
                 return false
             } else if !isOpen {
-                checkoutErrorLabel.hidden = false
+                checkoutErrorLabel.isHidden = false
                 checkoutErrorLabel.text = "Please wait until the restaurant is open and try again."
                 return false
             } else {
                 if totalCost + deliveryFee < 10 {
-                    checkoutErrorLabel.hidden = false
+                    checkoutErrorLabel.isHidden = false
                     checkoutErrorLabel.text = "Please make sure your total is over $10 and try again."
                     return false
                 }
-                checkoutErrorLabel.hidden = true
+                checkoutErrorLabel.isHidden = true
                 return true
             }
         } else {
-            checkoutErrorLabel.hidden = false
+            checkoutErrorLabel.isHidden = false
             checkoutErrorLabel.text = "Please add some food and try again."
             return false
         }
@@ -559,30 +574,30 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func submitOrder() {
         // Start activity indicator again
-        self.myActivityIndicator.hidden = false
+        self.myActivityIndicator.isHidden = false
         self.myActivityIndicator.startAnimating()
         
         // Update and save CoreData
-        self.activeCart![0].dateOrdered = NSDate()
+        self.activeCart![0].dateOrdered = Date()
         self.activeCart![0].isActive = false
-        self.activeCart![0].totalPrice = self.totalCost
+        self.activeCart![0].totalPrice = self.totalCost as NSNumber?
         
         self.appDelegate.saveContext()
         
-        let addresses = self.defaults.objectForKey("Addresses") as! [String]
-        let addressIndex = self.defaults.objectForKey("CurrentAddressIndex") as! Int
+        let addresses = self.defaults.object(forKey: "Addresses") as! [String]
+        let addressIndex = self.defaults.object(forKey: "CurrentAddressIndex") as! Int
         
         // 1. Get 10 + order_id (task 2)
         // 2. (task)addItem using that order_id (), save the Party response header
         // 3. addSide (side-id, cart entry-id, quantity)
         
-        let requestURL2: NSURL = NSURL(string: "http://www.gobring.it/CHADcarts.php")!
-        let urlRequest2: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL2)
-        let session2 = NSURLSession.sharedSession()
-        let task2 = session2.dataTaskWithRequest(urlRequest2) { (data, response, error) -> Void in
+        let requestURL2: URL = URL(string: "http://www.gobringit.com/CHADcarts.php")!
+        let urlRequest2 = URLRequest(url: requestURL2)
+        let session2 = URLSession.shared
+        let task2 = session2.dataTask(with: urlRequest2, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -594,7 +609,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 self.reset = true
                             }
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Cart in json as! [Dictionary<String, AnyObject>] {
                                 
@@ -604,7 +619,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 if (self.reset == true) {
                                     self.maxCartOrderID = self.maxCartOrderID + 10;
                                 }
@@ -630,7 +645,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     // Create JSON data and configure the request
                                     let params = ["item_id": item.id!,
                                         "user_id": self.userID,
-                                        "quantity": String(item.quantity!),
+                                        "quantity": String(describing: item.quantity!),
                                         "active": "0",
                                         "instructions": item.specialInstructions!,
                                         "order_id": String(self.maxCartOrderID),
@@ -638,22 +653,22 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                         as Dictionary<String, String>
                                     
                                     // create the request & response
-                                    let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddItemToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                    var request = URLRequest(url: Foundation.URL(string: "http://www.gobringit.com/CHADaddItemToCart.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
                                     
                                     do {
-                                        let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
-                                        request.HTTPBody = jsonData
+                                        let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+                                        request.httpBody = jsonData
                                         
                                     } catch let error as NSError {
                                         print(error)
                                     }
-                                    request.HTTPMethod = "POST"
+                                    request.httpMethod = "POST"
                                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                     
                                     // send the request
-                                    let session = NSURLSession.sharedSession()
-                                    let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-                                        if let httpResponse = response as? NSHTTPURLResponse {
+                                    let session = URLSession.shared
+                                    let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
+                                        if let httpResponse = response as? HTTPURLResponse {
                                             if let contentType = httpResponse.allHeaderFields["Party"] as? String {
                                                 // use contentType here
                                                 print("This is the result of header", contentType)
@@ -677,7 +692,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                         // to get this currentActiveCartID, we need to get the Cart UID for the active cart for the specific user for the specific item_id
                                                         let params1 = ["cart_entry_uid": currentActiveCartID,
                                                             "side_id": side.id!,
-                                                            "quantity": String(item.quantity),
+                                                            "quantity": String(describing: item.quantity),
                                                             ]
                                                             as Dictionary<String, String>
                                                         
@@ -685,22 +700,22 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                         print("currentActiveCartID ", currentActiveCartID)
                                                         
                                                         // create the request & response
-                                                        let request1 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddSideToCart.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                                        var request1 = URLRequest(url: Foundation.URL(string: "http://www.gobringit.com/CHADaddSideToCart.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
                                                         
                                                         do {
-                                                            let jsonData1 = try NSJSONSerialization.dataWithJSONObject(params1, options: NSJSONWritingOptions.PrettyPrinted)
-                                                            request1.HTTPBody = jsonData1
+                                                            let jsonData1 = try JSONSerialization.data(withJSONObject: params1, options: JSONSerialization.WritingOptions.prettyPrinted)
+                                                            request1.httpBody = jsonData1
                                                         } catch let error1 as NSError {
                                                             print(error1)
                                                         }
-                                                        request1.HTTPMethod = "POST"
+                                                        request1.httpMethod = "POST"
                                                         request1.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                                         
                                                         // send the request
-                                                        let session1 = NSURLSession.sharedSession()
-                                                        let task1 = session1.dataTaskWithRequest(request1) {
-                                                            (let data1, let response1, let error1) in
-                                                        }
+                                                        let session1 = URLSession.shared
+                                                        let task1 = session1.dataTask(with: request1, completionHandler: {
+                                                            (data1, response1, error1) in
+                                                        }) 
                                                         task1.resume()
                                                     }
                                                 //}
@@ -708,10 +723,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                         }
                                         
                                         // Stop activity indicator again
-                                        self.myActivityIndicator.hidden = true
+                                        self.myActivityIndicator.isHidden = true
                                         self.myActivityIndicator.stopAnimating()
                                         
-                                        NSOperationQueue.mainQueue().addOperationWithBlock {
+                                        OperationQueue.main.addOperation {
                                             // Send String(self.maxCartOrderID) as id,self.userID as user_id, restaurant id as service_id
                                             // Create JSON data and configure the request
                                             var payment_cc = ""
@@ -734,38 +749,38 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                                 as Dictionary<String, String>
                                             
                                             // create the request & response
-                                            let request3 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddOrder.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                            var request3 = URLRequest(url: Foundation.URL(string: "http://www.gobringit.com/CHADaddOrder.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
                                             
                                             do {
-                                                let jsonData3 = try NSJSONSerialization.dataWithJSONObject(params3, options: NSJSONWritingOptions.PrettyPrinted)
-                                                request3.HTTPBody = jsonData3
+                                                let jsonData3 = try JSONSerialization.data(withJSONObject: params3, options: JSONSerialization.WritingOptions.prettyPrinted)
+                                                request3.httpBody = jsonData3
                                             } catch let error1 as NSError {
                                                 print(error1)
                                             }
-                                            request3.HTTPMethod = "POST"
+                                            request3.httpMethod = "POST"
                                             request3.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                             
                                             // send the request
-                                            let session3 = NSURLSession.sharedSession()
-                                            let task3 = session3.dataTaskWithRequest(request3) {
-                                                (let data3, let response3, let error3) in
+                                            let session3 = URLSession.shared
+                                            let task3 = session3.dataTask(with: request3, completionHandler: {
+                                                (data3, response3, error3) in
                                                 print("data3", data3)
                                                 print("response3", response3)
                                                 print("error3", error3)
                                                 
                                                 // Update Customer Address
-                                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                                OperationQueue.main.addOperation {
                                                     
                                                     // ADDRESS WAS HERE
                                                     
                                                 }
                                                 
-                                            }
+                                            }) 
                                             // TODO: UNCOMMENT THIS LINE FOR ORDERING TO WORK
                                             task3.resume()
                                             
                                         }
-                                    }
+                                    }) 
                                     task.resume()
                                 }
                                 
@@ -777,7 +792,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                 var city = ""
                                 var zip = ""
                                 
-                                addressToSend.enumerateLines { addressInParts.append($0.line) }
+                                addressToSend.enumerateLines {
+                                    line, stop in
+                                    addressInParts.append(line)
+                                }
                                 if addressInParts.count == 3 {
                                     address1 = addressInParts[0]
                                     city = addressInParts[1]
@@ -799,28 +817,28 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     as Dictionary<String, String>
                                 
                                 // create the request & response
-                                let request4 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdateAddress.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                var request4 = URLRequest(url: Foundation.URL(string: "http://www.gobringit.com/CHADupdateAddress.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
                                 
                                 do {
-                                    let jsonData4 = try NSJSONSerialization.dataWithJSONObject(params4, options: NSJSONWritingOptions.PrettyPrinted)
-                                    request4.HTTPBody = jsonData4
+                                    let jsonData4 = try JSONSerialization.data(withJSONObject: params4, options: JSONSerialization.WritingOptions.prettyPrinted)
+                                    request4.httpBody = jsonData4
                                 } catch let error1 as NSError {
                                     print(error1)
                                 }
-                                request4.HTTPMethod = "POST"
+                                request4.httpMethod = "POST"
                                 request4.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                 
                                 // send the request
-                                let session4 = NSURLSession.sharedSession()
-                                let task4 = session4.dataTaskWithRequest(request4) {
-                                    (let data4, let response4, let error4) in
+                                let session4 = URLSession.shared
+                                let task4 = session4.dataTask(with: request4, completionHandler: {
+                                    (data4, response4, error4) in
                                     
-                                }
+                                }) 
                                 
                                 task4.resume()
                                 
                                 // Send to CHADplaceOrder
-                                let params: [String: AnyObject] = [
+                                let params: [String: String] = [
                                     "user_id": self.userID,
                                     "service_id": self.activeCart![0].restaurantID!,
                                     "order_id": String(self.maxCartOrderID),
@@ -828,15 +846,13 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                     "delivery_fee": String(format: "%.2f", self.deliveryFee),
                                     "payment_type": self.paymentMethodLabel
                                 ]
-                                let URL = "https://www.gobring.it/includes/accounts/CHADplaceOrder.php"
+                                let URL = "http://www.gobringit.com/includes/accounts/CHADplaceOrder.php"
                                 let manager = AFHTTPSessionManager()
                                 manager.responseSerializer = AFHTTPResponseSerializer()
-                                manager.POST(URL, parameters: params, success: { (operation, responseObject) -> Void in
+                                manager.post(URL, parameters: params, success: { (operation, responseObject) -> Void in
                                     
                                     
-                                }) { (operation, error) -> Void in
-                                    self.handleError(error)
-                                }
+                                }) 
                             }
                         }
                     }
@@ -846,31 +862,31 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             } else if let error = error {
                 print("Error:" + error.localizedDescription)
             }
-        }
+        }) 
         
         task2.resume();
     }
     
     // Check if user is already logged in. If not, present SignInViewController.
     func checkLoggedIn() {
-        let loggedIn = defaults.boolForKey("loggedIn")
+        let loggedIn = defaults.bool(forKey: "loggedIn")
         if !loggedIn {
-            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("signIn") as! SignInViewController
-            self.presentViewController(vc, animated: true, completion: nil)
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "signIn") as! SignInViewController
+            self.present(vc, animated: true, completion: nil)
         }
     }
     
     // Show tipDriverView
     func presentTipView() {
         // Add blur overlay
-        blurEffectView.hidden = false
+        blurEffectView.isHidden = false
         blurEffectView.frame = self.view.bounds
         self.view.addSubview(blurEffectView)
         self.view.addSubview(tipDriverView)
         
         // Animate view - Slide up
-        let top = CGAffineTransformMakeTranslation(0, -550)
-        UIView.animateWithDuration(0.45, animations: {
+        let top = CGAffineTransform(translationX: 0, y: -550)
+        UIView.animate(withDuration: 0.45, animations: {
             self.tipDriverView.transform = top
             //self.tipDriverView.center = CGPointMake(self.view.bounds.size.width  / 2,
                 //self.view.bounds.size.height / 2);
@@ -881,46 +897,46 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     // Hide tipDriverView
     func hideTipView() {
         // Animate view - Slide down
-        let bottom = CGAffineTransformMakeTranslation(0, 550)
-        UIView.animateWithDuration(0.35, animations: {
+        let bottom = CGAffineTransform(translationX: 0, y: 550)
+        UIView.animate(withDuration: 0.35, animations: {
             self.tipDriverView.transform = bottom
         })
         
         //Remove blur overlay
-        blurEffectView.hidden = true
+        blurEffectView.isHidden = true
     }
     
     // Check if the user is currently using food points or a credit card
     func checkIfUsingFoodPoints() -> Bool {
         
         var switchOn = false
-        if let on = defaults.objectForKey("useFoodPoints") {
+        if let on = defaults.object(forKey: "useFoodPoints") {
             switchOn = on as! Bool
         } else {
-            defaults.setBool(true, forKey: "useFoodPoints")
+            defaults.set(true, forKey: "useFoodPoints")
             switchOn = true
         }
         
         // Make sure that "Use food points when possible" is switched on
         if switchOn {
             // Check if the time is between 8pm and 10pm
-            let calendar = NSCalendar.currentCalendar()
-            let components = NSDateComponents()
+            let calendar = Calendar.current
+            var components = DateComponents()
             components.day = 1
             components.month = 01
             components.year = 2016
-            components.hour = 16
-            components.minute = 50
-            let eightPM = calendar.dateFromComponents(components)
+            components.hour = 19
+            components.minute = 40
+            let eightPM = calendar.date(from: components)
             
             components.day = 1
             components.month = 01
             components.year = 2016
             components.hour = 22
             components.minute = 00
-            let tenPM = calendar.dateFromComponents(components)
+            let tenPM = calendar.date(from: components)
             
-            let betweenEightAndTen = NSDate.timeIsBetween(eightPM!, endDate: tenPM!)
+            let betweenEightAndTen = Date.timeIsBetween(eightPM!, endDate: tenPM!)
             if betweenEightAndTen {
                 print("BETWEEN 8 and 10")
                 return true
@@ -933,7 +949,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - Payment methods
     
-    func handleError(error: NSError) {
+    func handleError(_ error: NSError) {
         print(error)
         UIAlertView(title: "Please Try Again",
                     message: error.localizedDescription,
@@ -948,32 +964,32 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: STPPaymentContextDelegate
     
-    func paymentContext(paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: STPErrorBlock) {
+    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPErrorBlock) {
         MyAPIClient.sharedClient.completeCharge(paymentResult, amount: self.paymentContext.paymentAmount,
                                                 completion: completion)
     }
     
-    func paymentContext(paymentContext: STPPaymentContext, didFinishWithStatus status: STPPaymentStatus, error: NSError?) {
+    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
         let title: String
         let message: String
         switch status {
-        case .Error:
+        case .error:
             title = "Error"
             message = error?.localizedDescription ?? ""
-        case .Success:
+        case .success:
             title = "Success"
             message = "You bought a!"
-        case .UserCancellation:
+        case .userCancellation:
             return
         }
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(action)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    func paymentContextDidChange(paymentContext: STPPaymentContext) {
-        if let paymentMethod = defaults.objectForKey("selectedPaymentMethod") {
+    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
+        if let paymentMethod = defaults.object(forKey: "selectedPaymentMethod") {
             paymentMethodLabel = paymentMethod as! String
             print(paymentMethodLabel)
         } else {
@@ -987,29 +1003,29 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         detailsTableView.reloadData()
     }
     
-    func paymentContext(paymentContext: STPPaymentContext, didFailToLoadWithError error: NSError) {
+    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
         let alertController = UIAlertController(
             title: "Error",
             message: error.localizedDescription,
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
-        let cancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: { action in
-            self.navigationController?.popViewControllerAnimated(true)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            self.navigationController?.popViewController(animated: true)
         })
-        let retry = UIAlertAction(title: "Retry", style: .Default, handler: { action in
+        let retry = UIAlertAction(title: "Retry", style: .default, handler: { action in
             self.paymentContext.retryLoading()
         })
         alertController.addAction(cancel)
         alertController.addAction(retry)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toChangeOrder" {
-            let nav = segue.destinationViewController as! UINavigationController
+            let nav = segue.destination as! UINavigationController
             let VC = nav.topViewController as! AddToOrderViewController
             
             VC.comingFromCheckoutVC = true
@@ -1018,9 +1034,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             VC.selectedFoodDescription = items![selectedCell].dbDescription!
             VC.selectedFoodPrice = Double(items![selectedCell].price!)
             VC.selectedFoodID = items![selectedCell].id!
-            VC.selectedFoodSidesNum = String(items![selectedCell].selectedFoodSidesNum!)
+            VC.selectedFoodSidesNum = String(describing: items![selectedCell].selectedFoodSidesNum!)
         } else if segue.identifier == "toOrderPlaced" {
-            let nav = segue.destinationViewController as! UINavigationController
+            let nav = segue.destination as! UINavigationController
             let VC = nav.topViewController as! OrderPlacedViewController
             
             VC.passedOrderTotal = totalCost
@@ -1031,18 +1047,18 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     
 }
 
-extension NSDate {
-    class func timeAsIntegerFromDate(date: NSDate) -> Int {
-        let currentCal = NSCalendar.currentCalendar()
-        currentCal.timeZone = NSTimeZone.localTimeZone()
-        let comps: NSDateComponents = currentCal.components([NSCalendarUnit.Hour, NSCalendarUnit.Minute], fromDate: date)
-        return comps.hour * 100 + comps.minute
+extension Date {
+    static func timeAsIntegerFromDate(_ date: Date) -> Int {
+        var currentCal = Calendar.current
+        currentCal.timeZone = TimeZone.autoupdatingCurrent
+        let comps: DateComponents = (currentCal as NSCalendar).components([NSCalendar.Unit.hour, NSCalendar.Unit.minute], from: date)
+        return comps.hour! * 100 + comps.minute!
     }
     
-    class func timeIsBetween(startDate: NSDate, endDate: NSDate) -> Bool {
-        let startTime = NSDate.timeAsIntegerFromDate(startDate)
-        let endTime = NSDate.timeAsIntegerFromDate(endDate)
-        let nowTime = NSDate.timeAsIntegerFromDate(NSDate())
+    static func timeIsBetween(_ startDate: Date, endDate: Date) -> Bool {
+        let startTime = Date.timeAsIntegerFromDate(startDate)
+        let endTime = Date.timeAsIntegerFromDate(endDate)
+        let nowTime = Date.timeAsIntegerFromDate(Date())
         
         if startTime == endTime { return false }
         

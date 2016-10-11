@@ -24,7 +24,7 @@ class ComingSoonViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func orderFoodButtonPressed(sender: AnyObject) {
+    @IBAction func orderFoodButtonPressed(_ sender: AnyObject) {
         tabBarController?.selectedIndex = 0
     }
     

@@ -13,13 +13,13 @@ import IDZSwiftCommonCrypto
 
 extension String {
     func sha512() -> String {
-        let data = self.dataUsingEncoding(NSUTF8StringEncoding)!
-        let sha : Digest = Digest(algorithm:.SHA512)
-        sha.update(data)
+        let data = self.data(using: String.Encoding.utf8)!
+        let sha : Digest = Digest(algorithm:.sha512)
+        sha.update(data: data)
         let digest = sha.final()
         //var digest = [UInt8](count:Int(CC_SHA512_DIGEST_LENGTH), repeatedValue: 0)
         //CC_SHA512(data.bytes, CC_LONG(data.length), &digest)
-        return hexStringFromArray(digest)
+        return hexString(fromArray: digest)
         //let hexBytes = digest.map { String(format: "%02hhx", $0) }
         //return hexBytes.joinWithSeparator("")
     }
@@ -48,14 +48,14 @@ class ResetPasswordViewController: UIViewController {
         self.title = "Reset Password"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Hide error messages
-        currentPasswordErrorLabel.hidden = true
-        newPasswordErrorLabel.hidden = true
+        currentPasswordErrorLabel.isHidden = true
+        newPasswordErrorLabel.isHidden = true
         
         // Do any additional setup after loading the view.
     }
@@ -65,14 +65,14 @@ class ResetPasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
-    @IBAction func resetPasswordButtonPressed(sender: UIButton) {
+    @IBAction func resetPasswordButtonPressed(_ sender: UIButton) {
         
         var canContinue = false
         
         
-        let userID = self.defaults.objectForKey("userID") as AnyObject! as! String
+        let userID = self.defaults.object(forKey: "userID") as AnyObject! as! String
         
         // 1. Pull all users
         // 2. seperate out user with the user-id, save password_salt and password_hash
@@ -82,13 +82,13 @@ class ResetPasswordViewController: UIViewController {
         var passSalt = ""
         
         // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) {
+        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
+        let urlRequest = URLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest, completionHandler: {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! NSHTTPURLResponse
+            let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             // Check HTTP Response
@@ -96,7 +96,7 @@ class ResetPasswordViewController: UIViewController {
                 
                 do{
                     // Parse JSON
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
                     
                     for User in json as! [Dictionary<String, AnyObject>] {
                         let userID_DB = User["uid"] as! String
@@ -113,12 +113,12 @@ class ResetPasswordViewController: UIViewController {
                         }
                     }
                     
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                    OperationQueue.main.addOperation {
                         
                         if isVerified {
-                            self.currentPasswordErrorLabel.hidden = true
+                            self.currentPasswordErrorLabel.isHidden = true
                             if self.newPassword1TextField.text == self.newPassword2TextField.text {
-                                self.newPasswordErrorLabel.hidden = true
+                                self.newPasswordErrorLabel.isHidden = true
                                 
                                 // Task 2 is used later
                                 // Create JSON data and configure the request
@@ -133,25 +133,25 @@ class ResetPasswordViewController: UIViewController {
                                 print(passSalt)
                                 
                                 // create the request & response
-                                let request2 = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADupdatePassword.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+                                var request2 = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdatePassword.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
                                 
                                 do {
-                                    let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
-                                    request2.HTTPBody = jsonData
+                                    let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+                                    request2.httpBody = jsonData
                                 } catch let error as NSError {
                                     print(error)
                                 }
-                                request2.HTTPMethod = "POST"
+                                request2.httpMethod = "POST"
                                 request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
                                 
                                 // send the request
-                                let session2 = NSURLSession.sharedSession()
-                                let task2 = session2.dataTaskWithRequest(request2) {
-                                    (let data, let response, let error) in
+                                let session2 = URLSession.shared
+                                let task2 = session2.dataTask(with: request2, completionHandler: {
+                                    (data, response, error) in
                                     
                                     print(data)
                                     print(response)
-                                }
+                                }) 
                                 
                                 task2.resume()
                                 
@@ -160,19 +160,19 @@ class ResetPasswordViewController: UIViewController {
                                 
                             } else {
                                 
-                                self.newPasswordErrorLabel.hidden = false
+                                self.newPasswordErrorLabel.isHidden = false
                             }
                         } else {
                             print ("don't send the passowrd1")
-                            self.currentPasswordErrorLabel.hidden = false
+                            self.currentPasswordErrorLabel.isHidden = false
                         }
                         
                         //NSOperationQueue.mainQueue().addOperationWithBlock {
                         
                         if canContinue {
                             print("CAN CONTINUEEEEE")
-                            self.performSegueWithIdentifier("returnToContactInfo", sender: self)
-                            self.navigationController?.popViewControllerAnimated(true)
+                            self.performSegue(withIdentifier: "returnToContactInfo", sender: self)
+                            self.navigationController?.popViewController(animated: true)
                         } else {
                             print ("don't send the passowrd2")
                         }
@@ -183,7 +183,7 @@ class ResetPasswordViewController: UIViewController {
                     print("Error with Json: \(error)")
                 }
             }
-        }
+        }) 
         task.resume()
     }
     

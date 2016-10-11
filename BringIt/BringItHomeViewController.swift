@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 var selectedRestaurantName = ""
 
@@ -27,7 +47,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     
     // Create struct to organize data
     struct Restaurant {
-        var coverImage: NSData
+        var coverImage: Data
         var restaurantName: String
         var cuisineType: String
         var openHours: String
@@ -51,33 +71,33 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     var showThanksMessage = false
    // var showThanksMessageIndexPath: NSindex
     
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(defaults.objectForKey("userID"))
+        print(defaults.object(forKey: "userID"))
         
         // Set title
         self.navigationItem.title = "BringIt"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Set nav bar preferences
-        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+                NSForegroundColorAttributeName: UIColor.black])
         
         // Start activity indicator and show loading icon
         myActivityIndicator.startAnimating()
-        self.myActivityIndicator.hidden = false
-        loadingRestaurantsIcon.hidden = false
-        myTableView.hidden = true
+        self.myActivityIndicator.isHidden = false
+        loadingRestaurantsIcon.isHidden = false
+        myTableView.isHidden = true
         
         // setup tabbar indicator
-        rectShape.fillColor = GREEN.CGColor
+        rectShape.fillColor = GREEN.cgColor
         indicatorWidth = view.bounds.maxX / 3 // count of items
         self.tabBarController!.view.layer.addSublayer(rectShape)
         self.tabBarController?.delegate = self
@@ -97,13 +117,13 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         // Get list of coverImages, restaurantNames, id
         
         // Open Connection to PHP Service
-        let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantImage.php")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
+        let urlRequest = URLRequest(url: requestURL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -111,7 +131,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             for Restaurant in json as! [Dictionary<String, AnyObject>] {
                                 let image = Restaurant["image"] as! String
@@ -124,12 +144,14 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                 self.idList.append(idHere)
                             }
                             
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 for i in 0..<self.coverImages.count {
                                     
                                     // Get image data
-                                    let url = NSURL(string: "http://www.gobring.it/images/" + self.coverImages[i])
-                                    let data = NSData(contentsOfURL: url!)
+                                    let urlString = "http://www.gobringit.com/images/" + self.coverImages[i]
+                                    print(urlString)
+                                    let url = URL(string: urlString)
+                                    let data = try? Data(contentsOf: url!)
                                     
                                     self.restaurants.append(Restaurant(coverImage: data!, restaurantName: self.restaurantNames[i], cuisineType: self.cuisineTypes[i], openHours: self.openHours[i], isOpen: self.isOpen[i], id: self.idList[i]))
                                 }
@@ -138,10 +160,10 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                 self.myTableView.reloadData()
                                 
                                 // Show tableview, end activity indicator and hide loading icon
-                                self.myTableView.hidden = false
-                                self.loadingRestaurantsIcon.hidden = true
+                                self.myTableView.isHidden = false
+                                self.loadingRestaurantsIcon.isHidden = true
                                 self.myActivityIndicator.stopAnimating()
-                                self.myActivityIndicator.hidden = true
+                                self.myActivityIndicator.isHidden = true
                             }
                         }
                     }
@@ -151,18 +173,18 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
             } else if let error = error {
                 print(error.localizedDescription)
             }
-        }
+        }) 
         
         // Get restaurant hours
         
         // Open Connection to PHP Service
-        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADrestaurantHours.php")!
-        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
-        let session1 = NSURLSession.sharedSession()
-        let task1 = session1.dataTaskWithRequest(urlRequest1) { (data, response, error) -> Void in
+        let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADrestaurantHours.php")!
+        let urlRequest1 = URLRequest(url: requestURL1)
+        let session1 = URLSession.shared
+        let task1 = session1.dataTask(with: urlRequest1, completionHandler: { (data, response, error) -> Void in
             if let data = data {
                 do {
-                    let httpResponse = response as! NSHTTPURLResponse
+                    let httpResponse = response as! HTTPURLResponse
                     let statusCode = httpResponse.statusCode
                     
                     // Check HTTP Response
@@ -170,7 +192,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                         
                         do{
                             // Parse JSON
-                            let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                             
                             var count = 0
                             self.openHours.append("")
@@ -181,15 +203,15 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                 //let restaurant_id = Restaurant["restaurant_id"] as? String
 
                                     let all_hours = Restaurant["open_hours"] as! String
-                                    let hours_byDay = all_hours.componentsSeparatedByString(", ")
+                                    let hours_byDay = all_hours.components(separatedBy: ", ")
                                     
-                                    let currentCalendar = NSCalendar.currentCalendar()
-                                    let currentDate = NSDate()
-                                    let localDate = NSDate(timeInterval: NSTimeInterval(NSTimeZone.systemTimeZone().secondsFromGMT), sinceDate: currentDate)
-                                    let components = currentCalendar.components([.Year, .Month, .Day, .TimeZone, .Hour, .Minute], fromDate: currentDate)
+                                    let currentCalendar = Calendar.current
+                                    let currentDate = Date()
+                                    let localDate = Date(timeInterval: TimeInterval(NSTimeZone.system.secondsFromGMT()), since: currentDate)
+                                    let components = (currentCalendar as NSCalendar).components([.year, .month, .day, .timeZone, .hour, .minute], from: currentDate)
                                     print(currentDate)
                                     print(localDate)
-                                    let componentTime : Float = Float(components.hour) + Float(components.minute) / 60
+                                    let componentTime : Float = Float(components.hour!) + Float(components.minute!) / 60
                                     var estTime : Float
                                     if (componentTime > 4) {
                                         estTime = componentTime
@@ -197,34 +219,34 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                         estTime = componentTime
                                     }
                                     
-                                    let dateFormatter = NSDateFormatter()
-                                    dateFormatter.locale = NSLocale.currentLocale()
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.locale = Locale.current
                                     dateFormatter.dateFormat = "EEEE"
-                                    let convertedDate = dateFormatter.stringFromDate(currentDate)
+                                    let convertedDate = dateFormatter.string(from: currentDate)
                                     
                                     var openDate : Float? = nil
                                     var closeDate : Float? = nil
                                     
                                     for i in 0..<hours_byDay.count {
-                                        if (hours_byDay[i].rangeOfString(convertedDate) != nil) {
+                                        if (hours_byDay[i].range(of: convertedDate) != nil) {
                                             self.openHours[count] = hours_byDay[i]
                                             
                                             // Extract exact hours of operation for this day
-                                            var hours_pieces = hours_byDay[i].componentsSeparatedByString(" ");
+                                            var hours_pieces = hours_byDay[i].components(separatedBy: " ");
                                             for j in 0..<hours_pieces.count {
                                                 
                                                 // Find time pieces (not the Day, not the "-", just the "time + am" or "time + pm")
-                                                if ((hours_pieces[j].rangeOfString(convertedDate) == nil) && (hours_pieces[j].rangeOfString("-") == nil)) {
+                                                if ((hours_pieces[j].range(of: convertedDate) == nil) && (hours_pieces[j].range(of: "-") == nil)) {
                                                     
-                                                    let dateMaker = NSDateFormatter()
+                                                    let dateMaker = DateFormatter()
                                                     dateMaker.dateFormat = "yyyy/MM/dd HH:mm:ss"
                                                     
                                                     if (openDate == nil) {
                                                         var newTime : Float? = nil
                                                         var minuteTime : Float? = nil
-                                                        if (hours_pieces[j].rangeOfString("pm") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "pm") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "pm");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             if time_pieces[0] == "12" {
                                                                 newTime = Float(time_pieces[0])
                                                             } else {
@@ -235,9 +257,9 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                                 minuteTime = Float(hour_minute[1])
                                                             }
                                                         }
-                                                        if (hours_pieces[j].rangeOfString("am") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("am");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "am") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "am");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             newTime = Float(time_pieces[0])!
                                                             if (hour_minute.count > 1) {
                                                                 minuteTime = Float(hour_minute[1])
@@ -252,9 +274,9 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                     } else if (closeDate == nil) {
                                                         var newTime : Float? = nil
                                                         var minuteTime : Float? = nil
-                                                        if (hours_pieces[j].rangeOfString("pm") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("pm");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "pm") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "pm");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             if time_pieces[0] == "12" {
                                                                 newTime = Float(hour_minute[0])
                                                             } else {
@@ -265,9 +287,9 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                                 minuteTime = Float(hour_minute[1])
                                                             }
                                                         }
-                                                        if (hours_pieces[j].rangeOfString("am") != nil) {
-                                                            let time_pieces = hours_pieces[j].componentsSeparatedByString("am");
-                                                            let hour_minute = time_pieces[0].componentsSeparatedByString(":");
+                                                        if (hours_pieces[j].range(of: "am") != nil) {
+                                                            let time_pieces = hours_pieces[j].components(separatedBy: "am");
+                                                            let hour_minute = time_pieces[0].components(separatedBy: ":");
                                                             newTime = Float(hour_minute[0])!
                                                             if (hour_minute.count > 1) {
                                                                 minuteTime = Float(hour_minute[1])
@@ -309,7 +331,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                 self.openHours.append("")
 
                                 }
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
+                            OperationQueue.main.addOperation {
                                 
                                 for i in self.openHours {
                                     print(i)
@@ -327,12 +349,12 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
             } else if let error = error {
                 print(error.localizedDescription)
             }
-        }
+        }) 
         
         task1.resume()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         updateTabbarIndicatorBySelectedTabIndex(0)
     }
     
@@ -352,12 +374,12 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func checkShowThanksMessage() -> Bool {
-        if let alreadyOrdered = self.defaults.objectForKey("alreadyOrdered") {
+        if let alreadyOrdered = self.defaults.object(forKey: "alreadyOrdered") {
             if (alreadyOrdered as! Bool){
                 return false
             }
         }
-        if let shown = self.defaults.objectForKey("thanksMessageShown") {
+        if let shown = self.defaults.object(forKey: "thanksMessageShown") {
             if shown as! Bool {
                 return false
             }
@@ -365,14 +387,14 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         return true
     }
     
-    func xButtonPressed(button: UIButton) {
-        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+    func xButtonPressed(_ button: UIButton) {
+        let indexPath = IndexPath(item: 0, section: 0)
         showThanksMessage = false
-        myTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        self.defaults.setObject(true, forKey: "thanksMessageShown")
+        myTableView.deleteRows(at: [indexPath], with: .automatic)
+        self.defaults.set(true, forKey: "thanksMessageShown")
     }
     
-    func updateTabbarIndicatorBySelectedTabIndex(index: Int) -> Void
+    func updateTabbarIndicatorBySelectedTabIndex(_ index: Int) -> Void
     {
         let updatedBounds = CGRect( x: CGFloat(index) * (indicatorWidth + indicatorLeftMargin),
                                     y: maxY,
@@ -381,18 +403,19 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         
         print(view.bounds.maxY - indicatorHeight)
         
-        let path = CGPathCreateMutable()
-        CGPathAddRect(path, nil, updatedBounds)
+        let path = CGMutablePath()
+        path.addRect(updatedBounds)
+        //CGPathAddRect(path, nil, updatedBounds)
         rectShape.path = path
     }
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             if showThanksMessage {
                 return 1
@@ -405,19 +428,21 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("thanksCell", forIndexPath: indexPath) as! ThanksTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath as NSIndexPath).section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "thanksCell", for: indexPath) as! ThanksTableViewCell
             
-            cell.gotItButton.addTarget(self, action: #selector(BringItHomeViewController.xButtonPressed(_:)), forControlEvents: .TouchUpInside)
+            cell.gotItButton.addTarget(self, action: #selector(BringItHomeViewController.xButtonPressed(_:)), for: .touchUpInside)
             
             return cell
-        } else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
+        } else if (indexPath as NSIndexPath).section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "bringItHomeCell", for: indexPath) as! BringItHomeTableViewCell
             
-            cell.restaurantBannerImage.image = UIImage(data: openRestaurants[indexPath.row].coverImage)
-            cell.cuisineTypeLabel.text = openRestaurants[indexPath.row].cuisineType
-            cell.restaurantHoursLabel.text = openRestaurants[indexPath.row].openHours
+            cell.restaurantBannerImage.image = UIImage(data: openRestaurants[(indexPath as NSIndexPath).row].coverImage)
+            cell.cuisineTypeLabel.text = openRestaurants[(indexPath as NSIndexPath).row].cuisineType
+            cell.restaurantHoursLabel.text = openRestaurants[(indexPath as NSIndexPath).row].openHours
+        
+            
             /*if isOpen[indexPath.row] {
                 cell.openClosedImage.image = UIImage(named: "Open")
             } else {
@@ -426,11 +451,14 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("bringItHomeCell", forIndexPath: indexPath) as! BringItHomeTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "bringItHomeCell", for: indexPath) as! BringItHomeTableViewCell
             
-            cell.restaurantBannerImage.image = UIImage(data: closedRestaurants[indexPath.row].coverImage)
-            cell.cuisineTypeLabel.text = closedRestaurants[indexPath.row].cuisineType
-            cell.restaurantHoursLabel.text = closedRestaurants[indexPath.row].openHours
+            cell.restaurantBannerImage.image = UIImage(data: closedRestaurants[(indexPath as NSIndexPath).row].coverImage)
+            cell.cuisineTypeLabel.text = closedRestaurants[(indexPath as NSIndexPath).row].cuisineType
+            cell.restaurantHoursLabel.text = closedRestaurants[(indexPath as NSIndexPath).row].openHours
+            
+            
+            
             /*if isOpen[indexPath.row] {
                 cell.openClosedImage.image = UIImage(named: "Open")
             } else {
@@ -441,17 +469,17 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if indexPath.section == 1 {
-            selectedRestaurantName = openRestaurants[indexPath.row].restaurantName
-        } else if indexPath.section == 2 {
-            selectedRestaurantName = closedRestaurants[indexPath.row].restaurantName
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if (indexPath as NSIndexPath).section == 1 {
+            selectedRestaurantName = openRestaurants[(indexPath as NSIndexPath).row].restaurantName
+        } else if (indexPath as NSIndexPath).section == 2 {
+            selectedRestaurantName = closedRestaurants[(indexPath as NSIndexPath).row].restaurantName
         }
         
         return indexPath
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return ""
         } else if section == 1 {
@@ -461,37 +489,37 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont(name: "Avenir-Black", size: 15)!
-        header.textLabel?.textColor = UIColor.darkGrayColor()
-        header.textLabel?.textAlignment = .Center
-        header.backgroundView?.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        header.textLabel?.textColor = UIColor.darkGray
+        header.textLabel?.textAlignment = .center
+        header.backgroundView?.backgroundColor = UIColor.groupTableViewBackground
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 0
         }
         return 25
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        let nav = segue.destinationViewController as! UINavigationController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+        let nav = segue.destination as! UINavigationController
         let VC = nav.topViewController as! RestaurantViewController
         
         let indexPath = myTableView.indexPathForSelectedRow
         //let destination = segue.destinationViewController as? RestaurantTableViewController
-        if indexPath?.section == 1 {
-            VC.restaurantImageData = openRestaurants[indexPath!.row].coverImage
-            VC.restaurantName = openRestaurants[indexPath!.row].restaurantName
-            VC.restaurantID = openRestaurants[indexPath!.row].id
-            VC.restaurantType = openRestaurants[indexPath!.row].cuisineType
-        } else if indexPath?.section == 2 {
-            VC.restaurantImageData = closedRestaurants[indexPath!.row].coverImage;
-            VC.restaurantName = closedRestaurants[indexPath!.row].restaurantName
-            VC.restaurantID = closedRestaurants[indexPath!.row].id
-            VC.restaurantType = closedRestaurants[indexPath!.row].cuisineType
+        if (indexPath as NSIndexPath?)?.section == 1 {
+            VC.restaurantImageData = openRestaurants[(indexPath! as NSIndexPath).row].coverImage
+            VC.restaurantName = openRestaurants[(indexPath! as NSIndexPath).row].restaurantName
+            VC.restaurantID = openRestaurants[(indexPath! as NSIndexPath).row].id
+            VC.restaurantType = openRestaurants[(indexPath! as NSIndexPath).row].cuisineType
+        } else if (indexPath as NSIndexPath?)?.section == 2 {
+            VC.restaurantImageData = closedRestaurants[(indexPath! as NSIndexPath).row].coverImage;
+            VC.restaurantName = closedRestaurants[(indexPath! as NSIndexPath).row].restaurantName
+            VC.restaurantID = closedRestaurants[(indexPath! as NSIndexPath).row].id
+            VC.restaurantType = closedRestaurants[(indexPath! as NSIndexPath).row].cuisineType
         }
         
     }
@@ -510,14 +538,14 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Navigation
     
-    @IBAction func returnHome(segue: UIStoryboardSegue) {
+    @IBAction func returnHome(_ segue: UIStoryboardSegue) {
     }
     
 }
 
 extension BringItHomeViewController: UITabBarControllerDelegate {
     
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         updateTabbarIndicatorBySelectedTabIndex(tabBarController.selectedIndex)
     }
 }

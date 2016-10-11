@@ -34,7 +34,7 @@ class NewAddressViewController: UIViewController {
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
     // Enable UserDefaults
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,41 +43,41 @@ class NewAddressViewController: UIViewController {
         self.title = "New Address"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Hide error messages
-        invalidAddressLabel.hidden = true
-        invalidCitylabel.hidden = true
-        invalidZipLabel.hidden = true
+        invalidAddressLabel.isHidden = true
+        invalidCitylabel.isHidden = true
+        invalidZipLabel.isHidden = true
 
         // Do any additional setup after loading the view.
     }
     
     // MARK: - IBActions
-    @IBAction func continueButtonClicked(sender: UIButton) {
+    @IBAction func continueButtonClicked(_ sender: UIButton) {
         
         var canContinue = true
         
         if address1TextField.text!.isBlank {
-            invalidAddressLabel.hidden = false
+            invalidAddressLabel.isHidden = false
             canContinue = false
         } else {
-            invalidAddressLabel.hidden = true
+            invalidAddressLabel.isHidden = true
         }
         if cityTextField.text!.isBlank {
-            invalidCitylabel.hidden = false
+            invalidCitylabel.isHidden = false
             canContinue = false
         } else {
-            invalidCitylabel.hidden = true
+            invalidCitylabel.isHidden = true
         }
         if !zipTextField.text!.isZipCode {
-            invalidZipLabel.hidden = false
+            invalidZipLabel.isHidden = false
             canContinue = false
         } else {
-            invalidZipLabel.hidden = true
+            invalidZipLabel.isHidden = true
         }
         
         if canContinue {
@@ -85,7 +85,7 @@ class NewAddressViewController: UIViewController {
             // Save address to UserDefaults
             var addresses = [String]()
             
-            if let addressesArray = defaults.objectForKey("Addresses") {
+            if let addressesArray = defaults.object(forKey: "Addresses") {
                 addresses = addressesArray as! [String]
             }
             
@@ -97,15 +97,15 @@ class NewAddressViewController: UIViewController {
             }
             
             addresses.append(newAddress)
-            defaults.setObject(addresses, forKey: "Addresses")
-            defaults.setObject(addresses.count - 1, forKey: "CurrentAddressIndex")
+            defaults.set(addresses, forKey: "Addresses")
+            defaults.set(addresses.count - 1, forKey: "CurrentAddressIndex")
             
             // Hide error messages
-            invalidAddressLabel.hidden = true
-            invalidCitylabel.hidden = true
-            invalidZipLabel.hidden = true
+            invalidAddressLabel.isHidden = true
+            invalidCitylabel.isHidden = true
+            invalidZipLabel.isHidden = true
             
-            performSegueWithIdentifier("returnToDeliverTo", sender: self)
+            performSegue(withIdentifier: "returnToDeliverTo", sender: self)
         }
     }
 
