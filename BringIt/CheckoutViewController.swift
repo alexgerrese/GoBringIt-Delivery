@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import GMStepper
-import Stripe
 import AFNetworking
 
 var comingFromOrderPlaced = false
