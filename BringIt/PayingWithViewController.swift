@@ -53,19 +53,19 @@ class PayingWithViewController: UIViewController, STPPaymentContextDelegate {
         if let pm = defaults.object(forKey: "selectedPaymentMethod") {
             if pm as! String == "Food Points" {
                 paymentMethodsSegmentedControl.selectedSegmentIndex = 0
-            } else if pm as! String == "Cash" {
+            } /*else if pm as! String == "Cash" {
                 paymentMethodsSegmentedControl.selectedSegmentIndex = 1
-            } else {
-                paymentMethodsSegmentedControl.selectedSegmentIndex = 2
+            }*/ else {
+                paymentMethodsSegmentedControl.selectedSegmentIndex = 1
             }
         } else {
             if checkIfCanUseFoodPoints() {
                 paymentMethodsSegmentedControl.selectedSegmentIndex = 0
                 defaults.set("Food Points", forKey: "selectedPaymentMethod")
-            } else {
+            } /*else {
                 paymentMethodsSegmentedControl.selectedSegmentIndex = 1
                 defaults.set("Cash", forKey: "selectedPaymentMethod")
-            }
+            }*/
         }
     }
     
@@ -93,13 +93,13 @@ class PayingWithViewController: UIViewController, STPPaymentContextDelegate {
             }
         }
         
-        // CASH
+        /* CASH
         if paymentMethodsSegmentedControl.selectedSegmentIndex == 1 {
             defaults.set("Cash", forKey: "selectedPaymentMethod")
-        }
+        }*/
         
         // CREDIT CARD
-        if paymentMethodsSegmentedControl.selectedSegmentIndex == 2 {
+        if paymentMethodsSegmentedControl.selectedSegmentIndex == 1 {
             // Turn switch off if usually manually changes from food points payment method when those are available
             if checkIfCanUseFoodPoints() {
                 if useFoodPointsSwitch.isOn {
@@ -107,12 +107,12 @@ class PayingWithViewController: UIViewController, STPPaymentContextDelegate {
                 }
             }
             // Make sure a credit card exists
-            if paymentMethodsSegmentedControl.titleForSegment(at: 2) == "Credit Card" {
+            if paymentMethodsSegmentedControl.titleForSegment(at: 1) == "Credit Card" {
                 // Show error message
                 errorMessage.isHidden = false
                 errorMessage.text = "Please add a credit card and try again."
             } else {
-                defaults.set(paymentMethodsSegmentedControl.titleForSegment(at: 2), forKey: "selectedPaymentMethod")
+                defaults.set(paymentMethodsSegmentedControl.titleForSegment(at: 1), forKey: "selectedPaymentMethod")
             }
         }
     }
@@ -169,10 +169,10 @@ class PayingWithViewController: UIViewController, STPPaymentContextDelegate {
     
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         if let paymentMethod = paymentContext.selectedPaymentMethod {
-            paymentMethodsSegmentedControl.setTitle(paymentMethod.label, forSegmentAt: 2)
+            paymentMethodsSegmentedControl.setTitle(paymentMethod.label, forSegmentAt: 1)
         }
         else {
-            paymentMethodsSegmentedControl.setTitle("Credit Card", forSegmentAt: 2)
+            paymentMethodsSegmentedControl.setTitle("Credit Card", forSegmentAt: 1)
         }
     }
     

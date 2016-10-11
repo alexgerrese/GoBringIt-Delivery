@@ -177,7 +177,8 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
             if checkIfUsingFoodPoints() {
                 paymentMethodLabel = "Food Points"
             } else {
-                paymentMethodLabel = "Cash"
+                //paymentMethodLabel = "Cash"
+                paymentMethodLabel = "Credit Card"
             }
         }
         detailsTableView.reloadData()
@@ -507,7 +508,7 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
     func finishOrder() {
         // Submit order to db and charge customer
         self.submitOrder()
-        if paymentMethodLabel != "Cash" && paymentMethodLabel != "Food Points" {
+        if paymentMethodLabel != "Food Points" {
             // Update total price for Stripe payment
             self.paymentContext.paymentAmount = Int(totalCost*100)
             print(self.paymentContext.paymentAmount)
@@ -733,10 +734,10 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
                                             if self.usingFoodPoints {
                                                 print("USING FOOD POINTS")
                                                 payment_cc = "0"
-                                            } else if self.paymentMethodLabel == "Cash" {
+                                            } /*else if self.paymentMethodLabel == "Cash" {
                                                 print("USING CASH")
                                                 payment_cc = "2"
-                                            } else {
+                                            }*/ else {
                                                 print("USING CREDIT CARD")
                                                 payment_cc = "1"
                                             }
@@ -995,9 +996,9 @@ class CheckoutViewController: UIViewController, UITableViewDataSource, UITableVi
         } else {
             if checkIfUsingFoodPoints() {
                 paymentMethodLabel = "Food Points"
-            } else {
+            } /*else {
                 paymentMethodLabel = "Cash"
-            }
+            }*/
         }
         
         detailsTableView.reloadData()
