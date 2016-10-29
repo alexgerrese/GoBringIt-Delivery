@@ -9,19 +9,19 @@
 import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
-import IDZSwiftCommonCrypto
+//import IDZSwiftCommonCrypto
 
 extension String {
     func sha512() -> String {
         let data = self.data(using: String.Encoding.utf8)!
-        let sha : Digest = Digest(algorithm:.sha512)
-        sha.update(data: data)
-        let digest = sha.final()
-        //var digest = [UInt8](count:Int(CC_SHA512_DIGEST_LENGTH), repeatedValue: 0)
-        //CC_SHA512(data.bytes, CC_LONG(data.length), &digest)
-        return hexString(fromArray: digest)
-        //let hexBytes = digest.map { String(format: "%02hhx", $0) }
-        //return hexBytes.joinWithSeparator("")
+        var digest = [UInt8](repeating: 0, count:Int(CC_SHA512_DIGEST_LENGTH))
+    
+        data.withUnsafeBytes {
+            _ = CC_SHA512($0, CC_LONG(data.count), &digest)
+        }
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        
+        return hexBytes.joined(separator: "")
     }
 }
 

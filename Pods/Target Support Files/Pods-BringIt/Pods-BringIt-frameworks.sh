@@ -89,7 +89,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/CVCalendar/CVCalendar.framework"
   install_framework "$BUILT_PRODUCTS_DIR/EZSwiftExtensions/EZSwiftExtensions.framework"
   install_framework "$BUILT_PRODUCTS_DIR/GMStepper/GMStepper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Stripe/Stripe.framework"
 fi
@@ -99,7 +98,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/CVCalendar/CVCalendar.framework"
   install_framework "$BUILT_PRODUCTS_DIR/EZSwiftExtensions/EZSwiftExtensions.framework"
   install_framework "$BUILT_PRODUCTS_DIR/GMStepper/GMStepper.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Stripe/Stripe.framework"
 fi

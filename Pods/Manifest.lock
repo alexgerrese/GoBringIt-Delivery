@@ -18,8 +18,7 @@ PODS:
   - CVCalendar (1.4.0)
   - EZSwiftExtensions (1.7)
   - GMStepper (2.0.0)
-  - IDZSwiftCommonCrypto (0.9.0)
-  - IQKeyboardManagerSwift (4.0.6)
+  - IQKeyboardManagerSwift (4.0.7)
   - Stripe (9.0.0)
 
 DEPENDENCIES:
@@ -28,7 +27,6 @@ DEPENDENCIES:
   - CVCalendar
   - EZSwiftExtensions
   - GMStepper
-  - IDZSwiftCommonCrypto
   - IQKeyboardManagerSwift
   - Stripe
 
@@ -38,10 +36,9 @@ SPEC CHECKSUMS:
   CVCalendar: ec1a06a508f99d8e5067258754f811a8a1433a3f
   EZSwiftExtensions: 4afef248066a036903d8496bf07bc355b22ce766
   GMStepper: 6aff0c881afac2f432e5c9b0df71e44e14110a06
-  IDZSwiftCommonCrypto: 60f14492730da20117ce5875b890c7a6fc38ab8c
-  IQKeyboardManagerSwift: b3015e819559ca76381f87a0833f44d178564603
+  IQKeyboardManagerSwift: 58bbcf46b5cf9fd4ed625d28a60cb2fbae4ab0f4
   Stripe: 935c6deb5e96cbd29d247074bf3aa98a8438e22c
 
-PODFILE CHECKSUM: 5c109c2d69e3d6b7f9f3ee1c99016091a794d488
+PODFILE CHECKSUM: 81f899d886505185cc801bdfd3bd7b6539250869
 
 COCOAPODS: 1.0.1

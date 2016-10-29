@@ -10,7 +10,7 @@ target 'BringIt' do
 pod 'B68UIFloatLabelTextField'
 pod 'EZSwiftExtensions'
 pod 'IQKeyboardManagerSwift'
-pod 'IDZSwiftCommonCrypto'
+#pod 'IDZSwiftCommonCrypto'
 pod 'CVCalendar'
 pod 'GMStepper'
 pod 'Stripe'

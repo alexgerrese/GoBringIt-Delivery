@@ -72,7 +72,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var sidesIDList = [String]()
     var currentActiveCartOrderID = "NONE"
     var currentActiveCartID = "NONE"
-    var maxCartOrderID: Int = 0
+    //var maxCartOrderID: Int = 0
     var specialInstructions = ""
     
     // Get USER ID
