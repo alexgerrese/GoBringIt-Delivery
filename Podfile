@@ -15,6 +15,7 @@ pod 'CVCalendar'
 pod 'GMStepper'
 pod 'Stripe'
 pod ‘AFNetworking'
+pod 'CryptoSwift'
 
 
   target 'BringItTests' do

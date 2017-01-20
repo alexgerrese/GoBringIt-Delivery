@@ -52,8 +52,8 @@ class DeliverToPayingWithViewController: UIViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Set tableView cells to custom height and automatically resize if needed
-        myTableView.estimatedRowHeight = 50
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        myTableView.rowHeight = 120
+        //self.myTableView.rowHeight = UITableViewAutomaticDimension
         
         // Only one cell can be selected at a time
         myTableView.allowsMultipleSelection = false
@@ -72,6 +72,9 @@ class DeliverToPayingWithViewController: UIViewController {
     // Resize itemsTableView
     override func updateViewConstraints() {
         super.updateViewConstraints()
+        print("TABLEVIEW CONTENT SIZE HEIGHT: \(myTableView.contentSize.height)")
+        print("Number of rows: \(myTableView.numberOfRows(inSection: 0))")
+        print("Row height: \(self.myTableView.rowHeight)")
         myTableViewHeight.constant = myTableView.contentSize.height
     }
 

@@ -10,10 +10,25 @@ import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 //import IDZSwiftCommonCrypto
+import CryptoSwift
 
 extension String {
     func sha512() -> String {
+        
+        //let bytes = self.bytes
+        
         let data = self.data(using: String.Encoding.utf8)!
+        
+        let hash = data.sha512()
+        
+        //let bytes = hash.utf8.map({$0})
+        
+        let hex   = hash.toHexString()
+        
+        return hex
+        
+        
+        /*let data = self.data(using: String.Encoding.utf8)!
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA512_DIGEST_LENGTH))
     
         data.withUnsafeBytes {
@@ -21,7 +36,7 @@ extension String {
         }
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         
-        return hexBytes.joined(separator: "")
+        return hexBytes.joined(separator: "")*/
     }
 }
 

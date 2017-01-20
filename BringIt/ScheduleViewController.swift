@@ -150,7 +150,7 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         monthFormatter.dateFormat = "MMM"
         let month = monthFormatter.string(from: entries![(indexPath as NSIndexPath).row].dateOrdered! as Date)
         cell.monthLabel.text = month
-        cell.dayLabel.text = String(describing: components.day)
+        cell.dayLabel.text = String(describing: components.day!)
 
         // Calculate time
         let timeFormatter = DateFormatter()

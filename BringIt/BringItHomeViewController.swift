@@ -171,6 +171,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                     print(error.localizedDescription)
                 }
             } else if let error = error {
+                print("Cannot connect to the internet.")
                 print(error.localizedDescription)
             }
         }) 
@@ -228,7 +229,12 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                     var closeDate : Float? = nil
                                     
                                     for i in 0..<hours_byDay.count {
+                                        
+                                        print("hours_byDay exists")
+                                        
                                         if (hours_byDay[i].range(of: convertedDate) != nil) {
+                                            
+                                            
                                             self.openHours[count] = hours_byDay[i]
                                             
                                             // Extract exact hours of operation for this day
@@ -237,6 +243,8 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                                 
                                                 // Find time pieces (not the Day, not the "-", just the "time + am" or "time + pm")
                                                 if ((hours_pieces[j].range(of: convertedDate) == nil) && (hours_pieces[j].range(of: "-") == nil)) {
+                                                    
+                                                    print("THIS IS WORKING")
                                                     
                                                     let dateMaker = DateFormatter()
                                                     dateMaker.dateFormat = "yyyy/MM/dd HH:mm:ss"
@@ -318,9 +326,9 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                                         }
                                     }
                                 
-                                print(openDate)
-                                print(closeDate)
-                                print(estTime)
+                                print("OPEN DATE IS: \(openDate)")
+                                print("CLOSE DATE IS: \(closeDate)")
+                                print("EST DATE IS: \(estTime)")
                                 print(self.openHours[count])
                                 print(self.isOpen[count])
                                 
@@ -334,7 +342,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
                             OperationQueue.main.addOperation {
                                 
                                 for i in self.openHours {
-                                    print(i)
+                                    print("OPEN HOURS BEEEE LIKE \(i)")
                                 }
                                 
                                 // Only create list of actual sides after the ID's have been collected

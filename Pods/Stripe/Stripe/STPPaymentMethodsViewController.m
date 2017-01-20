@@ -26,6 +26,8 @@
 #import "STPColorUtils.h"
 #import "STPWeakStrongMacros.h"
 #import "STPLocalizationUtils.h"
+#import "STPDispatchFunctions.h"
+#import "UINavigationController+Stripe_Completion.h"
 
 @interface STPPaymentMethodsViewController()<STPPaymentMethodsInternalViewControllerDelegate, STPAddCardViewControllerDelegate>
 
@@ -60,25 +62,27 @@
                              delegate:(id<STPPaymentMethodsViewControllerDelegate>)delegate {
     STPPromise<STPPaymentMethodTuple *> *promise = [STPPromise new];
     [apiAdapter retrieveCustomer:^(STPCustomer * _Nullable customer, NSError * _Nullable error) {
-        if (error) {
-            [promise fail:error];
-        } else {
-            STPCard *selectedCard;
-            NSMutableArray<STPCard *> *cards = [NSMutableArray array];
-            for (id<STPSource> source in customer.sources) {
-                if ([source isKindOfClass:[STPCard class]]) {
-                    STPCard *card = (STPCard *)source;
-                    [cards addObject:card];
-                    if ([card.stripeID isEqualToString:customer.defaultSource.stripeID]) {
-                        selectedCard = card;
+        stpDispatchToMainThreadIfNecessary(^{
+            if (error) {
+                [promise fail:error];
+            } else {
+                STPCard *selectedCard;
+                NSMutableArray<STPCard *> *cards = [NSMutableArray array];
+                for (id<STPSource> source in customer.sources) {
+                    if ([source isKindOfClass:[STPCard class]]) {
+                        STPCard *card = (STPCard *)source;
+                        [cards addObject:card];
+                        if ([card.stripeID isEqualToString:customer.defaultSource.stripeID]) {
+                            selectedCard = card;
+                        }
                     }
                 }
+                STPCardTuple *cardTuple = [STPCardTuple tupleWithSelectedCard:selectedCard cards:cards];
+                STPPaymentMethodTuple *tuple = [STPPaymentMethodTuple tupleWithCardTuple:cardTuple
+                                                                         applePayEnabled:configuration.applePayEnabled];
+                [promise succeed:tuple];
             }
-            STPCardTuple *cardTuple = [STPCardTuple tupleWithSelectedCard:selectedCard cards:cards];
-            STPPaymentMethodTuple *tuple = [STPPaymentMethodTuple tupleWithCardTuple:cardTuple
-                                                                     applePayEnabled:configuration.applePayEnabled];
-            [promise succeed:tuple];
-        }
+        });
     }];
     return [self initWithConfiguration:configuration
                             apiAdapter:apiAdapter
@@ -97,12 +101,12 @@
     
     self.navigationItem.title = STPLocalizedString(@"Loading…", @"Title for screen when data is still loading from the network.");
     
-    self.backItem = [UIBarButtonItem stp_backButtonItemWithTitle:STPLocalizedString(@"Back", @"Back button text") 
+    self.backItem = [UIBarButtonItem stp_backButtonItemWithTitle:STPLocalizedString(@"Back", @"Text for back button") 
                                                            style:UIBarButtonItemStylePlain 
                                                           target:self
                                                           action:@selector(cancel:)];
     self.cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:STPLocalizedString(@"Back", @"Back button text") 
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:STPLocalizedString(@"Back", @"Text for back button") 
                                                                              style:UIBarButtonItemStylePlain 
                                                                             target:nil 
                                                                             action:nil];
@@ -188,10 +192,12 @@
 
 - (void)internalViewControllerDidCreateToken:(STPToken *)token completion:(STPErrorBlock)completion {
     [self.apiAdapter attachSourceToCustomer:token completion:^(NSError * _Nullable error) {
-        completion(error);
-        if (!error) {
-            [self finishWithPaymentMethod:token.card];
-        }
+        stpDispatchToMainThreadIfNecessary(^{
+            completion(error);
+            if (!error) {
+                [self finishWithPaymentMethod:token.card];
+            }
+        });
     }];
 }
 
@@ -203,6 +209,22 @@
                didCreateToken:(STPToken *)token
                    completion:(STPErrorBlock)completion {
     [self internalViewControllerDidCreateToken:token completion:completion];
+}
+
+- (void)dismissWithCompletion:(STPVoidBlock)completion {
+    if ([self stp_isAtRootOfNavigationController]) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:completion];
+    }
+    else {
+        UIViewController *previous = self.navigationController.viewControllers.firstObject;
+        for (UIViewController *viewController in self.navigationController.viewControllers) {
+            if (viewController == self) {
+                break;
+            }
+            previous = viewController;
+        }
+        [self.navigationController stp_popToViewController:previous animated:YES completion:completion];
+    }
 }
 
 @end

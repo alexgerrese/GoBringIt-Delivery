@@ -134,6 +134,7 @@
 		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RestaurantViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
@@ -381,6 +382,7 @@
 				11F5FFA91D52C10F003290DA /* StatsViewController.swift */,
 				11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */,
 				1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */,
+				1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -505,16 +507,16 @@
 					11021FF11CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = T95S69L6BP;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0820;
 					};
 					110220071CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0820;
 						TestTargetID = 11021FF11CE68A83003D82FB;
 					};
 					110220121CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0820;
 						TestTargetID = 11021FF11CE68A83003D82FB;
 					};
 				};

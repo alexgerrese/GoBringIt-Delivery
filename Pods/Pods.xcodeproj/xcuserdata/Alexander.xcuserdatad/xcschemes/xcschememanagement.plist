@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>CryptoSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>EZSwiftExtensions.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -72,7 +77,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>1978024ED098C0ADFD0776F8D7B2B25D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1C3436CEA5C3D39764C5F54374794ECB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2218C495EC82C714FE01858252FF0833</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,22 +102,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7418C2BD0748C5096613676DC1841B7E</key>
+		<key>9A923A638418816340A06B96CC13439F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A33D136C64B49BE89E8F8AB5F6978C77</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>CF8E8DE62CFA6449514883243FBA01D3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D1E4FB4AD360933A4D761FFE5DFF7E38</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D65CF143AC79367CD5874913E4D40CA0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
