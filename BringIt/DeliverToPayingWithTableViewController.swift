@@ -8,29 +8,26 @@
 
 import UIKit
 
-class DeliverToPayingWithTableViewController: UITableViewController {
+struct Address {
+    var address: String
+    var selected: Bool
+}
+
+class DeliverToPayingWithViewController: UIViewController {
     
     // MARK: - IBOutlets
     
     @IBOutlet weak var addNewButton: UIButton!
-    
-    // MARK: - SAMPLE DATA
-    
-    struct Address {
-        var address: String
-        var selected: Bool
-    }
-    
-    struct PaymentMethod {
-        var method: String
-        var selected: Bool
-        // NOTE: Something to connect to Stripe? Don't know if we need two different structs
-    }
+    @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var pageTitleLabel: UILabel!
+    @IBOutlet weak var myTableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var descriptionLabel: UILabel!
+
+    // Enable UserDefaults
+    let defaults = UserDefaults.standard
     
     // Addresses
-    var addresses = [Address(address: "1368 Campus Drive \nDurham, NC \n27708", selected: false), Address(address: "1100 Alexander Drive \nDurham, NC \n27708", selected: true)]
-    // Payment Methods
-    var paymentMethods = [PaymentMethod(method: "Food points", selected: true), PaymentMethod(method: "Credit Card", selected: false)]
+    var addresses = [String]()
     
     var selectedCell = ""
 
@@ -38,26 +35,53 @@ class DeliverToPayingWithTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Set title
-        self.title = selectedCell
+        self.title = "Address Info"
         
         // Set addNewText button
         if selectedCell == "Deliver To" {
-            addNewButton.setTitle("+ New Address", forState: .Normal)
-        } else {
-            addNewButton.setTitle("+ New Payment Method", forState: .Normal)
-        }
+            addNewButton.setTitle("+ NEW ADDRESS", for: UIControlState())
+            pageTitleLabel.text = "Addresses"
+            descriptionLabel.text = "Select or add an address to deliver to."
+        } /*else {
+            addNewButton.setTitle("+ NEW PAYMENT METHOD", forState: .Normal)
+            pageTitleLabel.text = "Payment Methods"
+            descriptionLabel.text = "Credit/debit card payments coming soon."
+        }*/
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Set tableView cells to custom height and automatically resize if needed
-        tableView.estimatedRowHeight = 50
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        myTableView.rowHeight = 120
+        //self.myTableView.rowHeight = UITableViewAutomaticDimension
         
         // Only one cell can be selected at a time
-        tableView.allowsMultipleSelection = false
+        myTableView.allowsMultipleSelection = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if let addressesArray = defaults.object(forKey: "Addresses") {
+            addresses = addressesArray as! [String]
+        }
+        
+        myTableView.reloadData()
+        updateViewConstraints()
+    }
+    
+    // Resize itemsTableView
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        print("TABLEVIEW CONTENT SIZE HEIGHT: \(myTableView.contentSize.height)")
+        print("Number of rows: \(myTableView.numberOfRows(inSection: 0))")
+        print("Row height: \(self.myTableView.rowHeight)")
+        myTableViewHeight.constant = myTableView.contentSize.height
     }
 
+    @IBAction func newButtonPressed(_ sender: UIButton) {
+            performSegue(withIdentifier: "toNewAddress", sender: self)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -65,102 +89,69 @@ class DeliverToPayingWithTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if selectedCell == "Deliver To" {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return addresses.count
-        } else {
-            return paymentMethods.count
-        }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("deliverToPayingWithCell", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "deliverToPayingWithCell", for: indexPath)
 
-        if selectedCell == "Deliver To" {
-            cell.textLabel?.text = addresses[indexPath.row].address
-            if addresses[indexPath.row].selected {
-                cell.accessoryType = .Checkmark
-            } else {
-                cell.accessoryType = .None
-            }
+        cell.textLabel?.text = addresses[(indexPath as NSIndexPath).row]
+        let selectedRow = defaults.object(forKey: "CurrentAddressIndex") as! Int
+        
+        //Change cell's tint color
+        cell.tintColor = GREEN
+        
+        if (indexPath as NSIndexPath).row == selectedRow {
+            cell.accessoryType = .checkmark
         } else {
-            cell.textLabel?.text = paymentMethods[indexPath.row].method
-            if paymentMethods[indexPath.row].selected {
-                cell.accessoryType = .Checkmark
-            } else {
-                cell.accessoryType = .None
-            }
+            cell.accessoryType = .none
         }
 
         return cell
     }
     
     // MAKE SURE THIS WORKSSSSSSSS
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if selectedCell == "Deliver To" {
-            deselectAll()
-            addresses[indexPath.row].selected = true
-        } else {
-            deselectAll()
-            paymentMethods[indexPath.row].selected = true
-            }
+    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+        defaults.set((indexPath as NSIndexPath).row, forKey: "CurrentAddressIndex")
         
         tableView.reloadData()
     }
     
-    // Deselect all cells
-    func deselectAll() {
-        if selectedCell == "Deliver To" {
-            for i in 0..<addresses.count {
-                addresses[i].selected = false
+    @IBAction func returnToDeliverTo(_ segue: UIStoryboardSegue) {
+    }
+
+    // Override to support editing the table view.
+    func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            // Delete the row from the data source
+            addresses.remove(at: (indexPath as NSIndexPath).row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
+            
+            // Update UserDefaults
+            if addresses.count > 1 {
+                defaults.set((indexPath as NSIndexPath).row - 1, forKey: "CurrentAddressIndex")
+            } else {
+                defaults.set(-1, forKey: "CurrentAddressIndex")
             }
-        } else {
-            for i in 0..<paymentMethods.count {
-                paymentMethods[i].selected = false
-            }
+            
+            defaults.set(addresses, forKey: "Addresses")
         }
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation

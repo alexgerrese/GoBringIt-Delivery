@@ -9,6 +9,17 @@
 import UIKit
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 // To think about later: What to do with the profile pic
 
@@ -43,46 +54,46 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         self.title = "Sign Up"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Round profile pic image
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0
-        self.profilePicImage.layer.borderColor = GREEN.CGColor
+        self.profilePicImage.layer.borderColor = GREEN.cgColor
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Hide error messages
-        invalidNameLabel.hidden = true
-        invalidEmailLabel.hidden = true
-        invalidPasswordLabel.hidden = true
-        invalidPhoneNumberLabel.hidden = true
+        invalidNameLabel.isHidden = true
+        invalidEmailLabel.isHidden = true
+        invalidPasswordLabel.isHidden = true
+        invalidPhoneNumberLabel.isHidden = true
         phoneNumberTextField.delegate = self
         
         // Hide activity indicator
         myActivityIndicator.stopAnimating()
     }
     
-    @IBAction func lol(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func lol(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     // MARK: - Image Picker Methods
     
-    @IBAction func chooseImageClicked(sender: AnyObject) {
-        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.Default)
+    @IBAction func chooseImageClicked(_ sender: AnyObject) {
+        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
         {
             UIAlertAction in
             self.openCamera()
         }
-        let galleryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.Default)
+        let galleryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default)
         {
             UIAlertAction in
             self.openGallery()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
         {
             UIAlertAction in
         }
@@ -94,24 +105,24 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         alert.addAction(cancelAction)
         
         // Present the controller
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        if UIDevice.current.userInterfaceIdiom == .phone
         {
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
         else
         {
             popover = UIPopoverController(contentViewController: alert)
-            popover!.presentPopoverFromRect(chooseImageButton.frame, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+            popover!.present(from: chooseImageButton.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
         }
     }
     
     func openCamera()
     {
-        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera))
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
         {
-            picker?.sourceType = UIImagePickerControllerSourceType.Camera
+            picker?.sourceType = UIImagePickerControllerSourceType.camera
             picker?.allowsEditing = true
-            self .presentViewController(picker!, animated: true, completion: nil)
+            self .present(picker!, animated: true, completion: nil)
         }
         else
         {
@@ -121,40 +132,40 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     func openGallery()
     {
-        picker?.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        picker?.sourceType = UIImagePickerControllerSourceType.photoLibrary
         picker?.allowsEditing = true
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        if UIDevice.current.userInterfaceIdiom == .phone
         {
-            self.presentViewController(picker!, animated: true, completion: nil)
+            self.present(picker!, animated: true, completion: nil)
         }
         else
         {
             popover = UIPopoverController(contentViewController: picker!)
-            popover!.presentPopoverFromRect(chooseImageButton.frame, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+            popover!.present(from: chooseImageButton.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
         profilePicImage.image = info[UIImagePickerControllerEditedImage] as? UIImage
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
     {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if textField == phoneNumberTextField {
-            let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-            let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            let components = newString.components(separatedBy: CharacterSet.decimalDigits.inverted)
             
-            let decimalString : String = components.joinWithSeparator("")
+            let decimalString : String = components.joined(separator: "")
             let length = decimalString.characters.count
             let decimalStr = decimalString as NSString
-            let hasLeadingOne = length > 0 && decimalStr.characterAtIndex(0) == (1 as unichar)
+            let hasLeadingOne = length > 0 && decimalStr.character(at: 0) == (1 as unichar)
             
             if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
             {
@@ -167,24 +178,24 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             
             if hasLeadingOne
             {
-                formattedString.appendString("1 ")
+                formattedString.append("1 ")
                 index += 1
             }
             if (length - index) > 3
             {
-                let areaCode = decimalStr.substringWithRange(NSMakeRange(index, 3))
+                let areaCode = decimalStr.substring(with: NSMakeRange(index, 3))
                 formattedString.appendFormat("(%@) ", areaCode)
                 index += 3
             }
             if length - index > 3
             {
-                let prefix = decimalStr.substringWithRange(NSMakeRange(index, 3))
+                let prefix = decimalStr.substring(with: NSMakeRange(index, 3))
                 formattedString.appendFormat("%@-", prefix)
                 index += 3
             }
             
-            let remainder = decimalStr.substringFromIndex(index)
-            formattedString.appendString(remainder)
+            let remainder = decimalStr.substring(from: index)
+            formattedString.append(remainder)
             textField.text = formattedString as String
             print("HELLO")
         }
@@ -193,7 +204,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     // MARK: - IBActions
-    @IBAction func createButtonClicked(sender: UIButton) {
+    @IBAction func createButtonClicked(_ sender: UIButton) {
         
         // Show activity indicator
         myActivityIndicator.startAnimating()
@@ -201,41 +212,41 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         
         // Check validity of each text field
         if fullNameTextField.text!.isBlank {
-            invalidNameLabel.hidden = false
+            invalidNameLabel.isHidden = false
             canContinue = false
         } else {
-            invalidNameLabel.hidden = true
+            invalidNameLabel.isHidden = true
         }
         if !emailTextField.text!.isEmail {
-            invalidEmailLabel.hidden = false
+            invalidEmailLabel.isHidden = false
             canContinue = false
         } else {
-            invalidEmailLabel.hidden = true
+            invalidEmailLabel.isHidden = true
         }
         if passwordTextField.text?.characters.count < 8 {
-            invalidPasswordLabel.hidden = false
+            invalidPasswordLabel.isHidden = false
             canContinue = false
         } else {
-            invalidPasswordLabel.hidden = true
+            invalidPasswordLabel.isHidden = true
         }
         if !phoneNumberTextField.text!.isPhoneNumber {
-            invalidPhoneNumberLabel.hidden = false
+            invalidPhoneNumberLabel.isHidden = false
             canContinue = false
         } else {
-            invalidPhoneNumberLabel.hidden = true
+            invalidPhoneNumberLabel.isHidden = true
         }
         
         // Check for existing email here
         if (canContinue) {
             // Open Connection to PHP Service
-            let requestURL: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
-            let urlRequest: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL)
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(urlRequest) { (data, response, error) -> Void in
+            let requestURL: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
+            let urlRequest = URLRequest(url: requestURL)
+            let session = URLSession.shared
+            let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
                 print("Task completed")
                 if let data = data {
                     do {
-                        let httpResponse = response as! NSHTTPURLResponse
+                        let httpResponse = response as! HTTPURLResponse
                         let statusCode = httpResponse.statusCode
                         
                         // Check HTTP Response
@@ -243,7 +254,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                             
                             do{
                                 // Parse JSON
-                                let json = try NSJSONSerialization.JSONObjectWithData(data, options:.AllowFragments)
+                                let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
                                 
                                 for User in json as! [Dictionary<String, AnyObject>] {
                                     let emailID = User["email"] as! String
@@ -251,29 +262,29 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                                     
                                     // Verify email
                                     if (emailID == self.emailTextField.text) {
-                                        NSOperationQueue.mainQueue().addOperationWithBlock {
-                                            self.invalidEmailLabel.hidden = false
+                                        OperationQueue.main.addOperation {
+                                            self.invalidEmailLabel.isHidden = false
                                             self.invalidEmailLabel.text = "This email is already associated with an account."
                                             canContinue = false
                                         }
                                     }
                                 }
                                 
-                                NSOperationQueue.mainQueue().addOperationWithBlock {
+                                OperationQueue.main.addOperation {
                                     // End activity indicator animation
                                     self.myActivityIndicator.stopAnimating()
                                     
                                     if canContinue {
                                         // Hide error messages
-                                        self.invalidNameLabel.hidden = true
-                                        self.invalidEmailLabel.hidden = true
-                                        self.invalidPasswordLabel.hidden = true
-                                        self.invalidPhoneNumberLabel.hidden = true
+                                        self.invalidNameLabel.isHidden = true
+                                        self.invalidEmailLabel.isHidden = true
+                                        self.invalidPasswordLabel.isHidden = true
+                                        self.invalidPhoneNumberLabel.isHidden = true
                                         
                                         // Reset canContinue variable
                                         canContinue = false
                                         
-                                        self.performSegueWithIdentifier("toAddressInfo", sender: self)
+                                        self.performSegue(withIdentifier: "toAddressInfo", sender: self)
                                     }
                                 }
                             }
@@ -285,22 +296,22 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                 } else if let error = error {
                     print(error.localizedDescription)
                 }
-            }
+            }) 
             task.resume()
         }
     }
     
-    @IBAction func xButtonClicked(sender: UIBarButtonItem) {
+    @IBAction func xButtonClicked(_ sender: UIBarButtonItem) {
         self.view.endEditing(true)
         
         // End activity indicator animation
         myActivityIndicator.stopAnimating()
         
         // Hide error messages
-        invalidNameLabel.hidden = true
-        invalidEmailLabel.hidden = true
-        invalidPasswordLabel.hidden = true
-        invalidPhoneNumberLabel.hidden = true
+        invalidNameLabel.isHidden = true
+        invalidEmailLabel.isHidden = true
+        invalidPasswordLabel.isHidden = true
+        invalidPhoneNumberLabel.isHidden = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -310,11 +321,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     // MARK: - Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "toAddressInfo" {
             // Send initial data to next screen
-            let VC = segue.destinationViewController as! AddressInfoViewController
+            let VC = segue.destination as! AddressInfoViewController
             
             VC.fullName = fullNameTextField.text!
             VC.email = emailTextField.text!
@@ -331,7 +342,7 @@ extension String {
     //To check text field or String is blank or not
     var isBlank: Bool {
         get {
-            let trimmed = stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            let trimmed = trimmingCharacters(in: CharacterSet.whitespaces)
             return trimmed.isEmpty
         }
     }
@@ -339,8 +350,8 @@ extension String {
     //Validate Email
     var isEmail: Bool {
         do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .CaseInsensitive)
-            return regex.firstMatchInString(self, options: NSMatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
+            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
+            return regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
         } catch {
             return false
         }
@@ -350,7 +361,7 @@ extension String {
     var isPhoneNumber: Bool {
         let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
         let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-        let result =  phoneTest.evaluateWithObject(self)
+        let result =  phoneTest.evaluate(with: self)
         return result
     }
     
@@ -358,7 +369,7 @@ extension String {
     var isZipCode: Bool {
         let ZIP_REGEX = "^\\d{5}$"
         let zipTest = NSPredicate(format: "SELF MATCHES %@", ZIP_REGEX)
-        let result =  zipTest.evaluateWithObject(self)
+        let result =  zipTest.evaluate(with: self)
         return result
     }
 }

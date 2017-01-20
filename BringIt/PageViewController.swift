@@ -12,7 +12,7 @@ class PageViewController: UIPageViewController {
     
     // Hard-coded walkthrough data
     let pageImages = ["WT 1", "WT 2", "WT 3"]
-    let pageDescriptions = ["Order delicious food from your dorm on food points with BringIt.", "Schedule a clean of your dorm/apartment with Maid My Day.", "Meet Campus Enterprises, Duke University’s on-demand economy."]
+    let pageDescriptions = ["Order delicious food from your dorm on food points with BringIt.", "Schedule a clean of your dorm or apartment with Maid My Day.", "Meet Campus Enterprises, Duke University’s on-demand economy."]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +22,11 @@ class PageViewController: UIPageViewController {
         
         // Create first walkthrough view
         if let startWalkthroughVC = self.viewControllerAtIndex(0) {
-            setViewControllers([startWalkthroughVC], direction: .Forward, animated: true, completion: nil)
+            setViewControllers([startWalkthroughVC], direction: .forward, animated: true, completion: nil)
         }
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
 
@@ -37,21 +37,21 @@ class PageViewController: UIPageViewController {
     
     // MARK: - Navigate
     
-    func nextPageWithIndex(index: Int)
+    func nextPageWithIndex(_ index: Int)
     {
         if let nextWalkthroughVC = self.viewControllerAtIndex(index+1) {
-            setViewControllers([nextWalkthroughVC], direction: .Forward, animated: true, completion: nil)
+            setViewControllers([nextWalkthroughVC], direction: .forward, animated: true, completion: nil)
         }
     }
     
-    func viewControllerAtIndex(index: Int) -> WalkthroughViewController?
+    func viewControllerAtIndex(_ index: Int) -> WalkthroughViewController?
     {
         if index == NSNotFound || index < 0 || index >= self.pageDescriptions.count {
             return nil
         }
         
         // create a new walkthrough view controller and assing appropriate date
-        if let walkthroughViewController = storyboard?.instantiateViewControllerWithIdentifier("WalkthroughViewController") as? WalkthroughViewController {
+        if let walkthroughViewController = storyboard?.instantiateViewController(withIdentifier: "WalkthroughViewController") as? WalkthroughViewController {
             walkthroughViewController.imageName = pageImages[index]
             walkthroughViewController.descriptionText = pageDescriptions[index]
             walkthroughViewController.index = index
@@ -66,14 +66,14 @@ class PageViewController: UIPageViewController {
 // Create extension
 extension PageViewController : UIPageViewControllerDataSource {
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = (viewController as! WalkthroughViewController).index
         index -= 1
         
         return self.viewControllerAtIndex(index)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index = (viewController as! WalkthroughViewController).index
         index += 1
         

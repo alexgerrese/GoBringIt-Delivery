@@ -34,6 +34,9 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     // Doing this and the two lines in ViewDidLoad automatically handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
+    let defaults = UserDefaults.standard
+    var userID = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,47 +44,96 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         self.title = "Contact Info"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Round profile pic image
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0
-        self.profilePicImage.layer.borderColor = GREEN.CGColor
+        self.profilePicImage.layer.borderColor = GREEN.cgColor
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Hide error messages
-        invalidNameLabel.hidden = true
-        invalidEmailLabel.hidden = true
-        invalidPhoneNumberLabel.hidden = true
+        invalidNameLabel.isHidden = true
+        invalidEmailLabel.isHidden = true
+        invalidPhoneNumberLabel.isHidden = true
         phoneNumberTextField.delegate = self
         
-        // TO-DO: CHAD! Please preload the user's db data so we can populate the fields!
-        let fullname = ""
-        let email = ""
-        let phoneNum = ""
+        // Set userID
+        if let id = self.defaults.object(forKey: "userID") {
+            userID = id as! String
+        }
         
-        //WRITE YOUR CODE HEREEEE
-
+        var fullname = ""
+        var email = ""
+        var phoneNum = ""
+        
+        // Start activity indicator
+        myActivityIndicator.startAnimating()
+        
+        // Make call to accounts DB
+        // Check if uid == userID
+        // Pull name, email, phone
+        let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
+        let urlRequest1 = URLRequest(url: requestURL1)
+        let session1 = URLSession.shared
+        let task1 = session1.dataTask(with: urlRequest1, completionHandler: {
+            (data, response, error) -> Void in
+            
+            let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            // Check HTTP Response
+            if (statusCode == 200) {
+                
+                do{
+                    // Parse JSON
+                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
+                    
+                    for User in json as! [Dictionary<String, AnyObject>] {
+                        let user_id = User["uid"] as! String
+                        if (user_id == self.userID) {
+                            fullname = User["name"] as! String
+                            email = User["email"] as! String
+                            phoneNum = User["phone"] as! String
+                            
+                            OperationQueue.main.addOperation {
+                                // I think this should reload the labels, not sure
+                                self.fullNameTextField.text = fullname
+                                self.emailTextField.text = email
+                                self.phoneNumberTextField.text = phoneNum
+                                
+                                // Start activity indicator
+                                self.myActivityIndicator.stopAnimating()
+                            }
+                        }
+                    }
+                } catch {
+                    print("Error with Json: \(error)")
+                }
+            }
+        }) 
+        task1.resume()
+        
     }
-
+    
     // MARK: - Image Picker Methods
     
-    @IBAction func chooseImageClicked(sender: AnyObject) {
-        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.Default)
+    @IBAction func chooseImageClicked(_ sender: AnyObject) {
+        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
         {
             UIAlertAction in
             self.openCamera()
         }
-        let galleryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.Default)
+        let galleryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default)
         {
             UIAlertAction in
             self.openGallery()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
         {
             UIAlertAction in
         }
@@ -93,24 +145,24 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         alert.addAction(cancelAction)
         
         // Present the controller
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        if UIDevice.current.userInterfaceIdiom == .phone
         {
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
         else
         {
             popover = UIPopoverController(contentViewController: alert)
-            popover!.presentPopoverFromRect(chooseImageButton.frame, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+            popover!.present(from: chooseImageButton.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
         }
     }
     
     func openCamera()
     {
-        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera))
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
         {
-            picker?.sourceType = UIImagePickerControllerSourceType.Camera
+            picker?.sourceType = UIImagePickerControllerSourceType.camera
             picker?.allowsEditing = true
-            self .presentViewController(picker!, animated: true, completion: nil)
+            self .present(picker!, animated: true, completion: nil)
         }
         else
         {
@@ -120,40 +172,40 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     
     func openGallery()
     {
-        picker?.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        picker?.sourceType = UIImagePickerControllerSourceType.photoLibrary
         picker?.allowsEditing = true
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        if UIDevice.current.userInterfaceIdiom == .phone
         {
-            self.presentViewController(picker!, animated: true, completion: nil)
+            self.present(picker!, animated: true, completion: nil)
         }
         else
         {
             popover = UIPopoverController(contentViewController: picker!)
-            popover!.presentPopoverFromRect(chooseImageButton.frame, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+            popover!.present(from: chooseImageButton.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
         profilePicImage.image = info[UIImagePickerControllerEditedImage] as? UIImage
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
     {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if textField == phoneNumberTextField {
-            let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-            let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            let components = newString.components(separatedBy: CharacterSet.decimalDigits.inverted)
             
-            let decimalString : String = components.joinWithSeparator("")
+            let decimalString : String = components.joined(separator: "")
             let length = decimalString.characters.count
             let decimalStr = decimalString as NSString
-            let hasLeadingOne = length > 0 && decimalStr.characterAtIndex(0) == (1 as unichar)
+            let hasLeadingOne = length > 0 && decimalStr.character(at: 0) == (1 as unichar)
             
             if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
             {
@@ -166,33 +218,32 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
             
             if hasLeadingOne
             {
-                formattedString.appendString("1 ")
+                formattedString.append("1 ")
                 index += 1
             }
             if (length - index) > 3
             {
-                let areaCode = decimalStr.substringWithRange(NSMakeRange(index, 3))
+                let areaCode = decimalStr.substring(with: NSMakeRange(index, 3))
                 formattedString.appendFormat("(%@) ", areaCode)
                 index += 3
             }
             if length - index > 3
             {
-                let prefix = decimalStr.substringWithRange(NSMakeRange(index, 3))
+                let prefix = decimalStr.substring(with: NSMakeRange(index, 3))
                 formattedString.appendFormat("%@-", prefix)
                 index += 3
             }
             
-            let remainder = decimalStr.substringFromIndex(index)
-            formattedString.appendString(remainder)
+            let remainder = decimalStr.substring(from: index)
+            formattedString.append(remainder)
             textField.text = formattedString as String
-            print("HELLO")
         }
         
         return false
     }
     
     // MARK: - IBActions
-    @IBAction func saveButtonClicked(sender: UIButton) {
+    @IBAction func saveButtonClicked(_ sender: UIButton) {
         
         // Show activity indicator
         myActivityIndicator.startAnimating()
@@ -201,50 +252,82 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         // Check validity of each text field
         if fullNameTextField.text!.isBlank {
-            invalidNameLabel.hidden = false
+            invalidNameLabel.isHidden = false
             canContinue = false
         } else {
-            invalidNameLabel.hidden = true
+            invalidNameLabel.isHidden = true
         }
         if !emailTextField.text!.isEmail {
-            invalidEmailLabel.hidden = false
+            invalidEmailLabel.isHidden = false
             canContinue = false
         } else {
-            invalidEmailLabel.hidden = true
+            invalidEmailLabel.isHidden = true
         }
         if !phoneNumberTextField.text!.isPhoneNumber {
-            invalidPhoneNumberLabel.hidden = false
+            invalidPhoneNumberLabel.isHidden = false
             canContinue = false
         } else {
-            invalidPhoneNumberLabel.hidden = true
+            invalidPhoneNumberLabel.isHidden = true
         }
         
         if canContinue {
-        // Hide error messages
-        self.invalidNameLabel.hidden = true
-        self.invalidEmailLabel.hidden = true
-        self.invalidPhoneNumberLabel.hidden = true
+            // Hide error messages
+            self.invalidNameLabel.isHidden = true
+            self.invalidEmailLabel.isHidden = true
+            self.invalidPhoneNumberLabel.isHidden = true
             
-        // TO-DO: CHAD! Please save the new user data to the db here!!!
-        //WRITE CODE HEREEEEE
+            // Create JSON data and configure the request
+            let params = ["uid": userID,
+                          "name": self.fullNameTextField.text!,
+                          "phone": self.phoneNumberTextField.text!,
+                          "email": self.emailTextField.text!,
+                          ]
+                as Dictionary<String, String>
             
-        // Reset canContinue variable
-        canContinue = false
+            // create the request & response
+            var request2 = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdateAccount.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
             
-        // End activity indicator animation
-        self.myActivityIndicator.stopAnimating()
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+                request2.httpBody = jsonData
+            } catch let error as NSError {
+                print(error)
+            }
+            request2.httpMethod = "POST"
+            request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
-        // Perform unwind segue
-        self.performSegueWithIdentifier("returnToSettings", sender: self)
-
+            // send the request
+            let session2 = URLSession.shared
+            let task2 = session2.dataTask(with: request2, completionHandler: {
+                (data, response, error) in
+                
+                print(data)
+                print(response)
+                
+                OperationQueue.main.addOperation {
+                    // Reset canContinue variable
+                    canContinue = false
+                    
+                    self.defaults.set(self.fullNameTextField, forKey: "userName")
+                    
+                    // End activity indicator animation
+                    self.myActivityIndicator.stopAnimating()
+                    
+                    // Perform unwind segue
+                    self.performSegue(withIdentifier: "returnToSettings", sender: self)
+                }
+            }) 
+            
+            task2.resume()
+        
         } else {
             // End activity indicator animation
             self.myActivityIndicator.stopAnimating()
-            self.myActivityIndicator.hidden = true
+            self.myActivityIndicator.isHidden = true
         }
     }
     
-    @IBAction func returnToContactInfo(segue: UIStoryboardSegue) {
+    @IBAction func returnToContactInfo(_ segue: UIStoryboardSegue) {
     }
     
     override func didReceiveMemoryWarning() {
@@ -255,17 +338,17 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     // MARK: - Navigation
     
     /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        if segue.identifier == "toAddressInfo" {
-            // Send initial data to next screen
-            let VC = segue.destinationViewController as! AddressInfoViewController
-            
-            VC.fullName = fullNameTextField.text!
-            VC.email = emailTextField.text!
-            VC.password = passwordTextField.text!
-            VC.phoneNumber = phoneNumberTextField.text!
-        }
-        
-    }*/
+     
+     if segue.identifier == "toAddressInfo" {
+     // Send initial data to next screen
+     let VC = segue.destinationViewController as! AddressInfoViewController
+     
+     VC.fullName = fullNameTextField.text!
+     VC.email = emailTextField.text!
+     VC.password = passwordTextField.text!
+     VC.phoneNumber = phoneNumberTextField.text!
+     }
+     
+     }*/
     
 }

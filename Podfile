@@ -7,14 +7,16 @@ target 'BringIt' do
 
   # Pods for BringIt
 
-pod 'B68UIFloatLabelTextField', '~> 0.1.0'
-pod 'EZSwiftExtensions', '~> 1.4'
-pod 'DLRadioButton', '~> 1.4'
+pod 'B68UIFloatLabelTextField'
+pod 'EZSwiftExtensions'
 pod 'IQKeyboardManagerSwift'
-#pod 'BTNavigationDropdownMenu'
-pod 'CVCalendar', '~> 1.2.9'
+#pod 'IDZSwiftCommonCrypto'
+pod 'CVCalendar'
 pod 'GMStepper'
 pod 'Stripe'
+pod ‘AFNetworking'
+pod 'CryptoSwift'
+
 
   target 'BringItTests' do
     inherit! :search_paths

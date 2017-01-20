@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021CEA1AE426967542CFE0C9 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
+		110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */; };
 		11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF51CE68A83003D82FB /* AppDelegate.swift */; };
 		11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF91CE68A83003D82FB /* ScheduleViewController.swift */; };
 		11021FFD1CE68A83003D82FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11021FFB1CE68A83003D82FB /* Main.storyboard */; };
@@ -17,35 +19,47 @@
 		110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220321CE7FC18003D82FB /* WalkthroughViewController.swift */; };
 		110220351CE83307003D82FB /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220341CE83307003D82FB /* PageViewController.swift */; };
 		110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220361CE83EB7003D82FB /* SignInViewController.swift */; };
-		11210CBE1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */; };
 		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
 		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
+		114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */; };
+		114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */; };
+		114FC71D1D44C46F00DB5824 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7171D44C46F00DB5824 /* Side.swift */; };
+		114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */; };
+		114FC71F1D44C46F00DB5824 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7191D44C46F00DB5824 /* Order.swift */; };
+		114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */; };
+		114FC7211D44C46F00DB5824 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71B1D44C46F00DB5824 /* Item.swift */; };
+		1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
-		115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */; };
+		115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */; };
 		115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC371CEAA3460053E03F /* TabBarController.swift */; };
 		115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */; };
-		115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */; };
 		115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */; };
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
+		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
+		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
+		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
+		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
+		11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */; };
+		11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */; };
+		11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */; };
 		11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */; };
 		11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */; };
 		11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */; };
 		11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */; };
+		11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFA91D52C10F003290DA /* StatsViewController.swift */; };
+		11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */; };
 		11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */; };
 		11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */; };
 		11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */; };
 		11F6DE471CF6CF1A00662C20 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE461CF6CF1A00662C20 /* CheckoutViewController.swift */; };
-		11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE4C1CF9545F00662C20 /* ServicesTableViewController.swift */; };
-		11F6DE4F1CF96B5300662C20 /* ServicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE4E1CF96B5300662C20 /* ServicesTableViewCell.swift */; };
 		11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */; };
 		2F60BF5113DA47831CD710EA /* Pods_BringItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */; };
 		545F366974300B6D9693022C /* Pods_BringItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */; };
-		6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +79,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		11D4D0DC1D5D00CE00E19D9C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayingWithViewController.swift; sourceTree = "<group>"; };
 		11021FF21CE68A83003D82FB /* BringIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BringIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11021FF51CE68A83003D82FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11021FF91CE68A83003D82FB /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -81,37 +109,58 @@
 		110220191CE68A83003D82FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		110220321CE7FC18003D82FB /* WalkthroughViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkthroughViewController.swift; sourceTree = "<group>"; };
 		110220341CE83307003D82FB /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
-		110220361CE83EB7003D82FB /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		110220361CE83EB7003D82FB /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignInViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = B68UIFloatLabelTextField.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/B68UIFloatLabelTextField/B68UIFloatLabelTextField.framework"; sourceTree = "<group>"; };
 		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
-		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedViewController.swift; sourceTree = "<group>"; };
-		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; };
-		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
-		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OrderPlacedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignUpViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		114FC7141D44B82C00DB5824 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Side+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114FC7171D44C46F00DB5824 /* Side.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
+		114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Order+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114FC7191D44C46F00DB5824 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		114FC71B1D44C46F00DB5824 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BecomeADriverViewController.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
-		115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewController.swift; sourceTree = "<group>"; };
+		115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BringItHomeViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		115ECC371CEAA3460053E03F /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewCell.swift; sourceTree = "<group>"; };
-		115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
-		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
+		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
+		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RestaurantViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
+		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
+		11D4D0DF1D5D019A00E19D9C /* CVCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CVCalendar.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/CVCalendar/CVCalendar.framework"; sourceTree = "<group>"; };
+		11D4D0E11D5D019E00E19D9C /* DLRadioButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DLRadioButton.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/DLRadioButton/DLRadioButton.framework"; sourceTree = "<group>"; };
+		11D4D0E31D5D01A100E19D9C /* EZSwiftExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EZSwiftExtensions.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/EZSwiftExtensions/EZSwiftExtensions.framework"; sourceTree = "<group>"; };
+		11D4D0E51D5D01A500E19D9C /* GMStepper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GMStepper.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/GMStepper/GMStepper.framework"; sourceTree = "<group>"; };
+		11D4D0E71D5D01A900E19D9C /* IDZSwiftCommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IDZSwiftCommonCrypto.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework"; sourceTree = "<group>"; };
+		11D4D0E91D5D01AD00E19D9C /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"; sourceTree = "<group>"; };
+		11D4D0EB1D5D01B300E19D9C /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/Stripe/Stripe.framework"; sourceTree = "<group>"; };
+		11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressViewController.swift; sourceTree = "<group>"; };
+		11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderPriceTableViewCell.swift; sourceTree = "<group>"; };
 		11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressInfoViewController.swift; sourceTree = "<group>"; };
-		11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
-		11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderViewController.swift; sourceTree = "<group>"; };
+		11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PaymentInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		11F5FFA91D52C10F003290DA /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
+		11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComingSoonViewController.swift; sourceTree = "<group>"; };
+		11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AddToOrderViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderTableViewCell.swift; sourceTree = "<group>"; };
 		11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderSpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
-		11F6DE461CF6CF1A00662C20 /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
-		11F6DE4C1CF9545F00662C20 /* ServicesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicesTableViewController.swift; sourceTree = "<group>"; };
-		11F6DE4E1CF96B5300662C20 /* ServicesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicesTableViewCell.swift; sourceTree = "<group>"; };
+		11F6DE461CF6CF1A00662C20 /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CheckoutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutTableViewCell.swift; sourceTree = "<group>"; };
 		360769A0669582F28FBB8124 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		63F1898A1D0BE02B00C464A1 /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		79E26E758EB8418E7DE19F36 /* Pods-BringIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringIt.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringIt/Pods-BringIt.release.xcconfig"; sourceTree = "<group>"; };
 		8150EF7ED512FAD1501DDB27 /* Pods-BringItUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,8 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11210CBE1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework in Frameworks */,
-				6F83F2C591CB2CD28EFAFF94 /* Pods_BringIt.framework in Frameworks */,
+				021CEA1AE426967542CFE0C9 /* Pods_BringIt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,15 +226,15 @@
 				1102203A1CE9262D003D82FB /* Walkthrough */,
 				11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */,
 				115ECC371CEAA3460053E03F /* TabBarController.swift */,
-				11F6DE501CF96B5900662C20 /* Services */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
 				11F6DE451CF6CF0600662C20 /* Settings */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
+				114FC7221D44C47A00DB5824 /* Data Model */,
+				118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */,
 				110220031CE68A83003D82FB /* Info.plist */,
-				63F1898A1D0BE02B00C464A1 /* BringIt-Bridging-Header.h */,
 			);
 			path = BringIt;
 			sourceTree = "<group>";
@@ -224,6 +272,7 @@
 				11021FF91CE68A83003D82FB /* ScheduleViewController.swift */,
 				115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */,
 				11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */,
+				11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -232,8 +281,24 @@
 			isa = PBXGroup;
 			children = (
 				11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */,
+				110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */,
+				11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */,
 			);
 			name = "Deliver To/Paying With";
+			sourceTree = "<group>";
+		};
+		114FC7221D44C47A00DB5824 /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */,
+				114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */,
+				114FC7171D44C46F00DB5824 /* Side.swift */,
+				114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */,
+				114FC7191D44C46F00DB5824 /* Order.swift */,
+				114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */,
+				114FC71B1D44C46F00DB5824 /* Item.swift */,
+			);
+			name = "Data Model";
 			sourceTree = "<group>";
 		};
 		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
@@ -259,8 +324,9 @@
 		115ECC411CEABA5F0053E03F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				115ECC341CEA877B0053E03F /* BringItHomeTableViewController.swift */,
+				115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */,
 				115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */,
+				1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -277,7 +343,9 @@
 		1193E72C1CEACDDD00299D8B /* Restaurant */ = {
 			isa = PBXGroup;
 			children = (
-				115ECC3D1CEAB72E0053E03F /* RestaurantTableViewController.swift */,
+				11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */,
+				11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */,
+				11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */,
 			);
 			name = Restaurant;
 			sourceTree = "<group>";
@@ -311,17 +379,12 @@
 				1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */,
 				114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */,
 				114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */,
+				11F5FFA91D52C10F003290DA /* StatsViewController.swift */,
+				11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */,
+				1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */,
+				1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */,
 			);
 			name = Settings;
-			sourceTree = "<group>";
-		};
-		11F6DE501CF96B5900662C20 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				11F6DE4C1CF9545F00662C20 /* ServicesTableViewController.swift */,
-				11F6DE4E1CF96B5300662C20 /* ServicesTableViewCell.swift */,
-			);
-			name = Services;
 			sourceTree = "<group>";
 		};
 		11F6DE531CFD2F3D00662C20 /* Checkout */ = {
@@ -338,6 +401,13 @@
 		172FBED42052A1B1057FB38A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11D4D0EB1D5D01B300E19D9C /* Stripe.framework */,
+				11D4D0E91D5D01AD00E19D9C /* IQKeyboardManagerSwift.framework */,
+				11D4D0E71D5D01A900E19D9C /* IDZSwiftCommonCrypto.framework */,
+				11D4D0E51D5D01A500E19D9C /* GMStepper.framework */,
+				11D4D0E31D5D01A100E19D9C /* EZSwiftExtensions.framework */,
+				11D4D0E11D5D019E00E19D9C /* DLRadioButton.framework */,
+				11D4D0DF1D5D019A00E19D9C /* CVCalendar.framework */,
 				11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */,
 				3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */,
 				A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */,
@@ -366,12 +436,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1102201C1CE68A83003D82FB /* Build configuration list for PBXNativeTarget "BringIt" */;
 			buildPhases = (
-				8AFE1A02F96558E3B337DAD7 /* 📦 Check Pods Manifest.lock */,
+				8AFE1A02F96558E3B337DAD7 /* [CP] Check Pods Manifest.lock */,
 				11021FEE1CE68A83003D82FB /* Sources */,
 				11021FEF1CE68A83003D82FB /* Frameworks */,
 				11021FF01CE68A83003D82FB /* Resources */,
-				B718A82B7254511D102664DF /* 📦 Embed Pods Frameworks */,
-				E243B62F19348DD74F38A5D2 /* 📦 Copy Pods Resources */,
+				B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */,
+				E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */,
+				11D4D0DC1D5D00CE00E19D9C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -386,12 +457,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1102201F1CE68A83003D82FB /* Build configuration list for PBXNativeTarget "BringItTests" */;
 			buildPhases = (
-				650176CBFE8A86089C22DE88 /* 📦 Check Pods Manifest.lock */,
+				650176CBFE8A86089C22DE88 /* [CP] Check Pods Manifest.lock */,
 				110220041CE68A83003D82FB /* Sources */,
 				110220051CE68A83003D82FB /* Frameworks */,
 				110220061CE68A83003D82FB /* Resources */,
-				0045021002990CB18D224269 /* 📦 Embed Pods Frameworks */,
-				6C8491E23EBF050DC80F0B70 /* 📦 Copy Pods Resources */,
+				0045021002990CB18D224269 /* [CP] Embed Pods Frameworks */,
+				6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -407,11 +478,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 110220221CE68A83003D82FB /* Build configuration list for PBXNativeTarget "BringItUITests" */;
 			buildPhases = (
-				7D8FCC92878615CA9FAD458D /* 📦 Check Pods Manifest.lock */,
+				7D8FCC92878615CA9FAD458D /* [CP] Check Pods Manifest.lock */,
 				1102200F1CE68A83003D82FB /* Sources */,
 				110220101CE68A83003D82FB /* Frameworks */,
 				110220111CE68A83003D82FB /* Resources */,
-				49E4ED84F97608E3B3DB38AD /* 📦 Copy Pods Resources */,
+				49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -430,18 +501,22 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Campus Enterprises";
 				TargetAttributes = {
 					11021FF11CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = T95S69L6BP;
+						LastSwiftMigration = 0820;
 					};
 					110220071CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 						TestTargetID = 11021FF11CE68A83003D82FB;
 					};
 					110220121CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 						TestTargetID = 11021FF11CE68A83003D82FB;
 					};
 				};
@@ -494,14 +569,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0045021002990CB18D224269 /* 📦 Embed Pods Frameworks */ = {
+		0045021002990CB18D224269 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -509,14 +584,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		49E4ED84F97608E3B3DB38AD /* 📦 Copy Pods Resources */ = {
+		49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -524,14 +599,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		650176CBFE8A86089C22DE88 /* 📦 Check Pods Manifest.lock */ = {
+		650176CBFE8A86089C22DE88 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,14 +614,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6C8491E23EBF050DC80F0B70 /* 📦 Copy Pods Resources */ = {
+		6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,14 +629,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7D8FCC92878615CA9FAD458D /* 📦 Check Pods Manifest.lock */ = {
+		7D8FCC92878615CA9FAD458D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,14 +644,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8AFE1A02F96558E3B337DAD7 /* 📦 Check Pods Manifest.lock */ = {
+		8AFE1A02F96558E3B337DAD7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -584,14 +659,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		B718A82B7254511D102664DF /* 📦 Embed Pods Frameworks */ = {
+		B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -599,14 +674,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringIt/Pods-BringIt-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E243B62F19348DD74F38A5D2 /* 📦 Copy Pods Resources */ = {
+		E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -622,31 +697,46 @@
 			buildActionMask = 2147483647;
 			files = (
 				115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */,
-				11F6DE4F1CF96B5300662C20 /* ServicesTableViewCell.swift in Sources */,
+				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
+				114FC7211D44C46F00DB5824 /* Item.swift in Sources */,
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
+				114FC71D1D44C46F00DB5824 /* Side.swift in Sources */,
+				114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */,
+				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
-				115ECC3E1CEAB72E0053E03F /* RestaurantTableViewController.swift in Sources */,
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
+				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
+				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
-				11F6DE4D1CF9545F00662C20 /* ServicesTableViewController.swift in Sources */,
-				115ECC351CEA877B0053E03F /* BringItHomeTableViewController.swift in Sources */,
+				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
+				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
+				110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
+				114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */,
 				11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */,
+				114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */,
 				11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */,
 				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
+				11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
+				118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */,
+				114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */,
+				114FC71F1D44C46F00DB5824 /* Order.swift in Sources */,
 				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
+				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
+				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
+				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
 				11F6DE471CF6CF1A00662C20 /* CheckoutViewController.swift in Sources */,
 				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */,
@@ -719,8 +809,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -764,8 +856,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -784,6 +878,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -792,12 +887,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DE2BA22A3EE99C6B60B11CD9 /* Pods-BringIt.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringIt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "BringIt/BringIt-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "BringIt-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BringIt-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -805,13 +905,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79E26E758EB8418E7DE19F36 /* Pods-BringIt.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringIt;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "BringIt/BringIt-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "BringIt-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BringIt-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -824,6 +930,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BringIt.app/BringIt";
 			};
 			name = Debug;
@@ -837,6 +944,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BringIt.app/BringIt";
 			};
 			name = Release;
@@ -849,6 +957,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = BringIt;
 			};
 			name = Debug;
@@ -861,6 +970,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = BringIt;
 			};
 			name = Release;
@@ -905,6 +1015,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				114FC7141D44B82C00DB5824 /* Model.xcdatamodel */,
+			);
+			currentVersion = 114FC7141D44B82C00DB5824 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 11021FEA1CE68A83003D82FB /* Project object */;
 }

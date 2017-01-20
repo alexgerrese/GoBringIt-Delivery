@@ -7,22 +7,18 @@
 //
 
 import UIKit
-import DLRadioButton
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 
 class AddressInfoViewController: UIViewController {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var westRadioButton: DLRadioButton!
-    @IBOutlet weak var centralRadioButton: DLRadioButton!
-    @IBOutlet weak var eastRadioButton: DLRadioButton!
-    @IBOutlet weak var offCampusRadioButton: DLRadioButton!
     @IBOutlet weak var address1TextField: B68UIFloatLabelTextField!
     @IBOutlet weak var address2TextField: B68UIFloatLabelTextField!
     @IBOutlet weak var cityTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var campus: UISegmentedControl!
     
     // Error messages
     @IBOutlet weak var invalidAddressLabel: UILabel!
@@ -45,15 +41,15 @@ class AddressInfoViewController: UIViewController {
         self.title = "Address Info"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Hide error messages
-        invalidAddressLabel.hidden = true
-        invalidCitylabel.hidden = true
-        invalidZipLabel.hidden = true
+        invalidAddressLabel.isHidden = true
+        invalidCitylabel.isHidden = true
+        invalidZipLabel.isHidden = true
         
         // Hide activity indicator
         myActivityIndicator.stopAnimating()
@@ -65,29 +61,29 @@ class AddressInfoViewController: UIViewController {
     }
     
     // MARK: - IBActions
-    @IBAction func continueButtonClicked(sender: UIButton) {
+    @IBAction func continueButtonClicked(_ sender: UIButton) {
         // Show activity indicator
         myActivityIndicator.startAnimating()
         
         var canContinue = true
         
         if address1TextField.text!.isBlank {
-            invalidAddressLabel.hidden = false
+            invalidAddressLabel.isHidden = false
             canContinue = false
         } else {
-            invalidAddressLabel.hidden = true
+            invalidAddressLabel.isHidden = true
         }
         if cityTextField.text!.isBlank {
-            invalidCitylabel.hidden = false
+            invalidCitylabel.isHidden = false
             canContinue = false
         } else {
-            invalidCitylabel.hidden = true
+            invalidCitylabel.isHidden = true
         }
         if !zipTextField.text!.isZipCode {
-            invalidZipLabel.hidden = false
+            invalidZipLabel.isHidden = false
             canContinue = false
         } else {
-            invalidZipLabel.hidden = true
+            invalidZipLabel.isHidden = true
         }
         
         // Hide activity indicator
@@ -96,31 +92,32 @@ class AddressInfoViewController: UIViewController {
         if canContinue {
             
             // Hide error messages
-            invalidAddressLabel.hidden = true
-            invalidCitylabel.hidden = true
-            invalidZipLabel.hidden = true
+            invalidAddressLabel.isHidden = true
+            invalidCitylabel.isHidden = true
+            invalidZipLabel.isHidden = true
             
             // Reset canContinue variable
             canContinue = true
             
-            performSegueWithIdentifier("toPaymentInfo", sender: self)
+            performSegue(withIdentifier: "toPaymentInfo", sender: self)
         }
     }
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "toPaymentInfo" {
             // Send initial data to next screen
-            let VC = segue.destinationViewController as! PaymentInfoViewController
+            let VC = segue.destination as! PaymentInfoViewController
             
             VC.fullName = self.fullName
             VC.email = self.email
             VC.password = self.password
             VC.phoneNumber = self.phoneNumber
-            VC.campusLocation = (westRadioButton.selectedButton()?.currentTitle)!
+            let index = campus.selectedSegmentIndex
+            VC.campusLocation = campus.titleForSegment(at: index)!
             VC.address1 = address1TextField.text!
             if address2TextField.text!.isBlank {
                 VC.address2 = ""

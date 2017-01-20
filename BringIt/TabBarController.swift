@@ -10,16 +10,16 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setting GREEN color as selected tab bar item color
         for item in self.tabBar.items! as [UITabBarItem] {
-            if let image = item.image {
+            if item.image != nil {
                 if let selectedImage = item.selectedImage {
-                    item.selectedImage = selectedImage.imageWithColor(GREEN).imageWithRenderingMode(.AlwaysOriginal)
+                    item.selectedImage = selectedImage.imageWithColor(GREEN).withRenderingMode(.alwaysOriginal)
                 }
                 // Uncomment if want a custom color for unselected tab bar image
                 //item.image = image.imageWithColor(UIColor.yellowColor()).imageWithRenderingMode(.AlwaysOriginal)
@@ -27,18 +27,15 @@ class TabBarController: UITabBarController {
         }
         
         // Set tab bar to be opaque
-        self.tabBar.translucent = false
+        self.tabBar.isTranslucent = false
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         // Display walkthrough if first launch
         displayWalkthroughs()
-        
-        // Check if user is already logged in
-        checkLoggedIn()
     }
     
     override func didReceiveMemoryWarning() {
@@ -46,22 +43,15 @@ class TabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    // Check if user is already logged in. If not, present SignInViewController.
-    func checkLoggedIn() {
-        let loggedIn = defaults.boolForKey("loggedIn")
-        if !loggedIn {
-            performSegueWithIdentifier("toSignIn", sender: self)
-        }
-    }
+
     
     // Check if walkthrough has been shown, then show if needed
     func displayWalkthroughs() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let displayedWalkthrough = userDefaults.boolForKey("displayedWalkthrough")
+        let displayedWalkthrough = defaults.bool(forKey: "displayedWalkthrough")
         
         if !displayedWalkthrough {
-            if let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("PageViewController") {
-                self.presentViewController(pageViewController, animated: true, completion: nil)
+            if let pageViewController = storyboard?.instantiateViewController(withIdentifier: "PageViewController") {
+                self.present(pageViewController, animated: true, completion: nil)
             }
         }
     }
@@ -80,22 +70,23 @@ class TabBarController: UITabBarController {
 
 // Allows us to change tab bar item color above
 extension UIImage {
-    func imageWithColor(tintColor: UIColor) -> UIImage {
+    func imageWithColor(_ tintColor: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         
-        let context = UIGraphicsGetCurrentContext()! as CGContextRef
-        CGContextTranslateCTM(context, 0, self.size.height)
-        CGContextScaleCTM(context, 1.0, -1.0);
-        CGContextSetBlendMode(context, CGBlendMode.Normal)
+        let context = UIGraphicsGetCurrentContext()! as CGContext
+        context.translateBy(x: 0, y: self.size.height)
+        context.scaleBy(x: 1.0, y: -1.0);
+        context.setBlendMode(CGBlendMode.normal)
         
-        let rect = CGRectMake(0, 0, self.size.width, self.size.height) as CGRect
-        CGContextClipToMask(context, rect, self.CGImage)
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height) as CGRect
+        context.clip(to: rect, mask: self.cgImage!)
         tintColor.setFill()
-        CGContextFillRect(context, rect)
+        context.fill(rect)
         
-        let newImage = UIGraphicsGetImageFromCurrentImageContext() as UIImage
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()! as UIImage
         UIGraphicsEndImageContext()
         
         return newImage
     }
 }
+

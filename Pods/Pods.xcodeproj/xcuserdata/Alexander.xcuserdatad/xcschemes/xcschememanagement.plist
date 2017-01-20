@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>B68UIFloatLabelTextField.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -14,7 +19,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>DLRadioButton.xcscheme</key>
+		<key>CryptoSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -49,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Stripe-Stripe.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Stripe.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,27 +77,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>1978024ED098C0ADFD0776F8D7B2B25D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1C3436CEA5C3D39764C5F54374794ECB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2218C495EC82C714FE01858252FF0833</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>425236C8907BA1C38D10174C763AB941</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8BF2A3A61A05C7CFFE2F3CF11C6BDCE0</key>
+		<key>6D46ACCA4C3F2BE3B8F9A9E35B37F4A4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8D9EA06C4E63F4580B516D8EB8EDF94D</key>
+		<key>9A923A638418816340A06B96CC13439F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BA14B622689766F6B8A4F42FD9DE552F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BF529704E2D57A46A0B88D09BCBD9804</key>
+		<key>A33D136C64B49BE89E8F8AB5F6978C77</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,7 +117,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F3990E3EAC160D4E4F89177D966FC1E9</key>
+		<key>E5AB88E8333B9568826C9AA252037278</key>
 		<dict>
 			<key>primary</key>
 			<true/>

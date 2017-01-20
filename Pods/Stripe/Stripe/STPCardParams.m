@@ -30,6 +30,32 @@
     }
 }
 
+#if TARGET_OS_IPHONE
+
+- (STPAddress *)address {
+    STPAddress *address = [STPAddress new];
+    address.name = self.name;
+    address.line1 = self.addressLine1;
+    address.line2 = self.addressLine2;
+    address.city = self.addressCity;
+    address.state = self.addressState;
+    address.postalCode = self.addressZip;
+    address.country = self.addressCountry;
+    return address;
+}
+
+- (void)setAddress:(STPAddress *)address {
+    self.name = address.name;
+    self.addressLine1 = address.line1;
+    self.addressLine2 = address.line2;
+    self.addressCity = address.city;
+    self.addressState = address.state;
+    self.addressZip = address.postalCode;
+    self.addressCountry = address.country;
+}
+
+#endif
+
 - (BOOL)validateNumber:(id *)ioValue error:(NSError **)outError {
     if (*ioValue == nil) {
         return [self.class handleValidationErrorForParameter:@"number" error:outError];
@@ -97,23 +123,23 @@
 + (BOOL)handleValidationErrorForParameter:(NSString *)parameter error:(NSError **)outError {
     if (outError != nil) {
         if ([parameter isEqualToString:@"number"]) {
-            *outError = [self createErrorWithMessage:STPCardErrorInvalidNumberUserMessage
+            *outError = [self createErrorWithMessage:[NSError stp_cardErrorInvalidNumberUserMessage]
                                            parameter:parameter
                                        cardErrorCode:STPInvalidNumber
                                      devErrorMessage:@"Card number must be between 10 and 19 digits long and Luhn valid."];
         } else if ([parameter isEqualToString:@"cvc"]) {
-            *outError = [self createErrorWithMessage:STPCardErrorInvalidCVCUserMessage
+            *outError = [self createErrorWithMessage:[NSError stp_cardInvalidCVCUserMessage]
                                            parameter:parameter
                                        cardErrorCode:STPInvalidCVC
                                      devErrorMessage:@"Card CVC must be numeric, 3 digits for Visa, Discover, MasterCard, JCB, and Discover cards, and 3 or 4 "
                          @"digits for American Express cards."];
         } else if ([parameter isEqualToString:@"expMonth"]) {
-            *outError = [self createErrorWithMessage:STPCardErrorInvalidExpMonthUserMessage
+            *outError = [self createErrorWithMessage:[NSError stp_cardErrorInvalidExpMonthUserMessage]
                                            parameter:parameter
                                        cardErrorCode:STPInvalidExpMonth
                                      devErrorMessage:@"expMonth must be less than 13"];
         } else if ([parameter isEqualToString:@"expYear"]) {
-            *outError = [self createErrorWithMessage:STPCardErrorInvalidExpYearUserMessage
+            *outError = [self createErrorWithMessage:[NSError stp_cardErrorInvalidExpYearUserMessage]
                                            parameter:parameter
                                        cardErrorCode:STPInvalidExpYear
                                      devErrorMessage:@"expYear must be this year or a year in the future"];
@@ -124,7 +150,7 @@
             *outError = [[NSError alloc] initWithDomain:StripeDomain
                                                    code:STPAPIError
                                                userInfo:@{
-                                                          NSLocalizedDescriptionKey: STPUnexpectedError,
+                                                          NSLocalizedDescriptionKey: [NSError stp_unexpectedErrorMessage],
                                                           STPErrorMessageKey: @"There was an error within the Stripe client library when trying to generate the "
                                                           @"proper validation error. Contact support@stripe.com if you see this."
                                                           }];

@@ -10,6 +10,7 @@
 #import "STPAPIClient.h"
 #import "STPAPIClient+Private.h"
 #import "StripeError.h"
+#import "STPDispatchFunctions.h"
 
 @implementation STPAPIPostRequest
 
@@ -31,21 +32,18 @@
         if ((!responseObject || ![response isKindOfClass:[NSHTTPURLResponse class]]) && !returnedError) {
             returnedError = [NSError stp_genericFailedToParseResponseError];
         }
-        // We're using the api client's operation queue instead of relying on the url session's operation queue
-        // because the api client's queue is mutable and may have changed after initialization (not ideal)
+        
         NSHTTPURLResponse *httpResponse;
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             httpResponse = (NSHTTPURLResponse *)response;
         }
-        if (returnedError) {
-            [apiClient.operationQueue addOperationWithBlock:^{
+        stpDispatchToMainThreadIfNecessary(^{
+            if (returnedError) {
                 completion(nil, httpResponse, returnedError);
-            }];
-            return;
-        }
-        [apiClient.operationQueue addOperationWithBlock:^{
-            completion(responseObject, httpResponse, nil);
-        }];
+            } else {
+                completion(responseObject, httpResponse, nil);
+            }
+        });
     }] resume];
     
 }

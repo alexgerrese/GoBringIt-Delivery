@@ -8,12 +8,15 @@
 
 import UIKit
 import CVCalendar
+import CoreData
+
+// FUTURE TO-DO: CHAD! Load past carts from web and update CoreData.
 
 class ScheduleViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    // SAMPLE DATA
+    // ScheduleEntry data structure
     struct ScheduleEntry {
-        var date: NSDate
+        var date: Foundation.Date
         var serviceType: String
         var timeLabel: String
         var descriptionLabel: String
@@ -25,48 +28,98 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
         var numOccurences: Int
     }
     
-    var entries = [ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "10:45PM", descriptionLabel: "Sushi Love", priceLabel: "42.59"), ScheduleEntry(date: NSDate(), serviceType: "Room/Apt Clean", timeLabel: "3:15PM", descriptionLabel: "Deluxe", priceLabel: "60.00"), ScheduleEntry(date: NSDate(), serviceType: "Food Delivery", timeLabel: "9:30AM", descriptionLabel: "Dunkin' Donuts", priceLabel: "12.67")]
+    var entries: [Order]?
 
     // MARK: - IBOutlets
     @IBOutlet weak var menuView: CVCalendarMenuView!
     @IBOutlet weak var calendarView: CVCalendarView!
     @IBOutlet weak var monthAndYearLabel: UILabel!
-    @IBOutlet weak var myView: UIView!
+    //@IBOutlet weak var myView: UIView!
     @IBOutlet weak var myTableView: UITableView!
-    @IBOutlet weak var myScrollView: UIScrollView!
-    @IBOutlet weak var scrollViewToTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var myViewHeight: NSLayoutConstraint!
+    //@IBOutlet weak var myScrollView: UIScrollView!
+    @IBOutlet weak var tableViewToTopConstraint: NSLayoutConstraint!
+    //@IBOutlet weak var myViewHeight: NSLayoutConstraint!
     @IBOutlet weak var switchViewsButton: UISegmentedControl!
+    @IBOutlet weak var noOrdersIcon: UIImageView!
     
     var selectedDay: DayView!
-    var selectedDate = ""
-    var selectedOrderID = ""
+    var selectedDate: String?
+    var selectedIndexPath: Int?
+    
+    // CoreData
+    let appDelegate =
+        UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Set title
-        self.navigationItem.title = "Schedule"
+        self.navigationItem.title = "Order History"
         
         // Set nav bar preferences
-        self.navigationController?.navigationBar.tintColor = UIColor.darkGrayColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.darkGray
         navigationController!.navigationBar.titleTextAttributes =
             ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.blackColor()])
+                NSForegroundColorAttributeName: UIColor.black])
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         // Set label to current month
-        monthAndYearLabel.text = CVDate(date: NSDate()).globalDescription
-        menuView.dayOfWeekTextColor = UIColor.whiteColor()
+        monthAndYearLabel.text = CVDate(date: Foundation.Date()).globalDescription
+        menuView.dayOfWeekTextColor = UIColor.white
         
-        // TO-DO: CHAD! 
-            // 1. Please load all previous orders by this user from the db and put them in an array in the ScheduleEntry struct format above. Please sort them by date, with the most recent on top.
-            // 2. This array will need to be separated into sections by month, with the header of each section being the name of the month and the number of entries for that month (for example, "JUNE (3)"). Please let me know if you need help with this because it is confusing.
-            // 3. We need to mark on the calendar which dates have a ScheduleEntry item. If you can give me the dates of each entry formatted as an NSDate, I can mark them on the calendar with a little dot.
-        // Insert code hereeeeeeee
+        menuView.sizeToFit()
+        //calendarView.clipsToBounds = true
+        calendarView.sizeToFit()
+        //myView.sizeToFit()
         
+        //print("VIEW WIDTH: \(myView.frame.width)")
+        print("CALENDAR FRAME WIDTH: \(calendarView.frame.width)")
+        print("TABLEVIEW WIDTH: \(myTableView.frame.width)")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // Deselect cells when view appears
+        if let indexPath = myTableView.indexPathForSelectedRow {
+            myTableView.deselectRow(at: indexPath, animated: true)
+        }
+        
+        // Fetch all inactive carts, if any exist
+        
+        var fetchRequest: NSFetchRequest<Order>
+        if #available(iOS 10.0, *) {
+            fetchRequest = Order.fetchRequest() as! NSFetchRequest<Order>
+        } else {
+            // Fallback on earlier versions
+            fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+        }
+        let sortDescriptor = NSSortDescriptor(key: "dateOrdered", ascending: false)
+        let firstPredicate = NSPredicate(format: "isActive == %@", false as CVarArg)
+        fetchRequest.predicate = firstPredicate
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
+                entries = fetchResults
+                print(fetchResults.count)
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        myTableView.reloadData()
+        
+        if entries?.count == 0 {
+            self.myTableView.separatorStyle = .none
+            noOrdersIcon.isHidden = false
+            
+        } else {
+            self.myTableView.separatorStyle = .singleLine
+            noOrdersIcon.isHidden = true
+        }
     }
     
     // Set up Calendar View
@@ -79,76 +132,74 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TO-DO: Alex! When we have calculated the headers situations (how many months have orders), make this dynamic
-        return entries.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return entries!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("scheduleCell", forIndexPath: indexPath) as! ScheduleTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "scheduleCell", for: indexPath) as! ScheduleTableViewCell
         
-        // Get date components
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.Day, fromDate: entries[indexPath.row].date)
-        let monthFormatter = NSDateFormatter()
+        // Get date components for sorting
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components(.day, from: entries![(indexPath as NSIndexPath).row].dateOrdered! as Date)
+        let monthFormatter = DateFormatter()
         monthFormatter.dateFormat = "MMM"
-        let month = monthFormatter.stringFromDate(entries[indexPath.row].date)
+        let month = monthFormatter.string(from: entries![(indexPath as NSIndexPath).row].dateOrdered! as Date)
         cell.monthLabel.text = month
-        cell.dayLabel.text = String(components.day)
-        cell.serviceTypeLabel.text = entries[indexPath.row].serviceType
-        cell.timeLabel.text = entries[indexPath.row].timeLabel
-        cell.descriptionLabel.text = entries[indexPath.row].descriptionLabel
-        cell.priceLabel.text = entries[indexPath.row].priceLabel
+        cell.dayLabel.text = String(describing: components.day!)
+
+        // Calculate time
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "H:mm"
+        let time = timeFormatter.string(from: entries![(indexPath as NSIndexPath).row].dateOrdered! as Date)
+        cell.timeLabel.text = time
+        
+        // Display description
+        cell.descriptionLabel.text = entries![(indexPath as NSIndexPath).row].restaurant
+        
+        // Display price
+        let price = entries![(indexPath as NSIndexPath).row].totalPrice! as Double
+        cell.priceLabel.text = String(format: "$%.2f", price) 
+        print(String(format: "%.2f", entries![(indexPath as NSIndexPath).row].totalPrice!))
         
         return cell
     }
 
-    @IBAction func switchViewsButtonClicked(sender: AnyObject) {
+    @IBAction func switchViewsButtonClicked(_ sender: AnyObject) {
         if switchViewsButton.selectedSegmentIndex == 0 {
-            scrollViewToTopConstraint.constant = 397 // TO-DO: ALEX! CHANGE THIS, SHOULDN'T BE CONSTANT!!!
-            UIView.animateWithDuration(0.4) {
+            tableViewToTopConstraint.constant = 319
+            UIView.animate(withDuration: 0.4, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }) 
         } else {
-            scrollViewToTopConstraint.constant = 64
-            UIView.animateWithDuration(0.4) {
+            tableViewToTopConstraint.constant = 0
+            UIView.animate(withDuration: 0.4, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }) 
         }
     }
     
     // Set up custom header
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor.groupTableViewBackgroundColor()
-        header.textLabel!.textColor = UIColor.darkGrayColor()
+        header.contentView.backgroundColor = UIColor.groupTableViewBackground
+        header.textLabel!.textColor = UIColor.darkGray
         header.textLabel?.font = TV_HEADER_FONT
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        // TO-DO: ALEX! When we have calculated the headers situations (how many months have orders), make this dynamic
-        if section == 0 {
-            return "JUNE (3)"
-        }
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        return ""
-    }
-    
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        
-        // TO-DO: CHAD! Please load the selected cell's orderID into the following dummy variable so we can know which order was selected in the next viewController.
-        // selectedOrderID = //Insert this indexPath.row's orderID here
+         selectedIndexPath = (indexPath as NSIndexPath).row
         
         // Get date components
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .MediumStyle
-        selectedDate = dateFormatter.stringFromDate(entries[indexPath.row].date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        selectedDate = dateFormatter.string(from: entries![(indexPath as NSIndexPath).row].dateOrdered! as Date)
         
         return indexPath
     }
@@ -159,11 +210,11 @@ class ScheduleViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // Send the selected orderID to the next viewController
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toScheduleDetail" {
-            let VC = segue.destinationViewController as! ScheduleDetailViewController
-            VC.orderID = self.selectedOrderID
-            VC.date = self.selectedDate
+            let VC = segue.destination as! ScheduleDetailViewController
+            VC.order = entries![selectedIndexPath!]
+            VC.date = selectedDate!
         }
     }
 }
@@ -174,46 +225,88 @@ extension ScheduleViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     // MARK: - Calendar Appearance
     
     func dayOfWeekTextColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
     
     func dayLabelWeekdayInTextColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
     
     func dayLabelWeekdayOutTextColor() -> UIColor {
-        return UIColor.grayColor()
+        return UIColor.gray
     }
     
     func dayLabelWeekdayHighlightedTextColor() -> UIColor {
-        return UIColor.darkGrayColor()
+        return UIColor.darkGray
     }
     
     func dayLabelWeekdaySelectedBackgroundColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
     
     func dayLabelWeekdaySelectedTextColor() -> UIColor {
-        return UIColor.darkGrayColor()
+        return UIColor.darkGray
     }
     
     func dayLabelPresentWeekdayHighlightedBackgroundColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
     
-    func presentedDateUpdated(date: Date) {
+    func presentedDateUpdated(_ date: CVDate) {
         monthAndYearLabel.text = date.globalDescription
-        myView.sizeToFit()
+        //myView.sizeToFit()
+        
+        if entries != nil {
+            for i in 0..<entries!.count {
+                let calendar = Calendar.current
+                let dateComponents = (calendar as NSCalendar).components([NSCalendar.Unit.day, NSCalendar.Unit.month, NSCalendar.Unit.year], from: entries![i].dateOrdered! as Date)
+                let day = dateComponents.day
+                let month = dateComponents.month
+                let year = dateComponents.year
+                
+                if day == date.day && month == date.month &&  year == date.year {
+                    self.myTableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                    break
+                }
+            }
+        }
+
+    }
+    
+    func dotMarker(shouldShowOnDayView dayView: DayView) -> Bool {
+        if entries != nil {
+            for entry in entries! {
+                let calendar = Calendar.current
+                let dateComponents = (calendar as NSCalendar).components([NSCalendar.Unit.day, NSCalendar.Unit.month, NSCalendar.Unit.year], from: entry.dateOrdered! as Date)
+                let day = dateComponents.day
+                let month = dateComponents.month
+                let year = dateComponents.year
+
+                if day == dayView.date.day && month == dayView.date.month &&  year == dayView.date.year {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+    
+    func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat {
+        return 12
+    }
+    
+    func dotMarker(colorOnDayView dayView: DayView) -> [UIColor] {
+        return [UIColor.white]
     }
     
     /// Required method to implement!
     func presentationMode() -> CalendarMode {
-        return .MonthView
+        return .monthView
     }
     
     /// Required method to implement!
     func firstWeekday() -> Weekday {
-        return .Sunday
+        return .sunday
     }
     
     // MARK: Optional methods
@@ -222,21 +315,22 @@ extension ScheduleViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
         return true
     }
     
-    func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
+    func didSelectDayView(_ dayView: CVCalendarDayView, animationDidFinish: Bool) {
         print("\(dayView.date.commonDescription) is selected!")
         selectedDay = dayView
     }
     
-    func toggleMonthViewWithMonthOffset(offset: Int) {
-        let calendar = NSCalendar.currentCalendar()
+    func toggleMonthViewWithMonthOffset(_ offset: Int) {
+        let calendar = Calendar.current
         //        let calendarManager = calendarView.manager
-        let components = Manager.componentsForDate(NSDate()) // from today
+        var components = Manager.componentsForDate(Foundation.Date()) // from today
         
-        components.month += offset
+        components.month! += offset
         
-        let resultDate = calendar.dateFromComponents(components)!
+        let resultDate = calendar.date(from: components)!
         
         self.calendarView.toggleViewWithDate(resultDate)
+        updateViewConstraints()
     }
 }
 

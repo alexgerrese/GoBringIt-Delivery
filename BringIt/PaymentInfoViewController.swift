@@ -7,20 +7,12 @@
 //
 
 import UIKit
-import DLRadioButton
 import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
-import Stripe
 
-class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelegate {
+class PaymentInfoViewController: UIViewController {
     
     // MARK: - IBOutlets
-    @IBOutlet weak var creditRadioButton: DLRadioButton!
-    @IBOutlet weak var debitRadioButton: DLRadioButton!
-    @IBOutlet weak var cardNumberTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var CVCTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var expirationDateTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Passed data
@@ -37,7 +29,7 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
     // Doing this and the two lines in viewDidLoad automatically handles all keyboard and textField problems!
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,10 +38,10 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
         self.title = "Payment Info"
         
         // Set custom back button
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
-        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.Done
+        returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
         
         // Hide activity indicator
         myActivityIndicator.stopAnimating()
@@ -57,9 +49,28 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
     
     // MARK: - IBActions
     
-    @IBAction func saveAndFinishButtonClicked(sender: UIButton) {
+    @IBAction func saveAndFinishButtonClicked(_ sender: UIButton) {
         // Show activity indicator
         myActivityIndicator.startAnimating()
+        
+        // Save address to UserDefaults
+        var addresses = [String]()
+        
+        if let addressesArray = defaults.object(forKey: "Addresses") {
+            addresses = addressesArray as! [String]
+        }
+        
+        var newAddress = ""
+        if address2 == "" {
+            newAddress = address1 + "\n" + city + "\n" + zip
+        } else {
+            newAddress = address1 + "\n" + address2 + "\n" + city + "\n" + zip
+        }
+        
+        addresses.append(newAddress)
+        defaults.set(addresses, forKey: "Addresses")
+        defaults.set(addresses.count - 1, forKey: "CurrentAddressIndex")
+        defaults.set(fullName, forKey: "userName")
         
         // Create JSON data and configure the request
         let params = ["name": fullName, // from SignUpVC
@@ -70,44 +81,45 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
             "apartment": address2, // from AddressInfoVC
             "city": city, // from AddressInfoVC
             "state": "NC", // from AddressInfoVC
-            "zip": zip, // from AddressInfoVC
-            "campus_loc": campusLocation] // from AddressInfoVC
-            as Dictionary<String, String>
+            "zip": zip] // from AddressInfoVC
+            as Dictionary<String, String>//"campus_loc": campusLocation] // from AddressInfoVC
         
-        // This is not being saved anywhere: PaymentInfoVC: card_type, card_number, card_zip, card_cvc, card_exp
+        print(fullName)
+        print(address1)
+        print(city)
+        print(zip)
+        print(campusLocation)
+        
         
         // create the request & response
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://www.gobring.it/CHADaddUser.php")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 15)
+        var request = URLRequest(url: URL(string: "http://www.gobringit.com/CHADaddUser.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
         
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted)
-            request.HTTPBody = jsonData
+            let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+            request.httpBody = jsonData
         } catch let error as NSError {
             print(error)
         }
-        request.HTTPMethod = "POST"
+        request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // send the request
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) {
-            (let data, let response, let error) in
-        }
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: {
+            (data, response, error) in
+        }) 
         
         task.resume()
         
-        // Update UserDefaults
-        self.defaults.setBool(true, forKey: "loggedIn")
-        
         // Query accounts DB and get uid for email-phone combination
         // Open Connection to PHP Service
-        let requestURL1: NSURL = NSURL(string: "http://www.gobring.it/CHADservice.php")!
-        let urlRequest1: NSMutableURLRequest = NSMutableURLRequest(URL: requestURL1)
-        let session1 = NSURLSession.sharedSession()
-        let task1 = session1.dataTaskWithRequest(urlRequest1) {
+        let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
+        let urlRequest1: URLRequest = URLRequest(url: requestURL1)
+        let session1 = URLSession.shared
+        let task1 = session1.dataTask(with: urlRequest1, completionHandler: {
             (data, response, error) -> Void in
             
-            let httpResponse = response as! NSHTTPURLResponse
+            let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             
             // Check HTTP Response
@@ -115,7 +127,7 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
                 
                 do{
                     // Parse JSON
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:.AllowFragments)
+                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
                     
                     for User in json as! [Dictionary<String, AnyObject>] {
                         let emailID = User["email"] as! String
@@ -123,10 +135,24 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
                         
                         // Verify email and hashed password
                         if (emailID == self.email && phoneID == self.phoneNumber) {
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                // CHAD - PLEASE PUT USER ID INTO A VARIABLE CALLED userID and then uncomment the line below!
-                                self.defaults.setObject(User["uid"] as! String, forKey: "userID")
+                            OperationQueue.main.addOperation {
+                                
+                                print("SUCCESSFULLY RETRIEVED NEWLY CREATED USER! WOOHOO!")
+                                
+                                // Update UserDefaults
+                                self.defaults.set("", forKey: "stripeCustomerID")
+                                self.defaults.set(true, forKey: "loggedIn")
+                                self.defaults.set(User["uid"] as! String, forKey: "userID")
                                 print((User["uid"] as! String, forKey: "userID"))
+                                print(self.defaults.object(forKey: "stripeCustomerID"))
+                                print(self.defaults.object(forKey: "loggedIn"))
+                                print(self.defaults.object(forKey: "userID"))
+                                
+                                // Stop animating activity indicator and enter app
+                                self.myActivityIndicator.stopAnimating()
+                                //self.defaults.setBool(true, forKey: "loggedIn")
+                                comingFromSignIn = true
+                                self.dismiss(animated: true, completion: nil)
                             }
                         }
                     }
@@ -134,13 +160,11 @@ class PaymentInfoViewController: UIViewController, STPPaymentCardTextFieldDelega
                     print("Error with Json: \(error)")
                 }
             }
-        }
+        }) 
         
         task1.resume()
         
-        // Stop animating activity indicator and enter app
-        myActivityIndicator.stopAnimating()
-        performSegueWithIdentifier("toHomeFromSignUp", sender: self)
+        
     }
     
     override func didReceiveMemoryWarning() {

@@ -18,6 +18,9 @@ typedef NS_ENUM(NSInteger, STPErrorCode) {
     STPInvalidRequestError = 50, // Your request had invalid parameters.
     STPAPIError = 60,            // General-purpose API error (should be rare).
     STPCardError = 70,           // Something was wrong with the given card (most common).
+    STPCancellationError = 80,   // The operation was cancelled.
+    STPCheckoutUnknownError = 5000,   // Checkout failed
+    STPCheckoutTooManyAttemptsError = 5001,   // Too many incorrect code attempts
 };
 
 #pragma mark userInfo keys
@@ -48,24 +51,24 @@ FOUNDATION_EXPORT NSString * __nonnull const STPCardDeclined;
 FOUNDATION_EXPORT NSString * __nonnull const STPProcessingError;
 FOUNDATION_EXPORT NSString * __nonnull const STPIncorrectCVC;
 
-#pragma mark Strings
-
-#define STPCardErrorInvalidNumberUserMessage NSLocalizedString(@"Your card's number is invalid", @"Error when the card number is not valid")
-#define STPCardErrorInvalidCVCUserMessage NSLocalizedString(@"Your card's security code is invalid", @"Error when the card's CVC is not valid")
-#define STPCardErrorInvalidExpMonthUserMessage                                                                                                                 \
-    NSLocalizedString(@"Your card's expiration month is invalid", @"Error when the card's expiration month is not valid")
-#define STPCardErrorInvalidExpYearUserMessage                                                                                                                  \
-    NSLocalizedString(@"Your card's expiration year is invalid", @"Error when the card's expiration year is not valid")
-#define STPCardErrorExpiredCardUserMessage NSLocalizedString(@"Your card has expired", @"Error when the card has already expired")
-#define STPCardErrorDeclinedUserMessage NSLocalizedString(@"Your card was declined", @"Error when the card was declined by the credit card networks")
-#define STPUnexpectedError                                                                                                                                     \
-    NSLocalizedString(@"There was an unexpected error -- try again in a few seconds", @"Unexpected error, such as a 500 from Stripe or a JSON parse error")
-#define STPCardErrorProcessingErrorUserMessage                                                                                                                 \
-    NSLocalizedString(@"There was an error processing your card -- try again in a few seconds", @"Error when there is a problem processing the credit card")
 
 @interface NSError(Stripe)
 
 + (nullable NSError *)stp_errorFromStripeResponse:(nullable NSDictionary *)jsonDictionary;
 + (nonnull NSError *)stp_genericFailedToParseResponseError;
+- (BOOL)stp_isUnknownCheckoutError;
+- (BOOL)stp_isURLSessionCancellationError;
+
+#pragma mark Strings
+
++ (nonnull NSString *)stp_cardErrorInvalidNumberUserMessage;
++ (nonnull NSString *)stp_cardInvalidCVCUserMessage;
++ (nonnull NSString *)stp_cardErrorInvalidExpMonthUserMessage;
++ (nonnull NSString *)stp_cardErrorInvalidExpYearUserMessage;
++ (nonnull NSString *)stp_cardErrorExpiredCardUserMessage;
++ (nonnull NSString *)stp_cardErrorDeclinedUserMessage;
++ (nonnull NSString *)stp_cardErrorProcessingErrorUserMessage;
++ (nonnull NSString *)stp_unexpectedErrorMessage;
+
 
 @end
