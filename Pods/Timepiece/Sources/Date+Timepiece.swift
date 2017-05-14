@@ -49,12 +49,12 @@ extension Date {
         return dateComponents.weekday!
     }
 
-    private var dateComponents: DateComponents {
+    fileprivate var dateComponents: DateComponents {
         return calendar.dateComponents([.era, .year, .month, .day, .hour, .minute, .second, .nanosecond, .weekday], from: self)
     }
 
     // Returns user's calendar to be used to return `DateComponents` of the receiver.
-    private var calendar: Calendar {
+    fileprivate var calendar: Calendar {
         return .current
     }
 
@@ -166,7 +166,7 @@ extension Date {
     ///   - second: The second.
     ///   - nanosecond: The nanosecond.
     /// - Returns: The created `Date` instnace.
-    public func changed(year: Int? = nil, month: Int? = nil, day: Int? = nil, hour: Int? = nil, minute: Int? = nil, second: Int? = nil, nanosecond: Int? = nil) -> Date? {
+    public func changed(_ year: Int? = nil, month: Int? = nil, day: Int? = nil, hour: Int? = nil, minute: Int? = nil, second: Int? = nil, nanosecond: Int? = nil) -> Date? {
         var dateComponents = self.dateComponents
         dateComponents.year = year ?? self.year
         dateComponents.month = month ?? self.month
@@ -183,7 +183,7 @@ extension Date {
     ///
     /// - Parameter year: The year.
     /// - Returns: The created `Date` instance.
-    public func changed(year: Int) -> Date? {
+    public func changed(_ year: Int) -> Date? {
         return changed(year: year, month: nil, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nil)
     }
 
@@ -191,7 +191,7 @@ extension Date {
     ///
     /// - Parameter month: The month.
     /// - Returns: The created `Date` instance.
-    public func changed(month: Int) -> Date? {
+    public func changed(_ month: Int) -> Date? {
         return changed(year: nil, month: month, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nil)
     }
 
@@ -199,7 +199,7 @@ extension Date {
     ///
     /// - Parameter day: The day.
     /// - Returns: The created `Date` instance.
-    public func changed(day: Int) -> Date? {
+    public func changed(_ day: Int) -> Date? {
         return changed(year: nil, month: nil, day: day, hour: nil, minute: nil, second: nil, nanosecond: nil)
     }
 
@@ -207,7 +207,7 @@ extension Date {
     ///
     /// - Parameter hour: The hour.
     /// - Returns: The created `Date` instance.
-    public func changed(hour: Int) -> Date? {
+    public func changed(_ hour: Int) -> Date? {
         return changed(year: nil, month: nil, day: nil, hour: hour, minute: nil, second: nil, nanosecond: nil)
     }
 
@@ -215,7 +215,7 @@ extension Date {
     ///
     /// - Parameter minute: The minute.
     /// - Returns: The created `Date` instance.
-    public func changed(minute: Int) -> Date? {
+    public func changed(_ minute: Int) -> Date? {
         return changed(year: nil, month: nil, day: nil, hour: nil, minute: minute, second: nil, nanosecond: nil)
     }
 
@@ -223,7 +223,7 @@ extension Date {
     ///
     /// - Parameter second: The second.
     /// - Returns: The created `Date` instance.
-    public func changed(second: Int) -> Date? {
+    public func changed(_ second: Int) -> Date? {
         return changed(year: nil, month: nil, day: nil, hour: nil, minute: nil, second: second, nanosecond: nil)
     }
 
@@ -231,7 +231,7 @@ extension Date {
     ///
     /// - Parameter nanosecond: The nanosecond.
     /// - Returns: The created `Date` instance.
-    public func changed(nanosecond: Int) -> Date? {
+    public func changed(_ nanosecond: Int) -> Date? {
         return changed(year: nil, month: nil, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nanosecond)
     }
 
@@ -239,7 +239,7 @@ extension Date {
     ///
     /// - Parameter weekday: The weekday.
     /// - Returns: The created `Date` instance.
-    public func changed(weekday: Int) -> Date? {
+    public func changed(_ weekday: Int) -> Date? {
         return self - (self.weekday - weekday).days
     }
 
@@ -301,7 +301,7 @@ extension Date {
     /// - parameter timeStyle: The time style.
     ///
     /// - returns: The created `String` instance.
-    public func stringIn(dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style) -> String {
+    public func stringIn(_ dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = dateStyle
         dateFormatter.timeStyle = timeStyle
@@ -311,7 +311,7 @@ extension Date {
 
     @available(*, unavailable, renamed: "stringIn(dateStyle:timeStyle:)")
     public func string(inDateStyle dateStyle: DateFormatter.Style, andTimeStyle timeStyle: DateFormatter.Style) -> String {
-        return stringIn(dateStyle: dateStyle, timeStyle: timeStyle)
+        return stringIn(dateStyle, timeStyle: timeStyle)
     }
 
     /// Creates a new `String` instance representing the date of the receiver formatted in given date style.
@@ -320,7 +320,7 @@ extension Date {
     ///
     /// - returns: The created `String` instance.
     public func dateString(in dateStyle: DateFormatter.Style) -> String {
-        return stringIn(dateStyle: dateStyle, timeStyle: .none)
+        return stringIn(dateStyle, timeStyle: .none)
     }
 
     /// Creates a new `String` instance representing the time of the receiver formatted in given time style.
@@ -329,6 +329,6 @@ extension Date {
     ///
     /// - returns: The created `String` instance.
     public func timeString(in timeStyle: DateFormatter.Style) -> String {
-        return stringIn(dateStyle: .none, timeStyle: timeStyle)
+        return stringIn(.none, timeStyle: timeStyle)
     }
 }

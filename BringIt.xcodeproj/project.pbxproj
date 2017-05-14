@@ -22,6 +22,7 @@
 		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
 		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
+		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
@@ -122,6 +123,7 @@
 		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
 		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OrderPlacedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignUpViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -241,6 +243,7 @@
 				11021FF51CE68A83003D82FB /* AppDelegate.swift */,
 				1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */,
 				1198FA1B1EC7CE1800864200 /* Backend.swift */,
+				11423AF01EC89CC400011B4D /* RealmModels.swift */,
 				1102203A1CE9262D003D82FB /* Walkthrough */,
 				11F0A0921CE9499A0041CE92 /* Old Sign In/Sign Up */,
 				115ECC371CEAA3460053E03F /* TabBarController.swift */,
@@ -767,6 +770,7 @@
 				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
 				11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
+				11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */,
 				118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */,
 				114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */,
 				114FC71F1D44C46F00DB5824 /* Order.swift in Sources */,
