@@ -42,6 +42,14 @@
 		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
 		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
+		1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */; };
+		1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0D1EC5149F00864200 /* Brandon_med.otf */; };
+		1198FA121EC5149F00864200 /* Brandon_reg_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */; };
+		1198FA131EC5149F00864200 /* Brandon_reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0F1EC5149F00864200 /* Brandon_reg.otf */; };
+		1198FA171EC5151400864200 /* Brandon_blk_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA151EC5151400864200 /* Brandon_blk_it.otf */; };
+		1198FA181EC5151400864200 /* Brandon_blk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA161EC5151400864200 /* Brandon_blk.otf */; };
+		1198FA1A1EC7C9D400864200 /* SignIn-SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */; };
+		1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA1B1EC7CE1800864200 /* Backend.swift */; };
 		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
 		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
 		11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */; };
@@ -135,6 +143,14 @@
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
+		1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med_it.otf; sourceTree = "<group>"; };
+		1198FA0D1EC5149F00864200 /* Brandon_med.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med.otf; sourceTree = "<group>"; };
+		1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_reg_it.otf; sourceTree = "<group>"; };
+		1198FA0F1EC5149F00864200 /* Brandon_reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_reg.otf; sourceTree = "<group>"; };
+		1198FA151EC5151400864200 /* Brandon_blk_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk_it.otf; sourceTree = "<group>"; };
+		1198FA161EC5151400864200 /* Brandon_blk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk.otf; sourceTree = "<group>"; };
+		1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignIn-SignUpViewController.swift"; sourceTree = "<group>"; };
+		1198FA1B1EC7CE1800864200 /* Backend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RestaurantViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
@@ -223,13 +239,16 @@
 			isa = PBXGroup;
 			children = (
 				11021FF51CE68A83003D82FB /* AppDelegate.swift */,
+				1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */,
+				1198FA1B1EC7CE1800864200 /* Backend.swift */,
 				1102203A1CE9262D003D82FB /* Walkthrough */,
-				11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */,
+				11F0A0921CE9499A0041CE92 /* Old Sign In/Sign Up */,
 				115ECC371CEAA3460053E03F /* TabBarController.swift */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
 				11F6DE451CF6CF0600662C20 /* Settings */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
+				1198FA141EC514AA00864200 /* Fonts */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
 				114FC7221D44C47A00DB5824 /* Data Model */,
@@ -350,7 +369,20 @@
 			name = Restaurant;
 			sourceTree = "<group>";
 		};
-		11F0A0921CE9499A0041CE92 /* Sign In/Sign Up */ = {
+		1198FA141EC514AA00864200 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1198FA151EC5151400864200 /* Brandon_blk_it.otf */,
+				1198FA161EC5151400864200 /* Brandon_blk.otf */,
+				1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */,
+				1198FA0D1EC5149F00864200 /* Brandon_med.otf */,
+				1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */,
+				1198FA0F1EC5149F00864200 /* Brandon_reg.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		11F0A0921CE9499A0041CE92 /* Old Sign In/Sign Up */ = {
 			isa = PBXGroup;
 			children = (
 				110220361CE83EB7003D82FB /* SignInViewController.swift */,
@@ -358,7 +390,7 @@
 				11F0A08E1CE949710041CE92 /* AddressInfoViewController.swift */,
 				11F0A0901CE949830041CE92 /* PaymentInfoViewController.swift */,
 			);
-			name = "Sign In/Sign Up";
+			name = "Old Sign In/Sign Up";
 			sourceTree = "<group>";
 		};
 		11F6DE421CF6BD9C00662C20 /* Add To Order */ = {
@@ -546,8 +578,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1198FA131EC5149F00864200 /* Brandon_reg.otf in Resources */,
+				1198FA171EC5151400864200 /* Brandon_blk_it.otf in Resources */,
+				1198FA181EC5151400864200 /* Brandon_blk.otf in Resources */,
 				110220021CE68A83003D82FB /* LaunchScreen.storyboard in Resources */,
+				1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */,
+				1198FA121EC5149F00864200 /* Brandon_reg_it.otf in Resources */,
 				11021FFF1CE68A83003D82FB /* Assets.xcassets in Resources */,
+				1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */,
 				11021FFD1CE68A83003D82FB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,6 +752,7 @@
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
+				1198FA1A1EC7C9D400864200 /* SignIn-SignUpViewController.swift in Sources */,
 				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
 				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
@@ -734,6 +773,7 @@
 				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
+				1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */,
 				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
 				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
 				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
@@ -891,7 +931,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -909,7 +949,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;

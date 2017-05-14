@@ -1,6 +1,0 @@
-framework module B68UIFloatLabelTextField {
-  umbrella header "B68UIFloatLabelTextField-umbrella.h"
-
-  export *
-  module * { export * }
-}
