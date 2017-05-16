@@ -59,7 +59,6 @@ class PrimaryAddressVC: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         
-        
         // Check that all fields are filled and correctly formatted, else return
         if !checkFields() {
             return
@@ -108,7 +107,7 @@ class PrimaryAddressVC: UIViewController {
     }
     
     /*
-     * Create new Realm User from network JSON data
+     * Create new Realm User
      */
     func createNewUser(id: String, fullName: String, emailAddress: String, password: String, phoneNumber: String, campus: String, streetAddress: String, roomNumber: String) {
         
