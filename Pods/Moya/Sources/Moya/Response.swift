@@ -56,7 +56,7 @@ public extension Response {
      - throws: `MoyaError.statusCode` when others are encountered.
     */
     public func filter(_ statusCode: Int) throws -> Response {
-        return try filter(statusCodes: statusCode...statusCode)
+        return try filter(statusCode...statusCode)
     }
 
     /**
@@ -65,7 +65,7 @@ public extension Response {
      - throws: `MoyaError.statusCode` when others are encountered.
     */
     public func filterSuccessfulStatusCodes() throws -> Response {
-        return try filter(statusCodes: 200...299)
+        return try filter(200...299)
     }
 
     /**
@@ -74,7 +74,7 @@ public extension Response {
      - throws: `MoyaError.statusCode` when others are encountered.
     */
     public func filterSuccessfulStatusAndRedirectCodes() throws -> Response {
-        return try filter(statusCodes: 200...399)
+        return try filter(200...399)
     }
 
     /// Maps data received from the signal into a UIImage.

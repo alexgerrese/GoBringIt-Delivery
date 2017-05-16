@@ -163,11 +163,11 @@ private extension MoyaProvider {
             for bodyPart in multipartBody {
                 switch bodyPart.provider {
                 case .data(let data):
-                    self.append(data: data, bodyPart: bodyPart, to: form)
+                    self.append(data, bodyPart: bodyPart, to: form)
                 case .file(let url):
                     self.append(fileURL: url, bodyPart: bodyPart, to: form)
                 case .stream(let stream, let length):
-                    self.append(stream: stream, length: length, bodyPart: bodyPart, to: form)
+                    self.append(stream, length: length, bodyPart: bodyPart, to: form)
                 }
             }
 
@@ -219,7 +219,7 @@ private extension MoyaProvider {
     func sendAlamofireRequest<T>(_ alamoRequest: T, target: Target, queue: DispatchQueue?, progress progressCompletion: Moya.ProgressBlock?, completion: @escaping Moya.Completion) -> CancellableToken where T: Requestable, T: Request {
         // Give plugins the chance to alter the outgoing request
         let plugins = self.plugins
-        plugins.forEach { $0.willSend(alamoRequest as! RequestType, target: target) }
+        plugins.forEach { $0.willSend(alamoRequest as RequestType, target: target) }
 
         var progressAlamoRequest = alamoRequest
         let progressClosure: (Progress) -> Void = { progress in
@@ -257,8 +257,8 @@ private extension MoyaProvider {
             completion(result)
         }
 
-        progressAlamoRequest = progressAlamoRequest.response(queue: queue, completionHandler: completionHandler)
-
+        progressAlamoRequest = progressAlamoRequest.response(queue, completionHandler: completionHandler)
+        
         progressAlamoRequest.resume()
 
         return CancellableToken(request: progressAlamoRequest)

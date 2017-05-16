@@ -8,7 +8,6 @@
 
 import Foundation
 import Stripe
-import AFNetworking
 
 class MyAPIClient: NSObject, STPBackendAPIAdapter {
     

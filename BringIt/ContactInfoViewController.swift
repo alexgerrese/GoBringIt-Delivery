@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 
 // Later to think about: Check if anything has changed, and if not then no need to call db
@@ -17,9 +16,9 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     // MARK: - IBOutlets
     @IBOutlet weak var profilePicImage: UIImageView!
     @IBOutlet weak var chooseImageButton: UIButton!
-    @IBOutlet weak var fullNameTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var fullNameTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Error messages

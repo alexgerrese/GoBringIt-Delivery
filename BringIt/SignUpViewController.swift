@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
@@ -197,7 +196,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             let remainder = decimalStr.substring(from: index)
             formattedString.append(remainder)
             textField.text = formattedString as String
-            print("HELLO")
         }
         
         return false
@@ -337,39 +335,3 @@ class SignUpViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
 }
 
-extension String {
-    
-    //To check text field or String is blank or not
-    var isBlank: Bool {
-        get {
-            let trimmed = trimmingCharacters(in: CharacterSet.whitespaces)
-            return trimmed.isEmpty
-        }
-    }
-    
-    //Validate Email
-    var isEmail: Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
-            return regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
-        } catch {
-            return false
-        }
-    }
-    
-    //validate PhoneNumber
-    var isPhoneNumber: Bool {
-        let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
-        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-        let result =  phoneTest.evaluate(with: self)
-        return result
-    }
-    
-    //validate Zip Code
-    var isZipCode: Bool {
-        let ZIP_REGEX = "^\\d{5}$"
-        let zipTest = NSPredicate(format: "SELF MATCHES %@", ZIP_REGEX)
-        let result =  zipTest.evaluate(with: self)
-        return result
-    }
-}

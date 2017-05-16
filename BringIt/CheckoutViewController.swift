@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import GMStepper
-import AFNetworking
 
 var comingFromOrderPlaced = false
 var comingFromSignIn = false

@@ -10,22 +10,23 @@ import Foundation
 import RealmSwift
 
 // User Model
-class User: Object, Mappable {
+class User: Object {
+    dynamic var isCurrent = false
     dynamic var id = ""
     dynamic var fullName = ""
     dynamic var email = ""
-    // dynamic var password = "" // KEEP THIS???
+    dynamic var password = "" // KEEP THIS???
     dynamic var phoneNumber = ""
-    dynamic var addresses = List<Address>()
+    let addresses = List<Address>()
     dynamic var isFirstOrder = false
-    dynamic var pastOrders = List<Order>()
+    let pastOrders = List<Order>()
     dynamic var paymentMethod = ""
     
     // TO-DO: Add more demographic data here if necessary
 }
 
 // Address Model
-class Address: Object, Mappable {
+class Address: Object {
     dynamic var user: User?
     dynamic var campus = ""
     dynamic var streetAddress = ""
@@ -35,45 +36,38 @@ class Address: Object, Mappable {
 
 
 // Restaurant Model
-class Restaurant: Object, Mappable {
+class Restaurant: Object {
     dynamic var id = ""
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var cuisineType = ""
     dynamic var restaurantHours = "" // TO-DO: Maybe change the formatting? Here or in a method
     dynamic var deliveryFee = "" // TO-DO: Should this be a string or a Double?
-    dynamic var promotions = List<Promotion>()
-    dynamic var mostPopularDishes = List<MenuItem>()
-    dynamic var menuCategories = List<MenuCategory>()
-}
-
-// Promotions Model
-class Promotion: Object, Mappable {
-    dynamic var restaurant: Restaurant?
-    dynamic var image: NSData?
-    dynamic var title = ""
-    dynamic var description = ""
-    
-    // TO-DO: Will need to add some sort of linking capability to go to the right VC upon tap
+    let promotions = List<Promotion>()
+    let mostPopularDishes = List<MenuItem>()
+    let menuCategories = List<MenuCategory>()
 }
 
 // Menu Category Model
-class MenuCategory: Object, Mappable {
+class MenuCategory: Object {
     dynamic var restaurant: Restaurant?
+    dynamic var id = ""
     dynamic var name = ""
-    dynamic var menuItems = List<MenuItem>()
+    let menuItems = List<MenuItem>()
 }
 
 // Menu Item Model
-class MenuItem: Object, Mappable {
+class MenuItem: Object {
     dynamic var id = ""
     dynamic var menuCategory: MenuCategory?
     dynamic var image: NSData?
     dynamic var name = ""
-    dynamic var description = ""
+    dynamic var details = ""
     dynamic var price = "" // TO-DO: Should this be a string or a Double?
-    dynamic var sides = List<SideCategory>()
-    dynamic var extras = List<Side>()
+    dynamic var groupings = 0
+    dynamic var numRequiredSides = 0
+    let sides = List<Side>()
+    let extras = List<Side>()
     
     // For Cart items only
     dynamic var specialInstructions = ""
@@ -82,30 +76,34 @@ class MenuItem: Object, Mappable {
     // TO-DO: Add a method to calculate and return total price??
 }
 
-// Side Category Model
-class SideCategory: Object, Mappable {
-    dynamic var menuItem: MenuItem?
-    dynamic var name = ""
-    dynamic var maxSelectable = 1
-    dynamic var sides = List<Side>()
-}
-
 // Side Model
-class Side: Object, Mappable {
+class Side: Object {
     dynamic var id = ""
-    dynamic var sideCategory: SideCategory?
+    dynamic var name = ""
+    dynamic var isRequired = false
+    dynamic var sideCategory = ""
     dynamic var price = "" // TO-DO: Should this be a string or a Double?
     dynamic var isSelected = false
 }
 
+// Promotions Model
+class Promotion: Object {
+    dynamic var restaurant: Restaurant?
+    dynamic var image: NSData?
+    dynamic var title = ""
+    dynamic var details = ""
+    
+    // TO-DO: Will need to add some sort of linking capability to go to the right VC upon tap
+}
+
 // Order Model
-class Order: Object, Mappable {
+class Order: Object {
     dynamic var id = ""
     dynamic var restaurant: Restaurant? // TO-DO: Should I have this or just restaurantID?
     dynamic var orderTime: NSDate?
     dynamic var address: Address?
     dynamic var paymentMethod = ""
-    dynamic var menuItems = List<MenuItem>()
+    let menuItems = List<MenuItem>()
     dynamic var subtotal = "" // TO-DO: Should this be a string or a Double?
     dynamic var isComplete = false
 }

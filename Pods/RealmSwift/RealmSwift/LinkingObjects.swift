@@ -448,7 +448,7 @@ internal enum LinkingObjectsBridgingMetadata {
     case uncached(property: RLMProperty)
     case cached(propertyName: String)
 
-    private var propertyName: String {
+    public var propertyName: String {
         switch self {
         case .uncached(let property):   return property.name
         case .cached(let propertyName): return propertyName

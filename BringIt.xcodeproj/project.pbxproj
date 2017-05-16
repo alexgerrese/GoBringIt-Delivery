@@ -19,6 +19,10 @@
 		110220331CE7FC18003D82FB /* WalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220321CE7FC18003D82FB /* WalkthroughViewController.swift */; };
 		110220351CE83307003D82FB /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220341CE83307003D82FB /* PageViewController.swift */; };
 		110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110220361CE83EB7003D82FB /* SignInViewController.swift */; };
+		11158DA81ECB1B4700A88338 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DA71ECB1B4700A88338 /* Constants.swift */; };
+		11158DAA1ECB25A700A88338 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DA91ECB25A700A88338 /* Extensions.swift */; };
+		11158DAC1ECB63D600A88338 /* AccountDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */; };
+		11158DAF1ECB657100A88338 /* PrimaryAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */; };
 		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
 		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
@@ -26,13 +30,6 @@
 		114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C9E561CE931BB00C45866 /* SignUpViewController.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
-		114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */; };
-		114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */; };
-		114FC71D1D44C46F00DB5824 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7171D44C46F00DB5824 /* Side.swift */; };
-		114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */; };
-		114FC71F1D44C46F00DB5824 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7191D44C46F00DB5824 /* Order.swift */; };
-		114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */; };
-		114FC7211D44C46F00DB5824 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC71B1D44C46F00DB5824 /* Item.swift */; };
 		1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */; };
 		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
 		115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */; };
@@ -49,7 +46,7 @@
 		1198FA131EC5149F00864200 /* Brandon_reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0F1EC5149F00864200 /* Brandon_reg.otf */; };
 		1198FA171EC5151400864200 /* Brandon_blk_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA151EC5151400864200 /* Brandon_blk_it.otf */; };
 		1198FA181EC5151400864200 /* Brandon_blk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA161EC5151400864200 /* Brandon_blk.otf */; };
-		1198FA1A1EC7C9D400864200 /* SignIn-SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */; };
+		1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA191EC7C9D400864200 /* SignInVC.swift */; };
 		1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA1B1EC7CE1800864200 /* Backend.swift */; };
 		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
 		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
@@ -119,6 +116,10 @@
 		110220321CE7FC18003D82FB /* WalkthroughViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalkthroughViewController.swift; sourceTree = "<group>"; };
 		110220341CE83307003D82FB /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		110220361CE83EB7003D82FB /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignInViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		11158DA71ECB1B4700A88338 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		11158DA91ECB25A700A88338 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailsVC.swift; sourceTree = "<group>"; };
+		11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryAddressVC.swift; sourceTree = "<group>"; };
 		11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = B68UIFloatLabelTextField.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/B68UIFloatLabelTextField/B68UIFloatLabelTextField.framework"; sourceTree = "<group>"; };
 		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
 		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OrderPlacedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -127,13 +128,6 @@
 		114C9E561CE931BB00C45866 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignUpViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		114FC7141D44B82C00DB5824 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Side+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		114FC7171D44C46F00DB5824 /* Side.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
-		114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Order+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		114FC7191D44C46F00DB5824 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
-		114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		114FC71B1D44C46F00DB5824 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BecomeADriverViewController.swift; sourceTree = "<group>"; };
 		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BringItHomeViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -151,7 +145,7 @@
 		1198FA0F1EC5149F00864200 /* Brandon_reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_reg.otf; sourceTree = "<group>"; };
 		1198FA151EC5151400864200 /* Brandon_blk_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk_it.otf; sourceTree = "<group>"; };
 		1198FA161EC5151400864200 /* Brandon_blk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk.otf; sourceTree = "<group>"; };
-		1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignIn-SignUpViewController.swift"; sourceTree = "<group>"; };
+		1198FA191EC7C9D400864200 /* SignInVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		1198FA1B1EC7CE1800864200 /* Backend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RestaurantViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
@@ -241,9 +235,11 @@
 			isa = PBXGroup;
 			children = (
 				11021FF51CE68A83003D82FB /* AppDelegate.swift */,
-				1198FA191EC7C9D400864200 /* SignIn-SignUpViewController.swift */,
+				11158DA71ECB1B4700A88338 /* Constants.swift */,
+				11158DA91ECB25A700A88338 /* Extensions.swift */,
 				1198FA1B1EC7CE1800864200 /* Backend.swift */,
 				11423AF01EC89CC400011B4D /* RealmModels.swift */,
+				11158DAD1ECB63DB00A88338 /* Sign In/Sign Up */,
 				1102203A1CE9262D003D82FB /* Walkthrough */,
 				11F0A0921CE9499A0041CE92 /* Old Sign In/Sign Up */,
 				115ECC371CEAA3460053E03F /* TabBarController.swift */,
@@ -254,7 +250,6 @@
 				1198FA141EC514AA00864200 /* Fonts */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
-				114FC7221D44C47A00DB5824 /* Data Model */,
 				118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */,
 				110220031CE68A83003D82FB /* Info.plist */,
 			);
@@ -288,6 +283,16 @@
 			name = Walkthrough;
 			sourceTree = "<group>";
 		};
+		11158DAD1ECB63DB00A88338 /* Sign In/Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				1198FA191EC7C9D400864200 /* SignInVC.swift */,
+				11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */,
+				11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */,
+			);
+			name = "Sign In/Sign Up";
+			sourceTree = "<group>";
+		};
 		11210CC51D26B86800B8FD9E /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,20 +312,6 @@
 				11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */,
 			);
 			name = "Deliver To/Paying With";
-			sourceTree = "<group>";
-		};
-		114FC7221D44C47A00DB5824 /* Data Model */ = {
-			isa = PBXGroup;
-			children = (
-				114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */,
-				114FC7161D44C46F00DB5824 /* Side+CoreDataProperties.swift */,
-				114FC7171D44C46F00DB5824 /* Side.swift */,
-				114FC7181D44C46F00DB5824 /* Order+CoreDataProperties.swift */,
-				114FC7191D44C46F00DB5824 /* Order.swift */,
-				114FC71A1D44C46F00DB5824 /* Item+CoreDataProperties.swift */,
-				114FC71B1D44C46F00DB5824 /* Item.swift */,
-			);
-			name = "Data Model";
 			sourceTree = "<group>";
 		};
 		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
@@ -518,6 +509,7 @@
 				110220101CE68A83003D82FB /* Frameworks */,
 				110220111CE68A83003D82FB /* Resources */,
 				49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */,
+				1796F068CDCDB29C48CC0B16 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -536,7 +528,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Campus Enterprises";
 				TargetAttributes = {
 					11021FF11CE68A83003D82FB = {
@@ -625,6 +617,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		1796F068CDCDB29C48CC0B16 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -652,7 +659,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */ = {
@@ -682,7 +689,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		8AFE1A02F96558E3B337DAD7 /* [CP] Check Pods Manifest.lock */ = {
@@ -697,7 +704,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */ = {
@@ -739,44 +746,41 @@
 			files = (
 				115ECC381CEAA3460053E03F /* TabBarController.swift in Sources */,
 				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
-				114FC7211D44C46F00DB5824 /* Item.swift in Sources */,
 				110220371CE83EB7003D82FB /* SignInViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
-				114FC71D1D44C46F00DB5824 /* Side.swift in Sources */,
-				114FC7201D44C46F00DB5824 /* Item+CoreDataProperties.swift in Sources */,
 				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
+				11158DA81ECB1B4700A88338 /* Constants.swift in Sources */,
 				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
-				1198FA1A1EC7C9D400864200 /* SignIn-SignUpViewController.swift in Sources */,
+				1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */,
 				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				114C9E571CE931BB00C45866 /* SignUpViewController.swift in Sources */,
+				11158DAA1ECB25A700A88338 /* Extensions.swift in Sources */,
 				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
 				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
 				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
 				110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */,
 				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
-				114FC71E1D44C46F00DB5824 /* Order+CoreDataProperties.swift in Sources */,
 				11F0A08F1CE949710041CE92 /* AddressInfoViewController.swift in Sources */,
-				114FC7151D44B82C00DB5824 /* Model.xcdatamodeld in Sources */,
 				11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */,
 				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
 				11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */,
+				11158DAC1ECB63D600A88338 /* AccountDetailsVC.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
 				11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */,
 				118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */,
-				114FC71C1D44C46F00DB5824 /* Side+CoreDataProperties.swift in Sources */,
-				114FC71F1D44C46F00DB5824 /* Order.swift in Sources */,
 				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
 				11F0A0911CE949830041CE92 /* PaymentInfoViewController.swift in Sources */,
 				110220351CE83307003D82FB /* PageViewController.swift in Sources */,
+				11158DAF1ECB657100A88338 /* PrimaryAddressVC.swift in Sources */,
 				1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */,
 				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
 				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
@@ -878,10 +882,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -919,9 +924,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1059,19 +1065,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		114FC7131D44B82C00DB5824 /* Model.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				114FC7141D44B82C00DB5824 /* Model.xcdatamodel */,
-			);
-			currentVersion = 114FC7141D44B82C00DB5824 /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 11021FEA1CE68A83003D82FB /* Project object */;
 }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 class PayingWithViewController: UIViewController {
     
