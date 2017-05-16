@@ -21,6 +21,9 @@ struct Constants {
     static let backgroungGray = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
     
     // Fonts
+    //static let titleFont = UIFont(name: "Avenir-Medium", size: 17)!
+    //static let headerFont = UIFont(name: "Avenir-Medium", size: 14)!
+    //static let buttonFont = UIFont(name: "Avenir-Medium", size: 15)!
     
     // Borders
     static let cornerRadius = CGFloat(3)
