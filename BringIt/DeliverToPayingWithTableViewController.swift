@@ -8,10 +8,10 @@
 
 import UIKit
 
-struct Address {
-    var address: String
-    var selected: Bool
-}
+//struct Address {
+//    var address: String
+//    var selected: Bool
+//}
 
 class DeliverToPayingWithViewController: UIViewController {
     
@@ -104,7 +104,7 @@ class DeliverToPayingWithViewController: UIViewController {
         let selectedRow = defaults.object(forKey: "CurrentAddressIndex") as! Int
         
         //Change cell's tint color
-        cell.tintColor = GREEN
+        cell.tintColor = Constants.green
         
         if (indexPath as NSIndexPath).row == selectedRow {
             cell.accessoryType = .checkmark

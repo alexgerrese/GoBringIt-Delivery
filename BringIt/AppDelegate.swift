@@ -20,9 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Set up keyboard manager
         IQKeyboardManager.sharedManager().enable = true
-        IQKeyboardManager.sharedManager().keyboardDistanceFromTextField = CGFloat(50)
+        IQKeyboardManager.sharedManager().keyboardDistanceFromTextField = CGFloat(80)
         IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
-        IQKeyboardManager.sharedManager().enableAutoToolbar = true
+//        IQKeyboardManager.sharedManager().enableAutoToolbar = true
         IQKeyboardManager.sharedManager().preventShowingBottomBlankSpace = true
         
         // Stripe Configuration
@@ -30,7 +30,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().accentColor = Constants.green
         STPTheme.default().secondaryForegroundColor = UIColor.darkGray
         STPTheme.default().font = UIFont(name: "Avenir-Book", size: 17)!
- 
+        
+        // Set default navigation bar attributes
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "BrandonGrotesque-Medium", size: 17)!, NSForegroundColorAttributeName: Constants.darkGray] // font color
+        UINavigationBar.appearance().tintColor = UIColor.darkGray // button color
+        UINavigationBar.appearance().barTintColor = UIColor.white // bar color
+//        UINavigationBar.appearance().isOpaque = true // bar translucency
+//        UINavigationBar.appearance().layer.shadowColor = Constants.lightGray.cgColor // shadow color
+//        UINavigationBar.appearance().layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+//        UINavigationBar.appearance().layer.shadowRadius = 4.0
+//        UINavigationBar.appearance().layer.shadowOpacity = 1.0
+//        UINavigationBar.appearance().layer.masksToBounds = false
+        
+        
         
         return true
     }

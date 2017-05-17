@@ -25,12 +25,16 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumber: UITextField!
     
     @IBOutlet weak var continueButton: UIButton!
-    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // MARK: - Variables
     
+    let defaultButtonText = "Continue"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set title
+        self.title = "Sign Up"
 
         // Setup text field and button UI
         fullNameView.layer.cornerRadius = Constants.cornerRadius
@@ -38,7 +42,15 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         passwordView.layer.cornerRadius = Constants.cornerRadius
         phoneNumberView.layer.cornerRadius = Constants.cornerRadius
         continueButton.layer.cornerRadius = Constants.cornerRadius
-        myActivityIndicator.isHidden = true
+        
+        // Set up targets for text fields
+        fullName.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        emailAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        password.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        phoneNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        // Set up custom back button
+        setCustomBackButton()
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,47 +64,56 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    // MARK: - TextField Delegate
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == phoneNumber {
-            return textField.formatPhoneNumber(textField: textField, string: string, range: range)
-        }
-        
-        return false
-    }
-    
     /*
      * Check that all fields are filled and correctly formatted, else return
      */
     func checkFields() -> Bool {
         if (fullName.text?.isBlank)! {
-            
+            showError(button: continueButton, error: .fieldEmpty)
+            return false
         } else if (emailAddress.text?.isBlank)! {
-            showError(button: continueButton, activityIndicator: myActivityIndicator, error: .fieldEmpty)
+            showError(button: continueButton, error: .fieldEmpty)
             return false
         } else if !(emailAddress.text?.isEmail)! {
-            showError(button: continueButton, activityIndicator: myActivityIndicator, error: .invalidEmail)
+            showError(button: continueButton, error: .invalidEmail)
             return false
         } else if (password.text?.isBlank)! {
-            showError(button: continueButton, activityIndicator: myActivityIndicator, error: .fieldEmpty)
+            showError(button: continueButton, error: .fieldEmpty)
             return false
-        } else if (phoneNumber.text?.isBlank)! {
-            showError(button: continueButton, activityIndicator: myActivityIndicator, error: .fieldEmpty)
+        } else if !(password.text?.isAcceptablePasswordLength)! {
+            showError(button: continueButton, error: .unacceptablePasswordLength)
+            print(password.text!.isAcceptablePasswordLength)
+            return false
+        } else if phoneNumber.text == "" {
+            showError(button: continueButton, error: .fieldEmpty)
             return false
         } else if !(phoneNumber.text?.isPhoneNumber)! {
-            showError(button: continueButton, activityIndicator: myActivityIndicator, error: .invalidPhoneNumber)
+            showError(button: continueButton, error: .invalidPhoneNumber)
             return false
         }
         
+        hideError(button: continueButton, defaultButtonText: self.defaultButtonText)
+        
         return true
     }
+
     
     // MARK: - TextField Delegate
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        hideError(button: continueButton, activityIndicator: myActivityIndicator, defaultButtonText: "Continue")
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        var result = true
+        
+        if textField == phoneNumber {
+            result = textField.formatPhoneNumber(textField: textField, string: string, range: range)
+        }
+        
+        checkFields()
+        return result
+    }
+    
+    func textFieldDidChange(_ textField: UITextField) {
+        checkFields()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

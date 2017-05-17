@@ -16,7 +16,7 @@ import Alamofire
 import Moya
 import RealmSwift
 
-class SignIn_VC: UIViewController, UITextFieldDelegate {
+class SignInVC: UIViewController, UITextFieldDelegate {
     
     // MARK: - IBOutlets
     
@@ -35,6 +35,8 @@ class SignIn_VC: UIViewController, UITextFieldDelegate {
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
+    
+    let defaultButtonText = "Sign in"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,15 @@ class SignIn_VC: UIViewController, UITextFieldDelegate {
         passwordView.layer.cornerRadius = Constants.cornerRadius
         signInButton.layer.cornerRadius = Constants.cornerRadius
         signUpButton.layer.cornerRadius = Constants.cornerRadius
+        signUpButton.layer.borderColor = Constants.green.cgColor
+        signUpButton.layer.borderWidth = Constants.borderWidth
+        
+        // Set up targets for text fields
+        emailAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        password.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        // Set up custom back button
+        setCustomBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,11 +126,11 @@ class SignIn_VC: UIViewController, UITextFieldDelegate {
                     }
                 } catch {
                     // Miscellaneous network error
-                    self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .networkError)
+                    self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: self.defaultButtonText)
                 }
             case .failure(_):
                 // Connection failed
-                self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed)
+                self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: self.defaultButtonText)
             }
         }
     }
@@ -159,19 +170,30 @@ class SignIn_VC: UIViewController, UITextFieldDelegate {
         } else if (password.text?.isBlank)! {
             showError(button: signInButton, activityIndicator: myActivityIndicator, error: .fieldEmpty)
             return false
+        } else if !(password.text?.isAcceptablePasswordLength)! {
+            showError(button: signInButton, activityIndicator: myActivityIndicator, error: .unacceptablePasswordLength)
+            print(password.text!.isAcceptablePasswordLength)
+            return false
         }
+        
+        print("ALL GOOD BRO")
+        hideError(button: signInButton, defaultButtonText: self.defaultButtonText)
         
         return true
     }
     
     // MARK: - TextField Delegate
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        hideError(button: signInButton, activityIndicator: myActivityIndicator, defaultButtonText: "Sign in")
+    func textFieldDidChange(_ textField: UITextField) {
+        checkFields()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         checkFields()
+    }
+    
+    override var prefersStatusBarHidden : Bool {
+        return true
     }
 
     override func didReceiveMemoryWarning() {

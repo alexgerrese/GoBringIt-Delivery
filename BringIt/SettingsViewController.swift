@@ -37,9 +37,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     let defaults = UserDefaults.standard
     
     // CoreData
-    let appDelegate =
-        UIApplication.shared.delegate as! AppDelegate
-    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+//    let appDelegate =
+//        UIApplication.shared.delegate as! AppDelegate
+//    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,9 +49,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGray
-        navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.black])
+//        navigationController!.navigationBar.titleTextAttributes =
+//            ([NSFontAttributeName: TITLE_FONT,
+//                NSForegroundColorAttributeName: UIColor.black])
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
@@ -130,36 +130,36 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Fetch all inactive carts, if any exist
         
-        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
-        let sortDescriptor = NSSortDescriptor(key: "dateOrdered", ascending: false)
-        let firstPredicate = NSPredicate(format: "isActive == %@", false as CVarArg)
-        fetchRequest.predicate = firstPredicate
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        var totalCost = 0.0
-        var numOrders = 0
-        var avgOrderCost = 0.0
-        
-        do {
-            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
-                
-                for i in fetchResults {
-                    totalCost += Double(i.totalPrice!)
-                    numOrders += 1
-                }
-                print(fetchResults.count)
-            }
-        } catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
-        
-        avgOrderCost = totalCost / Double(numOrders)
-        
-        if numOrders == 0 {
-            briefingTextLabel.text = "Come back here after you've made some orders to see some stats!"
-        } else {
-            briefingTextLabel.text = "You have spent \(String(format: "$%.2f", totalCost)) on \(numOrders) orders, for an average of \(String(format: "$%.2f", avgOrderCost)) per order."
-        }
+//        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+//        let sortDescriptor = NSSortDescriptor(key: "dateOrdered", ascending: false)
+//        let firstPredicate = NSPredicate(format: "isActive == %@", false as CVarArg)
+//        fetchRequest.predicate = firstPredicate
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//        
+//        var totalCost = 0.0
+//        var numOrders = 0
+//        var avgOrderCost = 0.0
+//        
+//        do {
+//            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
+//                
+//                for i in fetchResults {
+//                    totalCost += Double(i.totalPrice!)
+//                    numOrders += 1
+//                }
+//                print(fetchResults.count)
+//            }
+//        } catch let error as NSError {
+//            print("Could not fetch \(error), \(error.userInfo)")
+//        }
+//        
+//        avgOrderCost = totalCost / Double(numOrders)
+//        
+//        if numOrders == 0 {
+//            briefingTextLabel.text = "Come back here after you've made some orders to see some stats!"
+//        } else {
+//            briefingTextLabel.text = "You have spent \(String(format: "$%.2f", totalCost)) on \(numOrders) orders, for an average of \(String(format: "$%.2f", avgOrderCost)) per order."
+//        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -240,8 +240,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     func checkLoggedIn() {
         let loggedIn = defaults.bool(forKey: "loggedIn")
         if !loggedIn {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "signIn") as! SignInViewController
-            self.present(vc, animated: true, completion: nil)
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "signIn") as! SignInViewController
+//            self.present(vc, animated: true, completion: nil)
         }
     }
     

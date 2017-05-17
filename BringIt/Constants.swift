@@ -11,7 +11,7 @@ import Foundation
 struct Constants {
     
     // Variables
-    
+    static let delay = 2.3 // For timers
     
     // Colors
     static let green = UIColor(red:0.31, green:0.82, blue:0.76, alpha:1.0)
@@ -27,4 +27,5 @@ struct Constants {
     
     // Borders
     static let cornerRadius = CGFloat(3)
+    static let borderWidth = CGFloat(1)
 }

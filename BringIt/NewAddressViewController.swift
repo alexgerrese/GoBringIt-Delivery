@@ -13,10 +13,10 @@ class NewAddressViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet weak var campusSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var address1TextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var address2TextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var cityTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var address1TextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var address2TextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var cityTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var zipTextField: B68UIFloatLabelTextField!
     
     // Error messages
     @IBOutlet weak var invalidAddressLabel: UILabel!
@@ -60,52 +60,52 @@ class NewAddressViewController: UIViewController {
         
         var canContinue = true
         
-        if address1TextField.text!.isBlank {
-            invalidAddressLabel.isHidden = false
-            canContinue = false
-        } else {
-            invalidAddressLabel.isHidden = true
-        }
-        if cityTextField.text!.isBlank {
-            invalidCitylabel.isHidden = false
-            canContinue = false
-        } else {
-            invalidCitylabel.isHidden = true
-        }
-        if !zipTextField.text!.isZipCode {
-            invalidZipLabel.isHidden = false
-            canContinue = false
-        } else {
-            invalidZipLabel.isHidden = true
-        }
-        
-        if canContinue {
-            
-            // Save address to UserDefaults
-            var addresses = [String]()
-            
-            if let addressesArray = defaults.object(forKey: "Addresses") {
-                addresses = addressesArray as! [String]
-            }
-            
-            var newAddress = ""
-            if address2TextField.text == "" {
-                newAddress = address1TextField.text! + "\n" + cityTextField.text! + "\n" + zipTextField.text!
-            } else {
-                newAddress = address1TextField.text! + "\n" + address2TextField.text! + "\n" + cityTextField.text! + "\n" + zipTextField.text!
-            }
-            
-            addresses.append(newAddress)
-            defaults.set(addresses, forKey: "Addresses")
-            defaults.set(addresses.count - 1, forKey: "CurrentAddressIndex")
-            
-            // Hide error messages
-            invalidAddressLabel.isHidden = true
-            invalidCitylabel.isHidden = true
-            invalidZipLabel.isHidden = true
+//        if address1TextField.text!.isBlank {
+//            invalidAddressLabel.isHidden = false
+//            canContinue = false
+//        } else {
+//            invalidAddressLabel.isHidden = true
+//        }
+//        if cityTextField.text!.isBlank {
+//            invalidCitylabel.isHidden = false
+//            canContinue = false
+//        } else {
+//            invalidCitylabel.isHidden = true
+//        }
+//        if !zipTextField.text!.isZipCode {
+//            invalidZipLabel.isHidden = false
+//            canContinue = false
+//        } else {
+//            invalidZipLabel.isHidden = true
+//        }
+//        
+//        if canContinue {
+//            
+//            // Save address to UserDefaults
+//            var addresses = [String]()
+//            
+//            if let addressesArray = defaults.object(forKey: "Addresses") {
+//                addresses = addressesArray as! [String]
+//            }
+//            
+//            var newAddress = ""
+//            if address2TextField.text == "" {
+//                newAddress = address1TextField.text! + "\n" + cityTextField.text! + "\n" + zipTextField.text!
+//            } else {
+//                newAddress = address1TextField.text! + "\n" + address2TextField.text! + "\n" + cityTextField.text! + "\n" + zipTextField.text!
+//            }
+//            
+//            addresses.append(newAddress)
+//            defaults.set(addresses, forKey: "Addresses")
+//            defaults.set(addresses.count - 1, forKey: "CurrentAddressIndex")
+//            
+//            // Hide error messages
+//            invalidAddressLabel.isHidden = true
+//            invalidCitylabel.isHidden = true
+//            invalidZipLabel.isHidden = true
             
             performSegue(withIdentifier: "returnToDeliverTo", sender: self)
-        }
+//        }
     }
 
     override func didReceiveMemoryWarning() {

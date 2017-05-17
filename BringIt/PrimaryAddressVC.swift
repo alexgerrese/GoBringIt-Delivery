@@ -31,6 +31,8 @@ class PrimaryAddressVC: UIViewController {
     
     // MARK: - Passed Variables
     
+    let defaultButtonText = "Save and continue"
+    
     var fullName = ""
     var emailAddress = ""
     var password = ""
@@ -43,6 +45,9 @@ class PrimaryAddressVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set title
+        self.title = "Sign Up"
 
         // Setup text field and button UI
         campusView.layer.cornerRadius = Constants.cornerRadius
@@ -50,6 +55,11 @@ class PrimaryAddressVC: UIViewController {
         roomNumberView.layer.cornerRadius = Constants.cornerRadius
         saveButton.layer.cornerRadius = Constants.cornerRadius
         myActivityIndicator.isHidden = true
+        
+        // Set up targets for text fields
+        campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        streetAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        roomNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,11 +107,11 @@ class PrimaryAddressVC: UIViewController {
                     }
                 } catch {
                     // Miscellaneous network error
-                    self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .networkError)
+                    self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: self.defaultButtonText)
                 }
             case .failure(_):
                 // Connection failed
-                self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed)
+                self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: self.defaultButtonText)
             }
         }
     }
@@ -139,13 +149,15 @@ class PrimaryAddressVC: UIViewController {
             return false
         }
         
+        hideError(button: saveButton, defaultButtonText: self.defaultButtonText)
+        
         return true
     }
     
     // MARK: - TextField Delegate
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        hideError(button: saveButton, activityIndicator: myActivityIndicator, defaultButtonText: "Save and finish")
+    func textFieldDidChange(_ textField: UITextField) {
+        checkFields()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

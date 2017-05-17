@@ -118,6 +118,8 @@ extension APICalls : TargetType {
             // TO-DO: Implement sample data for all of them!!!
         case .signInUser(let email, let password):
             return "hello".utf8Encoded
+        default:
+            return "bob".utf8Encoded
         }
     }
     

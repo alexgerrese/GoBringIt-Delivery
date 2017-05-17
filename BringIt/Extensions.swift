@@ -26,19 +26,24 @@ extension UIViewController {
         case invalidPassword
         case invalidPhoneNumber
         case fieldEmpty
+        case unacceptablePasswordLength
     }
     
-    func showError(button: UIButton, activityIndicator: UIActivityIndicatorView, error: Error) {
+    func showError(button: UIButton, activityIndicator: UIActivityIndicatorView?, error: Error, defaultButtonText: String?) {
         
-        activityIndicator.isHidden = true
-        button.layer.backgroundColor = Constants.red as! CGColor
+        if let a = activityIndicator {
+            a.isHidden = true
+        }
+        button.layer.backgroundColor = Constants.red.cgColor
         button.isEnabled = false
         
         switch error {
         case .connectionFailed:
             button.setTitle("Connection failed. Please try again.", for: .normal)
+            hideErrorAfterDelay(button: button, defaultButtonText: defaultButtonText!, delay: Constants.delay)
         case .networkError:
-            button.setTitle("Newtork Error. Please try again.", for: .normal)
+            button.setTitle("Network Error. Please try again.", for: .normal)
+            hideErrorAfterDelay(button: button, defaultButtonText: defaultButtonText!, delay: Constants.delay)
         case .invalidEmail:
             button.setTitle("Please enter a valid email.", for: .normal)
             button.isEnabled = false
@@ -51,13 +56,33 @@ extension UIViewController {
         case .fieldEmpty:
             button.setTitle("Please fill in all fields.", for: .normal)
             button.isEnabled = false
+        case .unacceptablePasswordLength:
+            button.setTitle("Password must be at least 8 characters.", for: .normal)
+            button.isEnabled = false
         }
-        
     }
     
-    func hideError(button: UIButton, activityIndicator: UIActivityIndicatorView, defaultButtonText: String) {
+    func showError(button: UIButton, activityIndicator: UIActivityIndicatorView?, error: Error) {
+        showError(button: button, activityIndicator: activityIndicator, error: error, defaultButtonText: nil)
+    }
+    
+    func showError(button: UIButton, error: Error) {
+        showError(button: button, activityIndicator: nil, error: error, defaultButtonText: nil)
+    }
+    
+    func showError(button: UIButton, error: Error, defaultButtonText: String) {
+        showError(button: button, activityIndicator: nil, error: error, defaultButtonText: defaultButtonText)
+    }
+    
+    func hideErrorAfterDelay(button: UIButton, defaultButtonText: String, delay: Double) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            self.hideError(button: button, defaultButtonText: defaultButtonText)
+        }
+    }
+    
+    func hideError(button: UIButton, defaultButtonText: String) {
         
-        button.layer.backgroundColor = Constants.green as! CGColor
+        button.layer.backgroundColor = Constants.green.cgColor
         button.setTitle(defaultButtonText, for: .normal)
         button.isEnabled = true
         
@@ -95,7 +120,7 @@ extension UIViewController {
  */
 extension String {
     
-    //To check text field or String is blank or not
+    // Check if text field or String is blank
     var isBlank: Bool {
         get {
             let trimmed = trimmingCharacters(in: CharacterSet.whitespaces)
@@ -103,22 +128,33 @@ extension String {
         }
     }
     
-    //Validate Email
+    // Validate email address
     var isEmail: Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
-            return regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count)) != nil
-        } catch {
+        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
             return false
         }
+        let range = NSMakeRange(0, NSString(string: self).length)
+        let allMatches = dataDetector.matches(in: self, options: [], range: range)
+        
+        if allMatches.count == 1,
+            allMatches.first?.url?.absoluteString.contains("mailto:") == true
+        {
+            return true
+        }
+        return false
     }
     
-    //validate PhoneNumber
+    // Validate phone number
     var isPhoneNumber: Bool {
         let PHONE_REGEX = "^\\(\\d{3}\\)\\s\\d{3}-\\d{4}$"
         let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
         let result =  phoneTest.evaluate(with: self)
         return result
+    }
+    
+    // Validate password length
+    var isAcceptablePasswordLength: Bool {
+        return (self.characters.count >= 8)
     }
 }
 
@@ -176,6 +212,17 @@ extension UITextField {
         formattedString.append(remainder)
         textField.text = formattedString as String
         
-        return true
+        return false
     }
+    
+}
+
+extension UIViewController {
+    
+    func setCustomBackButton() {
+        self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backButton")
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backButton")
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+    }
+    
 }
