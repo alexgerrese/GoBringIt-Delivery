@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 
 // Later to think about: Check if anything has changed, and if not then no need to call db
@@ -17,9 +16,9 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
     // MARK: - IBOutlets
     @IBOutlet weak var profilePicImage: UIImageView!
     @IBOutlet weak var chooseImageButton: UIButton!
-    @IBOutlet weak var fullNameTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var fullNameTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var emailTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var phoneNumberTextField: B68UIFloatLabelTextField!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Error messages
@@ -50,7 +49,7 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         self.profilePicImage.layer.cornerRadius = self.profilePicImage.frame.size.width / 2
         self.profilePicImage.clipsToBounds = true
         self.profilePicImage.layer.borderWidth = 2.0
-        self.profilePicImage.layer.borderColor = GREEN.cgColor
+        self.profilePicImage.layer.borderColor = Constants.green.cgColor
         
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler.lastTextFieldReturnKeyType = UIReturnKeyType.done
@@ -59,7 +58,7 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         invalidNameLabel.isHidden = true
         invalidEmailLabel.isHidden = true
         invalidPhoneNumberLabel.isHidden = true
-        phoneNumberTextField.delegate = self
+//        phoneNumberTextField.delegate = self
         
         // Set userID
         if let id = self.defaults.object(forKey: "userID") {
@@ -101,9 +100,9 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
                             
                             OperationQueue.main.addOperation {
                                 // I think this should reload the labels, not sure
-                                self.fullNameTextField.text = fullname
-                                self.emailTextField.text = email
-                                self.phoneNumberTextField.text = phoneNum
+//                                self.fullNameTextField.text = fullname
+//                                self.emailTextField.text = email
+//                                self.phoneNumberTextField.text = phoneNum
                                 
                                 // Start activity indicator
                                 self.myActivityIndicator.stopAnimating()
@@ -196,51 +195,51 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         picker.dismiss(animated: true, completion: nil)
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == phoneNumberTextField {
-            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-            let components = newString.components(separatedBy: CharacterSet.decimalDigits.inverted)
-            
-            let decimalString : String = components.joined(separator: "")
-            let length = decimalString.characters.count
-            let decimalStr = decimalString as NSString
-            let hasLeadingOne = length > 0 && decimalStr.character(at: 0) == (1 as unichar)
-            
-            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
-            {
-                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
-                
-                return (newLength > 10) ? false : true
-            }
-            var index = 0 as Int
-            let formattedString = NSMutableString()
-            
-            if hasLeadingOne
-            {
-                formattedString.append("1 ")
-                index += 1
-            }
-            if (length - index) > 3
-            {
-                let areaCode = decimalStr.substring(with: NSMakeRange(index, 3))
-                formattedString.appendFormat("(%@) ", areaCode)
-                index += 3
-            }
-            if length - index > 3
-            {
-                let prefix = decimalStr.substring(with: NSMakeRange(index, 3))
-                formattedString.appendFormat("%@-", prefix)
-                index += 3
-            }
-            
-            let remainder = decimalStr.substring(from: index)
-            formattedString.append(remainder)
-            textField.text = formattedString as String
-        }
-        
-        return false
-    }
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        
+//        if textField == phoneNumberTextField {
+//            let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+//            let components = newString.components(separatedBy: CharacterSet.decimalDigits.inverted)
+//            
+//            let decimalString : String = components.joined(separator: "")
+//            let length = decimalString.characters.count
+//            let decimalStr = decimalString as NSString
+//            let hasLeadingOne = length > 0 && decimalStr.character(at: 0) == (1 as unichar)
+//            
+//            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
+//            {
+//                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
+//                
+//                return (newLength > 10) ? false : true
+//            }
+//            var index = 0 as Int
+//            let formattedString = NSMutableString()
+//            
+//            if hasLeadingOne
+//            {
+//                formattedString.append("1 ")
+//                index += 1
+//            }
+//            if (length - index) > 3
+//            {
+//                let areaCode = decimalStr.substring(with: NSMakeRange(index, 3))
+//                formattedString.appendFormat("(%@) ", areaCode)
+//                index += 3
+//            }
+//            if length - index > 3
+//            {
+//                let prefix = decimalStr.substring(with: NSMakeRange(index, 3))
+//                formattedString.appendFormat("%@-", prefix)
+//                index += 3
+//            }
+//            
+//            let remainder = decimalStr.substring(from: index)
+//            formattedString.append(remainder)
+//            textField.text = formattedString as String
+//        }
+//        
+//        return false
+//    }
     
     // MARK: - IBActions
     @IBAction func saveButtonClicked(_ sender: UIButton) {
@@ -250,81 +249,81 @@ class ContactInfoViewController: UIViewController, UITextFieldDelegate, UIImageP
         
         var canContinue = true
         
-        // Check validity of each text field
-        if fullNameTextField.text!.isBlank {
-            invalidNameLabel.isHidden = false
-            canContinue = false
-        } else {
-            invalidNameLabel.isHidden = true
-        }
-        if !emailTextField.text!.isEmail {
-            invalidEmailLabel.isHidden = false
-            canContinue = false
-        } else {
-            invalidEmailLabel.isHidden = true
-        }
-        if !phoneNumberTextField.text!.isPhoneNumber {
-            invalidPhoneNumberLabel.isHidden = false
-            canContinue = false
-        } else {
-            invalidPhoneNumberLabel.isHidden = true
-        }
-        
-        if canContinue {
-            // Hide error messages
-            self.invalidNameLabel.isHidden = true
-            self.invalidEmailLabel.isHidden = true
-            self.invalidPhoneNumberLabel.isHidden = true
-            
-            // Create JSON data and configure the request
-            let params = ["uid": userID,
-                          "name": self.fullNameTextField.text!,
-                          "phone": self.phoneNumberTextField.text!,
-                          "email": self.emailTextField.text!,
-                          ]
-                as Dictionary<String, String>
-            
-            // create the request & response
-            var request2 = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdateAccount.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
-            
-            do {
-                let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
-                request2.httpBody = jsonData
-            } catch let error as NSError {
-                print(error)
-            }
-            request2.httpMethod = "POST"
-            request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            // send the request
-            let session2 = URLSession.shared
-            let task2 = session2.dataTask(with: request2, completionHandler: {
-                (data, response, error) in
-                
-                print(data)
-                print(response)
-                
-                OperationQueue.main.addOperation {
-                    // Reset canContinue variable
-                    canContinue = false
-                    
-                    self.defaults.set(self.fullNameTextField, forKey: "userName")
-                    
-                    // End activity indicator animation
-                    self.myActivityIndicator.stopAnimating()
-                    
-                    // Perform unwind segue
-                    self.performSegue(withIdentifier: "returnToSettings", sender: self)
-                }
-            }) 
-            
-            task2.resume()
-        
-        } else {
-            // End activity indicator animation
-            self.myActivityIndicator.stopAnimating()
-            self.myActivityIndicator.isHidden = true
-        }
+//        // Check validity of each text field
+//        if fullNameTextField.text!.isBlank {
+//            invalidNameLabel.isHidden = false
+//            canContinue = false
+//        } else {
+//            invalidNameLabel.isHidden = true
+//        }
+//        if !emailTextField.text!.isEmail {
+//            invalidEmailLabel.isHidden = false
+//            canContinue = false
+//        } else {
+//            invalidEmailLabel.isHidden = true
+//        }
+//        if !phoneNumberTextField.text!.isPhoneNumber {
+//            invalidPhoneNumberLabel.isHidden = false
+//            canContinue = false
+//        } else {
+//            invalidPhoneNumberLabel.isHidden = true
+//        }
+//        
+//        if canContinue {
+//            // Hide error messages
+//            self.invalidNameLabel.isHidden = true
+//            self.invalidEmailLabel.isHidden = true
+//            self.invalidPhoneNumberLabel.isHidden = true
+//            
+//            // Create JSON data and configure the request
+//            let params = ["uid": userID,
+//                          "name": self.fullNameTextField.text!,
+//                          "phone": self.phoneNumberTextField.text!,
+//                          "email": self.emailTextField.text!,
+//                          ]
+//                as Dictionary<String, String>
+//            
+//            // create the request & response
+//            var request2 = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdateAccount.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
+//            
+//            do {
+//                let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+//                request2.httpBody = jsonData
+//            } catch let error as NSError {
+//                print(error)
+//            }
+//            request2.httpMethod = "POST"
+//            request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//            
+//            // send the request
+//            let session2 = URLSession.shared
+//            let task2 = session2.dataTask(with: request2, completionHandler: {
+//                (data, response, error) in
+//                
+//                print(data)
+//                print(response)
+//                
+//                OperationQueue.main.addOperation {
+//                    // Reset canContinue variable
+//                    canContinue = false
+//                    
+//                    self.defaults.set(self.fullNameTextField, forKey: "userName")
+//                    
+//                    // End activity indicator animation
+//                    self.myActivityIndicator.stopAnimating()
+//                    
+//                    // Perform unwind segue
+//                    self.performSegue(withIdentifier: "returnToSettings", sender: self)
+//                }
+//            }) 
+//            
+//            task2.resume()
+//        
+//        } else {
+//            // End activity indicator animation
+//            self.myActivityIndicator.stopAnimating()
+//            self.myActivityIndicator.isHidden = true
+//        }
     }
     
     @IBAction func returnToContactInfo(_ segue: UIStoryboardSegue) {

@@ -19,7 +19,7 @@ class TabBarController: UITabBarController {
         for item in self.tabBar.items! as [UITabBarItem] {
             if item.image != nil {
                 if let selectedImage = item.selectedImage {
-                    item.selectedImage = selectedImage.imageWithColor(GREEN).withRenderingMode(.alwaysOriginal)
+                    item.selectedImage = selectedImage.imageWithColor(Constants.green).withRenderingMode(.alwaysOriginal)
                 }
                 // Uncomment if want a custom color for unselected tab bar image
                 //item.image = image.imageWithColor(UIColor.yellowColor()).imageWithRenderingMode(.AlwaysOriginal)

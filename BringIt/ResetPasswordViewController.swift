@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import B68UIFloatLabelTextField
 import IQKeyboardManagerSwift
 //import IDZSwiftCommonCrypto
 import CryptoSwift
@@ -45,9 +44,9 @@ class ResetPasswordViewController: UIViewController {
     //MARK: - IBOutlets
     
     // Text fields
-    @IBOutlet weak var currentPasswordTextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var newPassword1TextField: B68UIFloatLabelTextField!
-    @IBOutlet weak var newPassword2TextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var currentPasswordTextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var newPassword1TextField: B68UIFloatLabelTextField!
+//    @IBOutlet weak var newPassword2TextField: B68UIFloatLabelTextField!
     
     // Alert messages
     @IBOutlet weak var currentPasswordErrorLabel: UILabel!
@@ -96,110 +95,110 @@ class ResetPasswordViewController: UIViewController {
         var isVerified = false
         var passSalt = ""
         
-        // Open Connection to PHP Service
-        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
-        let urlRequest = URLRequest(url: requestURL)
-        let session = URLSession.shared
-        let task = session.dataTask(with: urlRequest, completionHandler: {
-            (data, response, error) -> Void in
-            
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            // Check HTTP Response
-            if (statusCode == 200) {
-                
-                do{
-                    // Parse JSON
-                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
-                    
-                    for User in json as! [Dictionary<String, AnyObject>] {
-                        let userID_DB = User["uid"] as! String
-                        
-                        // Verify email and hashed password
-                        if (userID == userID_DB) {
-                            passSalt = User["password_salt"] as! String
-                            let passTotal = self.currentPasswordTextField.text! + passSalt
-                            if ((passTotal.sha512()) == (User["password_hash"] as! String)) {
-                                // User is verified
-                                isVerified = true
-                                print("THe USER is Verified")
-                            }
-                        }
-                    }
-                    
-                    OperationQueue.main.addOperation {
-                        
-                        if isVerified {
-                            self.currentPasswordErrorLabel.isHidden = true
-                            if self.newPassword1TextField.text == self.newPassword2TextField.text {
-                                self.newPasswordErrorLabel.isHidden = true
-                                
-                                // Task 2 is used later
-                                // Create JSON data and configure the request
-                                let params = ["uid": userID,
-                                    "password": self.newPassword1TextField.text!,
-                                    "salt": passSalt,
-                                    ]
-                                    as Dictionary<String, String>
-                                
-                                print(userID)
-                                print(self.currentPasswordTextField.text!)
-                                print(passSalt)
-                                
-                                // create the request & response
-                                var request2 = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdatePassword.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
-                                
-                                do {
-                                    let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
-                                    request2.httpBody = jsonData
-                                } catch let error as NSError {
-                                    print(error)
-                                }
-                                request2.httpMethod = "POST"
-                                request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                                
-                                // send the request
-                                let session2 = URLSession.shared
-                                let task2 = session2.dataTask(with: request2, completionHandler: {
-                                    (data, response, error) in
-                                    
-                                    print(data)
-                                    print(response)
-                                }) 
-                                
-                                task2.resume()
-                                
-                                
-                                canContinue = true
-                                
-                            } else {
-                                
-                                self.newPasswordErrorLabel.isHidden = false
-                            }
-                        } else {
-                            print ("don't send the passowrd1")
-                            self.currentPasswordErrorLabel.isHidden = false
-                        }
-                        
-                        //NSOperationQueue.mainQueue().addOperationWithBlock {
-                        
-                        if canContinue {
-                            print("CAN CONTINUEEEEE")
-                            self.performSegue(withIdentifier: "returnToContactInfo", sender: self)
-                            self.navigationController?.popViewController(animated: true)
-                        } else {
-                            print ("don't send the passowrd2")
-                        }
-                    }
-                    
-                    
-                } catch {
-                    print("Error with Json: \(error)")
-                }
-            }
-        }) 
-        task.resume()
+//        // Open Connection to PHP Service
+//        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADservice.php")!
+//        let urlRequest = URLRequest(url: requestURL)
+//        let session = URLSession.shared
+//        let task = session.dataTask(with: urlRequest, completionHandler: {
+//            (data, response, error) -> Void in
+//            
+//            let httpResponse = response as! HTTPURLResponse
+//            let statusCode = httpResponse.statusCode
+//            
+//            // Check HTTP Response
+//            if (statusCode == 200) {
+//                
+//                do{
+//                    // Parse JSON
+//                    let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments)
+//                    
+//                    for User in json as! [Dictionary<String, AnyObject>] {
+//                        let userID_DB = User["uid"] as! String
+//                        
+//                        // Verify email and hashed password
+//                        if (userID == userID_DB) {
+//                            passSalt = User["password_salt"] as! String
+//                            let passTotal = self.currentPasswordTextField.text! + passSalt
+//                            if ((passTotal.sha512()) == (User["password_hash"] as! String)) {
+//                                // User is verified
+//                                isVerified = true
+//                                print("THe USER is Verified")
+//                            }
+//                        }
+//                    }
+//                    
+//                    OperationQueue.main.addOperation {
+//                        
+//                        if isVerified {
+//                            self.currentPasswordErrorLabel.isHidden = true
+//                            if self.newPassword1TextField.text == self.newPassword2TextField.text {
+//                                self.newPasswordErrorLabel.isHidden = true
+//                                
+//                                // Task 2 is used later
+//                                // Create JSON data and configure the request
+//                                let params = ["uid": userID,
+//                                    "password": self.newPassword1TextField.text!,
+//                                    "salt": passSalt,
+//                                    ]
+//                                    as Dictionary<String, String>
+//                                
+//                                print(userID)
+//                                print(self.currentPasswordTextField.text!)
+//                                print(passSalt)
+//                                
+//                                // create the request & response
+//                                var request2 = URLRequest(url: URL(string: "http://www.gobringit.com/CHADupdatePassword.php")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 15)
+//                                
+//                                do {
+//                                    let jsonData = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted)
+//                                    request2.httpBody = jsonData
+//                                } catch let error as NSError {
+//                                    print(error)
+//                                }
+//                                request2.httpMethod = "POST"
+//                                request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//                                
+//                                // send the request
+//                                let session2 = URLSession.shared
+//                                let task2 = session2.dataTask(with: request2, completionHandler: {
+//                                    (data, response, error) in
+//                                    
+//                                    print(data)
+//                                    print(response)
+//                                }) 
+//                                
+//                                task2.resume()
+//                                
+//                                
+//                                canContinue = true
+//                                
+//                            } else {
+//                                
+//                                self.newPasswordErrorLabel.isHidden = false
+//                            }
+//                        } else {
+//                            print ("don't send the passowrd1")
+//                            self.currentPasswordErrorLabel.isHidden = false
+//                        }
+//                        
+//                        //NSOperationQueue.mainQueue().addOperationWithBlock {
+//                        
+//                        if canContinue {
+//                            print("CAN CONTINUEEEEE")
+//                            self.performSegue(withIdentifier: "returnToContactInfo", sender: self)
+//                            self.navigationController?.popViewController(animated: true)
+//                        } else {
+//                            print ("don't send the passowrd2")
+//                        }
+//                    }
+//                    
+//                    
+//                } catch {
+//                    print("Error with Json: \(error)")
+//                }
+//            }
+//        }) 
+//        task.resume()
     }
     
     /*

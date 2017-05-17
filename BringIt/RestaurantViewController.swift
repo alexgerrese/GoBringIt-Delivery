@@ -79,9 +79,9 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     var isOpen = Bool()
     
     // CoreData
-    let appDelegate =
-        UIApplication.shared.delegate as! AppDelegate
-    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+//    let appDelegate =
+//        UIApplication.shared.delegate as! AppDelegate
+//    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     
     // FOR MENU ITEMS
@@ -363,50 +363,50 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewWillAppear(_ animated: Bool) {
         
         // Hide nav bar
-        self.navigationController?.isNavigationBarHidden = true
-        
-        // Deselect cells when view appears
-        if let indexPath = menuItemsTableView.indexPathForSelectedRow {
-            menuItemsTableView.deselectRow(at: indexPath, animated: true)
-        }
-        
-        // Fetch all active carts, if any exist
-        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
-        let secondPredicate = NSPredicate(format: "restaurant == %@", restaurantName)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
-        fetchRequest.predicate = predicate
-        
-        do {
-            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
-                if fetchResults.count > 0 {
-                    let order = fetchResults[0]
-                    if order.items?.count > 0 {
-                        
-                        // Calculate current total cost
-                        var totalCost = 0.0
-                        if !(order.items?.allObjects.isEmpty)! {
-                            for item in (order.items?.allObjects)! as! [Item] {
-                                var costOfSides = 0.0
-                                for side in item.sides?.allObjects as! [Side] {
-                                    costOfSides += Double(side.price!)
-                                }
-                                totalCost += (Double(item.price!) + costOfSides) * Double(item.quantity!)
-                            }
-                        }
-                        totalPriceLabel.text = String(format: "$%.2f", totalCost)
-                        
-                        hasActiveCart = true
-                    } else {
-                        hasActiveCart = false
-                    }
-                } else {
-                    hasActiveCart = false
-                }
-            }
-        } catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
+//        self.navigationController?.isNavigationBarHidden = true
+//        
+//        // Deselect cells when view appears
+//        if let indexPath = menuItemsTableView.indexPathForSelectedRow {
+//            menuItemsTableView.deselectRow(at: indexPath, animated: true)
+//        }
+//        
+//        // Fetch all active carts, if any exist
+//        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+//        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
+//        let secondPredicate = NSPredicate(format: "restaurant == %@", restaurantName)
+//        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
+//        fetchRequest.predicate = predicate
+//        
+//        do {
+//            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
+//                if fetchResults.count > 0 {
+//                    let order = fetchResults[0]
+//                    if order.items?.count > 0 {
+//                        
+//                        // Calculate current total cost
+//                        var totalCost = 0.0
+//                        if !(order.items?.allObjects.isEmpty)! {
+//                            for item in (order.items?.allObjects)! as! [Item] {
+//                                var costOfSides = 0.0
+//                                for side in item.sides?.allObjects as! [Side] {
+//                                    costOfSides += Double(side.price!)
+//                                }
+//                                totalCost += (Double(item.price!) + costOfSides) * Double(item.quantity!)
+//                            }
+//                        }
+//                        totalPriceLabel.text = String(format: "$%.2f", totalCost)
+//                        
+//                        hasActiveCart = true
+//                    } else {
+//                        hasActiveCart = false
+//                    }
+//                } else {
+//                    hasActiveCart = false
+//                }
+//            }
+//        } catch let error as NSError {
+//            print("Could not fetch \(error), \(error.userInfo)")
+//        }
         
         // Update view constraints
         updateViewConstraints()

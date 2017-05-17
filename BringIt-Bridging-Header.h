@@ -11,5 +11,5 @@
 
 #include <CommonCrypto/CommonDigest.h>
 #import <Stripe/Stripe.h>
-#import <AFNetworking/AFNetworking.h>
+//#import <AFNetworking/AFNetworking.h>
 #endif /* BringIt_Bridging_Header_h */

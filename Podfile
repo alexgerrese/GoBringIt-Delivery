@@ -6,16 +6,27 @@ target 'BringIt' do
   use_frameworks!
 
   # Pods for BringIt
+  
+  # Old Pods
+  #pod 'B68UIFloatLabelTextField'
+  pod 'EZSwiftExtensions'
+  pod 'IQKeyboardManagerSwift'
+  #pod 'IDZSwiftCommonCrypto'
+  #pod 'CVCalendar'
+  pod 'GMStepper'
+  pod 'Stripe'
+  #pod ‘AFNetworking'
+  pod 'CryptoSwift'
+  
+  # New Pods
+  pod 'RealmSwift' # for local database
+  pod "Timepiece" # for simple date management
+  #pod 'Hero' # for elegant transitions
+  pod 'Moya' # for an abstracted netowrk layer
+  pod 'Alamofire' # for better networking
+  pod 'ObjectMapper' # for JSON object mapping
+  pod 'SendGrid' # for sending emails
 
-pod 'B68UIFloatLabelTextField'
-pod 'EZSwiftExtensions'
-pod 'IQKeyboardManagerSwift'
-#pod 'IDZSwiftCommonCrypto'
-pod 'CVCalendar'
-pod 'GMStepper'
-pod 'Stripe'
-pod ‘AFNetworking'
-pod 'CryptoSwift'
 
 
   target 'BringItTests' do
