@@ -1,0 +1,204 @@
+//
+//  SignIn-SignUpViewController.swift
+//  BringIt
+//
+//  Created by Alexander's MacBook on 5/14/17.
+//  Copyright © 2017 Campus Enterprises. All rights reserved.
+//
+
+//THINGS TO MAKE CODE BETTER:
+//    - Make a global constants page and extend it in each other page
+
+import UIKit
+import IQKeyboardManagerSwift
+import Stripe
+import Alamofire
+import Moya
+import RealmSwift
+
+class SignInVC: UIViewController, UITextFieldDelegate {
+    
+    // MARK: - IBOutlets
+    
+    @IBOutlet weak var emailAddressView: UIView!
+    @IBOutlet weak var emailAddress: UITextField!
+    
+    @IBOutlet weak var passwordView: UIView!
+    @IBOutlet weak var password: UITextField!
+    
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
+    
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    
+    // MARK: Variables
+    
+    let defaults = UserDefaults.standard // Initialize UserDefaults
+    let realm = try! Realm() // Initialize Realm
+    
+    let defaultButtonText = "Sign in"
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Setup text field and button UI
+        emailAddressView.layer.cornerRadius = Constants.cornerRadius
+        passwordView.layer.cornerRadius = Constants.cornerRadius
+        signInButton.layer.cornerRadius = Constants.cornerRadius
+        signUpButton.layer.cornerRadius = Constants.cornerRadius
+        signUpButton.layer.borderColor = Constants.green.cgColor
+        signUpButton.layer.borderWidth = Constants.borderWidth
+        
+        // Set up targets for text fields
+        emailAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        password.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        // Set up custom back button
+        setCustomBackButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        myActivityIndicator.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    /* 
+     * Verify credentials and sign in. Returns if failure.
+     */
+    @IBAction func signInButtonTapped(_ sender: UIButton) {
+        
+        // Check that all fields are filled and correctly formatted, else return
+        if !checkFields() {
+            return
+        }
+        
+        // Animate activity indicator
+        startAnimating(activityIndicator: myActivityIndicator, button: signInButton)
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.signInUser(email: emailAddress.text!, password: password.text!)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    let retrievedUser = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    // Check response from backend
+                    let successResponse = retrievedUser["success"] as? Int
+                    if successResponse == 1 {
+                        // Successfully logged in
+                        
+                        // Set up UserDefaults
+                        self.defaults.set(true, forKey: "loggedIn")
+                        
+                        // Check if user already exists in Realm
+                        let predicate = NSPredicate(format: "id = %@", (retrievedUser["id"] as? String)!)
+                        let userExists = self.realm.objects(User.self).filter(predicate).count > 0
+                        
+                        if userExists {
+                            
+                            // User exists, retrieve from Realm and set to current user
+                            let user = self.realm.objects(User.self).filter(predicate).first!
+                            try! self.realm.write {
+                                user.isCurrent = true
+                            }
+                        } else {
+                            
+                            // User doesn't exist, create new user
+                            self.createNewUser(retrievedUser: retrievedUser)
+                        }
+                        
+                        // Rewind segue to Restaurants VC
+                        self.dismiss(animated: true, completion: nil)
+
+                    } else if successResponse == -1 {
+                        // Email wasn't found
+                        self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .invalidEmail)
+                    } else {
+                        // Password was incorrect
+                        self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .invalidPassword)
+                    }
+                } catch {
+                    // Miscellaneous network error
+                    self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: self.defaultButtonText)
+                }
+            case .failure(_):
+                // Connection failed
+                self.showError(button: self.signInButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: self.defaultButtonText)
+            }
+        }
+    }
+    
+    /*
+     * Create new Realm User from network JSON data
+     */
+    func createNewUser(retrievedUser: [String: Any]) {
+        
+        let newUser = User()
+        newUser.isCurrent = true
+        newUser.id = (retrievedUser["id"] as? String)!
+        newUser.fullName = (retrievedUser["name"] as? String)!
+        newUser.email = self.emailAddress.text!
+        newUser.phoneNumber = (retrievedUser["phone"] as? String)!
+        if (retrievedUser["already_ordered"] as? Int == 1) {
+            newUser.isFirstOrder = false
+        } else {
+            newUser.isFirstOrder = true
+        }
+        
+        try! self.realm.write() {
+            self.realm.add(newUser)
+        }
+    }
+    
+    /* 
+     * Check that all fields are filled and correctly formatted, else return 
+     */
+    func checkFields() -> Bool {
+        if (emailAddress.text?.isBlank)! {
+            showError(button: signInButton, activityIndicator: myActivityIndicator, error: .fieldEmpty)
+            return false
+        } else if !(emailAddress.text?.isEmail)! {
+            showError(button: signInButton, activityIndicator: myActivityIndicator, error: .invalidEmail)
+            return false
+        } else if (password.text?.isBlank)! {
+            showError(button: signInButton, activityIndicator: myActivityIndicator, error: .fieldEmpty)
+            return false
+        } else if !(password.text?.isAcceptablePasswordLength)! {
+            showError(button: signInButton, activityIndicator: myActivityIndicator, error: .unacceptablePasswordLength)
+            print(password.text!.isAcceptablePasswordLength)
+            return false
+        }
+        
+        print("ALL GOOD BRO")
+        hideError(button: signInButton, defaultButtonText: self.defaultButtonText)
+        
+        return true
+    }
+    
+    // MARK: - TextField Delegate
+    
+    func textFieldDidChange(_ textField: UITextField) {
+        checkFields()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        checkFields()
+    }
+    
+    override var prefersStatusBarHidden : Bool {
+        return true
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+}

@@ -14,7 +14,7 @@ import CoreData
 class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     // Passed data
-    var passedItem: Item?
+//    var passedItem: Item?
     var passedSides: [Side]?
     var sides = [NSManagedObject]()
     var sideNames = [String]()
@@ -85,9 +85,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var returnKeyHandler : IQKeyboardReturnKeyHandler!
     
     // CoreData
-    let appDelegate =
-        UIApplication.shared.delegate as! AppDelegate
-    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+//    let appDelegate =
+//        UIApplication.shared.delegate as! AppDelegate
+//    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,9 +100,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         self.title = selectedFoodName
         
         // Set custom nav bar font
-        navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.black])
+//        navigationController!.navigationBar.titleTextAttributes =
+//            ([NSFontAttributeName: TITLE_FONT,
+//                NSForegroundColorAttributeName: UIColor.black])
         
         // Set custom back button
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
@@ -122,11 +122,11 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         stepper.buttonsFont = UIFont(name: "Avenir-Black", size: 20)!
         stepper.addTarget(self, action: #selector(AddToOrderViewController.stepperTapped(_:)), for: .valueChanged)
         
-        if comingFromCheckoutVC {
-            self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
-            stepper.value = Double((self.passedItem?.quantity)!)
-            addToOrderButton.setTitle("UPDATE ORDER", for: UIControlState())
-        }
+//        if comingFromCheckoutVC {
+//            self.passedSides = self.passedItem!.sides?.allObjects as? [Side]
+//            stepper.value = Double((self.passedItem?.quantity)!)
+//            addToOrderButton.setTitle("UPDATE ORDER", for: UIControlState())
+//        }
         
         // Open Connection to PHP Service to menuSides
         let requestURL1: URL = URL(string: "http://www.gobringit.com/CHADmenuSides.php")!
@@ -321,278 +321,278 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func addToOrderButtonPressed(_ sender: UIButton) {
         
         // Check if there is an existing active cart from this restaurant
-        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
-        let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
-        fetchRequest.predicate = predicate
-        
-        var activeCart = [Order]()
-        
-        do {
-            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
-                activeCart = fetchResults
-                print("THERE IS AN EXISTING CART")
-            }
-        } catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
-        
-        if comingFromCheckoutVC {
-            let items = activeCart[0].items?.allObjects as! [Item]
-            
-            for i in 0..<items.count {
-                if items[i].id == passedItem?.id {
-                    
-                    // UPDATE ITEM
-                    items[i].price = selectedFoodPrice as NSNumber?
-                    items[i].quantity = Int(stepper.value) as NSNumber?
-                    items[i].selectedFoodSidesNum = Int(selectedFoodSidesNum) as NSNumber?
-                    items[i].dbDescription = selectedFoodDescription
-                    
-                    // Retrieve special instructions if available
-                    let indexPath = IndexPath(row: 0, section: specialInstructionsIndex)
-                    let selectedCell = myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-                    if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
-                        specialInstructions = (selectedCell?.specialInstructionsText.text!)!
-                    }
-                    items[i].specialInstructions = specialInstructions
-                    
-                    // SIDES
-                    
-                    for i in items[i].sides?.allObjects as! [Side] {
-                        i.item = nil
-                    }
-
-                    for r in requiredSides {
-                        for s in r {
-                            if s.selected {
-                                
-                                let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
-                                let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
-                                
-                                side.name = s.sideName
-                                side.id = s.sideID
-                                side.price = Double(s.sidePrice) as NSNumber?
-                                side.isRequired = true
-                                
-                                side.item = items[i]
-                                sides.append(side)
-                            }
-                        }
-                    }
-                    
-                    for s in extras {
-                        if s.selected {
-                            
-                            let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
-                            let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
-                            
-                            side.name = s.sideName
-                            side.id = s.sideID
-                            side.price = Double(s.sidePrice) as NSNumber?
-                            side.isRequired = false
-                            
-                            side.item = items[i]
-                            sides.append(side)
-                        }
-                    }
-                    
-                }
-            }
-            self.dismiss(animated: true, completion: nil)
-            
-        } else {
-            
-            // If cart is empty, then create new active cart with this restaurant
-            if activeCart.isEmpty {
-                
-                let order = NSEntityDescription.insertNewObject(forEntityName: "Order", into: managedContext) as! Order
-                
-                order.isActive = true
-                order.restaurant = selectedRestaurantName
-                print("Selectedrestaurant name: ", selectedRestaurantName)
-                
-                // Make DB Call to category_items and save delivery_fee if (selectedRestaurantName == name)
-                // Open Connection to PHP Service
-                let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
-                let urlRequest = URLRequest(url: requestURL)
-                let session = URLSession.shared
-                let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
-                    if let data = data {
-                        do {
-                            let httpResponse = response as! HTTPURLResponse
-                            let statusCode = httpResponse.statusCode
-                            
-                            // Check HTTP Response
-                            if (statusCode == 200) {
-                                
-                                do{
-                                    // Parse JSON
-                                    let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
-                                    
-                                    for Restaurant in json as! [Dictionary<String, AnyObject>] {
-                                        let name = Restaurant["name"] as! String
-                                        if (name == selectedRestaurantName) {
-                                            let deliveryFee = Restaurant["delivery_fee"] as! String
-                                            let serviceID = Restaurant["id"] as! String
-                                            order.deliveryFee = Double(deliveryFee) as NSNumber?
-                                            order.restaurantID = serviceID
-                                            print("Order FEE: ", order.deliveryFee)
-                                        }
-                                        
-                                    }
-                                    
-                                    OperationQueue.main.addOperation {
-                                        activeCart.append(order)
-                                        
-                                        // ITEM
-                                        
-                                        let itemEntity =  NSEntityDescription.entity(forEntityName: "Item", in:self.managedContext)
-                                        let item = NSManagedObject(entity: itemEntity!, insertInto: self.managedContext) as! Item
-                                        
-                                        item.name = self.selectedFoodName
-                                        item.id = self.selectedFoodID
-                                        item.price = self.selectedFoodPrice as NSNumber?
-                                        item.quantity = Int(self.stepper.value) as NSNumber?
-                                        item.selectedFoodSidesNum = Int(self.selectedFoodSidesNum) as NSNumber?
-                                        item.dbDescription = self.selectedFoodDescription
-                                        
-                                        // Retrieve special instructions if available
-                                        let indexPath = IndexPath(row: 0, section: self.specialInstructionsIndex)
-                                        let selectedCell = self.myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-                                        if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
-                                            self.specialInstructions = (selectedCell?.specialInstructionsText.text!)!
-                                        }
-                                        item.specialInstructions = self.specialInstructions
-                                        item.order = activeCart[0]
-                                        
-                                        // SIDES
-                                        
-                                        for r in self.requiredSides {
-                                            for i in r {
-                                                if i.selected {
-                                                    
-                                                    let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:self.managedContext)
-                                                    let side = NSManagedObject(entity: sideEntity!, insertInto: self.managedContext) as! Side
-                                                    
-                                                    side.name = i.sideName
-                                                    side.id = i.sideID
-                                                    side.price = Double(i.sidePrice) as NSNumber?
-                                                    side.isRequired = true
-                                                    
-                                                    side.item = item
-                                                    self.sides.append(side)
-                                                }
-                                            }
-                                        }
-
-                                        for i in self.extras {
-                                            if i.selected {
-                                                
-                                                let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:self.managedContext)
-                                                let side = NSManagedObject(entity: sideEntity!, insertInto: self.managedContext) as! Side
-                                                
-                                                side.name = i.sideName
-                                                side.id = i.sideID
-                                                side.price = Double(i.sidePrice) as NSNumber?
-                                                side.isRequired = false
-                                                
-                                                side.item = item
-                                                self.sides.append(side)
-                                            }
-                                        }
-                                        
-                                        do {
-                                            try self.managedContext.save()
-                                            self.dismiss(animated: true, completion: nil)
-                                        } catch {
-                                            fatalError("Failure to save context: \(error)")
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        } catch let error as NSError {
-                            print(error.localizedDescription)
-                        }
-                    } else if let error = error {
-                        print(error.localizedDescription)
-                    }
-                }) 
-                
-                task.resume()
-            } else {
-                
-                // ITEM
-                
-                let itemEntity =  NSEntityDescription.entity(forEntityName: "Item", in:managedContext)
-                let item = NSManagedObject(entity: itemEntity!, insertInto: managedContext) as! Item
-                
-                item.name = selectedFoodName
-                item.id = selectedFoodID
-                item.price = selectedFoodPrice as NSNumber?
-                item.quantity = Int(stepper.value) as NSNumber?
-                item.selectedFoodSidesNum = Int(selectedFoodSidesNum) as NSNumber?
-                item.dbDescription = selectedFoodDescription
-                
-                // Retrieve special instructions if available
-                let indexPath = IndexPath(row: 0, section: specialInstructionsIndex)
-                let selectedCell = myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
-                if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
-                    specialInstructions = (selectedCell?.specialInstructionsText.text!)!
-                }
-                item.specialInstructions = specialInstructions
-                item.order = activeCart[0]
-                
-                // SIDES
-                
-                for r in requiredSides {
-                    for i in r {
-                        if i.selected {
-                            
-                            let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
-                            let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
-                            
-                            side.name = i.sideName
-                            side.id = i.sideID
-                            side.price = Double(i.sidePrice) as NSNumber?
-                            side.isRequired = true
-                            
-                            side.item = item
-                            sides.append(side)
-                        }
-                    }
-                }
-                
-                for i in extras {
-                    if i.selected {
-                        
-                        let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
-                        let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
-                        
-                        side.name = i.sideName
-                        side.id = i.sideID
-                        side.price = Double(i.sidePrice) as NSNumber?
-                        side.isRequired = false
-                        
-                        side.item = item
-                        sides.append(side)
-                    }
-                }
-                
-                // SAVE
-                do {
-                    try managedContext.save()
-                    self.dismiss(animated: true, completion: nil)
-                } catch {
-                    fatalError("Failure to save context: \(error)")
-                }
-                
-                print("SAVED")
-                
-            }
-        }
+//        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+//        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
+//        let secondPredicate = NSPredicate(format: "restaurant == %@", selectedRestaurantName)
+//        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
+//        fetchRequest.predicate = predicate
+//        
+//        var activeCart = [Order]()
+//        
+//        do {
+//            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
+//                activeCart = fetchResults
+//                print("THERE IS AN EXISTING CART")
+//            }
+//        } catch let error as NSError {
+//            print("Could not fetch \(error), \(error.userInfo)")
+//        }
+//        
+//        if comingFromCheckoutVC {
+//            let items = activeCart[0].items?.allObjects as! [Item]
+//            
+//            for i in 0..<items.count {
+//                if items[i].id == passedItem?.id {
+//                    
+//                    // UPDATE ITEM
+//                    items[i].price = selectedFoodPrice as NSNumber?
+//                    items[i].quantity = Int(stepper.value) as NSNumber?
+//                    items[i].selectedFoodSidesNum = Int(selectedFoodSidesNum) as NSNumber?
+//                    items[i].dbDescription = selectedFoodDescription
+//                    
+//                    // Retrieve special instructions if available
+//                    let indexPath = IndexPath(row: 0, section: specialInstructionsIndex)
+//                    let selectedCell = myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+//                    if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
+//                        specialInstructions = (selectedCell?.specialInstructionsText.text!)!
+//                    }
+//                    items[i].specialInstructions = specialInstructions
+//                    
+//                    // SIDES
+//                    
+//                    for i in items[i].sides?.allObjects as! [Side] {
+//                        i.item = nil
+//                    }
+//
+//                    for r in requiredSides {
+//                        for s in r {
+//                            if s.selected {
+//                                
+//                                let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+//                                let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
+//                                
+//                                side.name = s.sideName
+//                                side.id = s.sideID
+//                                side.price = Double(s.sidePrice) as NSNumber?
+//                                side.isRequired = true
+//                                
+//                                side.item = items[i]
+//                                sides.append(side)
+//                            }
+//                        }
+//                    }
+//                    
+//                    for s in extras {
+//                        if s.selected {
+//                            
+//                            let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+//                            let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
+//                            
+//                            side.name = s.sideName
+//                            side.id = s.sideID
+//                            side.price = Double(s.sidePrice) as NSNumber?
+//                            side.isRequired = false
+//                            
+//                            side.item = items[i]
+//                            sides.append(side)
+//                        }
+//                    }
+//                    
+//                }
+//            }
+//            self.dismiss(animated: true, completion: nil)
+//            
+//        } else {
+//            
+//            // If cart is empty, then create new active cart with this restaurant
+//            if activeCart.isEmpty {
+//                
+//                let order = NSEntityDescription.insertNewObject(forEntityName: "Order", into: managedContext) as! Order
+//                
+//                order.isActive = true
+//                order.restaurant = selectedRestaurantName
+//                print("Selectedrestaurant name: ", selectedRestaurantName)
+//                
+//                // Make DB Call to category_items and save delivery_fee if (selectedRestaurantName == name)
+//                // Open Connection to PHP Service
+//                let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
+//                let urlRequest = URLRequest(url: requestURL)
+//                let session = URLSession.shared
+//                let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
+//                    if let data = data {
+//                        do {
+//                            let httpResponse = response as! HTTPURLResponse
+//                            let statusCode = httpResponse.statusCode
+//                            
+//                            // Check HTTP Response
+//                            if (statusCode == 200) {
+//                                
+//                                do{
+//                                    // Parse JSON
+//                                    let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
+//                                    
+//                                    for Restaurant in json as! [Dictionary<String, AnyObject>] {
+//                                        let name = Restaurant["name"] as! String
+//                                        if (name == selectedRestaurantName) {
+//                                            let deliveryFee = Restaurant["delivery_fee"] as! String
+//                                            let serviceID = Restaurant["id"] as! String
+//                                            order.deliveryFee = Double(deliveryFee) as NSNumber?
+//                                            order.restaurantID = serviceID
+//                                            print("Order FEE: ", order.deliveryFee)
+//                                        }
+//                                        
+//                                    }
+//                                    
+//                                    OperationQueue.main.addOperation {
+//                                        activeCart.append(order)
+//                                        
+//                                        // ITEM
+//                                        
+//                                        let itemEntity =  NSEntityDescription.entity(forEntityName: "Item", in:self.managedContext)
+//                                        let item = NSManagedObject(entity: itemEntity!, insertInto: self.managedContext) as! Item
+//                                        
+//                                        item.name = self.selectedFoodName
+//                                        item.id = self.selectedFoodID
+//                                        item.price = self.selectedFoodPrice as NSNumber?
+//                                        item.quantity = Int(self.stepper.value) as NSNumber?
+//                                        item.selectedFoodSidesNum = Int(self.selectedFoodSidesNum) as NSNumber?
+//                                        item.dbDescription = self.selectedFoodDescription
+//                                        
+//                                        // Retrieve special instructions if available
+//                                        let indexPath = IndexPath(row: 0, section: self.specialInstructionsIndex)
+//                                        let selectedCell = self.myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+//                                        if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
+//                                            self.specialInstructions = (selectedCell?.specialInstructionsText.text!)!
+//                                        }
+//                                        item.specialInstructions = self.specialInstructions
+//                                        item.order = activeCart[0]
+//                                        
+//                                        // SIDES
+//                                        
+//                                        for r in self.requiredSides {
+//                                            for i in r {
+//                                                if i.selected {
+//                                                    
+//                                                    let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:self.managedContext)
+//                                                    let side = NSManagedObject(entity: sideEntity!, insertInto: self.managedContext) as! Side
+//                                                    
+//                                                    side.name = i.sideName
+//                                                    side.id = i.sideID
+//                                                    side.price = Double(i.sidePrice) as NSNumber?
+//                                                    side.isRequired = true
+//                                                    
+//                                                    side.item = item
+//                                                    self.sides.append(side)
+//                                                }
+//                                            }
+//                                        }
+//
+//                                        for i in self.extras {
+//                                            if i.selected {
+//                                                
+//                                                let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:self.managedContext)
+//                                                let side = NSManagedObject(entity: sideEntity!, insertInto: self.managedContext) as! Side
+//                                                
+//                                                side.name = i.sideName
+//                                                side.id = i.sideID
+//                                                side.price = Double(i.sidePrice) as NSNumber?
+//                                                side.isRequired = false
+//                                                
+//                                                side.item = item
+//                                                self.sides.append(side)
+//                                            }
+//                                        }
+//                                        
+//                                        do {
+//                                            try self.managedContext.save()
+//                                            self.dismiss(animated: true, completion: nil)
+//                                        } catch {
+//                                            fatalError("Failure to save context: \(error)")
+//                                        }
+//                                        
+//                                    }
+//                                }
+//                            }
+//                        } catch let error as NSError {
+//                            print(error.localizedDescription)
+//                        }
+//                    } else if let error = error {
+//                        print(error.localizedDescription)
+//                    }
+//                }) 
+//                
+//                task.resume()
+//            } else {
+//                
+//                // ITEM
+//                
+//                let itemEntity =  NSEntityDescription.entity(forEntityName: "Item", in:managedContext)
+//                let item = NSManagedObject(entity: itemEntity!, insertInto: managedContext) as! Item
+//                
+//                item.name = selectedFoodName
+//                item.id = selectedFoodID
+//                item.price = selectedFoodPrice as NSNumber?
+//                item.quantity = Int(stepper.value) as NSNumber?
+//                item.selectedFoodSidesNum = Int(selectedFoodSidesNum) as NSNumber?
+//                item.dbDescription = selectedFoodDescription
+//                
+//                // Retrieve special instructions if available
+//                let indexPath = IndexPath(row: 0, section: specialInstructionsIndex)
+//                let selectedCell = myTableView.cellForRow(at: indexPath) as! AddToOrderSpecialInstructionsTableViewCell!
+//                if selectedCell != nil && selectedCell?.specialInstructionsText.text != nil {
+//                    specialInstructions = (selectedCell?.specialInstructionsText.text!)!
+//                }
+//                item.specialInstructions = specialInstructions
+//                item.order = activeCart[0]
+//                
+//                // SIDES
+//                
+//                for r in requiredSides {
+//                    for i in r {
+//                        if i.selected {
+//                            
+//                            let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+//                            let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
+//                            
+//                            side.name = i.sideName
+//                            side.id = i.sideID
+//                            side.price = Double(i.sidePrice) as NSNumber?
+//                            side.isRequired = true
+//                            
+//                            side.item = item
+//                            sides.append(side)
+//                        }
+//                    }
+//                }
+//                
+//                for i in extras {
+//                    if i.selected {
+//                        
+//                        let sideEntity =  NSEntityDescription.entity(forEntityName: "Side", in:managedContext)
+//                        let side = NSManagedObject(entity: sideEntity!, insertInto: managedContext) as! Side
+//                        
+//                        side.name = i.sideName
+//                        side.id = i.sideID
+//                        side.price = Double(i.sidePrice) as NSNumber?
+//                        side.isRequired = false
+//                        
+//                        side.item = item
+//                        sides.append(side)
+//                    }
+//                }
+//                
+//                // SAVE
+//                do {
+//                    try managedContext.save()
+//                    self.dismiss(animated: true, completion: nil)
+//                } catch {
+//                    fatalError("Failure to save context: \(error)")
+//                }
+//                
+//                print("SAVED")
+//                
+//            }
+//        }
     }
     
     @IBAction func xButtonClicked(_ sender: AnyObject) {
@@ -686,7 +686,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
 
             
             //Change cell's tint color
-            cell.tintColor = GREEN
+            cell.tintColor = Constants.green
             
             if extras[(indexPath as NSIndexPath).row].selected {
                 cell.accessoryType = .checkmark
@@ -699,9 +699,9 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             let cell = tableView.dequeueReusableCell(withIdentifier: "specialInstructionsCell", for: indexPath) as! AddToOrderSpecialInstructionsTableViewCell
             
             // Preload if coming from checkoutVC
-            if comingFromCheckoutVC {
-                cell.specialInstructionsText.text = passedItem?.specialInstructions
-            }
+//            if comingFromCheckoutVC {
+//                cell.specialInstructionsText.text = passedItem?.specialInstructions
+//            }
             
             return cell
         } else if (indexPath as NSIndexPath).section == priceIndex {
@@ -719,7 +719,7 @@ class AddToOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.extraCostLabel.isHidden = true
             
             //Change cell's tint color
-            cell.tintColor = GREEN
+//            cell.tintColor = GREEN
             
             if requiredSides[(indexPath as NSIndexPath).section - 1][(indexPath as NSIndexPath).row].selected {
                 cell.accessoryType = .checkmark

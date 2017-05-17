@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 
 class PayingWithViewController: UIViewController {
     
@@ -117,13 +116,13 @@ class PayingWithViewController: UIViewController {
             components.minute = 00
             let tenPM = calendar.date(from: components)
             
-            let betweenEightAndTen = Date.timeIsBetween(eightPM!, endDate: tenPM!)
-            if betweenEightAndTen {
-                print("BETWEEN 8 and 10")
-                return true
-            } else {
-                print("NOT BETWEEN 8 and 10")
-            }
+//            let betweenEightAndTen = Date.timeIsBetween(eightPM!, endDate: tenPM!)
+//            if betweenEightAndTen {
+//                print("BETWEEN 8 and 10")
+//                return true
+//            } else {
+//                print("NOT BETWEEN 8 and 10")
+//            }
         
         return false
     }

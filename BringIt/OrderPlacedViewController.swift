@@ -28,9 +28,9 @@ class OrderPlacedViewController: UIViewController {
         
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGray
-        navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.black])
+//        navigationController!.navigationBar.titleTextAttributes =
+//            ([NSFontAttributeName: TITLE_FONT,
+//                NSForegroundColorAttributeName: UIColor.black])
         
         // Set order total label
         orderTotalLabel.text = "Including delivery fee and tip, you spent \(String(format: "$%.2f", passedOrderTotal)) at \(passedRestaurantName)."

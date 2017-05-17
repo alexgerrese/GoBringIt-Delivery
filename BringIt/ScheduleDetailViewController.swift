@@ -23,14 +23,14 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Variables
     var order: Order?
-    var items: [Item]?
+//    var items: [Item]?
     var date = ""
     var backgroundImageURL = ""
     
     // CoreData
-    let appDelegate =
-        UIApplication.shared.delegate as! AppDelegate
-    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+//    let appDelegate =
+//        UIApplication.shared.delegate as! AppDelegate
+//    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,74 +52,74 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         orderView.layer.shadowRadius = 1
         
         // TO-DO: CHAD! Please load the background image of the restaurant that was ordered from!
-        let restaurantID = order!.restaurantID
-        var backPic: UIImage?
-        
-        // DB Call to category_items
-        // check if restaurantID == id, save image
-        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
-        let urlRequest = URLRequest(url: requestURL)
-        let session = URLSession.shared
-        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
-            if let data = data {
-                do {
-                    let httpResponse = response as! HTTPURLResponse
-                    let statusCode = httpResponse.statusCode
-                    
-                    // Check HTTP Response
-                    if (statusCode == 200) {
-                        
-                        do{
-                            // Parse JSON
-                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
-                            
-                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
-                                let id = Restaurant["id"] as! String
-                                if (id == restaurantID) {
-                                    let image = Restaurant["image"] as! String
-                                    let url = URL(string: "http://www.gobringit.com/images/" + image)
-                                    let data = try? Data(contentsOf: url!)
-                                    backPic = UIImage(data: data!)
-                                    
-                                    
-                                    print("ID MATCHES")
-                                }
-                            }
-                            
-                            OperationQueue.main.addOperation {
-                                self.myTableView.reloadData()
-                                // Stop activity indicator
-                                //TO-DO: Place this so it is executed after the db request is made!
-                                self.backgroundImageView.image = backPic!
-                                self.myActivityIndicator.stopAnimating()
-                                self.myActivityIndicator.isHidden = true
-                                
-                            }
-                        }
-                    }
-                } catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-            } else if let error = error {
-                print(error.localizedDescription)
-            }
-        }) 
-        
-        task.resume()
-        
-        items = order!.items?.allObjects as? [Item]
-        print("HEIGHT1: \(myTableViewHeight.constant)")
-        
-        myTableView.reloadData()
-        updateViewConstraints()
-        
-        let deliveryFee = Double((order?.deliveryFee)!)
-        let subTotal = Double((order?.totalPrice)!) - Double((order?.deliveryFee)!)
-        let totalCost = Double((order?.totalPrice)!)
-        
-        self.deliveryFeeLabel.text = String(format: "$%.2f", deliveryFee )
-        self.subtotalCostLabel.text = String(format: "$%.2f", subTotal)
-        self.totalCostLabel.text = String(format: "$%.2f", totalCost)
+//        let restaurantID = order!.restaurantID
+//        var backPic: UIImage?
+//        
+//        // DB Call to category_items
+//        // check if restaurantID == id, save image
+//        let requestURL: URL = URL(string: "http://www.gobringit.com/CHADrestaurantImage.php")!
+//        let urlRequest = URLRequest(url: requestURL)
+//        let session = URLSession.shared
+//        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
+//            if let data = data {
+//                do {
+//                    let httpResponse = response as! HTTPURLResponse
+//                    let statusCode = httpResponse.statusCode
+//                    
+//                    // Check HTTP Response
+//                    if (statusCode == 200) {
+//                        
+//                        do{
+//                            // Parse JSON
+//                            let json = try JSONSerialization.jsonObject(with: data, options:.allowFragments)
+//                            
+//                            for Restaurant in json as! [Dictionary<String, AnyObject>] {
+//                                let id = Restaurant["id"] as! String
+//                                if (id == restaurantID) {
+//                                    let image = Restaurant["image"] as! String
+//                                    let url = URL(string: "http://www.gobringit.com/images/" + image)
+//                                    let data = try? Data(contentsOf: url!)
+//                                    backPic = UIImage(data: data!)
+//                                    
+//                                    
+//                                    print("ID MATCHES")
+//                                }
+//                            }
+//                            
+//                            OperationQueue.main.addOperation {
+//                                self.myTableView.reloadData()
+//                                // Stop activity indicator
+//                                //TO-DO: Place this so it is executed after the db request is made!
+//                                self.backgroundImageView.image = backPic!
+//                                self.myActivityIndicator.stopAnimating()
+//                                self.myActivityIndicator.isHidden = true
+//                                
+//                            }
+//                        }
+//                    }
+//                } catch let error as NSError {
+//                    print(error.localizedDescription)
+//                }
+//            } else if let error = error {
+//                print(error.localizedDescription)
+//            }
+//        }) 
+//        
+//        task.resume()
+//        
+//        items = order!.items?.allObjects as? [Item]
+//        print("HEIGHT1: \(myTableViewHeight.constant)")
+//        
+//        myTableView.reloadData()
+//        updateViewConstraints()
+//        
+//        let deliveryFee = Double((order?.deliveryFee)!)
+//        let subTotal = Double((order?.totalPrice)!) - Double((order?.deliveryFee)!)
+//        let totalCost = Double((order?.totalPrice)!)
+//        
+//        self.deliveryFeeLabel.text = String(format: "$%.2f", deliveryFee )
+//        self.subtotalCostLabel.text = String(format: "$%.2f", subTotal)
+//        self.totalCostLabel.text = String(format: "$%.2f", totalCost)
         
     }
     
@@ -128,162 +128,162 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func orderAgainButtonPressed(_ sender: UIButton) {
-        
+//    @IBAction func orderAgainButtonPressed(_ sender: UIButton) {
+//        
         // Check if there is an existing active cart from this restaurant
-        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
-        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
-        let secondPredicate = NSPredicate(format: "restaurant == %@", (order?.restaurant)!)
-        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
-        fetchRequest.predicate = predicate
+//        let fetchRequest = NSFetchRequest<Order>(entityName: "Order")
+//        let firstPredicate = NSPredicate(format: "isActive == %@", true as CVarArg)
+//        let secondPredicate = NSPredicate(format: "restaurant == %@", (order?.restaurant)!)
+//        let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [firstPredicate, secondPredicate])
+//        fetchRequest.predicate = predicate
+//        
+//        var activeCart = [Order]()
+//        
+//        do {
+//            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
+//                activeCart = fetchResults
+//                print("THERE IS AN EXISTING CART")
+//            }
+//        } catch let error as NSError {
+//            print("Could not fetch \(error), \(error.userInfo)")
+//        }
+//        
+//        // Delete current cart (if any exists)
+//        // TO-DO: ALEX! Add a warning that current cart will be overwritten?
+//        if !activeCart.isEmpty {
+//            // Shouldn't be necessary, just a precaution
+//            print("ACTIVE CART IS NOT EMPTY")
+//            //ctiveCart[0].isActive = false
+//            activeCart.removeAll()
+//        }
+//        
+//        var reorder = NSEntityDescription.insertNewObject(forEntityName: "Order", into: managedContext) as! Order
+//        reorder = order!
+//        
+//        // Set this cart as the active cart
+//        reorder.isActive = true
+//        activeCart.append(reorder)
+//        
+//        // Save changes
+//        self.appDelegate.saveContext()
+//        
+//        performSegue(withIdentifier: "toCheckoutFromReorder", sender: self)
+//    }
+//    
+//    // MARK: - Table view data source
+//    
+//    
+//    // MARK: - Table view data source
+//    
+//    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+//        return 1
+//    }
+//    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return
+//            items!.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "scheduleDetailCell", for: indexPath) as! ScheduleDetailTableViewCell
+//        
+//        // Set name and quantity labels
+//        cell.itemNameLabel.text = items![(indexPath as NSIndexPath).row].name
+//        cell.itemQuantityLabel.text = String(describing: items![(indexPath as NSIndexPath).row].quantity!)
+//        
+//        // Calculate total item cost
+//        var totalItemCost = 0.0
+//        var costOfSides = 0.0
+//        for side in items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side] {
+//            costOfSides += Double(side.price!)
+//        }
+//        totalItemCost += (Double(items![(indexPath as NSIndexPath).row].price!) + costOfSides) * Double(items![(indexPath as NSIndexPath).row].quantity!)
+//        cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
+//        
+//        // Format all sides and extras
+//        var sides = "Sides: "
+//        var extras = "Extras: "
+//        let allSides = items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side]
+//        
+//        for i in 0..<allSides.count {
+//            if ((allSides[i].isRequired) == true) {
+//                if i < allSides.count - 1 {
+//                    sides += allSides[i].name! + ", "
+//                } else {
+//                    sides += allSides[i].name!
+//                }
+//            } else {
+//                if i < allSides.count - 1 {
+//                    extras += allSides[i].name! + ", "
+//                } else {
+//                    extras += allSides[i].name!
+//                }
+//            }
+//        }
+//        if sides == "Sides: " {
+//            sides += "None"
+//        }
+//        if extras == "Extras: " {
+//            extras += "None"
+//        }
+//        
+//        // Format special instructions
+//        var specialInstructions = "Special Instructions: "
+//        if items![(indexPath as NSIndexPath).row].specialInstructions != "" {
+//            specialInstructions += items![(indexPath as NSIndexPath).row].specialInstructions!
+//        } else {
+//            specialInstructions += "None"
+//        }
+//        
+//        // Create attributed strings of the extras
+//        var sidesAS = NSMutableAttributedString()
+//        var extrasAS = NSMutableAttributedString()
+//        var specialInstructionsAS = NSMutableAttributedString()
+//        
+//        sidesAS = NSMutableAttributedString(
+//            string: sides,
+//            attributes: [NSFontAttributeName:UIFont(
+//                name: "Avenir",
+//                size: 13.0)!])
+//        extrasAS = NSMutableAttributedString(
+//            string: extras,
+//            attributes: [NSFontAttributeName:UIFont(
+//                name: "Avenir",
+//                size: 13.0)!])
+//        specialInstructionsAS = NSMutableAttributedString(
+//            string: specialInstructions,
+//            attributes: [NSFontAttributeName:UIFont(
+//                name: "Avenir",
+//                size: 13.0)!])
+//        
+//        sidesAS.addAttribute(NSFontAttributeName,
+//                             value: UIFont(
+//                                name: "Avenir-Heavy",
+//                                size: 13.0)!,
+//                             range: NSRange(
+//                                location: 0,
+//                                length: 6))
+//        extrasAS.addAttribute(NSFontAttributeName,
+//                              value: UIFont(
+//                                name: "Avenir-Heavy",
+//                                size: 13.0)!,
+//                              range: NSRange(
+//                                location: 0,
+//                                length: 7))
+//        specialInstructionsAS.addAttribute(NSFontAttributeName,
+//                                           value: UIFont(
+//                                            name: "Avenir-Heavy",
+//                                            size: 13.0)!,
+//                                           range: NSRange(
+//                                            location: 0,
+//                                            length: 21))
+//        
+//        cell.sidesLabel.attributedText = sidesAS
+//        cell.extrasLabel.attributedText = extrasAS
+//        cell.specialInstructionsLabel.attributedText = specialInstructionsAS
         
-        var activeCart = [Order]()
-        
-        do {
-            if let fetchResults = try managedContext.fetch(fetchRequest) as? [Order] {
-                activeCart = fetchResults
-                print("THERE IS AN EXISTING CART")
-            }
-        } catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
-        
-        // Delete current cart (if any exists)
-        // TO-DO: ALEX! Add a warning that current cart will be overwritten?
-        if !activeCart.isEmpty {
-            // Shouldn't be necessary, just a precaution
-            print("ACTIVE CART IS NOT EMPTY")
-            //ctiveCart[0].isActive = false
-            activeCart.removeAll()
-        }
-        
-        var reorder = NSEntityDescription.insertNewObject(forEntityName: "Order", into: managedContext) as! Order
-        reorder = order!
-        
-        // Set this cart as the active cart
-        reorder.isActive = true
-        activeCart.append(reorder)
-        
-        // Save changes
-        self.appDelegate.saveContext()
-        
-        performSegue(withIdentifier: "toCheckoutFromReorder", sender: self)
-    }
-    
-    // MARK: - Table view data source
-    
-    
-    // MARK: - Table view data source
-    
-    func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return
-            items!.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "scheduleDetailCell", for: indexPath) as! ScheduleDetailTableViewCell
-        
-        // Set name and quantity labels
-        cell.itemNameLabel.text = items![(indexPath as NSIndexPath).row].name
-        cell.itemQuantityLabel.text = String(describing: items![(indexPath as NSIndexPath).row].quantity!)
-        
-        // Calculate total item cost
-        var totalItemCost = 0.0
-        var costOfSides = 0.0
-        for side in items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side] {
-            costOfSides += Double(side.price!)
-        }
-        totalItemCost += (Double(items![(indexPath as NSIndexPath).row].price!) + costOfSides) * Double(items![(indexPath as NSIndexPath).row].quantity!)
-        cell.totalCostLabel.text = String(format: "%.2f", totalItemCost)
-        
-        // Format all sides and extras
-        var sides = "Sides: "
-        var extras = "Extras: "
-        let allSides = items![(indexPath as NSIndexPath).row].sides?.allObjects as! [Side]
-        
-        for i in 0..<allSides.count {
-            if ((allSides[i].isRequired) == true) {
-                if i < allSides.count - 1 {
-                    sides += allSides[i].name! + ", "
-                } else {
-                    sides += allSides[i].name!
-                }
-            } else {
-                if i < allSides.count - 1 {
-                    extras += allSides[i].name! + ", "
-                } else {
-                    extras += allSides[i].name!
-                }
-            }
-        }
-        if sides == "Sides: " {
-            sides += "None"
-        }
-        if extras == "Extras: " {
-            extras += "None"
-        }
-        
-        // Format special instructions
-        var specialInstructions = "Special Instructions: "
-        if items![(indexPath as NSIndexPath).row].specialInstructions != "" {
-            specialInstructions += items![(indexPath as NSIndexPath).row].specialInstructions!
-        } else {
-            specialInstructions += "None"
-        }
-        
-        // Create attributed strings of the extras
-        var sidesAS = NSMutableAttributedString()
-        var extrasAS = NSMutableAttributedString()
-        var specialInstructionsAS = NSMutableAttributedString()
-        
-        sidesAS = NSMutableAttributedString(
-            string: sides,
-            attributes: [NSFontAttributeName:UIFont(
-                name: "Avenir",
-                size: 13.0)!])
-        extrasAS = NSMutableAttributedString(
-            string: extras,
-            attributes: [NSFontAttributeName:UIFont(
-                name: "Avenir",
-                size: 13.0)!])
-        specialInstructionsAS = NSMutableAttributedString(
-            string: specialInstructions,
-            attributes: [NSFontAttributeName:UIFont(
-                name: "Avenir",
-                size: 13.0)!])
-        
-        sidesAS.addAttribute(NSFontAttributeName,
-                             value: UIFont(
-                                name: "Avenir-Heavy",
-                                size: 13.0)!,
-                             range: NSRange(
-                                location: 0,
-                                length: 6))
-        extrasAS.addAttribute(NSFontAttributeName,
-                              value: UIFont(
-                                name: "Avenir-Heavy",
-                                size: 13.0)!,
-                              range: NSRange(
-                                location: 0,
-                                length: 7))
-        specialInstructionsAS.addAttribute(NSFontAttributeName,
-                                           value: UIFont(
-                                            name: "Avenir-Heavy",
-                                            size: 13.0)!,
-                                           range: NSRange(
-                                            location: 0,
-                                            length: 21))
-        
-        cell.sidesLabel.attributedText = sidesAS
-        cell.extrasLabel.attributedText = extrasAS
-        cell.specialInstructionsLabel.attributedText = specialInstructionsAS
-        
-        return cell
-    }
+//        return cell
+//    }
     
     // Resize itemsTableView
     override func updateViewConstraints() {
@@ -303,7 +303,7 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         // Pass the selected object to the new view controller.
         if segue.identifier == "toCheckoutFromReorder" {
             
-            selectedRestaurantName = (order?.restaurant)!
+//            selectedRestaurantName = (order?.restaurant)!
         }
     }
     

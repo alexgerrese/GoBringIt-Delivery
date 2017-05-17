@@ -86,9 +86,9 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Set nav bar preferences
         self.navigationController?.navigationBar.tintColor = UIColor.darkGray
-        navigationController!.navigationBar.titleTextAttributes =
-            ([NSFontAttributeName: TITLE_FONT,
-                NSForegroundColorAttributeName: UIColor.black])
+//        navigationController!.navigationBar.titleTextAttributes =
+//            ([NSFontAttributeName: TITLE_FONT,
+//                NSForegroundColorAttributeName: UIColor.black])
         
         // Start activity indicator and show loading icon
         myActivityIndicator.startAnimating()
@@ -97,7 +97,7 @@ class BringItHomeViewController: UIViewController, UITableViewDelegate, UITableV
         myTableView.isHidden = true
         
         // setup tabbar indicator
-        rectShape.fillColor = GREEN.cgColor
+//        rectShape.fillColor = GREEN.cgColor
         indicatorWidth = view.bounds.maxX / 3 // count of items
         self.tabBarController!.view.layer.addSublayer(rectShape)
         self.tabBarController?.delegate = self
