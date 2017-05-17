@@ -11,7 +11,6 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-import Stripe
 import Alamofire
 import Moya
 import RealmSwift
@@ -37,6 +36,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     let realm = try! Realm() // Initialize Realm
     
     let defaultButtonText = "Sign in"
+    var returnKeyHandler: IQKeyboardReturnKeyHandler?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +55,10 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         
         // Set up custom back button
         setCustomBackButton()
+        
+        // Setup auto Next and Done buttons for keyboard
+        returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        returnKeyHandler?.lastTextFieldReturnKeyType = UIReturnKeyType.done
     }
     
     override func viewWillAppear(_ animated: Bool) {

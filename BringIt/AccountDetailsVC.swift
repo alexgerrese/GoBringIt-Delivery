@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
 class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     
@@ -30,6 +31,8 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     
     let defaultButtonText = "Continue"
     
+    var returnKeyHandler: IQKeyboardReturnKeyHandler?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +54,10 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         
         // Set up custom back button
         setCustomBackButton()
+        
+        // Setup auto Next and Done buttons for keyboard
+        returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        returnKeyHandler?.lastTextFieldReturnKeyType = UIReturnKeyType.done
     }
 
     override func didReceiveMemoryWarning() {

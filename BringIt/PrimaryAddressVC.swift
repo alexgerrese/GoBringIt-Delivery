@@ -32,6 +32,7 @@ class PrimaryAddressVC: UIViewController {
     // MARK: - Passed Variables
     
     let defaultButtonText = "Save and continue"
+    var returnKeyHandler: IQKeyboardReturnKeyHandler?
     
     var fullName = ""
     var emailAddress = ""
@@ -60,6 +61,10 @@ class PrimaryAddressVC: UIViewController {
         campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         streetAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         roomNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        // Setup auto Next and Done buttons for keyboard
+        returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
+        returnKeyHandler?.lastTextFieldReturnKeyType = UIReturnKeyType.done
     }
 
     override func didReceiveMemoryWarning() {
