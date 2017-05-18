@@ -222,12 +222,85 @@ extension UITextField {
     
 }
 
+/* Extension to set custom backbutton */
 extension UIViewController {
     
     func setCustomBackButton() {
         self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backButton")
         self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backButton")
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+    }
+    
+}
+
+/* Date extension to:
+ *      - Get the index of the day of the week
+ *      - Get the string of the day of the week
+ *      - Format openHours to a certain day of the week
+ */
+extension UIViewController {
+    
+    func getIndexOfWeek() -> Int {
+        let formatter  = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let todayDate = NSDate()
+        let myCalendar = Calendar(identifier: .gregorian)
+        let weekDay = myCalendar.component(.weekday, from: todayDate as Date)
+        
+        return weekDay
+    }
+    
+    func getDayOfWeek() -> String {
+        
+        let index = getIndexOfWeek()
+        
+        switch index {
+        case 1:
+            return "Monday"
+        case 2:
+            return "Tuesday"
+        case 3:
+            return "Wednesday"
+        case 4:
+            return "Thursday"
+        case 5:
+            return "Friday"
+        case 6:
+            return "Saturday"
+        case 7:
+            return "Sunday"
+        default:
+            return "Monday"
+        }
+    }
+    
+    func getOpenHoursString(data: String) -> String {
+        
+        // Check for empty strings
+        if data != "" {
+            // Separate by ","
+            var openHours = data.components(separatedBy: ",")
+            
+            // Trim whitespaces
+            for i in 0..<openHours.count {
+                openHours[i] = openHours[i].replacingOccurrences(of: " ", with: "")
+            }
+            
+            // Get correct index
+            // NOTE: The -1 is needed to avoid index out of range exceptions because dates are 1 indexed
+            let index = getIndexOfWeek() - 1
+            if index < openHours.count {
+                
+                var todaysHours = openHours[index]
+                
+                // Clean out day of the week
+                todaysHours = todaysHours.replacingOccurrences(of: getDayOfWeek(), with: "")
+                
+                return todaysHours
+            }
+        }
+        
+        return "Data unavailable"
     }
     
 }

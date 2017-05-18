@@ -33,10 +33,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     // MARK: - Variables
     
-    private let refreshControl = UIRefreshControl()
+    let refreshControl = UIRefreshControl()
     
     var restaurants: Results<Restaurant>!
     var backendVersionNumber = -1
+    var selectedRestaurantID = ""
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
@@ -44,20 +45,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set title
-        self.title = "Restaurants"
+        setupUI()
+        setupTableView()
         
-        // Set tableView cells to custom height and automatically resize if needed
-        self.myTableView.estimatedRowHeight = 230
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
-        
-        // Add refresh control capability
-        if #available(iOS 10.0, *) {
-            myTableView.refreshControl = refreshControl
-        } else {
-            myTableView.addSubview(refreshControl)
-        }
-        refreshControl.addTarget(self, action: #selector(RestaurantsHomeViewController.refreshData(refreshControl:)), for: .valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,9 +64,29 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         // Dispose of any resources that can be recreated.
     }
     
+    func setupUI() {
+        
+        // Set title
+        self.title = "Restaurants"
+    }
+    
+    func setupTableView() {
+        
+        // Set tableView cells to custom height and automatically resize if needed
+        self.myTableView.estimatedRowHeight = 230
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Add refresh control capability
+        if #available(iOS 10.0, *) {
+            myTableView.refreshControl = refreshControl
+        } else {
+            myTableView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(RestaurantsHomeViewController.refreshData(refreshControl:)), for: .valueChanged)
+    }
+    
     func refreshData(refreshControl: UIRefreshControl) {
         checkForUpdates()
-        refreshControl.endRefreshing()
     }
     
     func checkForUpdates() {
@@ -89,7 +99,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             print("No data exists. Fetching restaurant data.")
             
             // Create models from backend data
-            fetchRestaurantData()
+            self.fetchRestaurantData()
             
         } else {
             
@@ -100,6 +110,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                 (result: Int) in
                 
                 print("Received backend version number via closure")
+                
                 self.backendVersionNumber = result
                 
                 print("Local version number: \(currentVersionNumber), Backend version number: \(self.backendVersionNumber)")
@@ -111,18 +122,15 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                     // Save new version number to UserDefaults
                     self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
                     
-                    // Update models from backend data
+                    // Create models from backend data
                     self.fetchRestaurantData()
+                    
                 } else {
                     
                     print("Version numbers match. Loading UI.")
                 }
-
             }
         }
-        
-        self.refreshControl.endRefreshing()
-        
     }
     
     // MARK: - Table view data source
@@ -142,18 +150,15 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         cell.name.text = restaurant.name
         cell.cuisineType.text = restaurant.cuisineType
-        cell.openHours.text = "SAMPLE TIME" // TO-DO: FINISH TIME STUFF
+        cell.openHours.text = self.getOpenHoursString(data: restaurant.restaurantHours)
         cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//        if (indexPath as NSIndexPath).section == 1 {
-//            selectedRestaurantName = openRestaurants[(indexPath as NSIndexPath).row].restaurantName
-//        } else if (indexPath as NSIndexPath).section == 2 {
-//            selectedRestaurantName = closedRestaurants[(indexPath as NSIndexPath).row].restaurantName
-//        }
+
+        selectedRestaurantID = restaurants[indexPath.row].id
         
         return indexPath
     }
@@ -183,15 +188,21 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         return 25
     }
     
-
-    /*
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        myTableView.deselectRow(at: indexPath, animated: true)
+        
+        performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+        let nav = segue.destination as! UINavigationController
+        let detailVC = nav.topViewController as! RestaurantDetailViewController
+        detailVC.restaurantID = selectedRestaurantID
     }
-    */
 
 }

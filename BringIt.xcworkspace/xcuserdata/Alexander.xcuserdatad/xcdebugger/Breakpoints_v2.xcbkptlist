@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/RestaurantsHomeViewController.swift"
-            timestampString = "516814289.855086"
+            timestampString = "516821391.604619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "checkForUpdates()"
             landmarkType = "7">
             <Locations>

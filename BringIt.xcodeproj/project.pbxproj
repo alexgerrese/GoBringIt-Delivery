@@ -48,6 +48,7 @@
 		11C9EA8A1ECCA607004A4C1E /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */; };
 		11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */; };
 		11C9EA8E1ECDB4BE004A4C1E /* CreateRestaurantModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */; };
+		11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */; };
 		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
 		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
 		11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */; };
@@ -145,6 +146,7 @@
 		11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
 		11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsTableViewCell.swift; sourceTree = "<group>"; };
 		11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRestaurantModels.swift; sourceTree = "<group>"; };
+		11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
 		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RestaurantViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				11423AF01EC89CC400011B4D /* RealmModels.swift */,
 				11158DAD1ECB63DB00A88338 /* Sign In/Sign Up */,
 				11C9EA881ECCA3E6004A4C1E /* Restaurants Home */,
+				11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
 				11F6DE451CF6CF0600662C20 /* Settings */,
@@ -736,6 +739,7 @@
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
 				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
+				11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
