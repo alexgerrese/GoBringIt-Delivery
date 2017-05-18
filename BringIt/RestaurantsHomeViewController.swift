@@ -26,11 +26,31 @@ import Moya
 import RealmSwift
 
 class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // MARK: - IBOutlets
+    
+    // MARK: - Variables
+    
+    var restaurants: Results<Restaurant>!
+    
+    let defaults = UserDefaults.standard // Initialize UserDefaults
+    let realm = try! Realm() // Initialize Realm
+    
+    var backendVersionNumber = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // Download restaurant data if necessary
+        checkForUpdates()
+        
+        // Prepare data for TableView and CollectionView
+        restaurants = self.realm.objects(Restaurant.self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,14 +58,37 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         // Dispose of any resources that can be recreated.
     }
     
+    func checkForUpdates() {
+        
+        // Check if restaurant data already exists in Realm
+        let dataExists = self.realm.objects(Restaurant.self).count > 0
+        
+        if !dataExists {
+            
+            // Create models from backend data
+            fetchRestaurantData()
+            
+        } else {
+            
+            let currentVersionNumber = self.defaults.integer(forKey: "currentVersion")
+            backendVersionNumber = getBackendVersionNumber(currentVersion: currentVersionNumber)
+            
+            if currentVersionNumber != backendVersionNumber {
+                
+                // Update models from backend data
+                fetchRestaurantData()
+            }
+        }
+    }
+    
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return restaurants.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

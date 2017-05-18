@@ -28,4 +28,7 @@ struct Constants {
     // Borders
     static let cornerRadius = CGFloat(3)
     static let borderWidth = CGFloat(1)
+    
+    // Paths
+    static let imagesPath = "http://www.gobringit.com/images/"
 }
