@@ -89,13 +89,19 @@ class PrimaryAddressVC: UIViewController {
             case let .success(moyaResponse):
                 do {
                     
+                    print("Status code: \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
+                    
                     let retrievedUser = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    print("Retrieved User: \(retrievedUser)")
                     
                     // Check response from backend
                     let successResponse = retrievedUser["success"] as? Int
                     if successResponse == 1 {
-                        // Successfully logged in
+                        // Successfully received server response
+                        
+                        print("Successfully received server response")
                         
                         // Set up UserDefaults
                         self.defaults.set(true, forKey: "loggedIn")
@@ -103,12 +109,14 @@ class PrimaryAddressVC: UIViewController {
                         // Create new user
                         self.createNewUser(id: (retrievedUser["uid"] as? String)!, fullName: self.fullName, emailAddress: self.emailAddress, password: self.password, phoneNumber: self.phoneNumber, campus: self.campus.text!, streetAddress: self.streetAddress.text!, roomNumber: self.roomNumber.text!)
                         
+                        print("User created. About to dismiss.")
+                        
                         // Rewind segue to Restaurants VC
                         self.dismiss(animated: true, completion: nil)
                         
                     } else if successResponse == 0 {
-                        // Email wasn't found
-                        self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .invalidEmail)
+                        // User already exists
+                        self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .userAlreadyExists)
                     }
                 } catch {
                     // Miscellaneous network error

@@ -90,13 +90,19 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             case let .success(moyaResponse):
                 do {
                     
+                    print("Status code: \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
+                    
                     let retrievedUser = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    print("Retrieved User: \(retrievedUser)")
                     
                     // Check response from backend
                     let successResponse = retrievedUser["success"] as? Int
                     if successResponse == 1 {
                         // Successfully logged in
+                        
+                        print("Successfully logged in")
                         
                         // Set up UserDefaults
                         self.defaults.set(true, forKey: "loggedIn")
@@ -107,6 +113,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
                         
                         if userExists {
                             
+                            print("User exists")
+                            
                             // User exists, retrieve from Realm and set to current user
                             let user = self.realm.objects(User.self).filter(predicate).first!
                             try! self.realm.write {
@@ -114,9 +122,15 @@ class SignInVC: UIViewController, UITextFieldDelegate {
                             }
                         } else {
                             
+                            print("User doesn't exist")
+                            
                             // User doesn't exist, create new user
                             self.createNewUser(retrievedUser: retrievedUser)
                         }
+                        
+                        print("About to dismiss.")
+                        
+                        
                         
                         // Rewind segue to Restaurants VC
                         self.dismiss(animated: true, completion: nil)
@@ -180,7 +194,6 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             return false
         }
         
-        print("ALL GOOD BRO")
         hideError(button: signInButton, defaultButtonText: self.defaultButtonText)
         
         return true

@@ -102,7 +102,8 @@ extension APICalls : TargetType {
                     "email": email,
                     "phone": phoneNumber]
         case .resetPassword(let uid, let oldPassword, let newPassword):
-            return ["old_pass": oldPassword,
+            return ["uid": uid,
+                    "old_pass": oldPassword,
                     "new_pass": newPassword]
         case .fetchPromotions, .fetchRestaurantData:
             return nil
@@ -114,13 +115,7 @@ extension APICalls : TargetType {
     }
     
     var sampleData: Data {
-        switch self {
-            // TO-DO: Implement sample data for all of them!!!
-        case .signInUser(let email, let password):
-            return "hello".utf8Encoded
-        default:
-            return "bob".utf8Encoded
-        }
+        return Data()
     }
     
     var task: Task {

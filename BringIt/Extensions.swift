@@ -27,6 +27,7 @@ extension UIViewController {
         case invalidPhoneNumber
         case fieldEmpty
         case unacceptablePasswordLength
+        case userAlreadyExists
     }
     
     func showError(button: UIButton, activityIndicator: UIActivityIndicatorView?, error: Error, defaultButtonText: String?) {
@@ -58,6 +59,9 @@ extension UIViewController {
             button.isEnabled = false
         case .unacceptablePasswordLength:
             button.setTitle("Password must be at least 8 characters.", for: .normal)
+            button.isEnabled = false
+        case .userAlreadyExists:
+            button.setTitle("Email already connected to an account. ", for: .normal)
             button.isEnabled = false
         }
     }
@@ -102,6 +106,7 @@ extension UIViewController {
     
     func startAnimating(activityIndicator: UIActivityIndicatorView, button: UIButton) {
         
+        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         button.setTitle("", for: .normal)
         
