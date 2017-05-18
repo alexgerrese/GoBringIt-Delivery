@@ -3243,9 +3243,8 @@ with your details shortly.</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZDY-vp-rnv">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZDY-vp-rnv">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="messagesCell" id="3sP-CZ-5Ba" customClass="MessagesTableViewCell" customModule="BringIt" customModuleProvider="target">
@@ -3255,14 +3254,19 @@ with your details shortly.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w7t-KB-owB">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w7t-KB-owB">
                                                     <rect key="frame" x="19" y="5" width="336" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="w7t-KB-owB" firstAttribute="top" secondItem="vE7-Wv-Y2M" secondAttribute="topMargin" constant="-3" id="B5m-9l-z3N"/>
+                                                <constraint firstItem="w7t-KB-owB" firstAttribute="centerX" secondItem="vE7-Wv-Y2M" secondAttribute="centerX" id="D7N-56-xGL"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="w7t-KB-owB" secondAttribute="bottom" constant="0.5" id="heL-ob-H9M"/>
+                                                <constraint firstItem="w7t-KB-owB" firstAttribute="leading" secondItem="vE7-Wv-Y2M" secondAttribute="leadingMargin" constant="11" id="iO0-Sp-70w"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="message" destination="w7t-KB-owB" id="OJ8-nF-5Ra"/>
@@ -3275,9 +3279,8 @@ with your details shortly.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="149.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hb3-aa-WOs">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hb3-aa-WOs">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FMm-zM-NJD">
                                                         <size key="itemSize" width="324" height="150"/>
@@ -3293,16 +3296,27 @@ with your details shortly.</string>
                                                                 <rect key="frame" x="0.0" y="0.0" width="324" height="150"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EcS-Ia-2hD">
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EcS-Ia-2hD">
                                                                         <rect key="frame" x="0.0" y="0.0" width="324" height="150"/>
-                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     </imageView>
                                                                 </subviews>
                                                             </view>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="EcS-Ia-2hD" secondAttribute="trailing" id="9Mj-ix-bmg"/>
+                                                                <constraint firstItem="EcS-Ia-2hD" firstAttribute="top" secondItem="2wO-2u-Yam" secondAttribute="top" id="NtC-Lz-8Qz"/>
+                                                                <constraint firstAttribute="bottom" secondItem="EcS-Ia-2hD" secondAttribute="bottom" id="VBd-RV-rDX"/>
+                                                                <constraint firstItem="EcS-Ia-2hD" firstAttribute="leading" secondItem="2wO-2u-Yam" secondAttribute="leading" id="Y6B-10-TyS"/>
+                                                            </constraints>
                                                         </collectionViewCell>
                                                     </cells>
                                                 </collectionView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="hb3-aa-WOs" firstAttribute="leading" secondItem="QHT-WR-lDd" secondAttribute="leading" id="9ct-Yw-gBb"/>
+                                                <constraint firstAttribute="trailing" secondItem="hb3-aa-WOs" secondAttribute="trailing" id="JRA-K4-pRX"/>
+                                                <constraint firstItem="hb3-aa-WOs" firstAttribute="centerY" secondItem="QHT-WR-lDd" secondAttribute="centerY" id="Lo9-Pe-9OI"/>
+                                                <constraint firstItem="hb3-aa-WOs" firstAttribute="top" secondItem="QHT-WR-lDd" secondAttribute="top" id="jWN-6O-fOd"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="myCollectionView" destination="hb3-aa-WOs" id="HSA-a1-450"/>
@@ -3315,32 +3329,64 @@ with your details shortly.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="229.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lOq-ZZ-ejO">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lOq-ZZ-ejO">
                                                     <rect key="frame" x="8" y="0.0" width="360" height="170"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="170" id="PX0-Mv-nrw"/>
+                                                    </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A7I-CS-aTb">
-                                                    <rect key="frame" x="18" y="175" width="210" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="17"/>
-                                                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0H9-r1-I2z">
-                                                    <rect key="frame" x="231" y="175" width="131" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
-                                                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCu-OG-yJ6">
-                                                    <rect key="frame" x="18" y="195" width="210" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="14"/>
-                                                    <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ojh-Eg-e6N">
+                                                    <rect key="frame" x="8" y="169" width="360" height="61"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A7I-CS-aTb">
+                                                            <rect key="frame" x="10" y="6" width="210" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="210" id="e50-jA-7oM"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="17"/>
+                                                            <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCu-OG-yJ6">
+                                                            <rect key="frame" x="10" y="26" width="210" height="21"/>
+                                                            <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="14"/>
+                                                            <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0H9-r1-I2z">
+                                                            <rect key="frame" x="219" y="5" width="131" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="131" id="fcJ-P7-jBQ"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                                            <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="A7I-CS-aTb" secondAttribute="bottom" constant="34" id="2jf-SZ-Orh"/>
+                                                        <constraint firstItem="A7I-CS-aTb" firstAttribute="leading" secondItem="Ojh-Eg-e6N" secondAttribute="leading" constant="10" id="5Vq-CL-0GK"/>
+                                                        <constraint firstItem="A7I-CS-aTb" firstAttribute="leading" secondItem="pCu-OG-yJ6" secondAttribute="leading" id="6L5-cD-cGZ"/>
+                                                        <constraint firstItem="pCu-OG-yJ6" firstAttribute="top" secondItem="Ojh-Eg-e6N" secondAttribute="top" constant="26" id="FRR-kS-Khs"/>
+                                                        <constraint firstItem="A7I-CS-aTb" firstAttribute="top" secondItem="Ojh-Eg-e6N" secondAttribute="top" constant="6" id="LWo-zI-5N3"/>
+                                                        <constraint firstItem="A7I-CS-aTb" firstAttribute="trailing" secondItem="pCu-OG-yJ6" secondAttribute="trailing" id="QYj-0T-tCw"/>
+                                                        <constraint firstAttribute="bottom" secondItem="0H9-r1-I2z" secondAttribute="bottom" constant="35" id="Tz4-fw-hgz"/>
+                                                        <constraint firstAttribute="trailing" secondItem="0H9-r1-I2z" secondAttribute="trailing" constant="10" id="dbb-1o-BV8"/>
+                                                        <constraint firstItem="0H9-r1-I2z" firstAttribute="top" secondItem="Ojh-Eg-e6N" secondAttribute="top" constant="5" id="uDW-iC-4GA"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Ojh-Eg-e6N" secondAttribute="bottom" constant="-8.5" id="2z0-qU-vsZ"/>
+                                                <constraint firstItem="lOq-ZZ-ejO" firstAttribute="leading" secondItem="79S-tu-2Ar" secondAttribute="leadingMargin" id="9Ol-sI-60U"/>
+                                                <constraint firstItem="lOq-ZZ-ejO" firstAttribute="leading" secondItem="Ojh-Eg-e6N" secondAttribute="leading" id="D5A-DE-On6"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="lOq-ZZ-ejO" secondAttribute="bottom" constant="51.5" id="GMA-hu-2hc"/>
+                                                <constraint firstItem="lOq-ZZ-ejO" firstAttribute="trailing" secondItem="Ojh-Eg-e6N" secondAttribute="trailing" id="H6V-XR-lEA"/>
+                                                <constraint firstItem="Ojh-Eg-e6N" firstAttribute="top" secondItem="79S-tu-2Ar" secondAttribute="top" constant="169" id="PDG-BE-Tg3"/>
+                                                <constraint firstItem="lOq-ZZ-ejO" firstAttribute="centerX" secondItem="79S-tu-2Ar" secondAttribute="centerX" id="Ypk-x5-mSa"/>
+                                                <constraint firstItem="lOq-ZZ-ejO" firstAttribute="top" secondItem="79S-tu-2Ar" secondAttribute="top" id="ZyP-q1-aXP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="bannerImage" destination="lOq-ZZ-ejO" id="WU1-1U-K4B"/>
@@ -3350,11 +3396,24 @@ with your details shortly.</string>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="WQN-PC-Y1X" id="vad-qG-KGz"/>
+                                    <outlet property="delegate" destination="WQN-PC-Y1X" id="bIL-dz-Fp3"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZDY-vp-rnv" firstAttribute="leading" secondItem="55J-bT-uqx" secondAttribute="leading" id="4me-6E-lp3"/>
+                            <constraint firstAttribute="trailing" secondItem="ZDY-vp-rnv" secondAttribute="trailing" id="Aso-77-AXd"/>
+                            <constraint firstItem="ZDY-vp-rnv" firstAttribute="bottom" secondItem="EE4-QO-E0c" secondAttribute="top" id="VTH-g6-N7x"/>
+                            <constraint firstItem="ZDY-vp-rnv" firstAttribute="top" secondItem="5hq-MM-2CJ" secondAttribute="bottom" id="o6f-D4-xxQ"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xOe-35-FPX"/>
+                    <connections>
+                        <outlet property="myTableView" destination="ZDY-vp-rnv" id="G1O-53-Da2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JwO-ng-fJe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3898,7 +3957,7 @@ with your details shortly.</string>
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="wNY-re-Aab">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="wNY-re-Aab">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.31372549019607843" green="0.82352941176470584" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
@@ -3920,7 +3979,7 @@ with your details shortly.</string>
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="aSs-rg-rhI">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="aSs-rg-rhI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3941,7 +4000,7 @@ with your details shortly.</string>
                         <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="aFa-Zi-eno">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="aFa-Zi-eno">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5036,7 +5095,7 @@ with your details shortly.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wmm-6d-OeC" sceneMemberID="viewController">
                     <toolbarItems/>
                     <splitViewMasterSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="Vvx-nc-lef">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="Vvx-nc-lef">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5056,7 +5115,7 @@ with your details shortly.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FaF-xA-9tx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <splitViewMasterSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="PXH-TD-E0Z">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="PXH-TD-E0Z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5074,7 +5133,7 @@ with your details shortly.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="71X-Mw-hR9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="LxP-cj-RaD">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="LxP-cj-RaD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5092,7 +5151,7 @@ with your details shortly.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rmp-Hf-dvu" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="niU-HV-X9X">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" backIndicatorImage="back" backIndicatorTransitionMaskImage="back" id="niU-HV-X9X">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5111,7 +5170,7 @@ with your details shortly.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KMi-Kz-xEE" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9Xx-b7-hNk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="9Xx-b7-hNk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5129,7 +5188,7 @@ with your details shortly.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ITY-dH-zL0" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XZZ-Pq-J4p">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="XZZ-Pq-J4p">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

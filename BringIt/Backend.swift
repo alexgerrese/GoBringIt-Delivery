@@ -23,6 +23,7 @@ enum APICalls {
     case fetchAccountInfo(uid: String)
     case updateAccountInfo(uid: String, fullName: String, email: String, phoneNumber: String)
     case resetPassword(uid: String, oldPassword: String, newPassword: String)
+    case fetchVersionNumber
 }
 
 extension APICalls : TargetType {
@@ -49,12 +50,14 @@ extension APICalls : TargetType {
             return "/updateAccountInfo.php"
         case .resetPassword(_,_,_):
             return "/resetPassword.php"
+        case .fetchVersionNumber:
+            return "/fetchVersionNumber.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .fetchPromotions, .fetchRestaurantData, .fetchAccountInfo:
+        case .fetchPromotions, .fetchRestaurantData, .fetchAccountInfo, .fetchVersionNumber:
             return .get
         case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword:
             return .post
@@ -105,7 +108,7 @@ extension APICalls : TargetType {
             return ["uid": uid,
                     "old_pass": oldPassword,
                     "new_pass": newPassword]
-        case .fetchPromotions, .fetchRestaurantData:
+        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber:
             return nil
         }
     }

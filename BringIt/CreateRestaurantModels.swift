@@ -13,11 +13,49 @@ import RealmSwift
 
 extension RestaurantsHomeViewController {
     
-    func getBackendVersionNumber(currentVersion: Int) -> Int {
-        return 0
+    func getBackendVersionNumber(completion: @escaping (_ result: Int) -> Void) {
+        
+        print("getBackendVersionNumber() was called.")
+        
+        var versionNumber = -1
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.fetchVersionNumber) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    print("Retrieved Response: \(response)")
+                    
+                    versionNumber = Int(response["version_number"] as! String)!
+                    
+                    print("Retrieved Version Number: \(versionNumber)")
+                    completion(versionNumber)
+                    
+                } catch {
+                    // Miscellaneous network error
+                    
+                    // TO-DO: MAKE THIS A MODAL POPUP???
+                    print("Network error")
+                }
+            case .failure(_):
+                // Connection failed
+                
+                // TO-DO: MAKE THIS A MODAL POPUP???
+                print("Connection failed. Make sure you're connected to the internet.")
+            }
+        }
     }
     
     func fetchRestaurantData() {
+        
+        print("fetchRestaurantData() was called")
         
         var restaurantIDs = [String]() // For cleanup
         var menuCategoryIDs = [String]() // For cleanup
@@ -37,11 +75,7 @@ extension RestaurantsHomeViewController {
                     let retrievedRestaurants = try moyaResponse.mapJSON() as! [AnyObject]
                     
                     print("Retrieved Restaurants: \(retrievedRestaurants)")
-                    
-                    // Save new version number to UserDefaults
-                    // TO-DO: Uncomment this when getBackendVersionNumber() is implemented
-                    //self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
-                    
+
                     for retrievedRestaurant in retrievedRestaurants {
                         
                         let restaurant = Restaurant()
@@ -70,7 +104,7 @@ extension RestaurantsHomeViewController {
                             menuCategory.id = retrievedMenuCategory["id"] as! String
                             menuCategory.name = retrievedMenuCategory["name"] as! String
                             
-                            
+                            menuCategoryIDs.append(menuCategory.id) // For cleanup
                             
                             print("Menu category created")
                             
@@ -137,6 +171,8 @@ extension RestaurantsHomeViewController {
                     print("Finished creating Restaurant models. Cleaning up now.")
                     
                     self.cleanUpRealmRestaurantModels(restaurantIDs: restaurantIDs, menuCategoryIDs: menuCategoryIDs, menuItemIDs: menuItemIDs, sideIDs: sideIDs)
+                    
+                    self.myTableView.reloadData()
 
                 } catch {
                     // Miscellaneous network error

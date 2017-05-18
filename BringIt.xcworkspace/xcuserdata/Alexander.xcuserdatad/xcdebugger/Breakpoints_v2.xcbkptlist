@@ -152,11 +152,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/Backend.swift"
-            timestampString = "516626513.00955"
+            timestampString = "516808874.38805"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
             landmarkName = "APICalls"
             landmarkType = "4">
          </BreakpointContent>
@@ -207,6 +207,54 @@
             endingLineNumber = "74"
             landmarkName = "showError(button:error:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BringIt/RestaurantsHomeViewController.swift"
+            timestampString = "516814289.855086"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "checkForUpdates()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BringIt.RestaurantsHomeViewController.checkForUpdates () -&gt; ()"
+                  moduleName = "BringIt"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Alexander/Documents/Campus%20Enterprises/BringIt/BringIt/RestaurantsHomeViewController.swift"
+                  timestampString = "516813345.223271"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "756">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BringIt.RestaurantsHomeViewController.(checkForUpdates () -&gt; ()).(closure #1)"
+                  moduleName = "BringIt"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Alexander/Documents/Campus%20Enterprises/BringIt/BringIt/RestaurantsHomeViewController.swift"
+                  timestampString = "516813345.228964"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "240">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -29,19 +29,35 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     // MARK: - IBOutlets
     
+    @IBOutlet weak var myTableView: UITableView!
+    
     // MARK: - Variables
     
+    private let refreshControl = UIRefreshControl()
+    
     var restaurants: Results<Restaurant>!
+    var backendVersionNumber = -1
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
-    
-    var backendVersionNumber = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        // Set title
+        self.title = "Restaurants"
+        
+        // Set tableView cells to custom height and automatically resize if needed
+        self.myTableView.estimatedRowHeight = 230
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Add refresh control capability
+        if #available(iOS 10.0, *) {
+            myTableView.refreshControl = refreshControl
+        } else {
+            myTableView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(RestaurantsHomeViewController.refreshData(refreshControl:)), for: .valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +74,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         // Dispose of any resources that can be recreated.
     }
     
+    func refreshData(refreshControl: UIRefreshControl) {
+        checkForUpdates()
+        refreshControl.endRefreshing()
+    }
+    
     func checkForUpdates() {
         
         // Check if restaurant data already exists in Realm
@@ -65,20 +86,43 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         if !dataExists {
             
+            print("No data exists. Fetching restaurant data.")
+            
             // Create models from backend data
             fetchRestaurantData()
             
         } else {
             
-            let currentVersionNumber = self.defaults.integer(forKey: "currentVersion")
-            backendVersionNumber = getBackendVersionNumber(currentVersion: currentVersionNumber)
+            print("Data exists. Checking version numbers.")
             
-            if currentVersionNumber != backendVersionNumber {
+            let currentVersionNumber = self.defaults.integer(forKey: "currentVersion")
+            getBackendVersionNumber() {
+                (result: Int) in
                 
-                // Update models from backend data
-                fetchRestaurantData()
+                print("Received backend version number via closure")
+                self.backendVersionNumber = result
+                
+                print("Local version number: \(currentVersionNumber), Backend version number: \(self.backendVersionNumber)")
+                
+                if currentVersionNumber != self.backendVersionNumber {
+                    
+                    print("Version numbers do not match. Fetching updated restaurant data.")
+                    
+                    // Save new version number to UserDefaults
+                    self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
+                    
+                    // Update models from backend data
+                    self.fetchRestaurantData()
+                } else {
+                    
+                    print("Version numbers match. Loading UI.")
+                }
+
             }
         }
+        
+        self.refreshControl.endRefreshing()
+        
     }
     
     // MARK: - Table view data source
@@ -92,7 +136,14 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantsCell", for: indexPath) as! RestaurantTableViewCell
+        
+        let restaurant = restaurants[indexPath.row]
+        
+        cell.name.text = restaurant.name
+        cell.cuisineType.text = restaurant.cuisineType
+        cell.openHours.text = "SAMPLE TIME" // TO-DO: FINISH TIME STUFF
+        cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
         
         return cell
     }
