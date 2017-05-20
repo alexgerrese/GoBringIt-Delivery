@@ -3061,7 +3061,7 @@ with your details shortly.</string>
         <!--Sign InVC-->
         <scene sceneID="lsD-ip-mbZ">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="fj7-VG-MJI" customClass="SignInVC" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="signInVC" automaticallyAdjustsScrollViewInsets="NO" id="fj7-VG-MJI" customClass="SignInVC" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="u9I-De-vLE"/>
                         <viewControllerLayoutGuide type="bottom" id="Ly3-BD-Kgk"/>
@@ -3555,6 +3555,9 @@ with your details shortly.</string>
                                                 <state key="normal" title="View Cart">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="viewCartButtonTapped:" destination="LmI-pK-QUL" eventType="touchUpInside" id="kXs-dd-Uj7"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -3603,8 +3606,8 @@ with your details shortly.</string>
                         <outlet property="viewCartButtonView" destination="LUc-Wh-zcr" id="YIt-dF-Ffm"/>
                         <outlet property="viewCartView" destination="zPO-Wg-Zyi" id="USm-rw-Lid"/>
                         <outlet property="viewCartViewToBottom" destination="haf-ry-Rop" id="gk8-gr-BkC"/>
-                        <segue destination="T7X-Dt-G9T" kind="show" identifier="toRestaurantDetail" id="NlH-Zh-WUC"/>
-                        <segue destination="UTa-Bq-4O4" kind="show" id="PyD-I9-eRF"/>
+                        <segue destination="T7X-Dt-G9T" kind="show" identifier="toMenuCategory" id="NlH-Zh-WUC"/>
+                        <segue destination="UTa-Bq-4O4" kind="show" identifier="toCheckoutFromRestaurantDetail" id="PyD-I9-eRF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="joN-9b-1Gy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3710,6 +3713,9 @@ with your details shortly.</string>
                                                 <state key="normal" title="View Cart">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="viewCartButtonTapped:" destination="T7X-Dt-G9T" eventType="touchUpInside" id="w26-az-o7C"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -3753,7 +3759,7 @@ with your details shortly.</string>
                         <outlet property="viewCartView" destination="y97-vU-gFr" id="wYc-hT-1rc"/>
                         <outlet property="viewCartViewToBottom" destination="TGK-R8-Lxd" id="hfz-0n-QO2"/>
                         <segue destination="d6q-QY-tJQ" kind="show" identifier="toAddToCart" id="b5s-G9-9al"/>
-                        <segue destination="UTa-Bq-4O4" kind="show" id="biK-yC-aOC"/>
+                        <segue destination="UTa-Bq-4O4" kind="show" identifier="toCheckoutFromMenuCategory" id="biK-yC-aOC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NHZ-av-vsi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4100,7 +4106,7 @@ with your details shortly.</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="75" id="NTw-ae-HjK">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="orderCell" rowHeight="75" id="NTw-ae-HjK" customClass="OrderTableViewCell" customModule="BringIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NTw-ae-HjK" id="11o-WX-DaR">
@@ -4119,8 +4125,8 @@ with your details shortly.</string>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Lf-yJ-GLi">
-                                                    <rect key="frame" x="307" y="8" width="60" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Lf-yJ-GLi">
+                                                    <rect key="frame" x="300" y="8" width="60" height="21"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -4143,13 +4149,19 @@ with your details shortly.</string>
                                                 <constraint firstItem="jXK-J4-IdP" firstAttribute="leading" secondItem="11o-WX-DaR" secondAttribute="leadingMargin" constant="10" id="Tlh-g3-g5k"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="48e-kr-EH3" secondAttribute="trailing" constant="68" id="XLk-SD-G5O"/>
                                                 <constraint firstItem="48e-kr-EH3" firstAttribute="leading" secondItem="11o-WX-DaR" secondAttribute="leadingMargin" constant="38" id="Zh1-AM-4EB"/>
-                                                <constraint firstItem="9Lf-yJ-GLi" firstAttribute="trailing" secondItem="11o-WX-DaR" secondAttribute="trailingMargin" id="Zt6-YR-uCp"/>
+                                                <constraint firstItem="9Lf-yJ-GLi" firstAttribute="trailing" secondItem="11o-WX-DaR" secondAttribute="trailingMargin" constant="-7" id="Zt6-YR-uCp"/>
                                                 <constraint firstItem="jXK-J4-IdP" firstAttribute="top" secondItem="11o-WX-DaR" secondAttribute="topMargin" id="hRF-7K-j8R"/>
                                                 <constraint firstItem="2k2-A9-QoD" firstAttribute="firstBaseline" secondItem="9Lf-yJ-GLi" secondAttribute="firstBaseline" id="pXa-yh-KHu"/>
-                                                <constraint firstItem="9Lf-yJ-GLi" firstAttribute="leading" secondItem="2k2-A9-QoD" secondAttribute="trailing" constant="8" symbolic="YES" id="s2V-HI-lBa"/>
+                                                <constraint firstItem="9Lf-yJ-GLi" firstAttribute="leading" secondItem="2k2-A9-QoD" secondAttribute="trailing" constant="1" id="s2V-HI-lBa"/>
                                                 <constraint firstItem="2k2-A9-QoD" firstAttribute="baseline" secondItem="9Lf-yJ-GLi" secondAttribute="baseline" id="yxN-Be-0AC"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="menuItemName" destination="2k2-A9-QoD" id="G1x-Id-hUP"/>
+                                            <outlet property="otherDetails" destination="48e-kr-EH3" id="K0e-Z7-CJZ"/>
+                                            <outlet property="price" destination="9Lf-yJ-GLi" id="S6E-va-DoA"/>
+                                            <outlet property="quantity" destination="jXK-J4-IdP" id="0sJ-7v-RoX"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="pK9-j1-9a3">
                                         <rect key="frame" x="0.0" y="147" width="375" height="44"/>
@@ -4160,6 +4172,10 @@ with your details shortly.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="LnE-Ld-bZA" id="pU4-Io-x6L"/>
+                                    <outlet property="delegate" destination="LnE-Ld-bZA" id="NAl-gL-8YL"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4173,19 +4189,26 @@ with your details shortly.</string>
                             <constraint firstItem="PVa-W8-eRy" firstAttribute="top" secondItem="65q-aG-f6M" secondAttribute="bottom" id="uiE-Q3-23c"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="v82-Y4-XCA"/>
+                    <navigationItem key="navigationItem" id="v82-Y4-XCA">
+                        <barButtonItem key="leftBarButtonItem" image="Cancel" id="JUE-kC-PsB">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="LnE-Ld-bZA" id="0qx-oC-cOH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="cartSubtotal" destination="Wws-oQ-5UV" id="21S-WM-Oiq"/>
+                        <outlet property="cartTotal" destination="Wws-oQ-5UV" id="8TO-Vc-2X2"/>
                         <outlet property="myTableView" destination="65q-aG-f6M" id="mGw-ft-GAI"/>
                         <outlet property="viewCartButton" destination="OVR-jk-ByR" id="pQ4-F4-nze"/>
                         <outlet property="viewCartButtonView" destination="eHJ-Vo-53v" id="NWo-Z9-Ugf"/>
                         <outlet property="viewCartView" destination="PVa-W8-eRy" id="VeM-gX-uWj"/>
                         <outlet property="viewCartViewToBottom" destination="gK1-o9-pjG" id="8G0-aL-Xqn"/>
+                        <segue destination="KMi-Kz-xEE" kind="show" identifier="toSignIn" id="bYc-uf-2Ig"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u9s-0n-I7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="799" y="931"/>
+            <point key="canvasLocation" x="801" y="932"/>
         </scene>
         <!--Account DetailsVC-->
         <scene sceneID="7zz-RJ-dOd">
@@ -5825,7 +5848,7 @@ with your details shortly.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Sx-Dw-nYa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1359.2" y="930.58470764617698"/>
+            <point key="canvasLocation" x="-1335" y="931"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fPO-lO-cbj">
@@ -5835,6 +5858,7 @@ with your details shortly.</string>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="nBI-dW-LZO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

@@ -116,6 +116,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         })
     }
     
+    @IBAction func viewCartButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "toCheckoutFromRestaurantDetail", sender: self)
+    }
+    
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         // Rewind segue to Restaurants VC
         self.dismiss(animated: true, completion: nil)
@@ -169,7 +173,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         myTableView.deselectRow(at: indexPath, animated: true)
         
-        performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+        performSegue(withIdentifier: "toMenuCategory", sender: self)
     }
     
 
@@ -178,9 +182,16 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let menuCategoryVC = segue.destination as! MenuCategoryViewController
-        menuCategoryVC.menuCategoryID = selectedMenuCategoryID
-        menuCategoryVC.restaurantID = restaurantID
+        if segue.identifier == "toMenuCategory" {
+            let menuCategoryVC = segue.destination as! MenuCategoryViewController
+            menuCategoryVC.menuCategoryID = selectedMenuCategoryID
+            menuCategoryVC.restaurantID = restaurantID
+        } else if segue.identifier == "toCheckoutFromRestaurantDetail" {
+            
+            let nav = segue.destination as! UINavigationController
+            let checkoutVC = nav.topViewController as! CheckoutVC
+            checkoutVC.restaurantID = restaurantID
+        }
     }
     
     override var prefersStatusBarHidden : Bool {

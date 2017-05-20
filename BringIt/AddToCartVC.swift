@@ -263,10 +263,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 // Cart doesn't exist yet
                 print("Cart does not exist. Creating new one.")
                 
+                let deliveryFee = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)?.deliveryFee
+                
                 let order = Order()
                 order.restaurantID = restaurantID
                 order.menuItems.append(newMenuItem)
                 order.subtotal += newMenuItem.totalCost
+                order.deliveryFee = deliveryFee!
                 order.isComplete = false
                 
                 realm.add(order)

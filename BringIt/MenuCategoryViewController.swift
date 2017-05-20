@@ -109,6 +109,10 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             self.view.layoutIfNeeded()
         })
     }
+    
+    @IBAction func viewCartButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "toCheckoutFromMenuCategory", sender: self)
+    }
 
     
     // MARK: - Table view data source
@@ -170,10 +174,19 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let nav = segue.destination as! UINavigationController
-        let addToCartVC = nav.topViewController as! AddToCartVC
-        addToCartVC.menuItemID = selectedMenuItemID
-        addToCartVC.restaurantID = restaurantID
+        if segue.identifier == "toAddToCart" {
+            let nav = segue.destination as! UINavigationController
+            let addToCartVC = nav.topViewController as! AddToCartVC
+            addToCartVC.menuItemID = selectedMenuItemID
+            addToCartVC.restaurantID = restaurantID
+        } else if segue.identifier == "toCheckoutFromMenuCategory" {
+            
+            let nav = segue.destination as! UINavigationController
+            let checkoutVC = nav.topViewController as! CheckoutVC
+            checkoutVC.restaurantID = restaurantID
+        }
+        
+        
     }
 
 }

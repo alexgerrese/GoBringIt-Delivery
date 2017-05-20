@@ -45,8 +45,8 @@ class Restaurant: Object {
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var cuisineType = ""
-    dynamic var restaurantHours = "" // TO-DO: Maybe change the formatting? Here or in a method
-    dynamic var deliveryFee = "" // TO-DO: Should this be a string or a Double?
+    dynamic var restaurantHours = ""
+    dynamic var deliveryFee = 0.0
     let promotions = List<Promotion>()
     let mostPopularDishes = List<MenuItem>()
     let menuCategories = List<MenuCategory>()
@@ -75,7 +75,7 @@ class MenuItem: Object {
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var details = ""
-    dynamic var price = 0.0 // TO-DO: Should this be a string or a Double?
+    dynamic var price = 0.0
     dynamic var groupings = 0
     dynamic var numRequiredSides = 0
     let sides = List<Side>()
@@ -131,7 +131,8 @@ class Order: Object {
     dynamic var address: Address?
     dynamic var paymentMethod = ""
     let menuItems = List<MenuItem>()
-    dynamic var subtotal = 0.0 // TO-DO: Should this be a string or a Double?
+    dynamic var subtotal = 0.0 
+    dynamic var deliveryFee = 0.0
     dynamic var isComplete = false
 }
 

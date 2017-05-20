@@ -28,6 +28,7 @@
 		112D6B191ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */; };
 		112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */; };
 		112D6B1E1ED0591E00396BA5 /* CheckoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */; };
+		112D6B201ED08EC400396BA5 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */; };
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
@@ -131,6 +132,7 @@
 		112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
 		112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityTableViewCell.swift; sourceTree = "<group>"; };
 		112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckoutVC.swift; path = Assets.xcassets/CheckoutVC.swift; sourceTree = "<group>"; };
+		112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -254,7 +256,7 @@
 				112D6B171ECF1BB300396BA5 /* Restaurant Detail */,
 				112D6B161ECF1BAA00396BA5 /* Menu */,
 				112D6B1C1ED058F000396BA5 /* Add To Cart */,
-				112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */,
+				112D6B211ED08F4600396BA5 /* Checkout */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
@@ -342,6 +344,15 @@
 				112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */,
 			);
 			name = "Add To Cart";
+			sourceTree = "<group>";
+		};
+		112D6B211ED08F4600396BA5 /* Checkout */ = {
+			isa = PBXGroup;
+			children = (
+				112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */,
+				112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */,
+			);
+			name = Checkout;
 			sourceTree = "<group>";
 		};
 		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
@@ -778,6 +789,7 @@
 				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */,
+				112D6B201ED08EC400396BA5 /* OrderTableViewCell.swift in Sources */,
 				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,
 				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
