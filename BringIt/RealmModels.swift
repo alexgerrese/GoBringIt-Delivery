@@ -75,7 +75,7 @@ class MenuItem: Object {
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var details = ""
-    dynamic var price = "" // TO-DO: Should this be a string or a Double?
+    dynamic var price = 0.0 // TO-DO: Should this be a string or a Double?
     dynamic var groupings = 0
     dynamic var numRequiredSides = 0
     let sides = List<Side>()
@@ -84,12 +84,14 @@ class MenuItem: Object {
     // For Cart items only
     dynamic var specialInstructions = ""
     dynamic var quantity = 1
+    dynamic var totalCost = 0.0
+    dynamic var isInCart = false
     
     // TO-DO: Add a method to calculate and return total price??
     
-    override static func primaryKey() -> String? {
-        return "id"
-    }
+//    override static func primaryKey() -> String? {
+//        return "id"
+//    }
 }
 
 // Side Model
@@ -98,12 +100,13 @@ class Side: Object {
     dynamic var name = ""
     dynamic var isRequired = false
     dynamic var sideCategory = ""
-    dynamic var price = "" // TO-DO: Should this be a string or a Double?
+    dynamic var price = 0.0 // TO-DO: Should this be a string or a Double?
     dynamic var isSelected = false
+    dynamic var isInCart = false
     
-    override static func primaryKey() -> String? {
-        return "id"
-    }
+//    override static func primaryKey() -> String? {
+//        return "id"
+//    }
 }
 
 // Promotions Model
@@ -123,18 +126,13 @@ class Promotion: Object {
 
 // Order Model
 class Order: Object {
-    dynamic var id = ""
-    dynamic var restaurant: Restaurant? // TO-DO: Should I have this or just restaurantID?
+    dynamic var restaurantID = ""
     dynamic var orderTime: NSDate?
     dynamic var address: Address?
     dynamic var paymentMethod = ""
     let menuItems = List<MenuItem>()
-    dynamic var subtotal = "" // TO-DO: Should this be a string or a Double?
+    dynamic var subtotal = 0.0 // TO-DO: Should this be a string or a Double?
     dynamic var isComplete = false
-    
-    override static func primaryKey() -> String? {
-        return "id"
-    }
 }
 
 

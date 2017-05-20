@@ -43,12 +43,16 @@ extension RestaurantsHomeViewController {
                     
                     // TO-DO: MAKE THIS A MODAL POPUP???
                     print("Network error")
+                    
+                    self.refreshControl.endRefreshing()
                 }
             case .failure(_):
                 // Connection failed
                 
                 // TO-DO: MAKE THIS A MODAL POPUP???
                 print("Connection failed. Make sure you're connected to the internet.")
+                
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -78,12 +82,14 @@ extension RestaurantsHomeViewController {
                     
                     // TO-DO: MAKE THIS A MODAL POPUP???
                     print("Network error")
+                    self.refreshControl.endRefreshing()
                     
                 }
             case .failure(_):
                 // Connection failed
                 // TO-DO: MAKE THIS A MODAL POPUP???
                 print("Connection failed. Make sure you're connected to the internet.")
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -101,97 +107,149 @@ extension RestaurantsHomeViewController {
     
         print("Retrieved Restaurants: \(retrievedRestaurants)")
         
-        for retrievedRestaurant in retrievedRestaurants {
-            
-            let restaurant = Restaurant()
-            restaurant.id = retrievedRestaurant["id"] as! String
-            restaurant.name = retrievedRestaurant["name"] as! String
-            restaurant.cuisineType = retrievedRestaurant["cuisineType"] as! String
-            restaurant.deliveryFee = retrievedRestaurant["deliveryFee"] as! String
-            restaurant.restaurantHours = retrievedRestaurant["restaurantHours"] as! String
-            
-            // Get image data
-            let imagePath = retrievedRestaurant["image"] as! String
-            let urlString = Constants.imagesPath + imagePath
-            let url = URL(string: urlString)
-            let imageData = NSData(contentsOf: url!)
-            restaurant.image = imageData
-            
-            print("Restaurant created")
-            
-            restaurantIDs.append(restaurant.id) // For cleanup
-            
-            let retrievedMenuCategories = retrievedRestaurant["menuCategories"] as! [AnyObject]
-            
-            for retrievedMenuCategory in retrievedMenuCategories {
+        try! realm.write {
+        
+            for retrievedRestaurant in retrievedRestaurants {
                 
-                let menuCategory = MenuCategory()
-                menuCategory.id = retrievedMenuCategory["id"] as! String
-                menuCategory.name = retrievedMenuCategory["name"] as! String
+                let restaurant = Restaurant()
+                restaurant.id = retrievedRestaurant["id"] as! String
+                restaurant.name = retrievedRestaurant["name"] as! String
+                restaurant.cuisineType = retrievedRestaurant["cuisineType"] as! String
+                restaurant.deliveryFee = retrievedRestaurant["deliveryFee"] as! String
+                restaurant.restaurantHours = retrievedRestaurant["restaurantHours"] as! String
                 
-                menuCategoryIDs.append(menuCategory.id) // For cleanup
+                // Get image data
+                let imagePath = retrievedRestaurant["image"] as! String
+                let urlString = Constants.imagesPath + imagePath
+                let url = URL(string: urlString)
+                let imageData = NSData(contentsOf: url!)
+                restaurant.image = imageData
                 
-                print("Menu category created")
+                print("Restaurant created")
                 
-                let retrievedMenuItems = retrievedMenuCategory["menuItems"] as! [AnyObject]
+                restaurantIDs.append(restaurant.id) // For cleanup
                 
-                for retrievedMenuItem in retrievedMenuItems {
+                let retrievedMenuCategories = retrievedRestaurant["menuCategories"] as! [AnyObject]
+            
+            
+                for retrievedMenuCategory in retrievedMenuCategories {
                     
-                    let menuItem = MenuItem()
-                    menuItem.id = retrievedMenuItem["id"] as! String
-                    menuItem.name = retrievedMenuItem["name"] as! String
-                    menuItem.details = retrievedMenuItem["description"] as! String
-                    menuItem.price = retrievedMenuItem["price"] as! String
-                    menuItem.groupings = Int(retrievedMenuItem["groupings"] as! String)!
-                    menuItem.numRequiredSides = Int(retrievedMenuItem["numRequiredSides"] as! String)!
+                    let menuCategory = MenuCategory()
+                    menuCategory.id = retrievedMenuCategory["id"] as! String
+                    menuCategory.name = retrievedMenuCategory["name"] as! String
                     
-                    menuItemIDs.append(menuItem.id) // For cleanup
+                    menuCategoryIDs.append(menuCategory.id) // For cleanup
                     
-                    print("Menu Item created")
+                    print("Menu category created")
                     
-                    let retrievedSides = retrievedMenuItem["sides"] as! [AnyObject]
+                    let retrievedMenuItems = retrievedMenuCategory["menuItems"] as! [AnyObject]
                     
-                    for retrievedSide in retrievedSides {
+                    for retrievedMenuItem in retrievedMenuItems {
                         
-                        let side = Side()
-                        side.id = retrievedSide["id"] as! String
-                        side.name = retrievedSide["name"] as! String
-                        let isRequired = Int(retrievedSide["isRequired"] as! String)
-                        if isRequired == 0 { side.isRequired = false } else { side.isRequired = true }
-                        side.sideCategory = retrievedSide["sideCategory"] as! String
-                        side.price = retrievedSide["price"] as! String
+                        let menuItem = MenuItem()
+                        menuItem.id = retrievedMenuItem["id"] as! String
+                        menuItem.name = retrievedMenuItem["name"] as! String
+                        menuItem.details = retrievedMenuItem["description"] as! String
+                        menuItem.price = Double(retrievedMenuItem["price"] as! String)!
+                        menuItem.groupings = Int(retrievedMenuItem["groupings"] as! String)!
+                        menuItem.numRequiredSides = Int(retrievedMenuItem["numRequiredSides"] as! String)!
                         
-                        sideIDs.append(side.id) // For cleanup
+                        menuItemIDs.append(menuItem.id) // For cleanup
                         
-                        print("Side created")
+                        print("Menu Item created")
                         
-                        try! realm.write {
-                            realm.add(side, update: true)
-                            if let existingSide = realm.object(ofType: Side.self, forPrimaryKey: side.id) {
-                                menuItem.sides.append(existingSide)
+                        let retrievedSides = retrievedMenuItem["sides"] as! [AnyObject]
+                        
+                        for retrievedSide in retrievedSides {
+                            
+                            let side = Side()
+                            side.id = retrievedSide["id"] as! String
+                            if let name = retrievedSide["name"] as? String {
+                                side.name = name
+                            } else {
+                                side.name = "Error retrieving side. Please try again later."
                             }
+                            if let isRequired = retrievedSide["isRequired"] as? String {
+                                if Int(isRequired) == 0 { side.isRequired = false } else { side.isRequired = true }
+                            } else {
+                                side.isRequired = false
+                            }
+                            
+                            if let sideCategory = retrievedSide["sideCategory"] as? String {
+                                if sideCategory == "" {
+                                    side.sideCategory = "Sides"
+                                } else {
+                                    side.sideCategory = sideCategory
+                                }
+                            } else {
+                                side.sideCategory = "Sides"
+                            }
+                            
+                            if let price = retrievedSide["price"] as? String {
+                                side.price = Double(price)!
+                            } else {
+                                side.price = 9999.99
+                            }
+                            
+                            sideIDs.append(side.id) // For cleanup
+                            
+                            print("Side created - id: \(side.id), name: \(side.name)")
+                            
+                            var predicate = NSPredicate(format: "id = %@", side.id)
+                            let count = realm.objects(Side.self).filter(predicate).count
+                            if count == 0 {
+                                realm.add(side)
+                            }
+                            
+                            if side.isRequired && (side.price == 0 || side.price == 0.00) {
+                                menuItem.sides.append(side)
+                            } else {
+                                menuItem.extras.append(side)
+                            }
+                            
+    //                        try! realm.write {
+    //                            realm.add(side, update: true)
+    //                            if let existingSide = realm.object(ofType: Side.self, forPrimaryKey: side.id) {
+    //                                if existingSide.isRequired && (existingSide.price == "0" || existingSide.price == "0.00") {
+    //                                    menuItem.sides.append(existingSide)
+    //                                } else {
+    //                                    menuItem.extras.append(existingSide)
+    //                                }
+    //                                
+    //                            }
+    //                        }
                         }
+                        
+                        var predicate = NSPredicate(format: "id = %@", menuItem.id)
+                        let count = realm.objects(MenuItem.self).filter(predicate).count
+                        if count == 0 {
+                            realm.add(menuItem)
+                        }
+                        
+//                        if let existingMenuItem = realm.object(ofType: MenuItem.self, forPrimaryKey: menuItem.id) {
+                            menuCategory.menuItems.append(menuItem)
+//                        }
+                        
+//                        try! realm.write {
+//                            realm.add(menuItem, update: true)
+//                            if let existingMenuItem = realm.object(ofType: MenuItem.self, forPrimaryKey: menuItem.id) {
+//                                menuCategory.menuItems.append(existingMenuItem)
+//                            }
+//                        }
+                        
                     }
                     
-                    try! realm.write {
-                        realm.add(menuItem, update: true)
-                        if let existingMenuItem = realm.object(ofType: MenuItem.self, forPrimaryKey: menuItem.id) {
-                            menuCategory.menuItems.append(existingMenuItem)
+//                    try! realm.write {
+                        realm.add(menuCategory, update: true)
+                        if let existingMenuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategory.id) {
+                            restaurant.menuCategories.append(existingMenuCategory)
                         }
-                    }
-                    
+                        
+                        realm.add(restaurant, update: true)
+//                    }
                 }
                 
-                try! realm.write {
-                    realm.add(menuCategory, update: true)
-                    if let existingMenuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategory.id) {
-                        restaurant.menuCategories.append(existingMenuCategory)
-                    }
-                    
-                    realm.add(restaurant, update: true)
-                }
             }
-            
         }
         
         print("Finished creating Restaurant models. Cleaning up now.")

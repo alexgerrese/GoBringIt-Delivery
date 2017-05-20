@@ -1,5 +1,5 @@
 //
-//  RestaurantDetailViewController.swift
+//  MenuCategoryViewController.swift
 //  BringIt
 //
 //  Created by Alexander's MacBook on 5/18/17.
@@ -9,14 +9,10 @@
 import UIKit
 import RealmSwift
 
-class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - IBOutlets
     
-    @IBOutlet weak var myScrollView: UIScrollView!
-    @IBOutlet weak var restaurantName: UILabel!
-    @IBOutlet weak var cuisineAndHours: UILabel!
-    @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var viewCartButton: UIButton!
     @IBOutlet weak var cartSubtotal: UILabel!
@@ -29,39 +25,27 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
     
+    var menuCategoryID = ""
     var restaurantID = ""
-    var restaurant = Restaurant()
+    var menuCategory = MenuCategory()
     var cart = Order()
-    var menuCategories: Results<MenuCategory>!
-    var selectedMenuCategoryID = ""
+    var menuItems: Results<MenuItem>!
+    var selectedMenuItemID = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Get selected restaurant and menu categories
-        restaurant = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)!
-        menuCategories = restaurant.menuCategories.sorted(byKeyPath: "name")
+        menuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategoryID)!
+        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
         
         // Setup UI
         setupUI()
         
-        // Check if there is a cart to display
-        checkCart()
+        
         
         // Setup tableview
         setupTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        // Check if there is a cart to display
-        checkCart()
-        
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.isNavigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,13 +53,17 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // Check if there is a cart to display
+        checkCart()
+    }
+    
     func setupUI() {
         
         setCustomBackButton()
         
-        restaurantName.text = restaurant.name
-        cuisineAndHours.text = restaurant.cuisineType + " • " + getOpenHoursString(data: restaurant.restaurantHours)
-        bannerImage.image = UIImage(data: restaurant.image! as Data)
+        self.title = menuCategory.name
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
         viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         viewCartView.layer.shadowOpacity = 1
@@ -89,6 +77,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 150
         self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.setNeedsLayout()
+        self.myTableView.layoutIfNeeded()
+        viewCartViewToBottom.constant = 60
     }
     
     func checkCart() {
@@ -100,6 +91,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             print("Cart exists. Showing View Cart button")
             
             cart = filteredOrders.first!
+            print(cart.subtotal)
+            print(cart.restaurantID)
+            print(cart.menuItems)
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
             
@@ -110,16 +104,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
             viewCartViewToBottom.constant = 60
         }
-        
+
         UIView.animate(withDuration: 0.4, animations: {
             self.view.layoutIfNeeded()
         })
     }
-    
-    @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        // Rewind segue to Restaurants VC
-        self.dismiss(animated: true, completion: nil)
-    }
+
     
     // MARK: - Table view data source
     
@@ -128,26 +118,29 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuCategories.count
+        return menuItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "menuItemCell", for: indexPath) as! MenuItemTableViewCell
         
-        cell.textLabel?.text = menuCategories[indexPath.row].name
+        cell.name.text = menuItems[indexPath.row].name
+        cell.details.text = menuItems[indexPath.row].details
+        let price = menuItems[indexPath.row].price
+        cell.price.text = "$" + String(format: "%.2f", price)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        selectedMenuCategoryID = menuCategories[indexPath.row].id
+        selectedMenuItemID = menuItems[indexPath.row].id
         
         return indexPath
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Menu Categories" //TO-DO: Change when dynamic
+        return "Dishes" //TO-DO: Change when dynamic
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -169,22 +162,18 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         myTableView.deselectRow(at: indexPath, animated: true)
         
-        performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+        performSegue(withIdentifier: "toAddToCart", sender: self)
     }
-    
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let menuCategoryVC = segue.destination as! MenuCategoryViewController
-        menuCategoryVC.menuCategoryID = selectedMenuCategoryID
-        menuCategoryVC.restaurantID = restaurantID
-    }
-    
-    override var prefersStatusBarHidden : Bool {
-        return true
+        let nav = segue.destination as! UINavigationController
+        let addToCartVC = nav.topViewController as! AddToCartVC
+        addToCartVC.menuItemID = selectedMenuItemID
+        addToCartVC.restaurantID = restaurantID
     }
 
 }

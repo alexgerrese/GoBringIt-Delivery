@@ -12,6 +12,7 @@ struct Constants {
     
     // Variables
     static let delay = 2.3 // For timers
+    static let headerHeight = CGFloat(30)
     
     // Colors
     static let green = UIColor(red:0.31, green:0.82, blue:0.76, alpha:1.0)
@@ -21,9 +22,8 @@ struct Constants {
     static let backgroungGray = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
     
     // Fonts
-    //static let titleFont = UIFont(name: "Avenir-Medium", size: 17)!
-    //static let headerFont = UIFont(name: "Avenir-Medium", size: 14)!
-    //static let buttonFont = UIFont(name: "Avenir-Medium", size: 15)!
+    static let headerFont = UIFont(name: "BrandonGrotesque-Medium", size: 12)!
+
     
     // Borders
     static let cornerRadius = CGFloat(3)

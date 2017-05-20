@@ -23,6 +23,10 @@
 		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
 		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
+		112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */; };
+		112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */; };
+		112D6B191ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */; };
+		112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */; };
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
@@ -33,6 +37,7 @@
 		115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */; };
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
 		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
+		117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
 		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
 		1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */; };
@@ -120,6 +125,10 @@
 		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
 		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OrderPlacedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
+		112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToCartVC.swift; sourceTree = "<group>"; };
+		112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
+		112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityTableViewCell.swift; sourceTree = "<group>"; };
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -130,6 +139,7 @@
 		115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
+		117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCategoryViewController.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -239,7 +249,9 @@
 				11423AF01EC89CC400011B4D /* RealmModels.swift */,
 				11158DAD1ECB63DB00A88338 /* Sign In/Sign Up */,
 				11C9EA881ECCA3E6004A4C1E /* Restaurants Home */,
-				11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */,
+				112D6B171ECF1BB300396BA5 /* Restaurant Detail */,
+				112D6B161ECF1BAA00396BA5 /* Menu */,
+				112D6B1C1ED058F000396BA5 /* Add To Cart */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
 				11F6DE451CF6CF0600662C20 /* Settings */,
@@ -300,6 +312,33 @@
 				11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */,
 			);
 			name = "Deliver To/Paying With";
+			sourceTree = "<group>";
+		};
+		112D6B161ECF1BAA00396BA5 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */,
+				112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		112D6B171ECF1BB300396BA5 /* Restaurant Detail */ = {
+			isa = PBXGroup;
+			children = (
+				11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */,
+			);
+			name = "Restaurant Detail";
+			sourceTree = "<group>";
+		};
+		112D6B1C1ED058F000396BA5 /* Add To Cart */ = {
+			isa = PBXGroup;
+			children = (
+				112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */,
+				112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */,
+				112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */,
+			);
+			name = "Add To Cart";
 			sourceTree = "<group>";
 		};
 		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
@@ -736,13 +775,17 @@
 				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */,
+				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,
+				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
 				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */,
 				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
 				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
+				112D6B191ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift in Sources */,
 				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
+				112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */,
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
 				11158DA81ECB1B4700A88338 /* Constants.swift in Sources */,
 				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
@@ -775,6 +818,7 @@
 				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
 				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
 				11F6DE471CF6CF1A00662C20 /* CheckoutViewController.swift in Sources */,
+				117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */,
 				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */,
 			);

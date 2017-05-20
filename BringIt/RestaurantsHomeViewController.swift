@@ -45,18 +45,15 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
-        setupTableView()
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
         // Download restaurant data if necessary
         checkForUpdates()
         
         // Prepare data for TableView and CollectionView
         restaurants = self.realm.objects(Restaurant.self)
+        
+        setupUI()
+        setupTableView()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -128,6 +125,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                 } else {
                     
                     print("Version numbers match. Loading UI.")
+                    
+                    self.refreshControl.endRefreshing()
                 }
             }
         }
@@ -163,29 +162,23 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         return indexPath
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if section == 0 {
-//            return ""
-//        } else if section == 1 {
-//            return "- Open Restaurants -"
-//        } else {
-//            return "- Closed Restaurants -"
-//        }
-//    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont(name: "Avenir-Black", size: 15)!
-        header.textLabel?.textColor = UIColor.darkGray
-        header.textLabel?.textAlignment = .center
-        header.backgroundView?.backgroundColor = UIColor.groupTableViewBackground
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Open" // TO-DO: Change later when dynamic
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0
-        }
-        return 25
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = Constants.headerFont
+        header.textLabel?.textColor = Constants.darkGray
+        header.textLabel?.textAlignment = .center
+//        header.backgroundView?.backgroundColor = UIColor.white
+        header.textLabel?.text = header.textLabel?.text?.uppercased()
+        
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Constants.headerHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
