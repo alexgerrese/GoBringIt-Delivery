@@ -607,7 +607,7 @@ class RestaurantViewController: UIViewController, UITableViewDelegate, UITableVi
         if segue.identifier == "toCheckout" {
             // Send selected food's data to AddToOrder screen
             let nav = segue.destination as! UINavigationController
-            let VC = nav.topViewController as! CheckoutViewController
+            let VC = nav.topViewController as! OldCheckoutViewController
             VC.cameFromVC = "Restaurant"
             VC.isOpen = self.isOpen
         } else if segue.identifier == "toTable" {

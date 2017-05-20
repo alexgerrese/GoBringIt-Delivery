@@ -13,7 +13,7 @@ import GMStepper
 var comingFromOrderPlaced = false
 var comingFromSignIn = false
 
-class CheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class OldCheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Payment IBOutlets and variables
     

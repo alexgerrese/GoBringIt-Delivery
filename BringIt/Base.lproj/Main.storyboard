@@ -4017,10 +4017,10 @@ with your details shortly.</string>
             </objects>
             <point key="canvasLocation" x="-642.39999999999998" y="930.58470764617698"/>
         </scene>
-        <!--View Controller-->
+        <!--CheckoutVC-->
         <scene sceneID="wfX-Pe-ySH">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="LnE-Ld-bZA" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="LnE-Ld-bZA" customClass="CheckoutVC" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gmu-Wm-a6T"/>
                         <viewControllerLayoutGuide type="bottom" id="AJh-xh-IBe"/>
@@ -4104,7 +4104,7 @@ with your details shortly.</string>
                                         <rect key="frame" x="0.0" y="72" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NTw-ae-HjK" id="11o-WX-DaR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXK-J4-IdP">
@@ -4155,7 +4155,7 @@ with your details shortly.</string>
                                         <rect key="frame" x="0.0" y="147" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pK9-j1-9a3" id="9IX-hN-f5e">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -4174,6 +4174,14 @@ with your details shortly.</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="v82-Y4-XCA"/>
+                    <connections>
+                        <outlet property="cartSubtotal" destination="Wws-oQ-5UV" id="21S-WM-Oiq"/>
+                        <outlet property="myTableView" destination="65q-aG-f6M" id="mGw-ft-GAI"/>
+                        <outlet property="viewCartButton" destination="OVR-jk-ByR" id="pQ4-F4-nze"/>
+                        <outlet property="viewCartButtonView" destination="eHJ-Vo-53v" id="NWo-Z9-Ugf"/>
+                        <outlet property="viewCartView" destination="PVa-W8-eRy" id="VeM-gX-uWj"/>
+                        <outlet property="viewCartViewToBottom" destination="gK1-o9-pjG" id="8G0-aL-Xqn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u9s-0n-I7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -5824,7 +5832,7 @@ with your details shortly.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UTa-Bq-4O4" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nBI-dW-LZO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="nBI-dW-LZO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

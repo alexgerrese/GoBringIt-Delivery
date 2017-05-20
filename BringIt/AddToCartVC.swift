@@ -29,11 +29,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var sides = List<Side>()
     var sideCategories = [String]()
     var extras = List<Side>()
+    var sectionTitles = [String]()
+    
+    // Passed from MenuCategoryVC
     var menuItem = MenuItem()
     var menuItemID = ""
     var restaurantID = ""
-    var sectionTitles = [String]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,6 +87,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
     }
     
+    /* Populate sideCategories array with menuItem's categories (must be unique) */
     func setupSides() {
         
         // Loop through sides and parse out the different side categories
@@ -95,6 +98,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         }
     }
     
+    /* Do initial UI setup */
     func setupUI() {
         
         self.title = menuItem.name
@@ -103,8 +107,11 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         viewCartView.layer.shadowOpacity = 1
         viewCartView.layer.shadowRadius = Constants.shadowRadius
         viewCartView.layer.shadowOffset = CGSize.zero
+        
+        checkButtonStatus()
     }
     
+    /* Customize tableView attributes and populate sectionTitles array with headers */
     func setupTableView() {
         
         // Set tableView cells to custom height and automatically resize if needed
@@ -129,6 +136,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
     }
     
+    /* Iterate over selected extras and add to item price, then calculate subtotal by multiplying by quantity */
     func calculateSubtotal() -> Double {
         
         // Calculate total price of menu item and selected sides
@@ -146,6 +154,29 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         return subtotal
     }
     
+    func checkButtonStatus() {
+        
+        var numSelected = 0
+        for side in sides {
+            if side.isSelected {
+                numSelected += 1
+            }
+        }
+        
+        if numSelected < menuItem.numRequiredSides {
+            
+            viewCartButton.isEnabled = false
+            viewCartButtonView.backgroundColor = Constants.red
+            viewCartButton.setTitle("Please select all required sides.", for: .normal)
+        } else {
+            
+            viewCartButton.isEnabled = true
+            viewCartButtonView.backgroundColor = Constants.green
+            viewCartButton.setTitle("Add to Cart", for: .normal)
+        }
+    }
+    
+    /* Create shallow Realm copies to differentiate between the normal menu item and the item in the cart (necessary for future Realm queries), then add those copies to the order (if one exists, else create new order as well) */
     func addToCart() {
         
         // STEP 1: Create Realm copies for the cart
@@ -206,21 +237,21 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
         }
         
+        // Save new menu item as new object in Realm
         try! realm.write {
             realm.add(newMenuItem)
         }
         
-        print("OLD ITEM IS IN CART: \(menuItem.isInCart)")
-        print("NEW ITEM IS IN CART: \(newMenuItem.isInCart)")
-        
         // STEP 2: Add copies to order
         
+        // Check if an order already exists
         let predicate = NSPredicate(format: "restaurantID = %@ && isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)
         
         try! realm.write {
             if filteredOrders.count > 0 {
                 
+                // Cart already exists
                 print("Cart already exists. Adding new menu item.")
                 
                 let order = filteredOrders.first!
@@ -229,6 +260,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 
             } else {
                 
+                // Cart doesn't exist yet
                 print("Cart does not exist. Creating new one.")
                 
                 let order = Order()
@@ -243,7 +275,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     
-    // Delete all updated values in original MenuItem and Sides objects
+    /* Delete all updated values in original MenuItem and Sides objects so it looks untouched */
     func cleanUpRealm() {
         
         try! realm.write {
@@ -315,9 +347,10 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 cell.detailTextLabel?.text = "Free"
             }
             
-            //Change cell's tint color
+            // Change checkmark color
             cell.tintColor = Constants.green
             
+            // Show checkmark if cell is selected
             if menuItem.extras[indexPath.row].isSelected {
                 cell.accessoryType = .checkmark
             } else {
@@ -347,9 +380,10 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
             cell.textLabel?.text = filteredSide.name
             
-            //Change cell's tint color
+            // Change checkmark color
             cell.tintColor = Constants.green
             
+            // Show checkmark if cell is selected
             if filteredSide.isSelected {
                 cell.accessoryType = .checkmark
             } else {
@@ -367,12 +401,11 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             if sectionTitles[section] != "Sides" {
                 return sectionTitles[section] + " (Pick 1)"
             } else {
-                print(menuItem.numRequiredSides)
-                print(sectionTitles.count)
+                
+                // Calculate number of sides that can be selected in "Sides" section
                 let numToPick = menuItem.numRequiredSides - sideCategories.count + 1
                 return sectionTitles[section] + " (Pick \(numToPick))"
             }
-            
         } else {
             return sectionTitles[section]
         }
@@ -392,6 +425,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         return Constants.headerHeight
     }
     
+    /* Calculate what to do about cell selection based on section and the max number allowed to be selected */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if sectionTitles[indexPath.section] != "Description" && sectionTitles[indexPath.section] != "Special Instructions" && sectionTitles[indexPath.section] != "Quantity" {
@@ -475,6 +509,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             }
             
         }
+        
+        checkButtonStatus()
         
         myTableView.deselectRow(at: indexPath, animated: true)
         myTableView.reloadData()
