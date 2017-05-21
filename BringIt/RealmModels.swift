@@ -20,7 +20,7 @@ class User: Object {
     let addresses = List<Address>()
     dynamic var isFirstOrder = false
     let pastOrders = List<Order>()
-    dynamic var paymentMethod = ""
+    let paymentMethods = List<PaymentMethod>()
     
     // TO-DO: Add more demographic data here if necessary
     
@@ -31,11 +31,18 @@ class User: Object {
 
 // Address Model
 class Address: Object {
-//    dynamic var user: User?
+    dynamic var userID = ""
     dynamic var campus = ""
     dynamic var streetAddress = ""
     dynamic var roomNumber = ""
     dynamic var isCurrent = false
+}
+
+// Payment Method Model
+class PaymentMethod: Object {
+    dynamic var userID = ""
+    dynamic var method = ""
+    dynamic var isSelected = false
 }
 
 
@@ -126,6 +133,7 @@ class Promotion: Object {
 
 // Order Model
 class Order: Object {
+    dynamic var id = 0
     dynamic var restaurantID = ""
     dynamic var orderTime: NSDate?
     dynamic var address: Address?

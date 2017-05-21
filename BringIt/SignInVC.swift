@@ -40,6 +40,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("In SignInVC viewDidLoad")
 
         // Setup text field and button UI
         emailAddressView.layer.cornerRadius = Constants.cornerRadius

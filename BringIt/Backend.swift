@@ -18,7 +18,7 @@ enum APICalls {
     case fetchRestaurantData
     case updateCurrentAddress(uid: String, streetAddress: String, roomNumber: String)
     case addItemToCart(uid: String, quantity: Int, itemID: String, sideIDs: [String], specialInstructions: String)
-    case addOrder(uid: String, restaurantID: Int, payingWithCC: String)
+    case addOrder(uid: String, restaurantID: String, payingWithCC: String)
     //case fetchOrderHistory
     case fetchAccountInfo(uid: String)
     case updateAccountInfo(uid: String, fullName: String, email: String, phoneNumber: String)

@@ -29,6 +29,9 @@
 		112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */; };
 		112D6B1E1ED0591E00396BA5 /* CheckoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */; };
 		112D6B201ED08EC400396BA5 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */; };
+		112D6B231ED0D40E00396BA5 /* AddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */; };
+		112D6B251ED1984500396BA5 /* NewAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B241ED1984500396BA5 /* NewAddressVC.swift */; };
+		112D6B271ED19BEE00396BA5 /* PaymentMethodsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */; };
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
@@ -133,6 +136,9 @@
 		112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityTableViewCell.swift; sourceTree = "<group>"; };
 		112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckoutVC.swift; path = Assets.xcassets/CheckoutVC.swift; sourceTree = "<group>"; };
 		112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
+		112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressesViewController.swift; sourceTree = "<group>"; };
+		112D6B241ED1984500396BA5 /* NewAddressVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressVC.swift; sourceTree = "<group>"; };
+		112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodsVC.swift; sourceTree = "<group>"; };
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -351,6 +357,9 @@
 			children = (
 				112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */,
 				112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */,
+				112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */,
+				112D6B241ED1984500396BA5 /* NewAddressVC.swift */,
+				112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */,
 			);
 			name = Checkout;
 			sourceTree = "<group>";
@@ -786,9 +795,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				112D6B271ED19BEE00396BA5 /* PaymentMethodsVC.swift in Sources */,
 				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */,
+				112D6B251ED1984500396BA5 /* NewAddressVC.swift in Sources */,
 				112D6B201ED08EC400396BA5 /* OrderTableViewCell.swift in Sources */,
 				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,
 				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
@@ -807,6 +818,7 @@
 				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
+				112D6B231ED0D40E00396BA5 /* AddressesViewController.swift in Sources */,
 				1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */,
 				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				11158DAA1ECB25A700A88338 /* Extensions.swift in Sources */,

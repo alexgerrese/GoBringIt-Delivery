@@ -160,7 +160,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         header.textLabel?.font = Constants.headerFont
         header.textLabel?.textColor = Constants.darkGray
         header.textLabel?.textAlignment = .left
-//        header.backgroundView?.backgroundColor = UIColor.white
+        header.backgroundView?.backgroundColor = Constants.backgroungGray
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }

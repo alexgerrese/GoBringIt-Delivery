@@ -23,6 +23,7 @@ struct Constants {
     
     // Fonts
     static let headerFont = UIFont(name: "BrandonGrotesque-Medium", size: 12)!
+    static let mediumFont = UIFont(name: "BrandonGrotesque-Medium", size: 17)!
 
     
     // Borders

@@ -36,6 +36,10 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var menuItemID = ""
     var restaurantID = ""
     
+    // Passed from Checkout
+    var passedMenuItemID = ""
+    var comingFromCheckout = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,8 +64,15 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     func setupRealm() {
         
         // Get selected restaurant and menu categories
-        let predicate = NSPredicate(format: "id = %@", menuItemID)
-        menuItem = realm.objects(MenuItem.self).filter(predicate).first!
+        if comingFromCheckout {
+            
+            let predicate = NSPredicate(format: "isInCart = %@ AND id = %@", NSNumber(booleanLiteral: true), passedMenuItemID)
+            menuItem = realm.objects(MenuItem.self).filter(predicate).first!
+        } else {
+            
+            let predicate = NSPredicate(format: "id = %@", menuItemID)
+            menuItem = realm.objects(MenuItem.self).filter(predicate).first!
+        }
         
         // Section "Details" (Always)
         
@@ -203,37 +214,32 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
 
         for side in sides {
             
-            if side.isSelected {
-                
-                let newSide = Side()
-                newSide.id = side.id
-                newSide.name = side.name
-                newSide.isRequired = side.isRequired
-                newSide.sideCategory = side.sideCategory
-                newSide.price = side.price
-                newSide.isSelected = side.isSelected
-                newSide.isInCart = true
-                
-                newMenuItem.sides.append(newSide)
-            }
+            
+            let newSide = Side()
+            newSide.id = side.id
+            newSide.name = side.name
+            newSide.isRequired = side.isRequired
+            newSide.sideCategory = side.sideCategory
+            newSide.price = side.price
+            newSide.isSelected = side.isSelected
+            newSide.isInCart = true
+            
+            newMenuItem.sides.append(newSide)
             
         }
         
         for extra in menuItem.extras {
+                
+            let newExtra = Side()
+            newExtra.id = extra.id
+            newExtra.name = extra.name
+            newExtra.isRequired = extra.isRequired
+            newExtra.sideCategory = extra.sideCategory
+            newExtra.price = extra.price
+            newExtra.isSelected = extra.isSelected
+            newExtra.isInCart = true
             
-            if extra.isSelected {
-                
-                let newExtra = Side()
-                newExtra.id = extra.id
-                newExtra.name = extra.name
-                newExtra.isRequired = extra.isRequired
-                newExtra.sideCategory = extra.sideCategory
-                newExtra.price = extra.price
-                newExtra.isSelected = extra.isSelected
-                newExtra.isInCart = true
-                
-                newMenuItem.sides.append(newExtra)
-            }
+            newMenuItem.sides.append(newExtra)
             
         }
         
@@ -298,8 +304,25 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     @IBAction func addToCartButtonTapped(_ sender: UIButton) {
         
-        addToCart()
-        cleanUpRealm()
+        if !comingFromCheckout {
+            addToCart()
+            cleanUpRealm()
+        } else {
+            
+            try! realm.write {
+//                menuItem.quantity = 
+                
+                // Retrieve special instructions if available
+                let indexPath = IndexPath(row: 0, section: sectionTitles.count - 2)
+                let cell = myTableView.cellForRow(at: indexPath) as! SpecialInstructionsTableViewCell!
+                if cell != nil && cell?.specialInstructions.text != nil {
+                    menuItem.specialInstructions = (cell?.specialInstructions.text!)!
+                } else {
+                    menuItem.specialInstructions = ""
+                }
+                
+            }
+        }
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -365,6 +388,10 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         } else if sectionTitles[indexPath.section] == "Special Instructions" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "specialInstructionsCell", for: indexPath) as! SpecialInstructionsTableViewCell
             
+            if comingFromCheckout {
+                cell.specialInstructions.text = menuItem.specialInstructions
+            }
+            
             return cell
 
         } else if sectionTitles[indexPath.section] == "Quantity" {
@@ -420,6 +447,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         header.textLabel?.font = Constants.headerFont
         header.textLabel?.textColor = Constants.darkGray
         header.textLabel?.textAlignment = .left
+        header.backgroundView?.backgroundColor = Constants.backgroungGray
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }
@@ -522,7 +550,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         
-        cleanUpRealm()
+        if !comingFromCheckout {
+            cleanUpRealm()
+        }
         
         self.dismiss(animated: true, completion: nil)
     }

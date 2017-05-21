@@ -142,6 +142,14 @@ class PrimaryAddressVC: UIViewController {
         newUser.phoneNumber = phoneNumber
         newUser.isFirstOrder = true
         
+        let newAddress = Address()
+        newAddress.userID = newUser.id
+        newAddress.campus = campus
+        newAddress.streetAddress = streetAddress
+        newAddress.roomNumber = roomNumber
+        
+        newUser.addresses.append(newAddress)
+        
         try! self.realm.write() {
             self.realm.add(newUser)
         }
