@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AFNetworking.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -69,11 +64,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>SMTPAPI.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SendGrid.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -102,22 +92,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>0FAF470EFAEC7B0AABA42651036DF0A3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1215771836B84E9F9899950098D2FF80</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>1ED8BE8BD6A53853974A60E1AC8B1019</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2046F04186D68E29BC0C6172E5250751</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>24DDCFDD859D6A0A0C544518099BA545</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,12 +127,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>79164DFD96AB161321A63C473A7F6566</key>
+		<key>7198ADA7BE37B16CF92BA60C60146CBF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7D7E39043EBD5D2161961D61A9B8ED6B</key>
+		<key>746890CEC15C13175A95E050BEC9544B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7F59B739498B7E269C4419ABF9048607</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>88B370A4241B94ECCE40C20405E2EBF9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -167,22 +157,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AA24BB13D9392104AF0BF8C37AF80A8B</key>
+		<key>AF3A8DAD4D33028BCE2CB081986F8815</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DA1EC0AED13FFFBB11763903E5525509</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F16B79473E9DF77B42A80894AA70C2B8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F4624C0428DA5FC0F817F77C17C378E9</key>
+		<key>E43D1DCAB8788C6258C31BAF3522E64B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

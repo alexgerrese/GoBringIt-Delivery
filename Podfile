@@ -15,7 +15,6 @@ target 'BringIt' do
   #pod 'CVCalendar'
   pod 'GMStepper'
   pod 'Stripe'
-  #pod ‘AFNetworking'
   pod 'CryptoSwift'
   
   # New Pods
@@ -25,7 +24,7 @@ target 'BringIt' do
   pod 'Moya' # for an abstracted netowrk layer
   pod 'Alamofire' # for better networking
   #pod 'ObjectMapper' # for JSON object mapping
-  pod 'SendGrid' # for sending emails
+  pod 'SendGrid', :git => 'https://github.com/scottkawai/sendgrid-swift.git' # for sending emails
 
 
 

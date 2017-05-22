@@ -17,7 +17,7 @@ class User: Object {
     dynamic var email = ""
     dynamic var password = "" // KEEP THIS???
     dynamic var phoneNumber = ""
-    let addresses = List<Address>()
+    let addresses = List<DeliveryAddress>()
     dynamic var isFirstOrder = false
     let pastOrders = List<Order>()
     let paymentMethods = List<PaymentMethod>()
@@ -30,7 +30,7 @@ class User: Object {
 }
 
 // Address Model
-class Address: Object {
+class DeliveryAddress: Object {
     dynamic var userID = ""
     dynamic var campus = ""
     dynamic var streetAddress = ""
@@ -136,7 +136,7 @@ class Order: Object {
     dynamic var id = 0
     dynamic var restaurantID = ""
     dynamic var orderTime: NSDate?
-    dynamic var address: Address?
+    dynamic var address: DeliveryAddress?
     dynamic var paymentMethod = ""
     let menuItems = List<MenuItem>()
     dynamic var subtotal = 0.0 

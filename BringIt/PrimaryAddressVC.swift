@@ -142,7 +142,7 @@ class PrimaryAddressVC: UIViewController {
         newUser.phoneNumber = phoneNumber
         newUser.isFirstOrder = true
         
-        let newAddress = Address()
+        let newAddress = DeliveryAddress()
         newAddress.userID = newUser.id
         newAddress.campus = campus
         newAddress.streetAddress = streetAddress

@@ -22,7 +22,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
     
-    var addresses: List<Address>!
+    var addresses: List<DeliveryAddress>!
 
 
     override func viewDidLoad() {

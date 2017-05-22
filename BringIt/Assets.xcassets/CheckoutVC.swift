@@ -11,6 +11,7 @@ import RealmSwift
 import Moya
 import Alamofire
 import AudioToolbox
+import SendGrid
 
 class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -82,7 +83,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        checkingOutView.removeFromSuperview()
+        if checkingOutView.alpha == 1 {
+            checkingOutView.removeFromSuperview()
+        }
     }
     
     func setupRealm() {
@@ -177,7 +180,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // If address and payment method are defined, enable button
         
-        let filteredAddresses = self.realm.objects(Address.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+        let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
         
         if filteredAddresses.count > 0 {
             
@@ -285,7 +288,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Add final Realm details
         try! realm.write {
             
-            let filteredAddresses = self.realm.objects(Address.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+            let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             order.address = filteredAddresses.first!
             
             let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
@@ -304,105 +307,6 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.addOrder()
             }
         }
-    }
-    
-    func addAllToCart(completion: @escaping (_ result: Int) -> Void) {
-        
-        for item in order.menuItems {
-            
-            print("Adding to cart")
-            
-            var sideIDs = [String]()
-            for side in item.sides {
-                sideIDs.append(side.id)
-            }
-            for extra in item.extras {
-                sideIDs.append(extra.id)
-            }
-            
-            // Setup Moya provider and send network request
-            let provider = MoyaProvider<APICalls>()
-            provider.request(.addItemToCart(uid: user.id, quantity: item.quantity, itemID: item.id, sideIDs: sideIDs, specialInstructions: item.specialInstructions)) { result in
-                switch result {
-                case let .success(moyaResponse):
-                    do {
-                        
-                        print("Status code: \(moyaResponse.statusCode)")
-                        try moyaResponse.filterSuccessfulStatusCodes()
-                        
-                        let response = try moyaResponse.mapJSON() as! [String: Any]
-                        
-                        if response["success"] as! Int == 1 {
-                            
-                            print("Success adding item with id: \(item.id)!")
-                        }
-                        
-                        completion(1)
-                        
-                    } catch {
-                        // Miscellaneous network error
-                        self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
-                    }
-                case .failure(_):
-                    // Connection failed
-                    self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
-                }
-            }
-        }
-    }
-    
-    func addOrder() {
-        
-        print("Adding to order")
-        
-        let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
-        
-        // Setup Moya provider and send network request
-        let provider = MoyaProvider<APICalls>()
-        provider.request(.addOrder(uid: user.id, restaurantID: order.restaurantID, payingWithCC: filteredPaymentMethods.first!.method)) { result in
-            switch result {
-            case let .success(moyaResponse):
-                do {
-                    
-                    print("Status code: \(moyaResponse.statusCode)")
-                    try moyaResponse.filterSuccessfulStatusCodes()
-                    
-                    let response = try moyaResponse.mapJSON() as! [String: Any]
-                    
-                    if response["success"] as! Int == 1 {
-                        
-                        print("Success adding order to database)!")
-                        
-                        try! self.realm.write {
-                            self.order.id = response["orderID"] as! Int
-                            self.order.isComplete = true
-                            self.order.orderTime = NSDate()
-                            self.user.pastOrders.append(self.order)
-                        }
-                        
-                        self.myActivityIndicator.stopAnimating()
-                        
-                        print(self.order.id)
-                        print(self.order.restaurantID)
-                        print(self.order.paymentMethod)
-                        print(self.order.subtotal)
-                        print(self.order.deliveryFee)
-                        print(self.order.isComplete)
-                        print(self.order.orderTime)
-                        
-                        self.performSegue(withIdentifier: "toOrderPlaced", sender: self)
-                    }
-                    
-                } catch {
-                    // Miscellaneous network error
-                    self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
-                }
-            case .failure(_):
-                // Connection failed
-                self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
-            }
-        }
-        
     }
 
     @IBAction func XButtonTapped(_ sender: UIBarButtonItem) {
@@ -434,7 +338,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 
                 cell.textLabel?.text = "Deliver To"
 
-                let filteredAddresses = self.realm.objects(Address.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+                let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
                 
                 if filteredAddresses.count > 0 {
                     cell.detailTextLabel?.text = filteredAddresses.first!.streetAddress

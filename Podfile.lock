@@ -1,25 +1,4 @@
 PODS:
-  - AFNetworking (2.6.3):
-    - AFNetworking/NSURLConnection (= 2.6.3)
-    - AFNetworking/NSURLSession (= 2.6.3)
-    - AFNetworking/Reachability (= 2.6.3)
-    - AFNetworking/Security (= 2.6.3)
-    - AFNetworking/Serialization (= 2.6.3)
-    - AFNetworking/UIKit (= 2.6.3)
-  - AFNetworking/NSURLConnection (2.6.3):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.3):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.3)
-  - AFNetworking/Security (2.6.3)
-  - AFNetworking/Serialization (2.6.3)
-  - AFNetworking/UIKit (2.6.3):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
   - Alamofire (4.4.0)
   - CryptoSwift (0.6.9)
   - EZSwiftExtensions (1.9)
@@ -36,10 +15,7 @@ PODS:
   - RealmSwift (2.7.0):
     - Realm (= 2.7.0)
   - Result (3.2.2)
-  - SendGrid (0.3.0):
-    - AFNetworking (~> 2.0)
-    - SMTPAPI
-  - SMTPAPI (0.2.0)
+  - SendGrid (0.2.3)
   - Stripe (10.1.0)
   - Timepiece (1.2.0)
 
@@ -51,12 +27,20 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - Moya
   - RealmSwift
-  - SendGrid
+  - SendGrid (from `https://github.com/scottkawai/sendgrid-swift.git`)
   - Stripe
   - Timepiece
 
+EXTERNAL SOURCES:
+  SendGrid:
+    :git: https://github.com/scottkawai/sendgrid-swift.git
+
+CHECKOUT OPTIONS:
+  SendGrid:
+    :commit: fb6ee0e16f56994622c599ad5e990cd4de6d4ea9
+    :git: https://github.com/scottkawai/sendgrid-swift.git
+
 SPEC CHECKSUMS:
-  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   CryptoSwift: a22f6ba238e9ce4d26ee7bf45b9ed82e7122d4a0
   EZSwiftExtensions: ce22bf6fc5c6e7c883fec413300b006e123735d0
@@ -66,11 +50,10 @@ SPEC CHECKSUMS:
   Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
   RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
   Result: 4edd39003fdccf281d418ee1b006571f70123250
-  SendGrid: f9a0c053773198c67fb0e52d0fa9cdef70c8a115
-  SMTPAPI: 84bcd13fb0c572a7a16c2045ebb4f32c97892c90
+  SendGrid: 89495bb00bdeb8a87010c0dc60338c62b87d4311
   Stripe: 1c7aa951a075cced500a919d92b687b35d410705
   Timepiece: d07900e985af4911f09146f1175fdbec37944836
 
-PODFILE CHECKSUM: ea608f8224089fd9a5ec31ba046ca02f1f506ab2
+PODFILE CHECKSUM: 8e3173e97764705480bda6181d626aaa56fffc3e
 
 COCOAPODS: 1.2.1

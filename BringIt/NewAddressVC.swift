@@ -90,7 +90,7 @@ class NewAddressVC: UIViewController {
      */
     func createNewAddress() {
         
-        let address = Address()
+        let address = DeliveryAddress()
         address.userID = user.id
         address.campus = campus.text!
         address.streetAddress = streetAddress.text!

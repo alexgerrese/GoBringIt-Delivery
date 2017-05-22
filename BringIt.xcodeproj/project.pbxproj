@@ -53,6 +53,8 @@
 		1198FA181EC5151400864200 /* Brandon_blk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA161EC5151400864200 /* Brandon_blk.otf */; };
 		1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA191EC7C9D400864200 /* SignInVC.swift */; };
 		1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1198FA1B1EC7CE1800864200 /* Backend.swift */; };
+		11A25F931ED3174C0051324B /* SendEmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A25F921ED3174C0051324B /* SendEmails.swift */; };
+		11A25F951ED317820051324B /* PlaceOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A25F941ED317820051324B /* PlaceOrder.swift */; };
 		11C9EA851ECC9415004A4C1E /* RestaurantsHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA841ECC9415004A4C1E /* RestaurantsHomeViewController.swift */; };
 		11C9EA871ECCA3E1004A4C1E /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA861ECCA3E1004A4C1E /* RestaurantTableViewCell.swift */; };
 		11C9EA8A1ECCA607004A4C1E /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */; };
@@ -161,6 +163,8 @@
 		1198FA161EC5151400864200 /* Brandon_blk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_blk.otf; sourceTree = "<group>"; };
 		1198FA191EC7C9D400864200 /* SignInVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		1198FA1B1EC7CE1800864200 /* Backend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
+		11A25F921ED3174C0051324B /* SendEmails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendEmails.swift; sourceTree = "<group>"; };
+		11A25F941ED317820051324B /* PlaceOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceOrder.swift; sourceTree = "<group>"; };
 		11C9EA841ECC9415004A4C1E /* RestaurantsHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantsHomeViewController.swift; sourceTree = "<group>"; };
 		11C9EA861ECCA3E1004A4C1E /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
 		11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
@@ -356,6 +360,8 @@
 			isa = PBXGroup;
 			children = (
 				112D6B1D1ED0591E00396BA5 /* CheckoutVC.swift */,
+				11A25F921ED3174C0051324B /* SendEmails.swift */,
+				11A25F941ED317820051324B /* PlaceOrder.swift */,
 				112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */,
 				112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */,
 				112D6B241ED1984500396BA5 /* NewAddressVC.swift */,
@@ -818,6 +824,7 @@
 				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
+				11A25F931ED3174C0051324B /* SendEmails.swift in Sources */,
 				112D6B231ED0D40E00396BA5 /* AddressesViewController.swift in Sources */,
 				1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */,
 				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
@@ -846,6 +853,7 @@
 				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
 				11F6DE471CF6CF1A00662C20 /* OldCheckoutViewController.swift in Sources */,
 				117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */,
+				11A25F951ED317820051324B /* PlaceOrder.swift in Sources */,
 				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				112D6B1E1ED0591E00396BA5 /* CheckoutVC.swift in Sources */,
 				11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */,

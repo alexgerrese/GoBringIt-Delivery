@@ -9,6 +9,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Stripe
+import SendGrid
 
 
 @UIApplicationMain
@@ -43,7 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UINavigationBar.appearance().layer.shadowOpacity = 1.0
 //        UINavigationBar.appearance().layer.masksToBounds = false
         
-        
+        // Set SendGrid API Key
+        Session.shared.authentication = Authentication.apiKey("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")
         
         return true
     }
