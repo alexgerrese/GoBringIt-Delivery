@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import Moya
 import Alamofire
+import AudioToolbox
 
 class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -28,6 +29,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var checkingOutDetails: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var tryAgainButton: UIButton!
     
     // MARK: - Variables
     
@@ -127,8 +129,14 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         checkoutView.layer.shadowOffset = CGSize.zero
         myActivityIndicator.isHidden = true
         
-        // Hide checking out view
-        checkingOutView.isHidden = true
+        // Setup checking out view
+        checkingOutView.alpha = 0.0
+        confirmButton.layer.cornerRadius = Constants.cornerRadius
+        tryAgainButton.layer.cornerRadius = Constants.cornerRadius
+        cancelButton.layer.cornerRadius = Constants.cornerRadius
+        cancelButton.layer.borderColor = UIColor.white.cgColor
+        cancelButton.layer.borderWidth = Constants.borderWidth
+        tryAgainButton.alpha = 0
         
         checkButtonStatus()
     }
@@ -199,47 +207,76 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Show checking out view
         UIView.animate(withDuration: 0.4, animations: {
-            self.checkingOutView.isHidden = false
+            self.checkingOutView.alpha = 1.0
         })
+        
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         
         setupConfirmView()
     }
     
     func setupConfirmView() {
         
+        UIApplication.shared.keyWindow?.addSubview(checkingOutView)
+        
+        tryAgainButton.alpha = 0
+        confirmButton.alpha = 1
+        confirmButton.isEnabled = true
         checkingOutView.backgroundColor = Constants.green
         checkingOutTitle.text = "Are you sure you want to checkout?"
-        checkingOutDetails.text = "You will be charged \(String(format: "%.2f", calculateTotal())) upon delivery."
-        confirmButton.setTitle("Yes, Checkout!", for: .normal)
+        checkingOutDetails.text = "You will be charged $\(String(format: "%.2f", calculateTotal())) upon delivery."
+//        confirmButton.setTitle("Checkout", for: .normal)
         cancelButton.setTitle("Cancel", for: .normal)
     }
     
     func showConfirmViewError(errorTitle: String, errorMessage: String) {
         
+        tryAgainButton.alpha = 1
+        cancelButton.alpha = 1
+        tryAgainButton.isEnabled = true
+        cancelButton.isEnabled = true
+        
         checkingOutView.backgroundColor = Constants.red
         checkingOutTitle.text = errorTitle
         checkingOutDetails.text = errorMessage
-        confirmButton.setTitle("Try again!", for: .normal)
+        myActivityIndicator.stopAnimating()
+        myActivityIndicator.isHidden = true
     }
+    
+    @IBAction func tryAgainButtonTapped(_ sender: UIButton) {
+        
+        confirmOrder()
+    }
+    
     
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         
         // Show checking out view
         UIView.animate(withDuration: 0.4, animations: {
-            self.checkingOutView.isHidden = true
+            self.checkingOutView.alpha = 0
         })
     }
     
     @IBAction func confirmButtonTapped(_ sender: UIButton) {
         
+        confirmOrder()
+
+    }
+    
+    func confirmOrder() {
+        
         // Animate activity indicator
+        myActivityIndicator.isHidden = false
         myActivityIndicator.startAnimating()
         
         // Update UI
+        checkingOutView.backgroundColor = Constants.green
         checkingOutTitle.text = "Placing Order..."
         checkingOutDetails.text = ""
-        confirmButton.isHidden = true
-        cancelButton.isHidden = true
+        confirmButton.alpha = 0
+        cancelButton.alpha = 0
+        confirmButton.isEnabled = false
+        cancelButton.isEnabled = false
         
         var count = 0
         
@@ -249,7 +286,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             count += 1
             
             print(count)
-            if count == self.order.menuItems.count - 1 {
+            if count == self.order.menuItems.count {
                 self.addOrder()
             }
         }
@@ -325,11 +362,11 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         try! self.realm.write {
                             self.order.id = response["orderID"] as! Int
                             self.order.isComplete = true
-                            
+                            self.order.orderTime = NSDate()
                             self.user.pastOrders.append(self.order)
                         }
                         
-                        self.myActivityIndicator.stopAnimating()
+//                        self.myActivityIndicator.stopAnimating()
                         
                         print(self.order.id)
                         

@@ -21,7 +21,6 @@
 		11158DAC1ECB63D600A88338 /* AccountDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */; };
 		11158DAF1ECB657100A88338 /* PrimaryAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */; };
 		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
-		11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */; };
 		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
 		112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */; };
 		112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */; };
@@ -33,6 +32,7 @@
 		112D6B251ED1984500396BA5 /* NewAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B241ED1984500396BA5 /* NewAddressVC.swift */; };
 		112D6B271ED19BEE00396BA5 /* PaymentMethodsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */; };
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
+		114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */; };
 		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
 		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
 		1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */; };
@@ -128,7 +128,6 @@
 		11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryAddressVC.swift; sourceTree = "<group>"; };
 		11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = B68UIFloatLabelTextField.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/B68UIFloatLabelTextField/B68UIFloatLabelTextField.framework"; sourceTree = "<group>"; };
 		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
-		11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OrderPlacedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
 		112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToCartVC.swift; sourceTree = "<group>"; };
@@ -140,6 +139,7 @@
 		112D6B241ED1984500396BA5 /* NewAddressVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressVC.swift; sourceTree = "<group>"; };
 		112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodsVC.swift; sourceTree = "<group>"; };
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
+		114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedVC.swift; sourceTree = "<group>"; };
 		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BecomeADriverViewController.swift; sourceTree = "<group>"; };
@@ -360,6 +360,7 @@
 				112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */,
 				112D6B241ED1984500396BA5 /* NewAddressVC.swift */,
 				112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */,
+				114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */,
 			);
 			name = Checkout;
 			sourceTree = "<group>";
@@ -470,7 +471,6 @@
 				11F6DE461CF6CF1A00662C20 /* OldCheckoutViewController.swift */,
 				11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */,
 				11210CC81D26C8C200B8FD9E /* Deliver To/Paying With */,
-				11210CC11D26751600B8FD9E /* OrderPlacedViewController.swift */,
 			);
 			name = Checkout;
 			sourceTree = "<group>";
@@ -804,6 +804,7 @@
 				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,
 				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
+				114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */,
 				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */,
@@ -815,7 +816,6 @@
 				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
 				11158DA81ECB1B4700A88338 /* Constants.swift in Sources */,
 				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
-				11210CC21D26751600B8FD9E /* OrderPlacedViewController.swift in Sources */,
 				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
 				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
 				112D6B231ED0D40E00396BA5 /* AddressesViewController.swift in Sources */,
