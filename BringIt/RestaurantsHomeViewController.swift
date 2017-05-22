@@ -30,6 +30,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     // MARK: - IBOutlets
     
     @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var downloadingView: UIView!
+    @IBOutlet weak var downloadingTitle: UILabel!
+    @IBOutlet weak var downloadingDetails: UILabel!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var getStartedButton: UIButton!
+    @IBOutlet weak var downloadingImage: UIImageView!
     
     // MARK: - Variables
     
@@ -45,13 +51,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Download restaurant data if necessary
-        checkForUpdates()
+        setupUI()
         
         // Prepare data for TableView and CollectionView
         restaurants = self.realm.objects(Restaurant.self)
         
-        setupUI()
+        
         setupTableView()
         
     }
@@ -65,6 +70,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         // Set title
         self.title = "Restaurants"
+        
+        downloadingView.alpha = 0
+        getStartedButton.layer.cornerRadius = Constants.cornerRadius
+        
+        // Download restaurant data if necessary
+        checkForUpdates()
     }
     
     func setupTableView() {
@@ -86,6 +97,65 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         checkForUpdates()
     }
     
+    func showDownloadingView() {
+        
+        print("Showing downloading view")
+        
+        self.navigationController?.isNavigationBarHidden = true
+        
+        myActivityIndicator.isHidden = false
+        myActivityIndicator.startAnimating()
+        downloadingView.alpha = 1
+        downloadingImage.image = UIImage(named: "RestaurantDataImage")
+        downloadingTitle.text = "Downloading restaurant data..."
+        downloadingDetails.text = "It’ll only take a few seconds, and once it’s done you’ll be able to use the app even offline (except ordering of course)!"
+        getStartedButton.alpha = 0
+        
+       
+        
+    }
+    
+    func showFinishedDownloadingView() {
+        
+        myActivityIndicator.stopAnimating()
+        myActivityIndicator.isHidden = true
+        downloadingTitle.text = "Download Complete!"
+        downloadingDetails.text = "You’re all set to use the GoBringIt Delivery app 🍣🍗🍔 Online or offline, you can always view our delicious menu and prepare your order 🎉"
+        getStartedButton.alpha = 1
+        getStartedButton.setTitle("Get Started", for: .normal)
+        getStartedButton.setTitleColor(Constants.green, for: .normal)
+        
+    }
+    
+    func showErrorView() {
+        
+        myActivityIndicator.stopAnimating()
+        myActivityIndicator.isHidden = true
+        downloadingImage.image = UIImage(named: "RestaurantDataErrorImage")
+        downloadingTitle.text = "Network Error"
+        downloadingDetails.text = "Something went wrong 😱 Make sure you’re connected to the internet and try again!"
+        getStartedButton.setTitle("Try Again!", for: .normal)
+        getStartedButton.setTitleColor(Constants.red, for: .normal)
+        
+    }
+    
+    @IBAction func buttonTapped(_ sender: UIButton) {
+        
+        if downloadingTitle.text == "Download Complete!" {
+            
+            // Show checking out view
+            UIView.animate(withDuration: 0.4, animations: {
+                
+                self.navigationController?.isNavigationBarHidden = false
+                self.downloadingView.alpha = 0
+            })
+        } else {
+            
+            showDownloadingView()
+            self.fetchRestaurantData()
+        }
+    }
+    
     func checkForUpdates() {
         
         // Check if restaurant data already exists in Realm
@@ -94,6 +164,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         if !dataExists {
             
             print("No data exists. Fetching restaurant data.")
+            
+            showDownloadingView()
             
             // Create models from backend data
             self.fetchRestaurantData()
@@ -193,9 +265,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        let nav = segue.destination as! UINavigationController
-        let detailVC = nav.topViewController as! RestaurantDetailViewController
-        detailVC.restaurantID = selectedRestaurantID
+        if segue.identifier == "toRestaurantDetail" {
+            let nav = segue.destination as! UINavigationController
+            let detailVC = nav.topViewController as! RestaurantDetailViewController
+            detailVC.restaurantID = selectedRestaurantID
+        }
+        
     }
 
 }

@@ -10,6 +10,7 @@ import Foundation
 import Moya
 import Alamofire
 import RealmSwift
+import SendGrid
 
 extension RestaurantsHomeViewController {
     
@@ -34,6 +35,11 @@ extension RestaurantsHomeViewController {
                     print("Retrieved Response: \(response)")
                     
                     versionNumber = Int(response["version_number"] as! String)!
+                    
+                    // Set SendGrid API Key
+                    let key = response["SendGridAPIKey"] as! String
+                    self.defaults.set(key, forKey: "SendGridAPIKey")
+                    Session.shared.authentication = Authentication.apiKey(key)
                     
                     print("Retrieved Version Number: \(versionNumber)")
                     completion(versionNumber)
@@ -83,6 +89,7 @@ extension RestaurantsHomeViewController {
                     // TO-DO: MAKE THIS A MODAL POPUP???
                     print("Network error")
                     self.refreshControl.endRefreshing()
+                    self.showErrorView()
                     
                 }
             case .failure(_):
@@ -90,6 +97,8 @@ extension RestaurantsHomeViewController {
                 // TO-DO: MAKE THIS A MODAL POPUP???
                 print("Connection failed. Make sure you're connected to the internet.")
                 self.refreshControl.endRefreshing()
+                self.showErrorView()
+                
             }
         }
     }
@@ -254,6 +263,16 @@ extension RestaurantsHomeViewController {
         
         print("Finished creating Restaurant models. Cleaning up now.")
         
+        DispatchQueue.main.async {
+            
+            self.refreshControl.endRefreshing()
+            
+            if self.downloadingView.alpha == 1 {
+                print("Showing finished downloading view")
+                self.showFinishedDownloadingView()
+            }
+        }
+        
         cleanUpRealmRestaurantModels(restaurantIDs: restaurantIDs, menuCategoryIDs: menuCategoryIDs, menuItemIDs: menuItemIDs, sideIDs: sideIDs)
     }
 
@@ -315,7 +334,6 @@ extension RestaurantsHomeViewController {
         }
         
         DispatchQueue.main.async {
-            self.refreshControl.endRefreshing()
             self.myTableView.reloadData()
         }
     }
