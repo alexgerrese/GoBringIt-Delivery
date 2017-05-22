@@ -8,17 +8,113 @@
 
 import UIKit
 
-class OrderPlacedVC: UIViewController {
+class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // MARK: - IBOutlets
+    
+    @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var doneButton: UIButton!
+    
+    // MARK: - Variables
+    
+    var totalSpent = 0.0
+    var ETA = ""
+    var streetAddress = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        // Setup UI
+        setupUI()
+        
+        // Setup tableview
+        setupTableView()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+
+    
+    /* Do initial UI setup */
+    func setupUI() {
+
+        doneButton.layer.cornerRadius = Constants.cornerRadius
+    }
+    
+    /* Customize tableView attributes */
+    func setupTableView() {
+        
+        // Set tableView cells to custom height and automatically resize if needed
+        self.myTableView.estimatedRowHeight = 50
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.setNeedsLayout()
+        self.myTableView.layoutIfNeeded()
+        
+    }
+    
+    @IBAction func doneButtonTapped(_ sender: UIButton) {
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Table view data source
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "orderPlacedCell", for: indexPath)
+        
+        if indexPath.row == 0 {
+            
+            cell.textLabel?.text = "Total Spent"
+            cell.detailTextLabel?.text = "$" + String(format: "%.2f", totalSpent)
+            
+        } else if indexPath.row == 1 {
+            
+            cell.textLabel?.text = "Estimated Delivery Time"
+            cell.detailTextLabel?.text = ETA
+            
+            
+        } else {
+            
+            cell.textLabel?.text = "Delivering To"
+            cell.detailTextLabel?.text = streetAddress
+            
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Order Summary"
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = Constants.headerFont
+        header.textLabel?.textColor = UIColor.white
+        header.textLabel?.textAlignment = .left
+        header.backgroundView?.backgroundColor = Constants.green
+        header.textLabel?.text = header.textLabel?.text?.uppercased()
+        
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Constants.headerHeight
     }
     
 

@@ -20,7 +20,7 @@ target 'BringIt' do
   
   # New Pods
   pod 'RealmSwift' # for local database
-  pod "Timepiece" # for simple date management
+  pod 'Timepiece' # for simple date management
   #pod 'Hero' # for elegant transitions
   pod 'Moya' # for an abstracted netowrk layer
   pod 'Alamofire' # for better networking

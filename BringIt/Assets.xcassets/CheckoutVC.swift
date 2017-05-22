@@ -81,6 +81,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        checkingOutView.removeFromSuperview()
+    }
+    
     func setupRealm() {
         
         print("In setupRealm()")
@@ -278,6 +282,16 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         confirmButton.isEnabled = false
         cancelButton.isEnabled = false
         
+        // Add final Realm details
+        try! realm.write {
+            
+            let filteredAddresses = self.realm.objects(Address.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+            order.address = filteredAddresses.first!
+            
+            let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
+            order.paymentMethod = filteredPaymentMethods.first!.method
+        }
+        
         var count = 0
         
         addAllToCart() {
@@ -366,9 +380,15 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             self.user.pastOrders.append(self.order)
                         }
                         
-//                        self.myActivityIndicator.stopAnimating()
+                        self.myActivityIndicator.stopAnimating()
                         
                         print(self.order.id)
+                        print(self.order.restaurantID)
+                        print(self.order.paymentMethod)
+                        print(self.order.subtotal)
+                        print(self.order.deliveryFee)
+                        print(self.order.isComplete)
+                        print(self.order.orderTime)
                         
                         self.performSegue(withIdentifier: "toOrderPlaced", sender: self)
                     }
@@ -591,6 +611,36 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let addToCartVC = nav.topViewController as! AddToCartVC
             addToCartVC.passedMenuItemID = selectedItem.id
             addToCartVC.comingFromCheckout = true
+        } else if segue.identifier == "toOrderPlaced" {
+            
+            print("Preparing for toOrderPlaced segue")
+            
+            let orderPlacedVC = segue.destination as! OrderPlacedVC
+            orderPlacedVC.totalSpent = calculateTotal()
+            orderPlacedVC.streetAddress = (order.address?.streetAddress)!
+            
+            // Calculate ETA range and format to String
+            let calendar = Calendar.current
+            let orderTime = order.orderTime
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            formatter.dateStyle = .none
+            
+            // Lower ETA
+            let lowerETA = orderTime?.addingTimeInterval(35.0 * 60.0)
+//            let lowerHour = calendar.component(.hour, from: lowerETA! as Date)
+//            let lowerMinutes = calendar.component(.minute, from: lowerETA! as Date)
+            
+            // Upper ETA
+            let upperETA = orderTime?.addingTimeInterval(55.0 * 60.0)
+//            let upperHour = calendar.component(.hour, from: upperETA! as Date)
+//            let upperMinutes = calendar.component(.minute, from: upperETA! as Date)
+            
+//            orderPlacedVC.ETA = "\(lowerHour):\(lowerMinutes)-\(upperHour):\(upperMinutes)"
+            
+            orderPlacedVC.ETA = formatter.string(from: lowerETA! as Date) + "-" + formatter.string(from: upperETA as! Date)
+            
+            print("Finished preparing for toOrderPlaced segue")
         }
 
     }

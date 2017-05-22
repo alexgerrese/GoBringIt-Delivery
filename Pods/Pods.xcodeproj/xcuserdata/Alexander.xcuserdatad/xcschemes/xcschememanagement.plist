@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -30,11 +35,6 @@
 			<false/>
 		</dict>
 		<key>Moya.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>ObjectMapper.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -69,6 +69,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SMTPAPI.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SendGrid.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Stripe-Stripe.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,11 +97,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>08779C4D5D06D94859C848458BF71BF5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>09364D07138794106087C58670C7492D</key>
 		<dict>
 			<key>primary</key>
@@ -102,7 +107,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>15C4BED51748A451FF95146803878168</key>
+		<key>1ED8BE8BD6A53853974A60E1AC8B1019</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2046F04186D68E29BC0C6172E5250751</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>24DDCFDD859D6A0A0C544518099BA545</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,16 +137,6 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>68C745354EBB36900BB8E63B08EE8F81</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>68FE9D1A959454AE8577F56FF63D7775</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>6BB1C1403B2419F911818DA8413FDA07</key>
 		<dict>
 			<key>primary</key>
@@ -142,7 +147,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>85440A6AD8961937E3D3B6740F28EC73</key>
+		<key>79164DFD96AB161321A63C473A7F6566</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7D7E39043EBD5D2161961D61A9B8ED6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -157,12 +167,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CD6C9FB6B052E1CF663F8A56041EA163</key>
+		<key>AA24BB13D9392104AF0BF8C37AF80A8B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8B5206090D2A3F08777CDCEF18C2E57</key>
+		<key>DA1EC0AED13FFFBB11763903E5525509</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F16B79473E9DF77B42A80894AA70C2B8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F4624C0428DA5FC0F817F77C17C378E9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
