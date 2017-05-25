@@ -63,6 +63,63 @@ extension RestaurantsHomeViewController {
         }
     }
     
+    func fetchPromotions(completion: @escaping (_ result: Int) -> Void) {
+        
+        print("fetchPromotions() was called.")
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.fetchPromotions) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let retrievedPromotions = try moyaResponse.mapJSON() as! [AnyObject]
+                    
+                    print("Retrieved Promotions: \(retrievedPromotions)")
+                    
+                    for retrievedPromotion in retrievedPromotions {
+                        
+                        let promotion = Promotion()
+                        promotion.id = retrievedPromotion["id"] as! String
+                        promotion.restaurantID = retrievedPromotion["restaurantID"] as! String
+                        
+                        // Get image data
+                        let imagePath = retrievedPromotion["image"] as! String
+                        let urlString = Constants.imagesPath + imagePath
+                        let url = URL(string: urlString)
+                        let imageData = NSData(contentsOf: url!)
+                        promotion.image = imageData
+                        
+                        try! self.realm.write {
+                            self.realm.add(promotion)
+                        }
+                    }
+                    
+                    completion(1)
+                    
+                } catch {
+                    // Miscellaneous network error
+                    
+                    // TO-DO: MAKE THIS A MODAL POPUP???
+                    print("Network error")
+                    
+                    self.refreshControl.endRefreshing()
+                }
+            case .failure(_):
+                // Connection failed
+                
+                // TO-DO: MAKE THIS A MODAL POPUP???
+                print("Connection failed. Make sure you're connected to the internet.")
+                
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
+    
     func fetchRestaurantData() {
         
         print("fetchRestaurantData() was called")
@@ -162,6 +219,21 @@ extension RestaurantsHomeViewController {
                         menuItem.price = Double(retrievedMenuItem["price"] as! String)!
                         menuItem.groupings = Int(retrievedMenuItem["groupings"] as! String)!
                         menuItem.numRequiredSides = Int(retrievedMenuItem["numRequiredSides"] as! String)!
+                        
+                        if retrievedMenuItem["isFeatured"] as! String == "1" {
+                            menuItem.isFeatured = true
+                        } else {
+                            menuItem.isFeatured = false
+                        }
+                        
+                        // Get image data
+                        let imagePath = retrievedMenuItem["image"] as! String
+                        if imagePath != "" {
+                            let urlString = Constants.imagesPath + imagePath
+                            let url = URL(string: urlString)
+                            let imageData = NSData(contentsOf: url!)
+                            menuItem.image = imageData
+                        }
                         
                         menuItemIDs.append(menuItem.id) // For cleanup
                         

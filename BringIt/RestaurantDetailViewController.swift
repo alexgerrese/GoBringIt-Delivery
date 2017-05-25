@@ -34,6 +34,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     var cart = Order()
     var menuCategories: Results<MenuCategory>!
     var selectedMenuCategoryID = ""
+    
+    // For collection view
+    var featuredDishes = List<MenuItem>()
+    var storedOffsets = [Int: CGFloat]()
+    var featuredDishesIndex = -1
+    var dishesIndex = -1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +50,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         // Setup UI
         setupUI()
+        
+        // Setup Realm
+        setupRealm()
         
         // Check if there is a cart to display
         checkCart()
@@ -84,11 +93,34 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         viewCartViewToBottom.constant = 60 // start offscreen
     }
     
+    func setupRealm() {
+        
+        for menuCategory in menuCategories {
+            
+            let items = menuCategory.menuItems
+            let filteredItems = items.filter("isFeatured = %@", true)
+            
+            featuredDishes.append(contentsOf: filteredItems)
+        }
+        
+        if (featuredDishes.count) > 0 {
+            featuredDishesIndex = 0
+            dishesIndex = 1
+        } else {
+            dishesIndex = 0
+        }
+        
+        print("Number of featured dishes: \(featuredDishes.count)")
+        
+    }
+    
     func setupTableView() {
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 150
         self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.setNeedsLayout()
+        self.myTableView.layoutIfNeeded()
     }
     
     func checkCart() {
@@ -128,39 +160,92 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if featuredDishes.count > 0 {
+            print("2 sections")
+            return 2
+        }
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == featuredDishesIndex {
+            return 1
+        }
         return menuCategories.count
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == featuredDishesIndex {
+            guard let tableViewCell = cell as? FeaturedDishTableViewCell else { return }
+            
+            tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
+            tableViewCell.collectionViewOffset = storedOffsets[indexPath.row] ?? 0
+        }
+
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == featuredDishesIndex {
+            
+            guard let tableViewCell = cell as? FeaturedDishTableViewCell else { return }
+            
+            storedOffsets[indexPath.row] = tableViewCell.collectionViewOffset
+        }
+
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        if indexPath.section == featuredDishesIndex {
+            return 155
+        }
+        return 45
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategoryCell", for: indexPath)
+        if indexPath.section == dishesIndex {
+           let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategoryCell", for: indexPath)
         
         cell.textLabel?.text = menuCategories[indexPath.row].name
+        
+        return cell 
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "featuredDishTableViewCell", for: indexPath)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        selectedMenuCategoryID = menuCategories[indexPath.row].id
+        if indexPath.section == featuredDishesIndex {
+            
+            // TO-DO: Fill this out
+            // selectedMenuCategoryID =
+            
+        } else if indexPath.section == dishesIndex {
+            selectedMenuCategoryID = menuCategories[indexPath.row].id
+        }
         
         return indexPath
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Menu Categories" //TO-DO: Change when dynamic
+        if section == featuredDishesIndex {
+            return "Most Popular Dishes"
+        }
+        return "Menu Categories"
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
-        header.textLabel?.textColor = Constants.darkGray
+        header.textLabel?.textColor = UIColor.black
         header.textLabel?.textAlignment = .left
-        header.backgroundView?.backgroundColor = Constants.backgroungGray
+        header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }
@@ -196,6 +281,34 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     override var prefersStatusBarHidden : Bool {
         return true
+    }
+
+}
+
+extension RestaurantDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
+        return featuredDishes.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "featuredDishCell", for: indexPath) as! FeaturedDishCollectionViewCell
+        
+        let featuredDish = featuredDishes[indexPath.row]
+        
+        cell.dishImage.image = UIImage(data: featuredDish.image! as Data)
+        cell.dishName.text = featuredDish.name
+//        cell.dishDescription.text = featuredDish.details
+        cell.dishPrice.text = "$" + String(format: "%.2f", (featuredDish.price))
+
+        print("returning collection view cell")
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 200, height: 147)
     }
 
 }

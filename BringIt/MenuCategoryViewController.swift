@@ -42,8 +42,6 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         // Setup UI
         setupUI()
         
-        
-        
         // Setup tableview
         setupTableView()
     }
@@ -151,9 +149,9 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
-        header.textLabel?.textColor = Constants.darkGray
+        header.textLabel?.textColor = UIColor.black
         header.textLabel?.textAlignment = .left
-        header.backgroundView?.backgroundColor = Constants.backgroungGray
+        header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }

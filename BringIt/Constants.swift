@@ -12,7 +12,7 @@ struct Constants {
     
     // Variables
     static let delay = 2.3 // For timers
-    static let headerHeight = CGFloat(30)
+    static let headerHeight = CGFloat(40)
     
     // Colors
     static let green = UIColor(red:0.31, green:0.82, blue:0.76, alpha:1.0)

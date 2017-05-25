@@ -36,7 +36,7 @@ extension APICalls : TargetType {
         case .signUpUser(_,_,_,_,_,_,_):
             return "/signUpUser.php"
         case .fetchPromotions:
-            return "/fetchPromotions.php" //TO-DO: Add on backend
+            return "/fetchPromotions.php"
         case .fetchRestaurantData:
             return "/fetchRestaurantData.php"
         case .updateCurrentAddress(_,_,_):

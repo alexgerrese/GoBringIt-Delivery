@@ -106,6 +106,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         print("Checking if logged in")
         
+        if comingFromSignIn == true {
+            self.dismiss(animated: true, completion: nil)
+        }
+        
         // If not logged in, go to SignInVC
         let loggedIn = defaults.bool(forKey: "loggedIn")
         if !loggedIn {
@@ -368,7 +372,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             cell.quantity.text = String(menuItem.quantity)
             cell.menuItemName.text = menuItem.name
-            cell.price.text = String(format: "%.2f", menuItem.totalCost)
+            cell.price.text = "$" + String(format: "%.2f", menuItem.totalCost)
             
             var otherDetails = "w/ "
             for side in menuItem.sides {
@@ -411,7 +415,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
                 
                 cell.textLabel?.text = "Delivery Fee"
-                cell.detailTextLabel?.text = String(format: "%.2f", order.deliveryFee)
+                cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
                 
                 return cell
             }
@@ -421,7 +425,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
                 
                 cell.textLabel?.text = "Total"
-                cell.detailTextLabel?.text = String(format: "%.2f", calculateTotal())
+                cell.detailTextLabel?.text = "$" + String(format: "%.2f", calculateTotal())
                 
 //                cell.textLabel?.font = Constants.mediumFont
 //                cell.detailTextLabel?.font = Constants.mediumFont
@@ -449,16 +453,16 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
-        header.textLabel?.textColor = Constants.darkGray
+        header.textLabel?.textColor = UIColor.black
         header.textLabel?.textAlignment = .left
-        header.backgroundView?.backgroundColor = Constants.backgroungGray
+        header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 2 {
-            return 0
+            return CGFloat.leastNormalMagnitude
         }
         return Constants.headerHeight
     }
@@ -486,22 +490,26 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-            // Delete the row from the data source
-            try! realm.write {
-                let item = order.menuItems[indexPath.row]
-                order.subtotal -= item.totalCost
-                realm.delete(item)
+        
+        if indexPath.section == 1 {
+            if editingStyle == .delete {
+                
+                // Delete the row from the data source
+                try! self.realm.write {
+                    let item = self.order.menuItems[indexPath.row]
+                    self.order.subtotal -= item.totalCost
+                    realm.delete(item)
+                    
+                }
+                
+                myTableView.deleteRows(at: [indexPath], with: .automatic)
+                
+                // Reload tableview and adjust tableview height and recalculate costs
+                myTableView.reloadData()
+                updateViewConstraints()
+                calculateTotal()
                 
             }
-            
-            myTableView.deleteRows(at: [indexPath], with: .automatic)
-            
-            // Reload tableview and adjust tableview height and recalculate costs
-            myTableView.reloadData()
-            updateViewConstraints()
-            calculateTotal()
         }
     }
 

@@ -57,6 +57,7 @@ extension CheckoutVC {
             dishesString.append(otherDetails + "\n")
         }
         
+        let total = calculateTotal()
         
         // Get formatted address string
         let address = order.address
@@ -72,8 +73,7 @@ extension CheckoutVC {
         )
         let contents = Content.emailContent(
             plain: "Hi \(firstName),\n\n Your order from \(restaurantName) is being prepared!\n\nHere are your order details:\n\nOrder #: \(order.id)\nOrder time: \(orderTimeString)\nDishes:\n\(dishesString)\nTotal: $\(String(format: "%.2f", calculateTotal()))\n\nDelivering to:\n\(addressString)\nPaying with: \(order.paymentMethod.method)\nPhone number: \(user.phoneNumber)\n\nThank you for using the GoBringIt app :) See you in 35-50 minutes!",
-            html: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared!<br><br>Here are your order details:<br><br>Order #: \(order.id)<br>Order time: \(orderTimeString)<br>Dishes:<br>\(dishesString)<br>Total: $\(String(format: "%.2f", calculateTotal()))<br><br>Delivering to:<br>\(addressString)<br>Paying with: \(order.paymentMethod.method)<br>Phone number: \(user.phoneNumber)<br><br>Thank you for using the GoBringIt app :) See you in 35-50 minutes!</p>"
-            //            html: "<p>Hello %name%,</p><p>How are you?</p><p>Best,<br>Sender</p>"
+            html: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared!<br><br>Here are your order details:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><b>Dishes:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br><b>Delivering to:</b><br>\(addressString)<br><b>Paying with:</b> \(order.paymentMethod.method)<br><br>Thank you for using the GoBringIt app :) See you in 35-50 minutes!</p>"
         )
         let email = Email(
             personalizations: [personalizations],
@@ -85,7 +85,7 @@ extension CheckoutVC {
             Footer(
                 enable: true,
                 text: "Copyright 2017 GoBringIt",
-                html: "<p><small>Copyright 2017 GoBringIt</small></p>"
+                html: "<p style=\"text-align:center\"><small>Copyright 2017 GoBringIt</small></p>"
             )
         ]
         email.trackingSettings = [

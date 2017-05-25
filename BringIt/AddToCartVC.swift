@@ -445,9 +445,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
-        header.textLabel?.textColor = Constants.darkGray
+        header.textLabel?.textColor = UIColor.black
         header.textLabel?.textAlignment = .left
-        header.backgroundView?.backgroundColor = Constants.backgroungGray
+        header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }

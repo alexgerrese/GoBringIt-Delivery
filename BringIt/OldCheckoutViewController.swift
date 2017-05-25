@@ -11,7 +11,7 @@ import CoreData
 import GMStepper
 
 var comingFromOrderPlaced = false
-var comingFromSignIn = false
+//var comingFromSignIn = false
 
 class OldCheckoutViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     

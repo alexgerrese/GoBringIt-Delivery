@@ -78,7 +78,7 @@ class MenuCategory: Object {
 // Menu Item Model
 class MenuItem: Object {
     dynamic var id = ""
-//    dynamic var menuCategory: MenuCategory?
+    dynamic var isFeatured = false
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var details = ""
@@ -119,12 +119,8 @@ class Side: Object {
 // Promotions Model
 class Promotion: Object {
     dynamic var id = ""
-//    dynamic var restaurant: Restaurant?
+    dynamic var restaurantID = ""
     dynamic var image: NSData?
-    dynamic var title = ""
-    dynamic var details = ""
-    
-    // TO-DO: Will need to add some sort of linking capability to go to the right VC upon tap
     
     override static func primaryKey() -> String? {
         return "id"

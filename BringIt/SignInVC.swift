@@ -15,6 +15,8 @@ import Alamofire
 import Moya
 import RealmSwift
 
+var comingFromSignIn = false
+
 class SignInVC: UIViewController, UITextFieldDelegate {
     
     // MARK: - IBOutlets
@@ -70,6 +72,11 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+        comingFromSignIn = true
+        self.dismiss(animated: true, completion: nil)
     }
     
     /* 

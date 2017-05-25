@@ -44,6 +44,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     var restaurants: Results<Restaurant>!
     var backendVersionNumber = -1
     var selectedRestaurantID = ""
+    var promotions: Results<Promotion>!
+    var storedOffsets = [Int: CGFloat]()
+    var restaurantsIndex = -1
+    var promotionsIndex = -1
+    var alreadyDisplayedCollectionView = false
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
@@ -51,12 +56,17 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set base index
+        restaurantsIndex = 0
+        
+        // Setup UI
         setupUI()
         
         // Prepare data for TableView and CollectionView
         restaurants = self.realm.objects(Restaurant.self)
+        promotions = realm.objects(Promotion.self)
         
-        
+        // Setup TableView
         setupTableView()
         
     }
@@ -68,8 +78,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     func setupUI() {
         
-        // Set title
-        self.title = "Restaurants"
+        // Set logo as title
+        let logo = UIImage(named: "NavBarLogo")
+        let imageView = UIImageView(image: logo)
+        imageView.contentMode = .scaleAspectFit // set imageview's content mode
+        self.navigationItem.titleView = imageView
         
         downloadingView.alpha = 0
         getStartedButton.layer.cornerRadius = Constants.cornerRadius
@@ -110,9 +123,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         downloadingTitle.text = "Downloading restaurant data..."
         downloadingDetails.text = "It’ll only take a few seconds, and once it’s done you’ll be able to use the app even offline (except ordering of course)!"
         getStartedButton.alpha = 0
-        
-       
-        
+
     }
     
     func showFinishedDownloadingView() {
@@ -137,6 +148,18 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         getStartedButton.setTitle("Try Again!", for: .normal)
         getStartedButton.setTitleColor(Constants.red, for: .normal)
         
+    }
+    
+    func updateIndices() {
+        
+        // TO-DO: Add third check for messages from server (put those in the getbackendnumber call
+        
+        if promotions.count > 0 {
+            promotionsIndex = 0
+            restaurantsIndex = 1
+        } else {
+            restaurantsIndex = 0
+        }
     }
     
     @IBAction func buttonTapped(_ sender: UIButton) {
@@ -165,6 +188,20 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             
             print("No data exists. Fetching restaurant data.")
             
+            // Retrieving backend number
+            getBackendVersionNumber() {
+                (result: Int) in
+            }
+            
+            // Retrieving promotions
+            fetchPromotions() {
+                (result: Int) in
+
+                self.updateIndices()
+                self.myTableView.reloadData()
+            }
+            
+            // Show loading view as empty state
             showDownloadingView()
             
             // Create models from backend data
@@ -188,6 +225,22 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                     
                     print("Version numbers do not match. Fetching updated restaurant data.")
                     
+                    // Delete current promotions
+                    try! self.realm.write {
+                        
+                        let promotions = self.realm.objects(Promotion.self)
+                        self.realm.delete(promotions)
+                        print("After deleting, there are \(promotions.count) promotions")
+                    }
+                    
+                    // Update promotions
+                    self.fetchPromotions() {
+                        (result: Int) in
+                        
+                        self.updateIndices()
+                        self.myTableView.reloadData()
+                    }
+                    
                     // Save new version number to UserDefaults
                     self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
                     
@@ -198,6 +251,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                     
                     print("Version numbers match. Loading UI.")
                     
+                    self.updateIndices()
+                    self.myTableView.reloadData()
+                    
                     self.refreshControl.endRefreshing()
                 }
             }
@@ -207,57 +263,129 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        
+        // TO-DO: Add check for messages
+        
+        if promotions.count > 0 {
+            return 2
+        }
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return restaurants.count
+        if section == promotionsIndex {
+            return 1
+        } else if section == restaurantsIndex {
+            return restaurants.count
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == promotionsIndex {
+            guard let tableViewCell = cell as? PromotionsTableViewCell else { return }
+            
+            tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
+            if !alreadyDisplayedCollectionView && promotions.count > 2 {
+                alreadyDisplayedCollectionView = true
+                let i = IndexPath(item: 50, section: 0)
+                tableViewCell.myCollectionView.scrollToItem(at: i, at: .centeredHorizontally, animated: true)
+            } else {
+                tableViewCell.collectionViewOffset = storedOffsets[indexPath.row] ?? 0
+            }
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == promotionsIndex {
+            
+            guard let tableViewCell = cell as? PromotionsTableViewCell else { return }
+            
+            storedOffsets[indexPath.row] = tableViewCell.collectionViewOffset
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == promotionsIndex {
+            return 180
+        } else if indexPath.section == restaurantsIndex {
+            return 230
+        } else {
+            return 45
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantsCell", for: indexPath) as! RestaurantTableViewCell
         
-        let restaurant = restaurants[indexPath.row]
+        if indexPath.section == restaurantsIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantsCell", for: indexPath) as! RestaurantTableViewCell
+            
+            let restaurant = restaurants[indexPath.row]
+            
+            cell.name.text = restaurant.name
+            cell.cuisineType.text = restaurant.cuisineType
+            cell.openHours.text = self.getOpenHoursString(data: restaurant.restaurantHours)
+            cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+            
+            return cell
+        }
         
-        cell.name.text = restaurant.name
-        cell.cuisineType.text = restaurant.cuisineType
-        cell.openHours.text = self.getOpenHoursString(data: restaurant.restaurantHours)
-        cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "promotionsCell", for: indexPath)
         
         return cell
+
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-
-        selectedRestaurantID = restaurants[indexPath.row].id
         
+        if indexPath.section == promotionsIndex {
+            // TO-DO: Implement
+        } else if indexPath.section == restaurantsIndex {
+            selectedRestaurantID = restaurants[indexPath.row].id
+        }
+
         return indexPath
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Open" // TO-DO: Change later when dynamic
+        if section == restaurantsIndex {
+            return "Open Restaurants"
+        }
+        return ""
+        
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
-        header.textLabel?.textColor = Constants.darkGray
+        header.textLabel?.textColor = UIColor.black
         header.textLabel?.textAlignment = .center
-        header.backgroundView?.backgroundColor = Constants.backgroungGray
+        header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Constants.headerHeight
+        
+        if section == restaurantsIndex {
+            return Constants.headerHeight
+        }
+        return CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         myTableView.deselectRow(at: indexPath, animated: true)
         
-        performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+        if indexPath.section == promotionsIndex {
+            // Implement
+        } else if indexPath.section == restaurantsIndex {
+            performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+        }
     }
     
     // MARK: - Navigation
@@ -272,5 +400,77 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         }
         
     }
+
+}
+
+extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Number of promotions: \(promotions.count)")
+        if promotions.count > 2 {
+            return 100
+        }
+        return promotions.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "promotionCell", for: indexPath) as! PromotionCollectionViewCell
+        
+        if promotions.count > 2 {
+            cell.promotionImage.image = UIImage(data: promotions[indexPath.row % promotions.count].image! as Data)
+        } else {
+            cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 300, height: 150)
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if promotionsIndex != -1 {
+            
+            let visibleIndexPaths = myTableView.indexPathsForVisibleRows
+            let promotionsIndexPath = IndexPath(row: 0, section: promotionsIndex)
+            
+            if (visibleIndexPaths?.contains(promotionsIndexPath))! {
+                
+                let cell = myTableView.cellForRow(at: promotionsIndexPath) as! PromotionsTableViewCell
+                
+                if scrollView == cell.myCollectionView {
+                    
+                    // Find cell closest to the frame centre with reference from the targetContentOffset.
+                    let frameCenter: CGPoint = cell.myCollectionView.center
+                    var targetOffsetToCenter: CGPoint = CGPoint(x: targetContentOffset.pointee.x + frameCenter.x, y: targetContentOffset.pointee.y + frameCenter.y)
+                    var indexPath: IndexPath? = cell.myCollectionView.indexPathForItem(at: targetOffsetToCenter)
+                    
+                    // Check for "edge case" where the target will land right between cells and then next neighbor to prevent scrolling to index {0,0}.
+                    while indexPath == nil {
+                        targetOffsetToCenter.x += 10
+                        indexPath = cell.myCollectionView.indexPathForItem(at: targetOffsetToCenter)
+                    }
+                    // safe unwrap to make sure we found a valid index path
+                    if let index = indexPath {
+                        // Find the centre of the target cell
+                        if let centerCellPoint: CGPoint = cell.myCollectionView.layoutAttributesForItem(at: index)?.center {
+                            
+                            // Calculate the desired scrollview offset with reference to desired target cell centre.
+                            let desiredOffset: CGPoint = CGPoint(x: centerCellPoint.x - frameCenter.x, y: centerCellPoint.y - frameCenter.y)
+                            targetContentOffset.pointee = desiredOffset
+                        }
+                    }
+                }
+                
+            }
+
+        }
+            
+            
+            
+    }
+            
 
 }
