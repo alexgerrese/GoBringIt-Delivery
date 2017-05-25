@@ -46,8 +46,10 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     var selectedRestaurantID = ""
     var promotions: Results<Promotion>!
     var storedOffsets = [Int: CGFloat]()
-    var restaurantsIndex = -1
+    var alertMessage = ""
+    var alertMessageIndex = -1
     var promotionsIndex = -1
+    var restaurantsIndex = -1
     var alreadyDisplayedCollectionView = false
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
@@ -77,6 +79,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func setupUI() {
+        
+        setCustomBackButton()
         
         // Set logo as title
         let logo = UIImage(named: "NavBarLogo")
@@ -154,11 +158,22 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         // TO-DO: Add third check for messages from server (put those in the getbackendnumber call
         
-        if promotions.count > 0 {
-            promotionsIndex = 0
-            restaurantsIndex = 1
+        if alertMessage != "" {
+            if promotions.count > 0 {
+                alertMessageIndex = 0
+                promotionsIndex = 1
+                restaurantsIndex = 2
+            } else {
+                alertMessageIndex = 0
+                restaurantsIndex = 1
+            }
         } else {
-            restaurantsIndex = 0
+            if promotions.count > 0 {
+                promotionsIndex = 0
+                restaurantsIndex = 1
+            } else {
+                restaurantsIndex = 0
+            }
         }
     }
     
@@ -264,12 +279,17 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        // TO-DO: Add check for messages
+        var count = 1
+        
+        if alertMessage != "" {
+            count += 1
+        }
         
         if promotions.count > 0 {
-            return 2
+            count += 1
         }
-        return 1
+        
+        return count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -314,13 +334,19 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         } else if indexPath.section == restaurantsIndex {
             return 230
         } else {
-            return 45
+            return 88
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == restaurantsIndex {
+        if indexPath.section == alertMessageIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "alertMessageCell", for: indexPath)
+            
+            cell.textLabel?.text = alertMessage
+            
+            return cell
+        } else if indexPath.section == restaurantsIndex {
             let cell = tableView.dequeueReusableCell(withIdentifier: "restaurantsCell", for: indexPath) as! RestaurantTableViewCell
             
             let restaurant = restaurants[indexPath.row]

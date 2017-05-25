@@ -182,7 +182,14 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func checkButtonStatus() {
         
-        // If address and payment method are defined, enable button
+        // If there are items in the cart, and the address and payment method are defined, enable button
+        
+        if !(order.menuItems.count > 0) {
+            checkoutButton.isEnabled = false
+            checkoutButtonView.backgroundColor = Constants.red
+            checkoutButton.setTitle("Please add items to your cart", for: .normal)
+            return
+        }
         
         let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
         

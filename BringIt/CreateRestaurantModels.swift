@@ -41,6 +41,11 @@ extension RestaurantsHomeViewController {
                     self.defaults.set(key, forKey: "SendGridAPIKey")
                     Session.shared.authentication = Authentication.apiKey(key)
                     
+                    // Set alert message
+                    if response["alertMessage"] as! String != "" {
+                        self.alertMessage = response["alertMessage"] as! String
+                    }
+                    
                     print("Retrieved Version Number: \(versionNumber)")
                     completion(versionNumber)
                     

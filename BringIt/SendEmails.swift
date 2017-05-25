@@ -47,21 +47,30 @@ extension CheckoutVC {
             }
             
             if otherDetails == "w/ " {
-                otherDetails = "- Special instructions: " + menuItem.specialInstructions + " - \(String(format: "%.2f", menuItem.totalCost))"
+                if menuItem.specialInstructions != "" {
+                    otherDetails = " - $\(String(format: "%.2f", menuItem.totalCost)) <br>Special instructions: " + menuItem.specialInstructions
+                } else {
+                    otherDetails = " - $\(String(format: "%.2f", menuItem.totalCost))"
+                }
+                
             } else {
                 let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.characters.count - 2)
                 otherDetails = otherDetails.substring(to: index)
-                otherDetails = otherDetails + ". Special instructions: " + menuItem.specialInstructions + " - \(String(format: "%.2f", menuItem.totalCost))"
+                if menuItem.specialInstructions != "" {
+                    otherDetails = otherDetails + " - $\(String(format: "%.2f", menuItem.totalCost)) <br>Special instructions: " + menuItem.specialInstructions
+                } else {
+                    otherDetails = otherDetails + " - $\(String(format: "%.2f", menuItem.totalCost))"
+                }
             }
             
-            dishesString.append(otherDetails + "\n")
+            dishesString.append(otherDetails + "<br>")
         }
         
         let total = calculateTotal()
         
         // Get formatted address string
         let address = order.address
-        let addressString = (address?.streetAddress)! + "\n" + (address?.roomNumber)! + "\n" + "Durham, NC"
+        let addressString = (address?.streetAddress)! + "<br>" + (address?.roomNumber)! + "<br>" + "Durham, NC"
         
         // Send an advanced example
         let recipient = Address(user.email)
@@ -72,8 +81,8 @@ extension CheckoutVC {
             subject: "Your food is being prepared! (GoBringIt Order #\(order.id))"
         )
         let contents = Content.emailContent(
-            plain: "Hi \(firstName),\n\n Your order from \(restaurantName) is being prepared!\n\nHere are your order details:\n\nOrder #: \(order.id)\nOrder time: \(orderTimeString)\nDishes:\n\(dishesString)\nTotal: $\(String(format: "%.2f", calculateTotal()))\n\nDelivering to:\n\(addressString)\nPaying with: \(order.paymentMethod.method)\nPhone number: \(user.phoneNumber)\n\nThank you for using the GoBringIt app :) See you in 35-50 minutes!",
-            html: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared!<br><br>Here are your order details:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><b>Dishes:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br><b>Delivering to:</b><br>\(addressString)<br><b>Paying with:</b> \(order.paymentMethod.method)<br><br>Thank you for using the GoBringIt app :) See you in 35-50 minutes!</p>"
+            plain: "Hi \(firstName),\n\n Your order from \(restaurantName) is being prepared!\n\nHere is your order summary:\n\nOrder #: \(order.id)\nOrder time: \(orderTimeString)\nDishes:\n\(dishesString)\nTotal: $\(String(format: "%.2f", calculateTotal()))\n\nDelivering to:\n\(addressString)\nPaying with: \(order.paymentMethod.method)\nPhone number: \(user.phoneNumber)\n\nThank you for using the GoBringIt app :) See you in 35-50 minutes!",
+            html: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared!<br><br>Here is your order summary:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><b>Delivery Address:</b><br>\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) See you in 35-50 minutes!</p>"
         )
         let email = Email(
             personalizations: [personalizations],

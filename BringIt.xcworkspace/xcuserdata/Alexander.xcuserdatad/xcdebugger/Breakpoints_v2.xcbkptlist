@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/RestaurantsHomeViewController.swift"
-            timestampString = "517333626.275958"
+            timestampString = "517421444.374397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "checkForUpdates()"
             landmarkType = "7">
             <Locations>
@@ -264,11 +264,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/SendEmails.swift"
-            timestampString = "517401115.788948"
+            timestampString = "517413971.053071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "sendUserConfirmationEmail()"
             landmarkType = "7">
          </BreakpointContent>

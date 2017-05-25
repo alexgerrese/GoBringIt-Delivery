@@ -12,11 +12,7 @@ import RealmSwift
 class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - IBOutlets
-    
-    @IBOutlet weak var myScrollView: UIScrollView!
-    @IBOutlet weak var restaurantName: UILabel!
-    @IBOutlet weak var cuisineAndHours: UILabel!
-    @IBOutlet weak var bannerImage: UIImageView!
+
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var viewCartButton: UIButton!
     @IBOutlet weak var cartSubtotal: UILabel!
@@ -38,6 +34,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     // For collection view
     var featuredDishes = List<MenuItem>()
     var storedOffsets = [Int: CGFloat]()
+    var bannerIndex = 0
     var featuredDishesIndex = -1
     var dishesIndex = -1
 
@@ -82,9 +79,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         setCustomBackButton()
         
-        restaurantName.text = restaurant.name
-        cuisineAndHours.text = restaurant.cuisineType + " • " + getOpenHoursString(data: restaurant.restaurantHours)
-        bannerImage.image = UIImage(data: restaurant.image! as Data)
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
         viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         viewCartView.layer.shadowOpacity = 1
@@ -103,11 +97,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             featuredDishes.append(contentsOf: filteredItems)
         }
         
+        
         if (featuredDishes.count) > 0 {
-            featuredDishesIndex = 0
-            dishesIndex = 1
+            featuredDishesIndex = 1
+            dishesIndex = 2
         } else {
-            dishesIndex = 0
+            dishesIndex = 1
         }
         
         print("Number of featured dishes: \(featuredDishes.count)")
@@ -160,18 +155,18 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        
         if featuredDishes.count > 0 {
-            print("2 sections")
-            return 2
+            return 3
         }
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == featuredDishesIndex {
-            return 1
+        if section == dishesIndex {
+            return menuCategories.count
         }
-        return menuCategories.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -198,14 +193,25 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        if indexPath.section == featuredDishesIndex {
+        if indexPath.section == bannerIndex {
+            return 178
+        } else if indexPath.section == featuredDishesIndex {
             return 155
         }
         return 45
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == dishesIndex {
+        
+        if indexPath.section == bannerIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "bannerCell", for: indexPath) as! BannerTableViewCell
+            
+            cell.delegate = self
+            cell.restaurantName.text = restaurant.name
+            cell.cuisineAndHours.text = restaurant.cuisineType + " • " + getOpenHoursString(data: restaurant.restaurantHours)
+            cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+
+        } else if indexPath.section == dishesIndex {
            let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategoryCell", for: indexPath)
         
         cell.textLabel?.text = menuCategories[indexPath.row].name
@@ -235,8 +241,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == featuredDishesIndex {
             return "Most Popular Dishes"
+        } else if section == dishesIndex {
+            return "Menu Categories"
         }
-        return "Menu Categories"
+         return ""
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -251,14 +259,21 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == bannerIndex {
+            return CGFloat.leastNormalMagnitude
+        }
         return Constants.headerHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        myTableView.deselectRow(at: indexPath, animated: true)
-        
-        performSegue(withIdentifier: "toMenuCategory", sender: self)
+        if indexPath.section == dishesIndex {
+            
+            myTableView.deselectRow(at: indexPath, animated: true)
+            
+            performSegue(withIdentifier: "toMenuCategory", sender: self)
+        }
+
     }
     
 
@@ -312,3 +327,13 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
     }
 
 }
+
+extension RestaurantDetailViewController: BannerCellDelegate {
+    
+    func cancelButtonTapped(cell: BannerTableViewCell) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+
+}
+
