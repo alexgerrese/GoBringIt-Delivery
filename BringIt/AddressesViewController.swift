@@ -22,7 +22,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
     
-    var addresses: List<DeliveryAddress>!
+    var addresses = List<DeliveryAddress>()
 
 
     override func viewDidLoad() {
@@ -52,8 +52,13 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Check if addresses for current User already exists in Realm
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-        let user = self.realm.objects(User.self).filter(predicate).first!
-        addresses = user.addresses
+        let user = self.realm.objects(User.self)
+        if user != nil {
+            let retrievedUser = user.filter(predicate).first
+            if retrievedUser?.addresses != nil {
+                addresses = (retrievedUser?.addresses)!
+            }
+        }
         
         if !(addresses.count > 0) {
             

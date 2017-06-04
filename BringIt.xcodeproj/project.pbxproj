@@ -75,6 +75,7 @@
 		11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */; };
 		11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */; };
 		11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */; };
+		11ED77311EE1BC360086F4B1 /* PastOrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ED77301EE1BC360086F4B1 /* PastOrderDetailViewController.swift */; };
 		11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFA91D52C10F003290DA /* StatsViewController.swift */; };
 		11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */; };
 		11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */; };
@@ -199,6 +200,7 @@
 		11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderPriceTableViewCell.swift; sourceTree = "<group>"; };
+		11ED77301EE1BC360086F4B1 /* PastOrderDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastOrderDetailViewController.swift; sourceTree = "<group>"; };
 		11F5FFA91D52C10F003290DA /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComingSoonViewController.swift; sourceTree = "<group>"; };
 		11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AddToOrderViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -281,9 +283,8 @@
 				112D6B161ECF1BAA00396BA5 /* Menu */,
 				112D6B1C1ED058F000396BA5 /* Add To Cart */,
 				112D6B211ED08F4600396BA5 /* Checkout */,
-				11BFEB591ED7312300C2CEA8 /* PastOrdersViewController.swift */,
-				11BFEB5B1ED732FC00C2CEA8 /* PastOrderTableViewCell.swift */,
-				11BFEB5F1ED7565B00C2CEA8 /* SettingsVC.swift */,
+				11ED77321EE1BC3E0086F4B1 /* Past Orders */,
+				11ED77331EE1BC4F0086F4B1 /* Settings */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
 				115ECC3B1CEAB3C40053E03F /* Bring It */,
 				115ECC3C1CEAB3CC0053E03F /* Schedule */,
@@ -383,9 +384,6 @@
 				11A25F921ED3174C0051324B /* SendEmails.swift */,
 				11A25F941ED317820051324B /* PlaceOrder.swift */,
 				112D6B1F1ED08EC400396BA5 /* OrderTableViewCell.swift */,
-				112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */,
-				112D6B241ED1984500396BA5 /* NewAddressVC.swift */,
-				112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */,
 				114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */,
 			);
 			name = Checkout;
@@ -464,6 +462,27 @@
 				11BFEB551ED5944E00C2CEA8 /* PromotionCollectionViewCell.swift */,
 			);
 			name = "Restaurants Home";
+			sourceTree = "<group>";
+		};
+		11ED77321EE1BC3E0086F4B1 /* Past Orders */ = {
+			isa = PBXGroup;
+			children = (
+				11BFEB591ED7312300C2CEA8 /* PastOrdersViewController.swift */,
+				11BFEB5B1ED732FC00C2CEA8 /* PastOrderTableViewCell.swift */,
+				11ED77301EE1BC360086F4B1 /* PastOrderDetailViewController.swift */,
+			);
+			name = "Past Orders";
+			sourceTree = "<group>";
+		};
+		11ED77331EE1BC4F0086F4B1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				11BFEB5F1ED7565B00C2CEA8 /* SettingsVC.swift */,
+				112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */,
+				112D6B241ED1984500396BA5 /* NewAddressVC.swift */,
+				112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		11F6DE421CF6BD9C00662C20 /* Add To Order */ = {
@@ -826,6 +845,7 @@
 				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
 				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */,
+				11ED77311EE1BC360086F4B1 /* PastOrderDetailViewController.swift in Sources */,
 				112D6B251ED1984500396BA5 /* NewAddressVC.swift in Sources */,
 				112D6B201ED08EC400396BA5 /* OrderTableViewCell.swift in Sources */,
 				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,

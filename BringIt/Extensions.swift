@@ -161,6 +161,10 @@ extension String {
     var isAcceptablePasswordLength: Bool {
         return (self.characters.count >= 8)
     }
+    
+    public func toPhoneNumber() -> String {
+        return self.replacingOccurrences(of: "(\\d{3})(\\d{3})(\\d+)", with: "($1) $2-$3", options: .regularExpression, range: nil)
+    }
 }
 
 /* Extension to cleanly format phone numbers as users type them in. 

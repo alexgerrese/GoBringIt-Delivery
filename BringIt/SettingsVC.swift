@@ -23,7 +23,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Variables
     
+    let defaults = UserDefaults.standard // Initialize UserDefaults
+    let realm = try! Realm() // Initialize Realm
+    
     var sections = [SettingsSection]()
+    var user = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +40,13 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Setup tableview
         setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // Setup cells
+        setupCells()
+        myTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,9 +63,37 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func setupCells() {
+        
+        sections.removeAll()
+        
+        if checkIfLoggedIn() {
+            
+            sections.append(SettingsSection(title: "About You", cells: ["Account Info", "Addresses", "Payment Methods"]))
+            
+            sections.append(SettingsSection(title: "About Us", cells: ["Campus Enterprises", "Contact Us"]))
+            
+            sections.append(SettingsSection(title: "Become a Driver", cells: ["Become a Driver"]))
+            
+            sections.append(SettingsSection(title: "SignIn-SignOut", cells: ["Sign Out"]))
+        } else {
+            
+            sections.append(SettingsSection(title: "About Us", cells: ["Campus Enterprises", "Contact Us"]))
+            
+            sections.append(SettingsSection(title: "Become a Driver", cells: ["Become a Driver"]))
+            
+            sections.append(SettingsSection(title: "SignIn-SignOut", cells: ["Sign In"]))
+        }
+        
+    }
+    
     func setupRealm() {
         
-        
+        if checkIfLoggedIn() {
+            
+            let filteredUsers = self.realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
+            user = filteredUsers.first!
+        }
         
     }
     
@@ -66,28 +105,55 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
     }
+    
+    func checkIfLoggedIn() -> Bool {
+        
+        print("Checking if logged in")
+        
+        // If not logged in, go to SignInVC
+        let loggedIn = defaults.bool(forKey: "loggedIn")
+        if loggedIn {
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    func signOutUser() {
+        
+        // Update UserDefaults' "loggedIn" property to false
+        self.defaults.set(false, forKey: "loggedIn")
+        
+        // Set current Realm user's active property to false
+        try! realm.write {
+            user.isCurrent = false
+        }
+    }
+    
+    
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1 // Make dynamic to months
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if orders.count > 0 {
-            return orders.count
-        }
-        return 0
+        return sections[section].cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath)
         
-        cell.textLabel?.text
+        cell.textLabel?.text = sections[indexPath.section].cells[indexPath.row]
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if sections[section].title == "SignIn-SignOut" || sections[section].title == "Become a Driver" {
+            return ""
+        }
         return sections[section].title
     }
     
@@ -103,12 +169,48 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        if sections[section].title == "SignIn-SignOut" || sections[section].title == "Become a Driver" {
+            return CGFloat.leastNormalMagnitude
+        }
         return Constants.headerHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         myTableView.deselectRow(at: indexPath, animated: true)
+        
+        let section = sections[indexPath.section]
+        let cellName = section.cells[indexPath.row]
+        
+        if section.title == "About You" {
+            if cellName == "Account Info" {
+                
+            } else if cellName == "Addresses" {
+                performSegue(withIdentifier: "toAddressesFromSettings", sender: self)
+            } else if cellName == "Payment Methods" {
+                performSegue(withIdentifier: "toPaymentMethodsFromSettings", sender: self)
+            }
+        } else if section.title == "About Us" {
+            if cellName == "Campus Enterprises" {
+                
+            } else if cellName == "Contact Us" {
+                
+            }
+            
+        } else {
+            if cellName == "Sign In" {
+                performSegue(withIdentifier: "toSignInFromSettings", sender: self)
+            } else if cellName == "Sign Out" {
+                
+                // TO-DO: Add modal alert for user to confirm sign out
+                
+                signOutUser()
+                performSegue(withIdentifier: "toSignInFromSettings", sender: self)
+            } else if cellName == "Become a Driver" {
+                performSegue(withIdentifier: "toBecomeADriver", sender: self)
+            }
+        }
         
     }
     

@@ -48,8 +48,6 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("In viewDidLoad")
-        
         // Setup Realm
         setupRealm()
         

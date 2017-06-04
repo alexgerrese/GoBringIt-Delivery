@@ -187,7 +187,8 @@ extension RestaurantsHomeViewController {
                 restaurant.name = retrievedRestaurant["name"] as! String
                 restaurant.cuisineType = retrievedRestaurant["cuisineType"] as! String
                 restaurant.deliveryFee = Double(retrievedRestaurant["deliveryFee"] as! String)!
-                restaurant.restaurantHours = retrievedRestaurant["restaurantHours"] as! String
+                restaurant.restaurantHours = retrievedRestaurant["restaurantHours"] as! String             
+                restaurant.phoneNumber = (retrievedRestaurant["phoneNumber"] as! String)
                 
                 // Get image data
                 let imagePath = retrievedRestaurant["image"] as! String

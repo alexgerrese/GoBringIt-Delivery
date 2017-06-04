@@ -35,6 +35,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     var featuredDishes = List<MenuItem>()
     var storedOffsets = [Int: CGFloat]()
     var bannerIndex = 0
+    var callRestaurantIndex = 1
     var featuredDishesIndex = -1
     var dishesIndex = -1
 
@@ -99,10 +100,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         
         if (featuredDishes.count) > 0 {
-            featuredDishesIndex = 1
-            dishesIndex = 2
+            featuredDishesIndex = 2
+            dishesIndex = 3
         } else {
-            dishesIndex = 1
+            dishesIndex = 2
         }
         
         print("Number of featured dishes: \(featuredDishes.count)")
@@ -157,9 +158,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     func numberOfSections(in tableView: UITableView) -> Int {
         
         if featuredDishes.count > 0 {
-            return 3
+            return 4
         }
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -210,7 +211,16 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             cell.restaurantName.text = restaurant.name
             cell.cuisineAndHours.text = restaurant.cuisineType + " • " + getOpenHoursString(data: restaurant.restaurantHours)
             cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+            
+            return cell
 
+        } else if indexPath.section == callRestaurantIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "callRestaurantCell", for: indexPath)
+            
+            let formattedNumber = restaurant.phoneNumber.toPhoneNumber()
+            cell.detailTextLabel?.text = formattedNumber
+            
+            return cell
         } else if indexPath.section == dishesIndex {
            let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategoryCell", for: indexPath)
         
@@ -259,7 +269,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == bannerIndex {
+        if section == bannerIndex || section == callRestaurantIndex {
             return CGFloat.leastNormalMagnitude
         }
         return Constants.headerHeight
@@ -267,9 +277,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.section == dishesIndex {
-            
-            myTableView.deselectRow(at: indexPath, animated: true)
+        myTableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.section == callRestaurantIndex {
+            let url = URL(string: "telprompt://" + restaurant.phoneNumber)
+            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+        } else if indexPath.section == dishesIndex {
             
             performSegue(withIdentifier: "toMenuCategory", sender: self)
         }

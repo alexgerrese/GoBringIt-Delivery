@@ -14,6 +14,7 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - IBOutlets
 
     @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var emptyStateView: UIView!
     
     // MARK: - Variables
     
@@ -22,6 +23,8 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var user = User()
     var orders: Results<Order>!
+    
+    var selectedOrderID = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +56,19 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func setupRealm() {
         
-        let numberOfUsers = self.realm.objects(User.self).count
-        if numberOfUsers > 0 {
-            let user = self.realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true)).first!
-            orders = user.pastOrders.sorted(byKeyPath: "orderTime", ascending: false)
-            print(orders)
+        let numberOfUsers = self.realm.objects(User.self)
+        if numberOfUsers != nil && numberOfUsers.count > 0 {
+            let filteredUsers = self.realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
+            if let user = filteredUsers.first {
+                orders = user.pastOrders.sorted(byKeyPath: "orderTime", ascending: false)
+                
+                if orders.count > 0 {
+                    emptyStateView.isHidden = true
+                } else {
+                    emptyStateView.isHidden = false
+                }
+
+            }
         }
 
     }
@@ -78,8 +89,11 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if orders.count > 0 {
-            return orders.count
+        
+        if let o = orders {
+            if o.count > 0 {
+                return orders.count
+            }
         }
         return 0
     }
@@ -138,6 +152,8 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        selectedOrderID = orders[indexPath.row].id
+        
         myTableView.deselectRow(at: indexPath, animated: true)
         
     }
@@ -147,8 +163,8 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-
-        
+        let pastOrderDetailVC = segue.destination as! PastOrderDetailViewController
+        pastOrderDetailVC.orderID = selectedOrderID
         
     }
 

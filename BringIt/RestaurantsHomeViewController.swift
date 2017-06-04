@@ -451,6 +451,14 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if promotions[indexPath.row % promotions.count].restaurantID != "" {
+            selectedRestaurantID = promotions[indexPath.row % promotions.count].restaurantID
+            performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 300, height: 150)
     }

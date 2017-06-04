@@ -53,6 +53,7 @@ class Restaurant: Object {
     dynamic var name = ""
     dynamic var cuisineType = ""
     dynamic var restaurantHours = ""
+    dynamic var phoneNumber = ""
     dynamic var deliveryFee = 0.0
     let promotions = List<Promotion>()
     let mostPopularDishes = List<MenuItem>()
