@@ -113,6 +113,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     func setupUI() {
         
         self.title = menuItem.name
+        
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
         viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         viewCartView.layer.shadowOpacity = 1
@@ -183,7 +184,12 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
             viewCartButton.isEnabled = true
             viewCartButtonView.backgroundColor = Constants.green
-            viewCartButton.setTitle("Add to Cart", for: .normal)
+           
+            if comingFromCheckout {
+                viewCartButton.setTitle("Update Item", for: .normal)
+            }else {
+                viewCartButton.setTitle("Add to Cart", for: .normal)
+            }
         }
     }
     

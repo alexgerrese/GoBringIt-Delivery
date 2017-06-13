@@ -132,7 +132,7 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "This Month" //TO-DO: Change when dynamic
+        return "Past Orders" //TO-DO: Change when dynamic
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -155,6 +155,8 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
         selectedOrderID = orders[indexPath.row].id
         
         myTableView.deselectRow(at: indexPath, animated: true)
+        
+        performSegue(withIdentifier: "toPastOrderDetail", sender: self)
         
     }
     

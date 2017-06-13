@@ -309,7 +309,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
             if !alreadyDisplayedCollectionView && promotions.count > 2 {
                 alreadyDisplayedCollectionView = true
-                let i = IndexPath(item: 50, section: 0)
+                let i = IndexPath(item: 1, section: 0)
                 tableViewCell.myCollectionView.scrollToItem(at: i, at: .centeredHorizontally, animated: true)
             } else {
                 tableViewCell.collectionViewOffset = storedOffsets[indexPath.row] ?? 0
@@ -433,9 +433,9 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Number of promotions: \(promotions.count)")
-        if promotions.count > 2 {
-            return 100
-        }
+//        if promotions.count > 2 {
+//            return 100
+//        }
         return promotions.count
     }
     

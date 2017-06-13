@@ -185,7 +185,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if section.title == "About You" {
             if cellName == "Account Info" {
-                
+                performSegue(withIdentifier: "toUpdateAccountInfo", sender: self)
             } else if cellName == "Addresses" {
                 performSegue(withIdentifier: "toAddressesFromSettings", sender: self)
             } else if cellName == "Payment Methods" {

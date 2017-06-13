@@ -60,9 +60,9 @@ extension APICalls : TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .fetchPromotions, .fetchRestaurantData, .fetchAccountInfo, .fetchVersionNumber, .fetchAPIKey:
+        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
             return .get
-        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword:
+        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo:
             return .post
         }
     }

@@ -36,9 +36,20 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup UI
+        setupUI()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func setupUI() {
+        
         // Set title
         self.title = "Sign Up"
-
+        
         // Setup text field and button UI
         fullNameView.layer.cornerRadius = Constants.cornerRadius
         emailAddressView.layer.cornerRadius = Constants.cornerRadius
@@ -58,11 +69,6 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         // Setup auto Next and Done buttons for keyboard
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler?.lastTextFieldReturnKeyType = UIReturnKeyType.done
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func continueButtonTapped(_ sender: UIButton) {

@@ -59,8 +59,8 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         print("In setupRealm()")
         
         // Query current order
-        let predicate = NSPredicate(format: "id = %@", orderID)
-        let filteredOrders = realm.objects(Order.self).filter(predicate)
+//        let predicate = NSPredicate(format: )
+        let filteredOrders = realm.objects(Order.self).filter("id = %@", orderID)
         
         order = filteredOrders.first!
         
@@ -73,7 +73,12 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         
         setCustomBackButton()
         
-        self.title = "Checkout" // TO-DO: Make this the order date
+        // Format order date and set as title
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        let orderDate = dateFormatter.string(from: order.orderTime as! Date)
+        self.title = orderDate
         
         reorderButtonView.layer.cornerRadius = Constants.cornerRadius
         reorderView.layer.shadowColor = Constants.lightGray.cgColor
@@ -253,12 +258,12 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
             // Delivery To
             if indexPath.row == 0 {
                 
-                cell.textLabel?.text = "Deliver To"
+                cell.textLabel?.text = "Delivered To"
                 cell.detailTextLabel?.text = order.address?.streetAddress
                 
             } else {
                 
-                cell.textLabel?.text = "Paying With"
+                cell.textLabel?.text = "Paid With"
                 cell.detailTextLabel?.text = order.paymentMethod
             }
             
