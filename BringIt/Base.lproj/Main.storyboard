@@ -2477,7 +2477,7 @@ with your details shortly.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0uD-zW-jq4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5100" y="1635"/>
+            <point key="canvasLocation" x="5439.1999999999998" y="1634.9325337331336"/>
         </scene>
         <!--New Address View Controller-->
         <scene sceneID="RH1-Wf-drz">
@@ -3531,16 +3531,17 @@ with your details shortly.</string>
                         <outlet property="myActivityIndicator" destination="g4I-i4-91X" id="KwW-ec-Txd"/>
                         <outlet property="myTableView" destination="ZDY-vp-rnv" id="G1O-53-Da2"/>
                         <segue destination="cpY-84-zTt" kind="show" identifier="toRestaurantDetail" id="UgC-A0-Kpu"/>
+                        <segue destination="KJJ-Fs-PYl" kind="show" id="1Mb-ZY-0Gx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JwO-ng-fJe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4148" y="931.48425787106453"/>
         </scene>
-        <!--View Controller-->
+        <!--Promotions View Controller-->
         <scene sceneID="djb-mt-hl3">
             <objects>
-                <viewController id="KJJ-Fs-PYl" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="KJJ-Fs-PYl" customClass="PromotionsViewController" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0Sr-wa-hhy"/>
                         <viewControllerLayoutGuide type="bottom" id="mem-xz-2R4"/>
@@ -3548,12 +3549,101 @@ with your details shortly.</string>
                     <view key="view" contentMode="scaleToFill" id="15b-Ku-lct">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="200" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XKa-G2-iGj">
+                                <rect key="frame" x="0.0" y="64" width="376" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="200" id="iIS-Yc-r3E">
+                                        <rect key="frame" x="0.0" y="28" width="376" height="200"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iIS-Yc-r3E" id="74r-lA-IY2">
+                                            <rect key="frame" x="0.0" y="0.0" width="376" height="199.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wUE-Ni-wzR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="376" height="200"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Soon delivering from West Union!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gA0-jF-K5Z">
+                                                    <rect key="frame" x="15" y="97" width="346" height="94"/>
+                                                    <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="28"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="wUE-Ni-wzR" firstAttribute="top" secondItem="74r-lA-IY2" secondAttribute="top" id="9AQ-ZK-iUr"/>
+                                                <constraint firstItem="wUE-Ni-wzR" firstAttribute="leading" secondItem="74r-lA-IY2" secondAttribute="leading" id="MBT-Wb-Vkc"/>
+                                                <constraint firstItem="gA0-jF-K5Z" firstAttribute="top" secondItem="74r-lA-IY2" secondAttribute="topMargin" constant="89" id="MV3-BR-1CM"/>
+                                                <constraint firstAttribute="trailing" secondItem="wUE-Ni-wzR" secondAttribute="trailing" id="PED-yQ-vGD"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="gA0-jF-K5Z" secondAttribute="bottom" constant="0.5" id="hjP-Wq-vUD"/>
+                                                <constraint firstItem="wUE-Ni-wzR" firstAttribute="centerX" secondItem="gA0-jF-K5Z" secondAttribute="centerX" id="s7e-qB-GlX"/>
+                                                <constraint firstItem="gA0-jF-K5Z" firstAttribute="leading" secondItem="74r-lA-IY2" secondAttribute="leadingMargin" constant="7" id="t7g-Ww-e5H"/>
+                                                <constraint firstItem="wUE-Ni-wzR" firstAttribute="centerY" secondItem="74r-lA-IY2" secondAttribute="centerY" id="vTO-Rk-Xcc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="LKV-ex-Qh7" rowHeight="48" style="IBUITableViewCellStyleDefault" id="5lt-p2-l8c">
+                                        <rect key="frame" x="0.0" y="228" width="376" height="48"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5lt-p2-l8c" id="aSr-98-eU0">
+                                            <rect key="frame" x="0.0" y="0.0" width="376" height="47.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LKV-ex-Qh7">
+                                                    <rect key="frame" x="15" y="0.0" width="346" height="47.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="66" id="ngh-l7-0eS">
+                                        <rect key="frame" x="0.0" y="276" width="376" height="66"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ngh-l7-0eS" id="3v6-8R-c1n">
+                                            <rect key="frame" x="0.0" y="0.0" width="376" height="65.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YN-jh-my0">
+                                                    <rect key="frame" x="6" y="8" width="365" height="50"/>
+                                                    <color key="backgroundColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                                    <state key="normal" title="Visit Restaurant">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="checkoutButtonTapped:" destination="LnE-Ld-bZA" eventType="touchUpInside" id="6BJ-ZW-dHf"/>
+                                                        <action selector="reorderButtonTapped:" destination="lON-X1-wWW" eventType="touchUpInside" id="Gcj-Qc-TRH"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8YN-jh-my0" firstAttribute="leading" secondItem="3v6-8R-c1n" secondAttribute="leadingMargin" constant="-2" id="6E6-1z-l1Y"/>
+                                                <constraint firstItem="8YN-jh-my0" firstAttribute="centerY" secondItem="3v6-8R-c1n" secondAttribute="centerY" id="LEK-0p-DpW"/>
+                                                <constraint firstItem="8YN-jh-my0" firstAttribute="top" secondItem="3v6-8R-c1n" secondAttribute="topMargin" id="Pef-gP-49X"/>
+                                                <constraint firstItem="8YN-jh-my0" firstAttribute="centerX" secondItem="3v6-8R-c1n" secondAttribute="centerX" id="muT-fo-Zsr"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XKa-G2-iGj" firstAttribute="leading" secondItem="15b-Ku-lct" secondAttribute="leading" id="Zkj-wg-gvO"/>
+                            <constraint firstItem="XKa-G2-iGj" firstAttribute="bottom" secondItem="mem-xz-2R4" secondAttribute="top" id="Zs3-BT-cpm"/>
+                            <constraint firstItem="XKa-G2-iGj" firstAttribute="centerX" secondItem="15b-Ku-lct" secondAttribute="centerX" id="pNV-0Z-2cy"/>
+                            <constraint firstItem="XKa-G2-iGj" firstAttribute="top" secondItem="0Sr-wa-hhy" secondAttribute="bottom" id="wQc-vi-g5Z"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="zIf-qz-A58"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ae3-BC-usb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5009" y="1677"/>
+            <point key="canvasLocation" x="-5055.1999999999998" y="1634.9325337331336"/>
         </scene>
         <!--Addresses View Controller-->
         <scene sceneID="Su9-vO-JW2">
@@ -3924,7 +4014,7 @@ with your details shortly.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b3J-Wv-6pE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4148" y="1634.9325337331336"/>
+            <point key="canvasLocation" x="-3808.8000000000002" y="1634.9325337331336"/>
         </scene>
         <!--Past Order Detail View Controller-->
         <scene sceneID="heL-hk-S3I">
@@ -4123,7 +4213,7 @@ with your details shortly.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvs-Ko-fpZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3455.1999999999998" y="1634.9325337331336"/>
+            <point key="canvasLocation" x="-3116" y="1634.9325337331336"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="dUU-ko-dCc">
@@ -6364,7 +6454,7 @@ with your details shortly.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8jc-4Q-VFl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="975" y="1813"/>
+            <point key="canvasLocation" x="1312.8" y="1812.1439280359821"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="hbW-d6-9jR">
@@ -6594,7 +6684,7 @@ with your details shortly.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zd0-bD-B6T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1080" y="1829"/>
+            <point key="canvasLocation" x="1418.4000000000001" y="1828.3358320839582"/>
         </scene>
         <!--Stats View Controller-->
         <scene sceneID="jBv-19-bss">
@@ -7209,7 +7299,7 @@ with your details shortly.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jd2-be-qz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="AQS-rO-EU8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1741" y="1829"/>
+            <point key="canvasLocation" x="2079.1999999999998" y="1828.3358320839582"/>
         </scene>
         <!--Reset Password View Controller-->
         <scene sceneID="Ld1-F7-xZM">
@@ -7440,7 +7530,7 @@ with your details shortly.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DXF-sn-5dw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="B3Z-8d-QDR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2412" y="1829"/>
+            <point key="canvasLocation" x="2751.1999999999998" y="1828.3358320839582"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6nY-ap-XeK">
@@ -7497,7 +7587,7 @@ with your details shortly.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K7X-xO-ZuL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4032" y="1635"/>
+            <point key="canvasLocation" x="4370.3999999999996" y="1634.9325337331336"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ceV-4P-twv">
@@ -8158,11 +8248,11 @@ dbJ1tHW5dcF1xHXJddF11HXmdel17gAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAAHXwA
         <image name="time" width="30" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="z8o-4g-jjT"/>
         <segue reference="LHM-rm-xIS"/>
+        <segue reference="G5d-Ke-3ro"/>
         <segue reference="ehY-hl-ubx"/>
         <segue reference="3ih-yU-KBO"/>
-        <segue reference="G5d-Ke-3ro"/>
-        <segue reference="z8o-4g-jjT"/>
         <segue reference="ncN-lN-Y6F"/>
         <segue reference="d6S-25-ZMc"/>
         <segue reference="88c-Nd-cmW"/>

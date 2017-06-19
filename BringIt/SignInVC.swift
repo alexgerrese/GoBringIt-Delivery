@@ -39,6 +39,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     let defaultButtonText = "Sign in"
     var returnKeyHandler: IQKeyboardReturnKeyHandler?
+    
+    var comingFromCheckout = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +77,9 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        comingFromSignIn = true
+        if comingFromCheckout {
+            comingFromSignIn = true
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

@@ -44,6 +44,7 @@
 		115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */; };
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
 		116B0B731EF79DC5009CC7BB /* ApplicationSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B0B721EF79DC5009CC7BB /* ApplicationSubmittedViewController.swift */; };
+		116B0B751EF7AAF3009CC7BB /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */; };
 		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
 		117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
@@ -165,6 +166,7 @@
 		115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		116B0B721EF79DC5009CC7BB /* ApplicationSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSubmittedViewController.swift; sourceTree = "<group>"; };
+		116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
 		117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCategoryViewController.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -468,6 +470,7 @@
 				11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */,
 				11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */,
 				11BFEB551ED5944E00C2CEA8 /* PromotionCollectionViewCell.swift */,
+				116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */,
 			);
 			name = "Restaurants Home";
 			sourceTree = "<group>";
@@ -865,6 +868,7 @@
 				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,
 				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
 				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
+				116B0B751EF7AAF3009CC7BB /* PromotionsViewController.swift in Sources */,
 				114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */,
 				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
 				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,

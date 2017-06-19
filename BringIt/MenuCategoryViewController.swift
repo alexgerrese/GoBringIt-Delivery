@@ -62,6 +62,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         setCustomBackButton()
         
         self.title = menuCategory.name
+        
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
         viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         viewCartView.layer.shadowOpacity = 1

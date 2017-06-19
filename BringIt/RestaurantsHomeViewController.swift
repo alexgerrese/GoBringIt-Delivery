@@ -453,7 +453,10 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if promotions[indexPath.row % promotions.count].restaurantID != "" {
+        let restaurantID = promotions[indexPath.row % promotions.count].restaurantID
+        
+        if restaurantID != "0" && restaurantID != nil {
+            
             selectedRestaurantID = promotions[indexPath.row % promotions.count].restaurantID
             performSegue(withIdentifier: "toRestaurantDetail", sender: self)
         }
