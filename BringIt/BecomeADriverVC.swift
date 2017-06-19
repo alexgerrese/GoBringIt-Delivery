@@ -32,6 +32,8 @@ class BecomeADriverVC: UIViewController, MFMailComposeViewControllerDelegate {
         
         self.title = "Become a Driver"
         
+        setCustomBackButton()
+        
         applyNowButton.layer.cornerRadius = Constants.cornerRadius
     }
     

@@ -20,7 +20,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var myTableView: UITableView!
     
-    
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
@@ -193,9 +192,13 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         } else if section.title == "About Us" {
             if cellName == "Campus Enterprises" {
-                
+                if let url = URL(string: "https://www.campusenterprises.org") {
+                    UIApplication.shared.open(url, options: [:])
+                }
             } else if cellName == "Contact Us" {
-                
+                if let url = URL(string: "https://www.campusenterprises.org/contactus") {
+                    UIApplication.shared.open(url, options: [:])
+                }
             }
             
         } else {

@@ -33,4 +33,7 @@ struct Constants {
     
     // Paths
     static let imagesPath = "http://www.gobringit.com/images/"
+    
+    // Contact Info
+    static let contactEmail = "info@campusenterprises.org"
 }

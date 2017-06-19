@@ -908,8 +908,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="DZX-Ah-Dt6">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="Uud-2C-6ZS">
-                            <segmentedControl key="customView" opaque="NO" contentMode="scaleAspectFit" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="oBf-zz-KCr">
-                                <rect key="frame" x="267" y="7" width="92" height="31"/>
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="oBf-zz-KCr">
+                                <rect key="frame" x="267" y="0.0" width="92" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="" image="calendar"/>
@@ -1350,7 +1350,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="14" sectionFooterHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="wxg-Dj-6mx">
-                                <rect key="frame" x="6" y="30" width="364" height="588"/>
+                                <rect key="frame" x="6" y="10" width="364" height="608"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="descriptionCell" textLabel="Oyc-dD-49p" style="IBUITableViewCellStyleDefault" id="hwR-XN-1Ax" customClass="AddToOrderSpecialInstructionsTableViewCell" customModule="BringIt" customModuleProvider="target">
@@ -4516,9 +4516,7 @@ with your details shortly.</string>
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="applyNowButtonPressed:" destination="Q8y-uo-6It" eventType="touchUpInside" id="47Y-zB-pBl"/>
-                                    <action selector="saveButtonTapped:" destination="Roj-rX-TFo" eventType="touchUpInside" id="jcP-9a-RR3"/>
-                                    <action selector="saveButtonTapped:" destination="OqK-gA-k85" eventType="touchUpInside" id="tYw-Ui-47E"/>
+                                    <segue destination="s6L-fx-rtg" kind="show" id="ro0-D6-vT7"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -4540,6 +4538,262 @@ with your details shortly.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQ0-Hd-Jcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1364" y="2327.5862068965521"/>
+        </scene>
+        <!--Submit Driver Application View Controller-->
+        <scene sceneID="ss4-mp-pmN">
+            <objects>
+                <viewController id="s6L-fx-rtg" customClass="SubmitDriverApplicationViewController" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lOu-Eu-CaM"/>
+                        <viewControllerLayoutGuide type="bottom" id="L6O-Tb-bQ8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="L1A-46-a8w" customClass="IQPreviousNextView" customModule="IQKeyboardManagerSwift">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wmi-rJ-uRP">
+                                <rect key="frame" x="10" y="597" width="355" height="50"/>
+                                <color key="backgroundColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="VKa-fC-E9h"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                <state key="normal" title="Submit Application">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="submitApplicationButtonTapped:" destination="s6L-fx-rtg" eventType="touchUpInside" id="Esn-ql-0qI"/>
+                                    <segue destination="aXd-pi-FiA" kind="show" id="R3i-Yt-51z"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once you submit, we will reach out within 48 hours to schedule an interview to finalize the application process." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCB-ZN-jud">
+                                <rect key="frame" x="35" y="547" width="305" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="Oo4-Zc-bTq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="12"/>
+                                <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ePS-Lb-pDh">
+                                <rect key="frame" x="10" y="103" width="355" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Full Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QK4-QJ-J1z">
+                                        <rect key="frame" x="10" y="0.0" width="340" height="50"/>
+                                        <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="QK4-QJ-J1z" firstAttribute="leading" secondItem="ePS-Lb-pDh" secondAttribute="leading" constant="10" id="75w-1q-p2B"/>
+                                    <constraint firstAttribute="trailing" secondItem="QK4-QJ-J1z" secondAttribute="trailing" constant="5" id="CSD-In-97Q"/>
+                                    <constraint firstItem="QK4-QJ-J1z" firstAttribute="top" secondItem="ePS-Lb-pDh" secondAttribute="top" id="Hvo-yJ-QTN"/>
+                                    <constraint firstAttribute="height" constant="50" id="Lru-eO-6Ru"/>
+                                    <constraint firstAttribute="bottom" secondItem="QK4-QJ-J1z" secondAttribute="bottom" id="wFx-mY-f7o"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PERSONAL INFORMATION" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hbw-2m-hDj">
+                                <rect key="frame" x="10" y="72" width="165" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="165" id="YmE-6L-v8a"/>
+                                    <constraint firstAttribute="height" constant="21" id="xFi-0O-gWC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="12"/>
+                                <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzc-TP-B1Q">
+                                <rect key="frame" x="10" y="161" width="355" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dtc-xK-yp4">
+                                        <rect key="frame" x="10" y="0.0" width="340" height="50"/>
+                                        <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="dtc-xK-yp4" firstAttribute="leading" secondItem="Qzc-TP-B1Q" secondAttribute="leading" constant="10" id="8nE-O7-O3l"/>
+                                    <constraint firstItem="dtc-xK-yp4" firstAttribute="top" secondItem="Qzc-TP-B1Q" secondAttribute="top" id="9xI-kJ-Q0a"/>
+                                    <constraint firstAttribute="height" constant="50" id="Ekp-K0-E1f"/>
+                                    <constraint firstAttribute="bottom" secondItem="dtc-xK-yp4" secondAttribute="bottom" id="l9q-5V-RaJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="dtc-xK-yp4" secondAttribute="trailing" constant="5" id="yd6-lV-ZWl"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phX-Ug-ayZ">
+                                <rect key="frame" x="10" y="219" width="355" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dta-vD-0TZ">
+                                        <rect key="frame" x="10" y="0.0" width="340" height="50"/>
+                                        <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Dta-vD-0TZ" secondAttribute="bottom" id="AGk-Rx-GsV"/>
+                                    <constraint firstAttribute="trailing" secondItem="Dta-vD-0TZ" secondAttribute="trailing" constant="5" id="IgN-V4-567"/>
+                                    <constraint firstItem="Dta-vD-0TZ" firstAttribute="top" secondItem="phX-Ug-ayZ" secondAttribute="top" id="PRT-ff-b2M"/>
+                                    <constraint firstItem="Dta-vD-0TZ" firstAttribute="leading" secondItem="phX-Ug-ayZ" secondAttribute="leading" constant="10" id="qgO-FJ-Zcd"/>
+                                    <constraint firstAttribute="height" constant="50" id="rcT-Z5-mbb"/>
+                                </constraints>
+                            </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="kZx-yK-VB5">
+                                <rect key="frame" x="10" y="335" width="355" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="BEm-h6-via"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Duke Student"/>
+                                    <segment title="Durham Resident"/>
+                                </segments>
+                                <color key="tintColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </segmentedControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtd-v9-kO7">
+                                <rect key="frame" x="10" y="277" width="355" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="# of Available Hours/Week (Approx.)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="C5d-73-1wK">
+                                        <rect key="frame" x="10" y="0.0" width="340" height="50"/>
+                                        <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="C5d-73-1wK" secondAttribute="bottom" id="6x4-Es-2Du"/>
+                                    <constraint firstItem="C5d-73-1wK" firstAttribute="leading" secondItem="gtd-v9-kO7" secondAttribute="leading" constant="10" id="OTw-0t-x1H"/>
+                                    <constraint firstAttribute="trailing" secondItem="C5d-73-1wK" secondAttribute="trailing" constant="5" id="PlC-Qs-mR2"/>
+                                    <constraint firstAttribute="height" constant="50" id="aHw-pd-Y7L"/>
+                                    <constraint firstItem="C5d-73-1wK" firstAttribute="top" secondItem="gtd-v9-kO7" secondAttribute="top" id="eT8-2H-x6c"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="phX-Ug-ayZ" firstAttribute="top" secondItem="Qzc-TP-B1Q" secondAttribute="bottom" constant="8" symbolic="YES" id="7zO-YL-7al"/>
+                            <constraint firstItem="ePS-Lb-pDh" firstAttribute="top" secondItem="Hbw-2m-hDj" secondAttribute="bottom" constant="10" id="C4D-eQ-rGR"/>
+                            <constraint firstItem="gtd-v9-kO7" firstAttribute="leading" secondItem="kZx-yK-VB5" secondAttribute="leading" id="DPv-U8-C6E"/>
+                            <constraint firstItem="phX-Ug-ayZ" firstAttribute="trailing" secondItem="gtd-v9-kO7" secondAttribute="trailing" id="FfD-EC-ObX"/>
+                            <constraint firstAttribute="bottom" secondItem="wmi-rJ-uRP" secondAttribute="bottom" constant="20" symbolic="YES" id="JYF-K7-h3P"/>
+                            <constraint firstItem="ePS-Lb-pDh" firstAttribute="leading" secondItem="Qzc-TP-B1Q" secondAttribute="leading" id="KWj-RL-Wb9"/>
+                            <constraint firstItem="phX-Ug-ayZ" firstAttribute="top" secondItem="L1A-46-a8w" secondAttribute="top" constant="219" id="MSC-am-zMj"/>
+                            <constraint firstItem="ePS-Lb-pDh" firstAttribute="trailing" secondItem="Qzc-TP-B1Q" secondAttribute="trailing" id="N78-wF-i96"/>
+                            <constraint firstItem="gtd-v9-kO7" firstAttribute="trailing" secondItem="kZx-yK-VB5" secondAttribute="trailing" id="RHD-hU-ul8"/>
+                            <constraint firstItem="kZx-yK-VB5" firstAttribute="trailing" secondItem="wmi-rJ-uRP" secondAttribute="trailing" id="Rg4-yS-1MV"/>
+                            <constraint firstItem="wmi-rJ-uRP" firstAttribute="top" secondItem="ZCB-ZN-jud" secondAttribute="bottom" constant="8" symbolic="YES" id="S5z-MS-LrV"/>
+                            <constraint firstItem="gtd-v9-kO7" firstAttribute="top" secondItem="L1A-46-a8w" secondAttribute="top" constant="277" id="SNC-p9-twJ"/>
+                            <constraint firstItem="Qzc-TP-B1Q" firstAttribute="leading" secondItem="phX-Ug-ayZ" secondAttribute="leading" id="TDc-Qh-Mrr"/>
+                            <constraint firstItem="Hbw-2m-hDj" firstAttribute="leading" secondItem="ePS-Lb-pDh" secondAttribute="leading" id="UDc-vs-jxT"/>
+                            <constraint firstItem="kZx-yK-VB5" firstAttribute="top" secondItem="gtd-v9-kO7" secondAttribute="bottom" constant="8" symbolic="YES" id="Wsc-1B-UNE"/>
+                            <constraint firstItem="Hbw-2m-hDj" firstAttribute="leading" secondItem="L1A-46-a8w" secondAttribute="leadingMargin" constant="-6" id="Ydy-Gu-7ni"/>
+                            <constraint firstItem="ZCB-ZN-jud" firstAttribute="centerX" secondItem="wmi-rJ-uRP" secondAttribute="centerX" id="b8T-Ey-SqT"/>
+                            <constraint firstItem="Qzc-TP-B1Q" firstAttribute="trailing" secondItem="phX-Ug-ayZ" secondAttribute="trailing" id="cQ3-Tp-aKA"/>
+                            <constraint firstItem="gtd-v9-kO7" firstAttribute="top" secondItem="phX-Ug-ayZ" secondAttribute="bottom" constant="8" symbolic="YES" id="jEu-Uu-bDr"/>
+                            <constraint firstItem="Hbw-2m-hDj" firstAttribute="top" secondItem="lOu-Eu-CaM" secondAttribute="bottom" constant="8" id="nEX-e1-s4d"/>
+                            <constraint firstItem="kZx-yK-VB5" firstAttribute="leading" secondItem="wmi-rJ-uRP" secondAttribute="leading" id="tNy-st-CK2"/>
+                            <constraint firstItem="ZCB-ZN-jud" firstAttribute="leading" secondItem="L1A-46-a8w" secondAttribute="leadingMargin" constant="19" id="tW9-oc-USU"/>
+                            <constraint firstItem="Qzc-TP-B1Q" firstAttribute="top" secondItem="L1A-46-a8w" secondAttribute="top" constant="161" id="vEk-X6-SAy"/>
+                            <constraint firstItem="Qzc-TP-B1Q" firstAttribute="top" secondItem="ePS-Lb-pDh" secondAttribute="bottom" constant="8" symbolic="YES" id="vGg-NE-yCB"/>
+                            <constraint firstItem="ePS-Lb-pDh" firstAttribute="centerX" secondItem="L1A-46-a8w" secondAttribute="centerX" id="ypI-WR-aPv"/>
+                            <constraint firstItem="phX-Ug-ayZ" firstAttribute="leading" secondItem="gtd-v9-kO7" secondAttribute="leading" id="z9a-ri-psh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="emailAddress" destination="dtc-xK-yp4" id="XX4-cT-yJl"/>
+                        <outlet property="emailAddressView" destination="Qzc-TP-B1Q" id="d7B-Hl-Set"/>
+                        <outlet property="fullName" destination="QK4-QJ-J1z" id="3QE-JI-dbX"/>
+                        <outlet property="fullNameView" destination="ePS-Lb-pDh" id="gZF-Tg-88z"/>
+                        <outlet property="hoursAvailable" destination="C5d-73-1wK" id="WVb-Ns-zZw"/>
+                        <outlet property="hoursAvailableView" destination="gtd-v9-kO7" id="dP8-Z7-cMb"/>
+                        <outlet property="mySegmentedControl" destination="kZx-yK-VB5" id="7Wt-cJ-hx2"/>
+                        <outlet property="phoneNumber" destination="Dta-vD-0TZ" id="7s1-u8-Fzj"/>
+                        <outlet property="phoneNumberView" destination="phX-Ug-ayZ" id="Gy1-sQ-eLK"/>
+                        <outlet property="submitButton" destination="wmi-rJ-uRP" id="8st-0S-Iqv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p88-Zp-qbG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-661.60000000000002" y="2325.7871064467768"/>
+        </scene>
+        <!--Application Submitted View Controller-->
+        <scene sceneID="XNs-EZ-98z">
+            <objects>
+                <viewController id="aXd-pi-FiA" customClass="ApplicationSubmittedViewController" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QFp-NV-evI"/>
+                        <viewControllerLayoutGuide type="bottom" id="tZZ-0O-5wE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aaa-GC-geI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGO-Xq-08G">
+                                <rect key="frame" x="10" y="597" width="355" height="50"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="NlY-TU-DIW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonTapped:" destination="aXd-pi-FiA" eventType="touchUpInside" id="epw-Tv-W1S"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OrderPlacedImage" translatesAutoresizingMaskIntoConstraints="NO" id="K9s-sM-KMC">
+                                <rect key="frame" x="144" y="242" width="85" height="81"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="85" id="5n3-1u-85R"/>
+                                    <constraint firstAttribute="height" constant="81" id="Thw-ya-8b4"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application Submitted!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haD-80-95g">
+                                <rect key="frame" x="44" y="331" width="286" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="39" id="vmI-nG-TBd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="24"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will receive an email confirmation with your application details shortly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDf-2Q-39g">
+                                <rect key="frame" x="44" y="364" width="286" height="61"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="61" id="1Qr-CF-GhK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="K9s-sM-KMC" firstAttribute="centerX" secondItem="haD-80-95g" secondAttribute="centerX" id="23T-KI-5DC"/>
+                            <constraint firstItem="VGO-Xq-08G" firstAttribute="leading" secondItem="aaa-GC-geI" secondAttribute="leadingMargin" constant="-6" id="4Sg-Yp-4aX"/>
+                            <constraint firstItem="RDf-2Q-39g" firstAttribute="top" secondItem="K9s-sM-KMC" secondAttribute="bottom" constant="41" id="7fq-5b-S9f"/>
+                            <constraint firstItem="haD-80-95g" firstAttribute="leading" secondItem="RDf-2Q-39g" secondAttribute="leading" id="Hbt-sZ-S0G"/>
+                            <constraint firstItem="haD-80-95g" firstAttribute="trailing" secondItem="RDf-2Q-39g" secondAttribute="trailing" id="QBR-7N-Izx"/>
+                            <constraint firstAttribute="bottom" secondItem="VGO-Xq-08G" secondAttribute="bottom" constant="20" symbolic="YES" id="fCM-Hv-x0v"/>
+                            <constraint firstItem="haD-80-95g" firstAttribute="top" secondItem="K9s-sM-KMC" secondAttribute="bottom" constant="8" symbolic="YES" id="p0U-aX-LVO"/>
+                            <constraint firstItem="RDf-2Q-39g" firstAttribute="centerX" secondItem="VGO-Xq-08G" secondAttribute="centerX" id="pmu-G3-3rF"/>
+                            <constraint firstItem="haD-80-95g" firstAttribute="leading" secondItem="aaa-GC-geI" secondAttribute="leadingMargin" constant="28" id="vMS-76-T4j"/>
+                            <constraint firstItem="K9s-sM-KMC" firstAttribute="top" secondItem="QFp-NV-evI" secondAttribute="bottom" constant="178" id="veB-jD-lKC"/>
+                            <constraint firstItem="haD-80-95g" firstAttribute="centerX" secondItem="aaa-GC-geI" secondAttribute="centerX" id="yHF-pR-e1b"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="doneButton" destination="VGO-Xq-08G" id="0H8-KG-g8c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rAO-st-uR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="68" y="2326"/>
         </scene>
         <!--Restaurant Detail View Controller-->
         <scene sceneID="ziB-jk-0W8">
@@ -6110,7 +6364,7 @@ with your details shortly.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8jc-4Q-VFl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="432" y="1829"/>
+            <point key="canvasLocation" x="975" y="1813"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="hbW-d6-9jR">
@@ -6370,7 +6624,7 @@ with your details shortly.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8T3-oQ-nYn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="432" y="2717"/>
+            <point key="canvasLocation" x="1209" y="2702"/>
         </scene>
         <!--Coming Soon View Controller-->
         <scene sceneID="Z84-Oi-zlv">
@@ -7904,14 +8158,14 @@ dbJ1tHW5dcF1xHXJddF11HXmdel17gAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAAHXwA
         <image name="time" width="30" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="G5d-Ke-3ro"/>
+        <segue reference="LHM-rm-xIS"/>
         <segue reference="ehY-hl-ubx"/>
         <segue reference="3ih-yU-KBO"/>
-        <segue reference="LHM-rm-xIS"/>
+        <segue reference="G5d-Ke-3ro"/>
         <segue reference="z8o-4g-jjT"/>
+        <segue reference="ncN-lN-Y6F"/>
+        <segue reference="d6S-25-ZMc"/>
         <segue reference="88c-Nd-cmW"/>
-        <segue reference="zYJ-Ij-Vg9"/>
-        <segue reference="qzj-D1-uoN"/>
         <segue reference="4Jn-Vp-4IR"/>
     </inferredMetricsTieBreakers>
 </document>

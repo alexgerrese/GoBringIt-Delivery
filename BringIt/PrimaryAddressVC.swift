@@ -47,15 +47,8 @@ class PrimaryAddressVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set title
-        self.title = "Sign Up"
-
-        // Setup text field and button UI
-        campusView.layer.cornerRadius = Constants.cornerRadius
-        streetAddressView.layer.cornerRadius = Constants.cornerRadius
-        roomNumberView.layer.cornerRadius = Constants.cornerRadius
-        saveButton.layer.cornerRadius = Constants.cornerRadius
-        myActivityIndicator.isHidden = true
+        // Setup UI
+        setupUI()
         
         // Set up targets for text fields
         campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -65,6 +58,20 @@ class PrimaryAddressVC: UIViewController {
         // Setup auto Next and Done buttons for keyboard
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
         returnKeyHandler?.lastTextFieldReturnKeyType = UIReturnKeyType.done
+    }
+    
+    func setupUI() {
+        
+        // Set title
+        self.title = "Sign Up"
+        
+        // Setup text field and button UI
+        campusView.layer.cornerRadius = Constants.cornerRadius
+        streetAddressView.layer.cornerRadius = Constants.cornerRadius
+        roomNumberView.layer.cornerRadius = Constants.cornerRadius
+        saveButton.layer.cornerRadius = Constants.cornerRadius
+        myActivityIndicator.isHidden = true
+        
     }
 
     override func didReceiveMemoryWarning() {

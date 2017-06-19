@@ -28,7 +28,7 @@ public struct AccessTokenPlugin: PluginType {
     /// The access token to be applied in the header.
     public let token: String
 
-    fileprivate var authVal: String {
+    private var authVal: String {
         return "Bearer " + token
     }
 

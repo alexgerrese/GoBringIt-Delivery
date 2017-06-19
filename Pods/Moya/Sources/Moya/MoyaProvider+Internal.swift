@@ -163,11 +163,11 @@ private extension MoyaProvider {
             for bodyPart in multipartBody {
                 switch bodyPart.provider {
                 case .data(let data):
-                    self.append(data, bodyPart: bodyPart, to: form)
+                    self.append(data: data, bodyPart: bodyPart, to: form)
                 case .file(let url):
                     self.append(fileURL: url, bodyPart: bodyPart, to: form)
                 case .stream(let stream, let length):
-                    self.append(stream, length: length, bodyPart: bodyPart, to: form)
+                    self.append(stream: stream, length: length, bodyPart: bodyPart, to: form)
                 }
             }
 
@@ -219,7 +219,7 @@ private extension MoyaProvider {
     func sendAlamofireRequest<T>(_ alamoRequest: T, target: Target, queue: DispatchQueue?, progress progressCompletion: Moya.ProgressBlock?, completion: @escaping Moya.Completion) -> CancellableToken where T: Requestable, T: Request {
         // Give plugins the chance to alter the outgoing request
         let plugins = self.plugins
-        plugins.forEach { $0.willSend(alamoRequest as RequestType, target: target) }
+        plugins.forEach { $0.willSend(alamoRequest, target: target) }
 
         var progressAlamoRequest = alamoRequest
         let progressClosure: (Progress) -> Void = { progress in
@@ -257,8 +257,8 @@ private extension MoyaProvider {
             completion(result)
         }
 
-        progressAlamoRequest = progressAlamoRequest.response(queue, completionHandler: completionHandler)
-        
+        progressAlamoRequest = progressAlamoRequest.response(queue: queue, completionHandler: completionHandler)
+
         progressAlamoRequest.resume()
 
         return CancellableToken(request: progressAlamoRequest)
@@ -268,7 +268,7 @@ private extension MoyaProvider {
 // MARK: RequestMultipartFormData appending
 
 private extension MoyaProvider {
-    func append(_ data: Data, bodyPart: MultipartFormData, to form: RequestMultipartFormData) {
+    func append(data: Data, bodyPart: MultipartFormData, to form: RequestMultipartFormData) {
         if let mimeType = bodyPart.mimeType {
             if let fileName = bodyPart.fileName {
                 form.append(data, withName: bodyPart.name, fileName: fileName, mimeType: mimeType)
@@ -286,7 +286,7 @@ private extension MoyaProvider {
             form.append(url, withName: bodyPart.name)
         }
     }
-    func append(_ stream: InputStream, length: UInt64, bodyPart: MultipartFormData, to form: RequestMultipartFormData) {
+    func append(stream: InputStream, length: UInt64, bodyPart: MultipartFormData, to form: RequestMultipartFormData) {
         form.append(stream, withLength: length, name: bodyPart.name, fileName: bodyPart.fileName ?? "", mimeType: bodyPart.mimeType ?? "")
     }
 }
