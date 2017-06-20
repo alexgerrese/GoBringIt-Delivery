@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PromotionsViewController: UIViewController {
 
@@ -32,4 +33,11 @@ class PromotionsViewController: UIViewController {
     }
     */
 
+}
+
+extension PromotionsViewController: ButtonDelegate {
+    
+    func buttonTapped(cell: ButtonTableViewCell) {
+        
+    }
 }

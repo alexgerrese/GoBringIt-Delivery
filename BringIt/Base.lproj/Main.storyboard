@@ -3554,7 +3554,7 @@ with your details shortly.</string>
                                 <rect key="frame" x="0.0" y="64" width="376" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="200" id="iIS-Yc-r3E">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="200" id="iIS-Yc-r3E" customClass="PromotionsTitleTableViewCell" customModule="BringIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="376" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iIS-Yc-r3E" id="74r-lA-IY2">
@@ -3582,6 +3582,10 @@ with your details shortly.</string>
                                                 <constraint firstItem="wUE-Ni-wzR" firstAttribute="centerY" secondItem="74r-lA-IY2" secondAttribute="centerY" id="vTO-Rk-Xcc"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="backgroundImage" destination="wUE-Ni-wzR" id="JTl-Ou-acy"/>
+                                            <outlet property="title" destination="gA0-jF-K5Z" id="hLm-bZ-GDM"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="LKV-ex-Qh7" rowHeight="48" style="IBUITableViewCellStyleDefault" id="5lt-p2-l8c">
                                         <rect key="frame" x="0.0" y="228" width="376" height="48"/>
@@ -3600,7 +3604,7 @@ with your details shortly.</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="66" id="ngh-l7-0eS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="66" id="ngh-l7-0eS" customClass="ButtonTableViewCell" customModule="BringIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="276" width="376" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ngh-l7-0eS" id="3v6-8R-c1n">
@@ -3615,6 +3619,7 @@ with your details shortly.</string>
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
+                                                        <action selector="buttonTapped:" destination="ngh-l7-0eS" eventType="touchUpInside" id="biz-DW-J2O"/>
                                                         <action selector="checkoutButtonTapped:" destination="LnE-Ld-bZA" eventType="touchUpInside" id="6BJ-ZW-dHf"/>
                                                         <action selector="reorderButtonTapped:" destination="lON-X1-wWW" eventType="touchUpInside" id="Gcj-Qc-TRH"/>
                                                     </connections>
@@ -3627,6 +3632,9 @@ with your details shortly.</string>
                                                 <constraint firstItem="8YN-jh-my0" firstAttribute="centerX" secondItem="3v6-8R-c1n" secondAttribute="centerX" id="muT-fo-Zsr"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="button" destination="8YN-jh-my0" id="w3z-Pp-gau"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

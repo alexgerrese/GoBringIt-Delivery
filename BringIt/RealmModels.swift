@@ -122,6 +122,7 @@ class Promotion: Object {
     dynamic var id = ""
     dynamic var restaurantID = ""
     dynamic var image: NSData?
+    dynamic var details = ""
     
     override static func primaryKey() -> String? {
         return "id"

@@ -45,6 +45,8 @@
 		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
 		116B0B731EF79DC5009CC7BB /* ApplicationSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B0B721EF79DC5009CC7BB /* ApplicationSubmittedViewController.swift */; };
 		116B0B751EF7AAF3009CC7BB /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */; };
+		116B0B781EF8E8D2009CC7BB /* PromotionsTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B0B771EF8E8D2009CC7BB /* PromotionsTitleTableViewCell.swift */; };
+		116B0B7B1EF8E8F5009CC7BB /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116B0B7A1EF8E8F5009CC7BB /* ButtonTableViewCell.swift */; };
 		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
 		117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */; };
 		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
@@ -167,6 +169,8 @@
 		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		116B0B721EF79DC5009CC7BB /* ApplicationSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSubmittedViewController.swift; sourceTree = "<group>"; };
 		116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
+		116B0B771EF8E8D2009CC7BB /* PromotionsTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionsTitleTableViewCell.swift; sourceTree = "<group>"; };
+		116B0B7A1EF8E8F5009CC7BB /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
 		117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCategoryViewController.swift; sourceTree = "<group>"; };
 		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -289,6 +293,7 @@
 				11423AF01EC89CC400011B4D /* RealmModels.swift */,
 				11158DAD1ECB63DB00A88338 /* Sign In/Sign Up */,
 				11C9EA881ECCA3E6004A4C1E /* Restaurants Home */,
+				116B0B761EF8E8A8009CC7BB /* Promotions */,
 				112D6B171ECF1BB300396BA5 /* Restaurant Detail */,
 				112D6B161ECF1BAA00396BA5 /* Menu */,
 				112D6B1C1ED058F000396BA5 /* Add To Cart */,
@@ -438,6 +443,27 @@
 			name = Menu;
 			sourceTree = "<group>";
 		};
+		116B0B761EF8E8A8009CC7BB /* Promotions */ = {
+			isa = PBXGroup;
+			children = (
+				116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */,
+				116B0B771EF8E8D2009CC7BB /* PromotionsTitleTableViewCell.swift */,
+				116B0B7A1EF8E8F5009CC7BB /* ButtonTableViewCell.swift */,
+			);
+			name = Promotions;
+			sourceTree = "<group>";
+		};
+		116B0B791EF8E8DE009CC7BB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				11BFEB551ED5944E00C2CEA8 /* PromotionCollectionViewCell.swift */,
+				11C9EA861ECCA3E1004A4C1E /* RestaurantTableViewCell.swift */,
+				11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */,
+				11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		1193E72C1CEACDDD00299D8B /* Restaurant */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,11 +492,7 @@
 			children = (
 				11C9EA841ECC9415004A4C1E /* RestaurantsHomeViewController.swift */,
 				11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */,
-				11C9EA861ECCA3E1004A4C1E /* RestaurantTableViewCell.swift */,
-				11C9EA891ECCA607004A4C1E /* MessagesTableViewCell.swift */,
-				11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */,
-				11BFEB551ED5944E00C2CEA8 /* PromotionCollectionViewCell.swift */,
-				116B0B741EF7AAF3009CC7BB /* PromotionsViewController.swift */,
+				116B0B791EF8E8DE009CC7BB /* Cells */,
 			);
 			name = "Restaurants Home";
 			sourceTree = "<group>";
@@ -890,6 +912,7 @@
 				1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */,
 				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				11158DAA1ECB25A700A88338 /* Extensions.swift in Sources */,
+				116B0B781EF8E8D2009CC7BB /* PromotionsTitleTableViewCell.swift in Sources */,
 				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
 				11C9EA8A1ECCA607004A4C1E /* MessagesTableViewCell.swift in Sources */,
 				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
@@ -915,6 +938,7 @@
 				1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */,
 				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
 				11C9EA851ECC9415004A4C1E /* RestaurantsHomeViewController.swift in Sources */,
+				116B0B7B1EF8E8F5009CC7BB /* ButtonTableViewCell.swift in Sources */,
 				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
 				11BFEB5A1ED7312300C2CEA8 /* PastOrdersViewController.swift in Sources */,
 				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
