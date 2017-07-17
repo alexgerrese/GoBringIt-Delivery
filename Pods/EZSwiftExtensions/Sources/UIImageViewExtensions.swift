@@ -6,9 +6,16 @@
 //  Copyright (c) 2015 Goktug Yilmaz. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 extension UIImageView {
+    
+    public convenience init(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat) {
+        self.init(frame: CGRect(x: x, y: y, width: w, height: h))
+    }
+    
     /// EZSwiftExtensions
     public convenience init(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat, imageName: String) {
         self.init(frame: CGRect(x: x, y: y, width: w, height: h))
@@ -126,3 +133,5 @@ extension UIImageView {
         }
     }
 }
+
+#endif

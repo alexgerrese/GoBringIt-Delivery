@@ -15,7 +15,7 @@ target 'BringIt' do
   #pod 'CVCalendar'
   pod 'GMStepper'
   pod 'Stripe'
-  pod 'CryptoSwift'
+#  pod 'CryptoSwift'
   
   # New Pods
   pod 'RealmSwift' # for local database

@@ -49,7 +49,7 @@ public class LinkingObjectsBase: NSObject, NSFastEnumeration {
 
     // MARK: Fast Enumeration
     public func countByEnumerating(with state: UnsafeMutablePointer<NSFastEnumerationState>,
-                                   objects buffer: AutoreleasingUnsafeMutablePointer<AnyObject?>!,
+                                   objects buffer: AutoreleasingUnsafeMutablePointer<AnyObject?>,
                                    count len: Int) -> Int {
         return Int(rlmResults.countByEnumerating(with: state,
                                                  objects: buffer,
@@ -448,7 +448,7 @@ internal enum LinkingObjectsBridgingMetadata {
     case uncached(property: RLMProperty)
     case cached(propertyName: String)
 
-    public var propertyName: String {
+    fileprivate var propertyName: String {
         switch self {
         case .uncached(let property):   return property.name
         case .cached(let propertyName): return propertyName
@@ -459,10 +459,10 @@ internal enum LinkingObjectsBridgingMetadata {
 // MARK: Unavailable
 
 extension LinkingObjects {
-    @available(*, unavailable, renamed : "isInvalidated")
+    @available(*, unavailable, renamed: "isInvalidated")
     public var invalidated: Bool { fatalError() }
 
-    @available(*, unavailable, renamed : "index(matching:)")
+    @available(*, unavailable, renamed: "index(matching:)")
     public func index(of predicate: NSPredicate) -> Int? { fatalError() }
 
     @available(*, unavailable, renamed: "index(matching:_:)")

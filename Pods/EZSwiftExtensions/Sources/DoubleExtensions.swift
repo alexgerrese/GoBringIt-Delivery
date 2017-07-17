@@ -6,14 +6,19 @@
 //  Copyright © 2015 Goktug Yilmaz. All rights reserved.
 //
 
-import UIKit
-
 extension Double {
     /// EZSE: Converts Double to String
     public var toString: String { return String(self) }
 
     /// EZSE: Converts Double to Int
     public var toInt: Int { return Int(self) }
+    
+    #if os(iOS) || os(tvOS)
+    
+    /// EZSE: Converts Double to CGFloat
+    public var toCGFloat: CGFloat { return CGFloat(self) }
+    
+    #endif
 }
 
 // MARK: - Deprecated 1.8

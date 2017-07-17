@@ -9,22 +9,22 @@
 import UIKit
 import IQKeyboardManagerSwift
 //import IDZSwiftCommonCrypto
-import CryptoSwift
+//import CryptoSwift
 
 extension String {
-    func sha512() -> String {
-        
+//    func sha512() -> String {
+    
         //let bytes = self.bytes
         
-        let data = self.data(using: String.Encoding.utf8)!
+//        let data = self.data(using: String.Encoding.utf8)!
         
-        let hash = data.sha512()
+//        let hash = data.sha512()
         
         //let bytes = hash.utf8.map({$0})
         
-        let hex   = hash.toHexString()
+//        let hex   = hash.toHexString()
         
-        return hex
+//        return hex
         
         
         /*let data = self.data(using: String.Encoding.utf8)!
@@ -36,7 +36,7 @@ extension String {
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         
         return hexBytes.joined(separator: "")*/
-    }
+//    }
 }
 
 class ResetPasswordViewController: UIViewController {

@@ -13,6 +13,12 @@
 #import "STPFormEncoder.h"
 #import "STPSource+Private.h"
 
+@interface STPSourceParams ()
+
+// See STPSourceParams+Private.h
+
+@end
+
 @implementation STPSourceParams
 
 @synthesize additionalAPIParameters = _additionalAPIParameters;
@@ -33,7 +39,6 @@
 }
 
 - (void)setType:(STPSourceType)type {
-
     // If setting unknown and we're already unknown, don't want to override raw value
     if (type != self.type) {
         self.rawTypeString = [STPSource stringFromType:type];
@@ -47,6 +52,33 @@
 - (NSString *)usageString {
     return [STPSource stringFromUsage:self.usage];
 }
+
+#pragma mark - Description
+
+- (NSString *)description {
+    NSArray *props = @[
+                       // Object
+                       [NSString stringWithFormat:@"%@: %p", NSStringFromClass([self class]), self],
+
+                       // Basic source details
+                       [NSString stringWithFormat:@"type = %@", ([STPSource stringFromType:self.type]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"rawTypeString = %@", self.rawTypeString],
+
+                       // Additional source details (alphabetical)
+                       [NSString stringWithFormat:@"amount = %@", self.amount],
+                       [NSString stringWithFormat:@"currency = %@", self.currency],
+                       [NSString stringWithFormat:@"flow = %@", ([STPSource stringFromFlow:self.flow]) ?: @"unknown"],
+                       [NSString stringWithFormat:@"metadata = %@", (self.metadata) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"owner = %@", (self.owner) ? @"<redacted>" : nil],
+                       [NSString stringWithFormat:@"redirect = %@", self.redirect],
+                       [NSString stringWithFormat:@"token = %@", self.token],
+                       [NSString stringWithFormat:@"usage = %@", ([STPSource stringFromUsage:self.usage]) ?: @"unknown"],
+                       ];
+
+    return [NSString stringWithFormat:@"<%@>", [props componentsJoinedByString:@"; "]];
+}
+
+#pragma mark - Constructors
 
 + (STPSourceParams *)bancontactParamsWithAmount:(NSUInteger)amount
                                            name:(NSString *)name
@@ -216,8 +248,7 @@
     return params;
 }
 
-#pragma mark - Redirect url
-
+#pragma mark - Redirect Dictionary
 
 /**
  Private setter allows for setting the name of the app in the returnURL so
@@ -266,7 +297,6 @@
     return self.redirect;
 
 }
-
 
 #pragma mark - STPFormEncodable
 

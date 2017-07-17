@@ -41,7 +41,7 @@ public extension Response {
         - statusCodes: The range of acceptable status codes.
      - throws: `MoyaError.statusCode` when others are encountered.
     */
-    public func filter(_ statusCodes: ClosedRange<Int>) throws -> Response {
+    public func filter(statusCodes: ClosedRange<Int>) throws -> Response {
         guard statusCodes.contains(statusCode) else {
             throw MoyaError.statusCode(self)
         }
@@ -55,8 +55,8 @@ public extension Response {
         - statusCode: The acceptable status code.
      - throws: `MoyaError.statusCode` when others are encountered.
     */
-    public func filter(_ statusCode: Int) throws -> Response {
-        return try filter(statusCode...statusCode)
+    public func filter(statusCode: Int) throws -> Response {
+        return try filter(statusCodes: statusCode...statusCode)
     }
 
     /**
@@ -65,7 +65,7 @@ public extension Response {
      - throws: `MoyaError.statusCode` when others are encountered.
     */
     public func filterSuccessfulStatusCodes() throws -> Response {
-        return try filter(200...299)
+        return try filter(statusCodes: 200...299)
     }
 
     /**
@@ -74,7 +74,7 @@ public extension Response {
      - throws: `MoyaError.statusCode` when others are encountered.
     */
     public func filterSuccessfulStatusAndRedirectCodes() throws -> Response {
-        return try filter(200...399)
+        return try filter(statusCodes: 200...399)
     }
 
     /// Maps data received from the signal into a UIImage.
@@ -86,7 +86,7 @@ public extension Response {
     }
 
     /// Maps data received from the signal into a JSON object.
-    func mapJSON(_ failsOnEmptyData: Bool = true) throws -> Any {
+    func mapJSON(failsOnEmptyData: Bool = true) throws -> Any {
         do {
             return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
         } catch {

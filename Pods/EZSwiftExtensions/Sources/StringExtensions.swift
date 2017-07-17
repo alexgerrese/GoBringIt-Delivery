@@ -10,7 +10,9 @@
 
 #if os(OSX)
     import AppKit
-#else
+#endif
+
+#if os(iOS) || os(tvOS)
     import UIKit
 #endif
 
@@ -395,18 +397,20 @@ extension String {
     #if os(iOS)
     
     ///EZSE: Returns hight of rendered string
-    func height(_ width: CGFloat, font: UIFont, lineBreakMode: NSLineBreakMode?) -> CGFloat {
+    public func height(_ width: CGFloat, font: UIFont, lineBreakMode: NSLineBreakMode?) -> CGFloat {
         var attrib: [String: AnyObject] = [NSFontAttributeName: font]
         if lineBreakMode != nil {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineBreakMode = lineBreakMode!
             attrib.updateValue(paragraphStyle, forKey: NSParagraphStyleAttributeName)
         }
-        let size = CGSize(width: width, height: CGFloat(DBL_MAX))
+        let size = CGSize(width: width, height: CGFloat(Double.greatestFiniteMagnitude))
         return ceil((self as NSString).boundingRect(with: size, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:attrib, context: nil).height)
     }
     
     #endif
+    
+    #if os(iOS) || os(tvOS)
     
     ///EZSE: Returns NSAttributedString
     public func color(_ color: UIColor) -> NSAttributedString {
@@ -433,6 +437,8 @@ extension String {
         }
         return attrText
     }
+    
+    #endif
     
     /// EZSE: Checks if String contains Emoji
     public func includesEmoji() -> Bool {

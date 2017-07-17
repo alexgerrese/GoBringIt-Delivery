@@ -16,10 +16,12 @@
 #import "NSDictionary+Stripe.h"
 #import "NSMutableURLRequest+Stripe.h"
 #import "NSString+Stripe.h"
+#import "NSURLComponents+Stripe.h"
 #import "PKPayment+Stripe.h"
 #import "PKPaymentAuthorizationViewController+Stripe_Blocks.h"
 #import "STPAPIClient+ApplePay.h"
 #import "STPAspects.h"
+#import "StripeError.h"
 #import "UIBarButtonItem+Stripe.h"
 #import "UIImage+Stripe.h"
 #import "UINavigationBar+Stripe_Theme.h"
@@ -35,27 +37,29 @@
 @implementation STPCategoryLoader
 
 + (void)loadCategories {
-    linkPKPaymentCategory();
-    linkNSDictionaryCategory();
-    linkSTPAPIClientApplePayCategory();
-    linkNSStringCategory();
-    linkNSMutableURLRequestCategory();
-    linkUINavigationBarThemeCategory();
-    linkUIBarButtonItemCategory();
-    linkPKPaymentAuthorizationViewControllerBlocksCategory();
-    linkUIToolbarInputAccessoryCategory();
-    linkUITableViewCellBordersCategory();
-    linkUIViewControllerPromisesCategory();
-    linkUIViewControllerNavigationItemProxyCategory();
-    linkNSArrayBoundSafeCategory();
-    linkUIViewControllerParentViewControllerCategory();
-    linkUINavigationControllerCompletionCategory();
-    linkUIViewFirstResponderCategory();
-    linkUIViewControllerKeyboardAvoidingCategory();
-    linkNSDecimalNumberCurrencyCategory();
-    linkNSBundleAppNameCategory();
     linkAspectsCategory();
+    linkNSArrayBoundSafeCategory();
+    linkNSBundleAppNameCategory();
+    linkNSDecimalNumberCurrencyCategory();
+    linkNSDictionaryCategory();
+    linkNSErrorCategory();
+    linkNSMutableURLRequestCategory();
+    linkNSStringCategory();
+    linkNSURLComponentsCategory();
+    linkPKPaymentAuthorizationViewControllerBlocksCategory();
+    linkPKPaymentCategory();
+    linkSTPAPIClientApplePayCategory();
+    linkUIBarButtonItemCategory();
     linkUIImageCategory();
+    linkUINavigationBarThemeCategory();
+    linkUINavigationControllerCompletionCategory();
+    linkUITableViewCellBordersCategory();
+    linkUIToolbarInputAccessoryCategory();
+    linkUIViewControllerKeyboardAvoidingCategory();
+    linkUIViewControllerNavigationItemProxyCategory();
+    linkUIViewControllerParentViewControllerCategory();
+    linkUIViewControllerPromisesCategory();
+    linkUIViewFirstResponderCategory();
 }
 
 @end

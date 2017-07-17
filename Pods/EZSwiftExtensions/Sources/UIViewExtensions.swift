@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Goktug Yilmaz. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 // MARK: Custom UIView Initilizers
@@ -31,8 +33,8 @@ extension UIView {
 
     /// EZSwiftExtensions, add multiple subviews
     public func addSubviews(_ views: [UIView]) {
-        views.forEach { eachView in
-            self.addSubview(eachView)
+        views.forEach { [weak self] eachView in
+            self?.addSubview(eachView)
         }
     }
 
@@ -564,10 +566,18 @@ extension UIView {
         mask.path = path.cgPath
         self.layer.mask = mask
     }
-
-    /// EZSwiftExtensions
-    public func roundView() {
-        self.layer.cornerRadius = min(self.frame.size.height, self.frame.size.width) / 2
+    
+    /// EZSwiftExtensions - Mask square/rectangle UIView with a circular/capsule cover, with a border of desired color and width around it
+    public func roundView(withBorderColor color: UIColor? = nil, withBorderWidth width: CGFloat? = nil) {
+        self.setCornerRadius(radius: min(self.frame.size.height, self.frame.size.width) / 2)
+        self.layer.borderWidth = width ?? 0
+        self.layer.borderColor = color?.cgColor ?? UIColor.clear.cgColor
+    }
+    
+    /// EZSwiftExtensions - Remove all masking around UIView
+    public func nakedView() {
+        self.layer.mask = nil
+        self.layer.borderWidth = 0
     }
 }
 
@@ -619,3 +629,5 @@ extension UIView {
         }, completion: completion)
     }
 }
+
+#endif

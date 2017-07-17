@@ -50,12 +50,8 @@ class PrimaryAddressVC: UIViewController {
         // Set title
         self.title = "Sign Up"
 
-        // Setup text field and button UI
-        campusView.layer.cornerRadius = Constants.cornerRadius
-        streetAddressView.layer.cornerRadius = Constants.cornerRadius
-        roomNumberView.layer.cornerRadius = Constants.cornerRadius
-        saveButton.layer.cornerRadius = Constants.cornerRadius
-        myActivityIndicator.isHidden = true
+        // Setup UI
+        setupUI()
         
         // Set up targets for text fields
         campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -70,6 +66,20 @@ class PrimaryAddressVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupUI() {
+        
+        // Set title
+        self.title = "Sign Up"
+        
+        // Setup text field and button UI
+        campusView.layer.cornerRadius = Constants.cornerRadius
+        streetAddressView.layer.cornerRadius = Constants.cornerRadius
+        roomNumberView.layer.cornerRadius = Constants.cornerRadius
+        saveButton.layer.cornerRadius = Constants.cornerRadius
+        myActivityIndicator.isHidden = true
+        
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {

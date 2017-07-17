@@ -52,6 +52,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     var restaurantsIndex = -1
     var alreadyDisplayedCollectionView = false
     
+    var selectedPromotionID = ""
+    
     let defaults = UserDefaults.standard // Initialize UserDefaults
     let realm = try! Realm() // Initialize Realm
 
@@ -293,12 +295,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == promotionsIndex {
+        if section == promotionsIndex || section == alertMessageIndex {
             return 1
         } else if section == restaurantsIndex {
             return restaurants.count
         }
-        return 1
+        return 0
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -353,8 +355,15 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             
             cell.name.text = restaurant.name
             cell.cuisineType.text = restaurant.cuisineType
-            cell.openHours.text = self.getOpenHoursString(data: restaurant.restaurantHours)
             cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+            
+            let todaysHours = self.getOpenHoursString(data: restaurant.restaurantHours)
+            if (self.isRestaurantOpen(data: todaysHours) || todaysHours == "Data unavailable") {
+                cell.openHours.text = todaysHours
+            } else {
+                cell.openHours.text = "Closed"
+            }
+            
             
             return cell
         }
@@ -378,7 +387,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == restaurantsIndex {
-            return "Open Restaurants"
+            return "Restaurants"
         }
         return ""
         
@@ -408,7 +417,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         myTableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.section == promotionsIndex {
-            // Implement
+            performSegue(withIdentifier: "toPromotionVC", sender: self)
         } else if indexPath.section == restaurantsIndex {
             performSegue(withIdentifier: "toRestaurantDetail", sender: self)
         }
@@ -423,6 +432,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             let nav = segue.destination as! UINavigationController
             let detailVC = nav.topViewController as! RestaurantDetailViewController
             detailVC.restaurantID = selectedRestaurantID
+        } else if segue.identifier == "toPromotionVC" {
+            let promotionVC = segue.destination as! PromotionsViewController
+            promotionVC.passedPromotionID = selectedPromotionID
         }
         
     }
@@ -442,25 +454,37 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "promotionCell", for: indexPath) as! PromotionCollectionViewCell
         
-        if promotions.count > 2 {
-            cell.promotionImage.image = UIImage(data: promotions[indexPath.row % promotions.count].image! as Data)
-        } else {
-            cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
-        }
+        // TO-DO: UNCOMMENT FOR SHADOW
+        
+//        cell.promotionImage.layer.shadowOffset = CGSize(width: 0, height: 10)
+//        cell.promotionImage.layer.shadowRadius = 5
+//        cell.promotionImage.layer.shadowColor = UIColor.black.cgColor
+//        cell.promotionImage.layer.shadowOpacity = 0.25
+//        cell.promotionImage.layer.masksToBounds = false
+        
+        cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
+        
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if promotions[indexPath.row % promotions.count].restaurantID != "" {
-            selectedRestaurantID = promotions[indexPath.row % promotions.count].restaurantID
-            performSegue(withIdentifier: "toRestaurantDetail", sender: self)
-        }
-    }
+    // TO-DO: Finish implementing this feature
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        
+//        let restaurantID = promotions[indexPath.row % promotions.count].restaurantID
+//        selectedPromotionID = promotions[indexPath.row].id
+//        
+//        if restaurantID != "0" && restaurantID != nil {
+//            
+//            selectedRestaurantID = promotions[indexPath.row % promotions.count].restaurantID
+//            performSegue(withIdentifier: "toPromotionVC", sender: self)
+////            performSegue(withIdentifier: "toRestaurantDetail", sender: self)
+//        }
+//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 300, height: 150)
+        return CGSize(width: 300, height: 175)
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

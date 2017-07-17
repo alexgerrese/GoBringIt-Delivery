@@ -9,11 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>CryptoSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>EZSwiftExtensions.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,22 +82,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>09364D07138794106087C58670C7492D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0FAF470EFAEC7B0AABA42651036DF0A3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>1215771836B84E9F9899950098D2FF80</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4DC059E04CBA98AEDDB5C34E02D551E9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -112,12 +92,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>57B275BF6168E38703261D48966BA1BA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5ED084A22C47811AFAFF1AB6752A1D1B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6BB1C1403B2419F911818DA8413FDA07</key>
+		<key>6120AD596E795B20B4F80EFCC982DA65</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -127,27 +112,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7198ADA7BE37B16CF92BA60C60146CBF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>746890CEC15C13175A95E050BEC9544B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7F59B739498B7E269C4419ABF9048607</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>88B370A4241B94ECCE40C20405E2EBF9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8B053C2B062BFD6489B76A4530938387</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -157,12 +127,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AF3A8DAD4D33028BCE2CB081986F8815</key>
+		<key>906831226C77780BFF0EE1E03B86A703</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E43D1DCAB8788C6258C31BAF3522E64B</key>
+		<key>BAEC5E7E127E8485F0E50F1E93BF286F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C235F77E101E742652CCF98FFDFA5182</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C6740CA5A948F91AD67564644C659DC4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D887599857FC1898C30201DFD443E397</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE093C233F1CCAABDB49129FFDFCF960</key>
 		<dict>
 			<key>primary</key>
 			<true/>

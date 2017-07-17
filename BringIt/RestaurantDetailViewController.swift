@@ -30,6 +30,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     var cart = Order()
     var menuCategories: Results<MenuCategory>!
     var selectedMenuCategoryID = ""
+    var selectedMenuItemID = ""
     
     // For collection view
     var featuredDishes = List<MenuItem>()
@@ -113,10 +114,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     func setupTableView() {
         
         // Set tableView cells to custom height and automatically resize if needed
-        self.myTableView.estimatedRowHeight = 150
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
-        self.myTableView.setNeedsLayout()
-        self.myTableView.layoutIfNeeded()
+//        self.myTableView.estimatedRowHeight = 150
+//        self.myTableView.rowHeight = UITableViewAutomaticDimension
+//        self.myTableView.setNeedsLayout()
+//        self.myTableView.layoutIfNeeded()
     }
     
     func checkCart() {
@@ -304,6 +305,13 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             let nav = segue.destination as! UINavigationController
             let checkoutVC = nav.topViewController as! CheckoutVC
             checkoutVC.restaurantID = restaurantID
+        } else if segue.identifier == "toAddToCartFromRestaurantDetail" {
+            
+            let nav = segue.destination as! UINavigationController
+            let addToCartVC = nav.topViewController as! AddToCartVC
+            addToCartVC.menuItemID = selectedMenuItemID
+            addToCartVC.restaurantID = restaurantID
+
         }
     }
     
@@ -337,6 +345,13 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 200, height: 147)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        selectedMenuItemID = featuredDishes[indexPath.row].id
+        performSegue(withIdentifier: "toAddToCartFromRestaurantDetail", sender: self)
+
     }
 
 }

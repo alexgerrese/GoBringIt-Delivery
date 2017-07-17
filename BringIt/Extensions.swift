@@ -307,5 +307,48 @@ extension UIViewController {
         return "Data unavailable"
     }
     
+    func isRestaurantOpen(data: String) -> Bool {
+        
+        // Return false if data is not in the right format or was unavailable
+        if data == "Data unavailable" {
+            return false
+        }
+        
+        // Separate into open and close times
+        var openHours = data.components(separatedBy: "-")
+        
+        // Trim am and pm
+        for i in 0..<openHours.count {
+            openHours[i] = openHours[i].replacingOccurrences(of: "am", with: "")
+            openHours[i] = openHours[i].replacingOccurrences(of: "pm", with: "")
+        }
+        
+        // Separate into hours and minutes
+        var open = openHours[0].components(separatedBy: ":")
+        var closed = openHours[1].components(separatedBy: ":")
+        
+        let calendar = Calendar.current
+        let now = Date()
+        let openTime = calendar.date(
+            bySettingHour: Int(open[0])!,
+            minute: Int(open[1])!,
+            second: 0,
+            of: now)!
+        
+        let closeTime = calendar.date(
+            bySettingHour: Int(closed[0])!,
+            minute: Int(closed[1])!,
+            second: 0,
+            of: now)!
+        
+        if now >= openTime &&
+            now <= closeTime {
+            return true
+        }
+        
+        return false
+    }
+    
+    
 }
 

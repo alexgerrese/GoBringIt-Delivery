@@ -105,6 +105,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         print("Checking if logged in")
         
         if comingFromSignIn == true {
+            print("Came from sign in, dismissing.")
+            comingFromSignIn = false
             self.dismiss(animated: true, completion: nil)
         }
         
@@ -558,6 +560,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             orderPlacedVC.ETA = formatter.string(from: lowerETA! as Date) + "-" + formatter.string(from: upperETA as! Date)
             
             print("Finished preparing for toOrderPlaced segue")
+        } else if segue.identifier == "toSignIn" {
+            let nav = segue.destination as! UINavigationController
+            let signInVC = nav.topViewController as! SignInVC
+            signInVC.comingFromCheckout = true
         }
 
     }
