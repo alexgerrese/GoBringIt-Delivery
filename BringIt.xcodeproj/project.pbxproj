@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		021CEA1AE426967542CFE0C9 /* Pods_BringIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */; };
-		110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */; };
 		11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF51CE68A83003D82FB /* AppDelegate.swift */; };
-		11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11021FF91CE68A83003D82FB /* ScheduleViewController.swift */; };
 		11021FFD1CE68A83003D82FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11021FFB1CE68A83003D82FB /* Main.storyboard */; };
 		11021FFF1CE68A83003D82FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11021FFE1CE68A83003D82FB /* Assets.xcassets */; };
 		110220021CE68A83003D82FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 110220001CE68A83003D82FB /* LaunchScreen.storyboard */; };
@@ -20,8 +18,6 @@
 		11158DAA1ECB25A700A88338 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DA91ECB25A700A88338 /* Extensions.swift */; };
 		11158DAC1ECB63D600A88338 /* AccountDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */; };
 		11158DAF1ECB657100A88338 /* PrimaryAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */; };
-		11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */; };
-		11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */; };
 		112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */; };
 		112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */; };
 		112D6B191ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */; };
@@ -34,22 +30,12 @@
 		1132207F1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132207E1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift */; };
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
 		114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */; };
-		114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */; };
-		114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */; };
-		1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */; };
-		115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */; };
-		115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */; };
-		115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */; };
-		115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */; };
-		115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */; };
-		117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */; };
 		117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */; };
 		1183F0061EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F0051EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift */; };
 		1183F0081EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F0071EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift */; };
 		1183F00B1EF8F97000FFCD02 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00A1EF8F97000FFCD02 /* PromotionsViewController.swift */; };
 		1183F00D1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00C1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift */; };
 		1183F00F1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */; };
-		1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */; };
 		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
 		1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */; };
 		1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0D1EC5149F00864200 /* Brandon_med.otf */; };
@@ -74,22 +60,8 @@
 		11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */; };
 		11C9EA8E1ECDB4BE004A4C1E /* CreateRestaurantModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */; };
 		11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */; };
-		11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */; };
-		11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */; };
-		11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */; };
 		11DBC59C1EE4C6FA0000A600 /* BecomeADriverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DBC59B1EE4C6FA0000A600 /* BecomeADriverVC.swift */; };
-		11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */; };
-		11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */; };
-		11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */; };
-		11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */; };
 		11ED77311EE1BC360086F4B1 /* PastOrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ED77301EE1BC360086F4B1 /* PastOrderDetailViewController.swift */; };
-		11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFA91D52C10F003290DA /* StatsViewController.swift */; };
-		11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */; };
-		11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */; };
-		11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */; };
-		11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */; };
-		11F6DE471CF6CF1A00662C20 /* OldCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE461CF6CF1A00662C20 /* OldCheckoutViewController.swift */; };
-		11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */; };
 		2F60BF5113DA47831CD710EA /* Pods_BringItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */; };
 		545F366974300B6D9693022C /* Pods_BringItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AF76C7A4789AA81A054551 /* Pods_BringItTests.framework */; };
 /* End PBXBuildFile section */
@@ -125,10 +97,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayingWithViewController.swift; sourceTree = "<group>"; };
 		11021FF21CE68A83003D82FB /* BringIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BringIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11021FF51CE68A83003D82FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		11021FF91CE68A83003D82FB /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		11021FFC1CE68A83003D82FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		11021FFE1CE68A83003D82FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		110220011CE68A83003D82FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -144,8 +114,6 @@
 		11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailsVC.swift; sourceTree = "<group>"; };
 		11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryAddressVC.swift; sourceTree = "<group>"; };
 		11210CBD1D257EA400B8FD9E /* B68UIFloatLabelTextField.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = B68UIFloatLabelTextField.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/B68UIFloatLabelTextField/B68UIFloatLabelTextField.framework"; sourceTree = "<group>"; };
-		11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliverToPayingWithTableViewController.swift; sourceTree = "<group>"; };
-		11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScheduleDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
 		112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToCartVC.swift; sourceTree = "<group>"; };
 		112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
@@ -158,24 +126,13 @@
 		1132207E1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAccountInfoViewController.swift; sourceTree = "<group>"; };
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedVC.swift; sourceTree = "<group>"; };
-		114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ResetPasswordViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BecomeADriverViewController.swift; sourceTree = "<group>"; };
-		115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
-		115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BringItHomeViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BringItHomeTableViewCell.swift; sourceTree = "<group>"; };
-		115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
-		115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
-		1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThanksTableViewCell.swift; sourceTree = "<group>"; };
 		117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCategoryViewController.swift; sourceTree = "<group>"; };
 		1183F0051EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationSubmittedViewController.swift; sourceTree = "<group>"; };
 		1183F0071EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitDriverApplicationViewController.swift; sourceTree = "<group>"; };
 		1183F00A1EF8F97000FFCD02 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		1183F00C1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsTitleTableViewCell.swift; sourceTree = "<group>"; };
-		1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BringIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med_it.otf; sourceTree = "<group>"; };
 		1198FA0D1EC5149F00864200 /* Brandon_med.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med.otf; sourceTree = "<group>"; };
 		1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_reg_it.otf; sourceTree = "<group>"; };
@@ -199,9 +156,6 @@
 		11C9EA8B1ECCA67D004A4C1E /* PromotionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsTableViewCell.swift; sourceTree = "<group>"; };
 		11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRestaurantModels.swift; sourceTree = "<group>"; };
 		11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
-		11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RestaurantViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
-		11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantPageViewController.swift; sourceTree = "<group>"; };
 		11D4D0DF1D5D019A00E19D9C /* CVCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CVCalendar.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/CVCalendar/CVCalendar.framework"; sourceTree = "<group>"; };
 		11D4D0E11D5D019E00E19D9C /* DLRadioButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DLRadioButton.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/DLRadioButton/DLRadioButton.framework"; sourceTree = "<group>"; };
 		11D4D0E31D5D01A100E19D9C /* EZSwiftExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EZSwiftExtensions.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/EZSwiftExtensions/EZSwiftExtensions.framework"; sourceTree = "<group>"; };
@@ -210,18 +164,7 @@
 		11D4D0E91D5D01AD00E19D9C /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"; sourceTree = "<group>"; };
 		11D4D0EB1D5D01B300E19D9C /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stripe.framework; path = "../../../Library/Developer/Xcode/DerivedData/BringIt-eikmfiylvevalwhisvffejbvrpvv/Build/Products/Debug-iphonesimulator/Stripe/Stripe.framework"; sourceTree = "<group>"; };
 		11DBC59B1EE4C6FA0000A600 /* BecomeADriverVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BecomeADriverVC.swift; sourceTree = "<group>"; };
-		11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressViewController.swift; sourceTree = "<group>"; };
-		11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDetailTableViewCell.swift; sourceTree = "<group>"; };
-		11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
-		11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderPriceTableViewCell.swift; sourceTree = "<group>"; };
 		11ED77301EE1BC360086F4B1 /* PastOrderDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastOrderDetailViewController.swift; sourceTree = "<group>"; };
-		11F5FFA91D52C10F003290DA /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
-		11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComingSoonViewController.swift; sourceTree = "<group>"; };
-		11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AddToOrderViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderTableViewCell.swift; sourceTree = "<group>"; };
-		11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToOrderSpecialInstructionsTableViewCell.swift; sourceTree = "<group>"; };
-		11F6DE461CF6CF1A00662C20 /* OldCheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OldCheckoutViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutTableViewCell.swift; sourceTree = "<group>"; };
 		360769A0669582F28FBB8124 /* Pods-BringItUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3CAE4061D58832B07C4589A3 /* Pods_BringIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B75AAA094A14663C6500A /* Pods_BringItUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -301,7 +244,6 @@
 				11ED77321EE1BC3E0086F4B1 /* Past Orders */,
 				11ED77331EE1BC4F0086F4B1 /* Settings */,
 				11021FFB1CE68A83003D82FB /* Main.storyboard */,
-				1183F0041EF8F6E000FFCD02 /* Old Version */,
 				1198FA141EC514AA00864200 /* Fonts */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
@@ -337,27 +279,6 @@
 				11158DAE1ECB657100A88338 /* PrimaryAddressVC.swift */,
 			);
 			name = "Sign In/Sign Up";
-			sourceTree = "<group>";
-		};
-		11210CC51D26B86800B8FD9E /* Calendar */ = {
-			isa = PBXGroup;
-			children = (
-				11021FF91CE68A83003D82FB /* ScheduleViewController.swift */,
-				115B7E641D0D2CC600B81535 /* ScheduleTableViewCell.swift */,
-				11210CC31D26B85900B8FD9E /* ScheduleDetailViewController.swift */,
-				11DF69A01D507B7400E7A565 /* ScheduleDetailTableViewCell.swift */,
-			);
-			name = Calendar;
-			sourceTree = "<group>";
-		};
-		11210CC81D26C8C200B8FD9E /* Deliver To/Paying With */ = {
-			isa = PBXGroup;
-			children = (
-				11210CBF1D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift */,
-				110200BE1D6BEAA200832D4D /* PayingWithViewController.swift */,
-				11DF699E1D4F95F500E7A565 /* NewAddressViewController.swift */,
-			);
-			name = "Deliver To/Paying With";
 			sourceTree = "<group>";
 		};
 		112D6B161ECF1BAA00396BA5 /* Menu */ = {
@@ -402,55 +323,6 @@
 			name = Checkout;
 			sourceTree = "<group>";
 		};
-		115ECC3B1CEAB3C40053E03F /* Bring It */ = {
-			isa = PBXGroup;
-			children = (
-				115ECC411CEABA5F0053E03F /* Home */,
-				1193E72C1CEACDDD00299D8B /* Restaurant */,
-				115ECC441CEABA780053E03F /* Menu */,
-				11F6DE421CF6BD9C00662C20 /* Add To Order */,
-				11F6DE531CFD2F3D00662C20 /* Checkout */,
-			);
-			name = "Bring It";
-			sourceTree = "<group>";
-		};
-		115ECC3C1CEAB3CC0053E03F /* Schedule */ = {
-			isa = PBXGroup;
-			children = (
-				11210CC51D26B86800B8FD9E /* Calendar */,
-			);
-			name = Schedule;
-			sourceTree = "<group>";
-		};
-		115ECC411CEABA5F0053E03F /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				115ECC341CEA877B0053E03F /* BringItHomeViewController.swift */,
-				115ECC391CEAAEBB0053E03F /* BringItHomeTableViewCell.swift */,
-				1177638F1D652E6700FF96D9 /* ThanksTableViewCell.swift */,
-			);
-			name = Home;
-			sourceTree = "<group>";
-		};
-		115ECC441CEABA780053E03F /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				115ECC3F1CEABA560053E03F /* MenuTableViewController.swift */,
-				115ECC421CEABA6F0053E03F /* MenuTableViewCell.swift */,
-			);
-			name = Menu;
-			sourceTree = "<group>";
-		};
-		1183F0041EF8F6E000FFCD02 /* Old Version */ = {
-			isa = PBXGroup;
-			children = (
-				115ECC3B1CEAB3C40053E03F /* Bring It */,
-				115ECC3C1CEAB3CC0053E03F /* Schedule */,
-				11F6DE451CF6CF0600662C20 /* Settings */,
-			);
-			name = "Old Version";
-			sourceTree = "<group>";
-		};
 		1183F0091EF8F8A400FFCD02 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,16 +342,6 @@
 				1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */,
 			);
 			name = Promotions;
-			sourceTree = "<group>";
-		};
-		1193E72C1CEACDDD00299D8B /* Restaurant */ = {
-			isa = PBXGroup;
-			children = (
-				11D4D0D21D5AE90700E19D9C /* RestaurantViewController.swift */,
-				11D4D0D61D5B6C8A00E19D9C /* RestaurantPageViewController.swift */,
-				11D4D0D41D5AECD000E19D9C /* RestaurantTableViewController.swift */,
-			);
-			name = Restaurant;
 			sourceTree = "<group>";
 		};
 		1198FA141EC514AA00864200 /* Fonts */ = {
@@ -528,42 +390,6 @@
 				1183F0071EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift */,
 			);
 			name = Settings;
-			sourceTree = "<group>";
-		};
-		11F6DE421CF6BD9C00662C20 /* Add To Order */ = {
-			isa = PBXGroup;
-			children = (
-				11F6DE3E1CF693C400662C20 /* AddToOrderViewController.swift */,
-				11F6DE401CF6BD8F00662C20 /* AddToOrderTableViewCell.swift */,
-				11F6DE431CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift */,
-				11E08BC91D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift */,
-				11E08BC71D3E8E8200EB3E00 /* HeaderTableViewCell.swift */,
-			);
-			name = "Add To Order";
-			sourceTree = "<group>";
-		};
-		11F6DE451CF6CF0600662C20 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				1185B9571CF55E1100EBF1CF /* SettingsViewController.swift */,
-				114FC70F1D4402AB00DB5824 /* ContactInfoViewController.swift */,
-				114FC7111D440A4300DB5824 /* ResetPasswordViewController.swift */,
-				11F5FFA91D52C10F003290DA /* StatsViewController.swift */,
-				11F5FFAB1D52C50C003290DA /* ComingSoonViewController.swift */,
-				1152BF281D5689E200E50238 /* BecomeADriverViewController.swift */,
-				1195902E1DD110A8002A7B8E /* BringIt-Bridging-Header.h */,
-			);
-			name = Settings;
-			sourceTree = "<group>";
-		};
-		11F6DE531CFD2F3D00662C20 /* Checkout */ = {
-			isa = PBXGroup;
-			children = (
-				11F6DE461CF6CF1A00662C20 /* OldCheckoutViewController.swift */,
-				11F6DE511CFD2F3700662C20 /* CheckoutTableViewCell.swift */,
-				11210CC81D26C8C200B8FD9E /* Deliver To/Paying With */,
-			);
-			name = Checkout;
 			sourceTree = "<group>";
 		};
 		172FBED42052A1B1057FB38A /* Frameworks */ = {
@@ -888,48 +714,27 @@
 			files = (
 				112D6B271ED19BEE00396BA5 /* PaymentMethodsVC.swift in Sources */,
 				1132207F1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift in Sources */,
-				11D4D0D31D5AE90700E19D9C /* RestaurantViewController.swift in Sources */,
-				115ECC431CEABA6F0053E03F /* MenuTableViewCell.swift in Sources */,
 				11C9EA8C1ECCA67D004A4C1E /* PromotionsTableViewCell.swift in Sources */,
 				11ED77311EE1BC360086F4B1 /* PastOrderDetailViewController.swift in Sources */,
 				112D6B251ED1984500396BA5 /* NewAddressVC.swift in Sources */,
 				112D6B201ED08EC400396BA5 /* OrderTableViewCell.swift in Sources */,
 				112D6B131ECE4B7A00396BA5 /* MenuItemTableViewCell.swift in Sources */,
 				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
-				115ECC401CEABA560053E03F /* MenuTableViewController.swift in Sources */,
 				114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */,
 				1183F00B1EF8F97000FFCD02 /* PromotionsViewController.swift in Sources */,
-				117763901D652E6700FF96D9 /* ThanksTableViewCell.swift in Sources */,
-				114FC7101D4402AB00DB5824 /* ContactInfoViewController.swift in Sources */,
 				11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */,
-				11F6DE441CF6C51600662C20 /* AddToOrderSpecialInstructionsTableViewCell.swift in Sources */,
-				115B7E651D0D2CC600B81535 /* ScheduleTableViewCell.swift in Sources */,
 				112D6B191ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift in Sources */,
-				11E08BCA1D3ECAC200EB3E00 /* AddToOrderPriceTableViewCell.swift in Sources */,
 				112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */,
-				11F6DE3F1CF693C400662C20 /* AddToOrderViewController.swift in Sources */,
 				11158DA81ECB1B4700A88338 /* Constants.swift in Sources */,
-				11DF699F1D4F95F500E7A565 /* NewAddressViewController.swift in Sources */,
-				11210CC41D26B85900B8FD9E /* ScheduleDetailViewController.swift in Sources */,
-				11F6DE411CF6BD8F00662C20 /* AddToOrderTableViewCell.swift in Sources */,
 				11DBC59C1EE4C6FA0000A600 /* BecomeADriverVC.swift in Sources */,
 				11A25F931ED3174C0051324B /* SendEmails.swift in Sources */,
 				11BFEB521ED4711B00C2CEA8 /* FeaturedDishTableViewCell.swift in Sources */,
 				112D6B231ED0D40E00396BA5 /* AddressesViewController.swift in Sources */,
 				1198FA1A1EC7C9D400864200 /* SignInVC.swift in Sources */,
-				11F5FFAA1D52C10F003290DA /* StatsViewController.swift in Sources */,
 				11158DAA1ECB25A700A88338 /* Extensions.swift in Sources */,
-				1152BF291D5689E200E50238 /* BecomeADriverViewController.swift in Sources */,
 				11C9EA8A1ECCA607004A4C1E /* MessagesTableViewCell.swift in Sources */,
-				115ECC351CEA877B0053E03F /* BringItHomeViewController.swift in Sources */,
-				11021FFA1CE68A83003D82FB /* ScheduleViewController.swift in Sources */,
-				110200BF1D6BEAA200832D4D /* PayingWithViewController.swift in Sources */,
-				115ECC3A1CEAAEBB0053E03F /* BringItHomeTableViewCell.swift in Sources */,
 				11C9EA8E1ECDB4BE004A4C1E /* CreateRestaurantModels.swift in Sources */,
-				11210CC01D26713000B8FD9E /* DeliverToPayingWithTableViewController.swift in Sources */,
-				11E08BC81D3E8E8200EB3E00 /* HeaderTableViewCell.swift in Sources */,
 				1183F0081EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift in Sources */,
-				11D4D0D71D5B6C8A00E19D9C /* RestaurantPageViewController.swift in Sources */,
 				11158DAC1ECB63D600A88338 /* AccountDetailsVC.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
 				11BFEB561ED5944E00C2CEA8 /* PromotionCollectionViewCell.swift in Sources */,
@@ -941,21 +746,14 @@
 				11BFEB581ED72A1300C2CEA8 /* BannerTableViewCell.swift in Sources */,
 				11BFEB5C1ED732FC00C2CEA8 /* PastOrderTableViewCell.swift in Sources */,
 				118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */,
-				1185B9581CF55E1100EBF1CF /* SettingsViewController.swift in Sources */,
 				11158DAF1ECB657100A88338 /* PrimaryAddressVC.swift in Sources */,
 				1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */,
-				11DF69A11D507B7400E7A565 /* ScheduleDetailTableViewCell.swift in Sources */,
 				11C9EA851ECC9415004A4C1E /* RestaurantsHomeViewController.swift in Sources */,
-				11F5FFAC1D52C50C003290DA /* ComingSoonViewController.swift in Sources */,
 				11BFEB5A1ED7312300C2CEA8 /* PastOrdersViewController.swift in Sources */,
-				11D4D0D51D5AECD000E19D9C /* RestaurantTableViewController.swift in Sources */,
-				11F6DE471CF6CF1A00662C20 /* OldCheckoutViewController.swift in Sources */,
 				1183F00F1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift in Sources */,
 				117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */,
 				11A25F951ED317820051324B /* PlaceOrder.swift in Sources */,
-				114FC7121D440A4300DB5824 /* ResetPasswordViewController.swift in Sources */,
 				112D6B1E1ED0591E00396BA5 /* CheckoutVC.swift in Sources */,
-				11F6DE521CFD2F3700662C20 /* CheckoutTableViewCell.swift in Sources */,
 				11BFEB601ED7565B00C2CEA8 /* SettingsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
