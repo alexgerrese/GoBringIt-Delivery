@@ -210,7 +210,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
             cell.delegate = self
             cell.restaurantName.text = restaurant.name
-            cell.cuisineAndHours.text = restaurant.cuisineType + " • " + getOpenHoursString(data: restaurant.restaurantHours)
+            cell.cuisineAndHours.text = restaurant.cuisineType + " • " + restaurant.restaurantHours.getOpenHoursString()
             cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
             
             return cell
@@ -282,7 +282,11 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         if indexPath.section == callRestaurantIndex {
             let url = URL(string: "telprompt://" + restaurant.phoneNumber)
-            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url!)
+            }
         } else if indexPath.section == dishesIndex {
             
             performSegue(withIdentifier: "toMenuCategory", sender: self)

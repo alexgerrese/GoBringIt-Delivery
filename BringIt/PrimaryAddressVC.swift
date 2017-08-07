@@ -31,7 +31,7 @@ class PrimaryAddressVC: UIViewController {
     
     // MARK: - Passed Variables
     
-    let defaultButtonText = "Save and continue"
+    let defaultButtonText = "Save and Create Account"
     var returnKeyHandler: IQKeyboardReturnKeyHandler?
     
     var fullName = ""
@@ -116,8 +116,12 @@ class PrimaryAddressVC: UIViewController {
                         // Set up UserDefaults
                         self.defaults.set(true, forKey: "loggedIn")
                         
+                        // Shorten user ID to 32 characters (database limitation)
+                        let uid = (retrievedUser["uid"] as? String)!
+                        let index = uid.index(uid.startIndex, offsetBy: 32)
+                        
                         // Create new user
-                        self.createNewUser(id: (retrievedUser["uid"] as? String)!, fullName: self.fullName, emailAddress: self.emailAddress, password: self.password, phoneNumber: self.phoneNumber, campus: self.campus.text!, streetAddress: self.streetAddress.text!, roomNumber: self.roomNumber.text!)
+                        self.createNewUser(id: uid.substring(to: index), fullName: self.fullName, emailAddress: self.emailAddress, password: self.password, phoneNumber: self.phoneNumber, campus: self.campus.text!, streetAddress: self.streetAddress.text!, roomNumber: self.roomNumber.text!)
                         
                         print("User created. About to dismiss.")
                         
@@ -153,6 +157,7 @@ class PrimaryAddressVC: UIViewController {
         newUser.isFirstOrder = true
         
         let newAddress = DeliveryAddress()
+        newAddress.isCurrent = true
         newAddress.userID = newUser.id
         newAddress.campus = campus
         newAddress.streetAddress = streetAddress

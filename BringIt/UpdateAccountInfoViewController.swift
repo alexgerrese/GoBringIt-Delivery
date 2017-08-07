@@ -94,7 +94,6 @@ class UpdateAccountInfoViewController: UIViewController, UITextFieldDelegate {
                 do {
                     
                     print("Status code: \(moyaResponse.statusCode)")
-                    try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
                     

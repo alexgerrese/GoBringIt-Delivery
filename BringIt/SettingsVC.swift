@@ -194,11 +194,19 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else if section.title == "About Us" {
             if cellName == "Campus Enterprises" {
                 if let url = URL(string: "https://www.campusenterprises.org") {
-                    UIApplication.shared.open(url, options: [:])
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: [:])
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
                 }
             } else if cellName == "Contact Us" {
                 if let url = URL(string: "https://www.campusenterprises.org/contactus") {
-                    UIApplication.shared.open(url, options: [:])
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: [:])
+                    } else {
+                        UIApplication.shared.openURL(url)
+                    }
                 }
             }
             

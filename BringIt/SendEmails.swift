@@ -103,7 +103,7 @@ extension CheckoutVC {
         ]
         do {
             try Session.shared.send(request: email) { (response, error) in
-                print(response?.stringValue)
+                print(response?.stringValue ?? "Default value")
                 print("Email successfully sent!")
             }
         } catch {

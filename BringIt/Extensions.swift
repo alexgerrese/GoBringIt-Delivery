@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /* Extension to handle errors upon button taps.
  *
@@ -242,7 +243,7 @@ extension UIViewController {
  *      - Get the string of the day of the week
  *      - Format openHours to a certain day of the week
  */
-extension UIViewController {
+extension String {
     
     func getIndexOfWeek() -> Int {
         let formatter  = DateFormatter()
@@ -278,12 +279,12 @@ extension UIViewController {
         }
     }
     
-    func getOpenHoursString(data: String) -> String {
+    func getOpenHoursString() -> String {
         
         // Check for empty strings
-        if data != "" {
+        if self != "" {
             // Separate by ","
-            var openHours = data.components(separatedBy: ",")
+            var openHours = self.components(separatedBy: ",")
             
             // Trim whitespaces
             for i in 0..<openHours.count {
@@ -307,18 +308,24 @@ extension UIViewController {
         return "Data unavailable"
     }
     
-    func isRestaurantOpen(data: String) -> Bool {
+    func isRestaurantOpen() -> Bool {
         
         // Return false if data is not in the right format or was unavailable
-        if data == "Data unavailable" {
+        if self == "Data unavailable" {
             return false
         }
         
         // Separate into open and close times
-        var openHours = data.components(separatedBy: "-")
+        var openHours = self.components(separatedBy: "-")
+        
+        // Flag am vs pm
+        var convertTo24HourFormat = [false, false]
         
         // Trim am and pm
         for i in 0..<openHours.count {
+            if openHours[i].contains("pm") && i < convertTo24HourFormat.count {
+                convertTo24HourFormat[i] = true
+            }
             openHours[i] = openHours[i].replacingOccurrences(of: "am", with: "")
             openHours[i] = openHours[i].replacingOccurrences(of: "pm", with: "")
         }
@@ -330,13 +337,13 @@ extension UIViewController {
         let calendar = Calendar.current
         let now = Date()
         let openTime = calendar.date(
-            bySettingHour: Int(open[0])!,
+            bySettingHour: convertTo24HourFormat[0] ? Int(open[0])! + 12 : Int(open[0])!,
             minute: Int(open[1])!,
             second: 0,
             of: now)!
         
         let closeTime = calendar.date(
-            bySettingHour: Int(closed[0])!,
+            bySettingHour: convertTo24HourFormat[1] ? Int(closed[0])! + 12 : Int(closed[0])!,
             minute: Int(closed[1])!,
             second: 0,
             of: now)!
@@ -348,7 +355,32 @@ extension UIViewController {
         
         return false
     }
+}
+
+extension UIViewController {
     
-    
+    func isCreditCardHours() -> Bool {
+        
+        let calendar = Calendar.current
+        let now = Date()
+        let openTime = calendar.date(
+            bySettingHour: 6,
+            minute: 0,
+            second: 0,
+            of: now)!
+        
+        let closeTime = calendar.date(
+            bySettingHour: 19,
+            minute: 30,
+            second: 0,
+            of: now)!
+        
+        if now >= openTime &&
+            now <= closeTime {
+            return true
+        }
+        
+        return false
+    }
 }
 

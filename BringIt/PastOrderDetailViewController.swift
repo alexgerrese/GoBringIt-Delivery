@@ -77,14 +77,14 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .none
-        let orderDate = dateFormatter.string(from: order.orderTime as! Date)
+        let orderDate = dateFormatter.string(from: order.orderTime! as Date)
         self.title = orderDate
         
         reorderButtonView.layer.cornerRadius = Constants.cornerRadius
-        reorderView.layer.shadowColor = Constants.lightGray.cgColor
-        reorderView.layer.shadowOpacity = 1
-        reorderView.layer.shadowRadius = Constants.shadowRadius
-        reorderView.layer.shadowOffset = CGSize.zero
+//        reorderView.layer.shadowColor = Constants.lightGray.cgColor
+//        reorderView.layer.shadowOpacity = 1
+//        reorderView.layer.shadowRadius = Constants.shadowRadius
+//        reorderView.layer.shadowOffset = CGSize.zero
         
     }
     

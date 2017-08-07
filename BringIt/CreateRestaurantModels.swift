@@ -282,7 +282,7 @@ extension RestaurantsHomeViewController {
                             
                             print("Side created - id: \(side.id), name: \(side.name)")
                             
-                            var predicate = NSPredicate(format: "id = %@", side.id)
+                            let predicate = NSPredicate(format: "id = %@", side.id)
                             let count = realm.objects(Side.self).filter(predicate).count
                             if count == 0 {
                                 realm.add(side)
@@ -307,7 +307,7 @@ extension RestaurantsHomeViewController {
     //                        }
                         }
                         
-                        var predicate = NSPredicate(format: "id = %@", menuItem.id)
+                        let predicate = NSPredicate(format: "id = %@", menuItem.id)
                         let count = realm.objects(MenuItem.self).filter(predicate).count
                         if count == 0 {
                             realm.add(menuItem)

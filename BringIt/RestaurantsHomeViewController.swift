@@ -332,11 +332,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == promotionsIndex {
-            return 180
+            return 150
         } else if indexPath.section == restaurantsIndex {
             return 230
         } else {
-            return 88
+            return 60
         }
     }
     
@@ -357,8 +357,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             cell.cuisineType.text = restaurant.cuisineType
             cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
             
-            let todaysHours = self.getOpenHoursString(data: restaurant.restaurantHours)
-            if (self.isRestaurantOpen(data: todaysHours) || todaysHours == "Data unavailable") {
+            let todaysHours = restaurant.restaurantHours.getOpenHoursString()
+            if (restaurant.isOpen() || todaysHours == "Data unavailable") {
                 cell.openHours.text = todaysHours
             } else {
                 cell.openHours.text = "Closed"
@@ -397,7 +397,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
-        header.textLabel?.textColor = UIColor.black
+        header.textLabel?.textColor = Constants.darkGray
         header.textLabel?.textAlignment = .center
         header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
@@ -484,7 +484,7 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
 //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 300, height: 175)
+        return CGSize(width: 295, height: 150)
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

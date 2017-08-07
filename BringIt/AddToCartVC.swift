@@ -115,10 +115,6 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.title = menuItem.name
         
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
-        viewCartView.layer.shadowColor = Constants.lightGray.cgColor
-        viewCartView.layer.shadowOpacity = 1
-        viewCartView.layer.shadowRadius = Constants.shadowRadius
-        viewCartView.layer.shadowOffset = CGSize.zero
         
         checkButtonStatus()
     }
@@ -177,9 +173,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         if numSelected < menuItem.numRequiredSides {
             
-            viewCartButton.isEnabled = false
+            viewCartButton.isEnabled = true
             viewCartButtonView.backgroundColor = Constants.red
-            viewCartButton.setTitle("Please select all required sides.", for: .normal)
+            viewCartButton.setTitle("Please select all required sides or tap again.", for: .normal)
         } else {
             
             viewCartButton.isEnabled = true
@@ -195,6 +191,12 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     /* Create shallow Realm copies to differentiate between the normal menu item and the item in the cart (necessary for future Realm queries), then add those copies to the order (if one exists, else create new order as well) */
     func addToCart() {
+        
+        // Add haptic feedback
+        if #available(iOS 10.0, *) {
+            let notification = UINotificationFeedbackGenerator()
+            notification.notificationOccurred(.success)
+        }
         
         // STEP 1: Create Realm copies for the cart
         
@@ -234,7 +236,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
         }
         
-        for extra in menuItem.extras {
+        for extra in extras {
                 
             let newExtra = Side()
             newExtra.id = extra.id
@@ -245,7 +247,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             newExtra.isSelected = extra.isSelected
             newExtra.isInCart = true
             
-            newMenuItem.sides.append(newExtra)
+            newMenuItem.extras.append(newExtra)
             
         }
         

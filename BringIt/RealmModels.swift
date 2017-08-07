@@ -45,7 +45,6 @@ class PaymentMethod: Object {
     dynamic var isSelected = false
 }
 
-
 // Restaurant Model
 class Restaurant: Object {
     dynamic var id = ""
@@ -61,6 +60,10 @@ class Restaurant: Object {
     
     override static func primaryKey() -> String? {
         return "id"
+    }
+    
+    func isOpen() -> Bool {
+        return restaurantHours.getOpenHoursString().isRestaurantOpen()
     }
 }
 

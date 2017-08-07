@@ -64,10 +64,10 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         self.title = menuCategory.name
         
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
-        viewCartView.layer.shadowColor = Constants.lightGray.cgColor
-        viewCartView.layer.shadowOpacity = 1
-        viewCartView.layer.shadowRadius = Constants.shadowRadius
-        viewCartView.layer.shadowOffset = CGSize.zero
+//        viewCartView.layer.shadowColor = Constants.lightGray.cgColor
+//        viewCartView.layer.shadowOpacity = 1
+//        viewCartView.layer.shadowRadius = Constants.shadowRadius
+//        viewCartView.layer.shadowOffset = CGSize.zero
         viewCartViewToBottom.constant = 60 // start offscreen
     }
     
@@ -142,9 +142,9 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         return indexPath
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Dishes" //TO-DO: Change when dynamic
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+////        return "Dishes" //TO-DO: Change when dynamic
+//    }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
@@ -158,7 +158,8 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Constants.headerHeight
+//        return Constants.headerHeight
+        return CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

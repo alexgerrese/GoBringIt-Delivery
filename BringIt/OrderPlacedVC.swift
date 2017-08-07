@@ -47,6 +47,12 @@ class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     /* Do initial UI setup */
     func setupUI() {
+        
+        // Add haptic feedback
+        if #available(iOS 10.0, *) {
+            let notification = UINotificationFeedbackGenerator()
+            notification.notificationOccurred(.success)
+        }
 
         doneButton.layer.cornerRadius = Constants.cornerRadius
     }

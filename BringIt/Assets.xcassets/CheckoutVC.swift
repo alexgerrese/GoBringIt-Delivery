@@ -180,10 +180,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return total
     }
     
+    // If there are items in the cart, and the address and payment method are defined, enable button
     func checkButtonStatus() {
         
-        // If there are items in the cart, and the address and payment method are defined, enable button
-        
+        // Check that there are items in the cart
         if !(order.menuItems.count > 0) {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
@@ -191,6 +191,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             return
         }
         
+        // Check that there is a selected address
         let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
         
         if filteredAddresses.count > 0 {
@@ -207,6 +208,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             return
         }
         
+        // Check that there is a payment method selected
         let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
 
         if filteredPaymentMethods.count < 0 {
@@ -214,6 +216,18 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
             checkoutButton.setTitle("Please select a payment method", for: .normal)
+        } else {
+            checkoutButton.isEnabled = true
+            checkoutButtonView.backgroundColor = Constants.green
+            checkoutButton.setTitle("Checkout", for: .normal)
+        }
+        
+        // Check that the restaurant is open
+        let filteredRestaurant = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
+        if !filteredRestaurant.first!.isOpen() {
+            checkoutButton.isEnabled = false
+            checkoutButtonView.backgroundColor = Constants.red
+            checkoutButton.setTitle("This restaurant is currently closed", for: .normal)
         } else {
             checkoutButton.isEnabled = true
             checkoutButtonView.backgroundColor = Constants.green
@@ -228,7 +242,11 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.checkingOutView.alpha = 1.0
         })
         
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        // Add haptic feedback
+        if #available(iOS 10.0, *) {
+            let notification = UINotificationFeedbackGenerator()
+            notification.notificationOccurred(.warning)
+        }
         
         setupConfirmView()
     }
@@ -303,7 +321,13 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             order.address = filteredAddresses.first!
             
             let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
-            order.paymentMethod = filteredPaymentMethods.first!.method
+            
+            if self.isCreditCardHours() {
+                order.paymentMethod = "Credit Card"
+            } else {
+                order.paymentMethod = filteredPaymentMethods.first!.method
+            }
+            
         }
         
         var count = 0
@@ -364,7 +388,14 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
                 
                 if filteredPaymentMethods.count > 0 {
-                    cell.detailTextLabel?.text = filteredPaymentMethods.first!.method
+                    
+                    // Check if currently in credit card hours
+                    if self.isCreditCardHours() {
+                        cell.detailTextLabel?.text = "Credit Card"
+                    } else {
+                        cell.detailTextLabel?.text = filteredPaymentMethods.first!.method
+                    }
+                    
                 } else {
                     cell.detailTextLabel?.text = "Please select a payment method"
                 }

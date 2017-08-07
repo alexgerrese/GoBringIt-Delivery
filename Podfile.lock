@@ -1,7 +1,6 @@
 PODS:
   - Alamofire (4.5.0)
   - EZSwiftExtensions (1.10)
-  - GMStepper (2.0.0)
   - IQKeyboardManagerSwift (4.0.10)
   - Moya (8.0.5):
     - Moya/Core (= 8.0.5)
@@ -16,18 +15,15 @@ PODS:
   - Result (3.2.3)
   - SendGrid (0.2.3)
   - Stripe (11.1.0)
-  - Timepiece (1.2.0)
 
 DEPENDENCIES:
   - Alamofire
   - EZSwiftExtensions
-  - GMStepper
   - IQKeyboardManagerSwift
   - Moya
   - RealmSwift
   - SendGrid (from `https://github.com/scottkawai/sendgrid-swift.git`)
   - Stripe
-  - Timepiece
 
 EXTERNAL SOURCES:
   SendGrid:
@@ -41,7 +37,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   EZSwiftExtensions: 172160bfb3635161c8b833d9111961ff3e6f517d
-  GMStepper: 6aff0c881afac2f432e5c9b0df71e44e14110a06
   IQKeyboardManagerSwift: 75ba21a23794a1e6b6fe6d9a267ea17f80e06771
   Moya: c37eec09a098ba9991b5a963b291fc5704bdb9ef
   Realm: 3601ef091c8c499a31101d8563b991e75546cdce
@@ -49,8 +44,7 @@ SPEC CHECKSUMS:
   Result: 128640a6347e8d2ae48b142556739a2d13f90ce6
   SendGrid: 89495bb00bdeb8a87010c0dc60338c62b87d4311
   Stripe: 331994704823640a827b8da41255a439d60b61ce
-  Timepiece: d07900e985af4911f09146f1175fdbec37944836
 
-PODFILE CHECKSUM: bb0195e70005df47b2dbc6a76e34b956f43aeae1
+PODFILE CHECKSUM: 72135a011de3e7a62fec3d8f80373ab5a8e6e965
 
 COCOAPODS: 1.2.1

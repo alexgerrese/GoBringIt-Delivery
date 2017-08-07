@@ -13,13 +13,13 @@ target 'BringIt' do
   pod 'IQKeyboardManagerSwift'
   #pod 'IDZSwiftCommonCrypto'
   #pod 'CVCalendar'
-  pod 'GMStepper'
+  #pod 'GMStepper'
   pod 'Stripe'
 #  pod 'CryptoSwift'
   
   # New Pods
   pod 'RealmSwift' # for local database
-  pod 'Timepiece' # for simple date management
+  #pod 'Timepiece' # for simple date management
   #pod 'Hero' # for elegant transitions
   pod 'Moya' # for an abstracted netowrk layer
   pod 'Alamofire' # for better networking
