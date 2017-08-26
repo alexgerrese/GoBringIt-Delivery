@@ -97,6 +97,7 @@ extension CheckoutVC {
                         print(self.order.orderTime)
                         
                         self.sendUserConfirmationEmail()
+                        self.sendRestaurantConfirmationEmail()
                         
                         self.performSegue(withIdentifier: "toOrderPlaced", sender: self)
                     }

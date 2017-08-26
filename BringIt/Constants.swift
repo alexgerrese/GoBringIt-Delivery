@@ -33,7 +33,7 @@ struct Constants {
     static let shadowRadius = CGFloat(3)
     
     // Paths
-    static let imagesPath = "http://www.gobringit.com/images/"
+    static let imagesPath = "https://www.gobringit.com/images/"
     
     // Contact Info
     static let contactEmail = "info@campusenterprises.org"

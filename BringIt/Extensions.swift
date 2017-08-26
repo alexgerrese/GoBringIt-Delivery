@@ -305,13 +305,13 @@ extension String {
             }
         }
         
-        return "Data unavailable"
+        return "Hours unavailable"
     }
     
     func isRestaurantOpen() -> Bool {
         
         // Return false if data is not in the right format or was unavailable
-        if self == "Data unavailable" {
+        if self == "Hours unavailable" {
             return false
         }
         
@@ -357,6 +357,7 @@ extension String {
     }
 }
 
+/* Extension to check if the current time is in the West Union "no MOP" time */
 extension UIViewController {
     
     func isCreditCardHours() -> Bool {

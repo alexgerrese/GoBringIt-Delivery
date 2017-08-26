@@ -48,6 +48,7 @@ class PaymentMethod: Object {
 // Restaurant Model
 class Restaurant: Object {
     dynamic var id = ""
+    dynamic var email = ""
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var cuisineType = ""
@@ -69,7 +70,6 @@ class Restaurant: Object {
 
 // Menu Category Model
 class MenuCategory: Object {
-//    dynamic var restaurant: Restaurant?
     dynamic var id = ""
     dynamic var name = ""
     let menuItems = List<MenuItem>()
@@ -144,6 +144,3 @@ class Order: Object {
     dynamic var deliveryFee = 0.0
     dynamic var isComplete = false
 }
-
-
-

@@ -100,7 +100,8 @@ extension RestaurantsHomeViewController {
                         promotion.image = imageData
                         
                         try! self.realm.write {
-                            self.realm.add(promotion)
+                            self.realm.create(Promotion.self, value: promotion, update: true)
+//                            self.realm.add(promotion)
                         }
                     }
                     
@@ -184,6 +185,7 @@ extension RestaurantsHomeViewController {
                 
                 let restaurant = Restaurant()
                 restaurant.id = retrievedRestaurant["id"] as! String
+                restaurant.email = retrievedRestaurant["email"] as! String
                 restaurant.name = retrievedRestaurant["name"] as! String
                 restaurant.cuisineType = retrievedRestaurant["cuisineType"] as! String
                 restaurant.deliveryFee = Double(retrievedRestaurant["deliveryFee"] as! String)!

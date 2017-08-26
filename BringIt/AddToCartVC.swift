@@ -175,7 +175,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
             viewCartButton.isEnabled = true
             viewCartButtonView.backgroundColor = Constants.red
-            viewCartButton.setTitle("Please select all required sides or tap again.", for: .normal)
+            viewCartButton.setTitle("Please select all required sides.", for: .normal)
         } else {
             
             viewCartButton.isEnabled = true

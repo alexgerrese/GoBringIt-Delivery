@@ -11,6 +11,7 @@ import UIKit
 class FeaturedDishTableViewCell: UITableViewCell {
     
     @IBOutlet weak var myCollectionView: UICollectionView!
+    @IBOutlet weak var myCollectionViewWidth: NSLayoutConstraint!
     
     
     override func awakeFromNib() {
@@ -36,6 +37,7 @@ extension FeaturedDishTableViewCell {
         myCollectionView.backgroundColor = UIColor.white
         myCollectionView.setContentOffset(myCollectionView.contentOffset, animated:false) // Stops collection view if it was scrolling.
         myCollectionView.reloadData()
+        myCollectionViewWidth.constant = UIScreen.main.bounds.width
     }
     
     var collectionViewOffset: CGFloat {

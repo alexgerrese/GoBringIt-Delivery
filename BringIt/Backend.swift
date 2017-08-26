@@ -28,7 +28,7 @@ enum APICalls {
 }
 
 extension APICalls : TargetType {
-    var baseURL: URL { return URL(string: "http://www.gobringit.com/includes/app")! }
+    var baseURL: URL { return URL(string: "https://www.gobringit.com/includes/app")! }
     var path: String {
         switch self {
         case .signInUser(_,_):

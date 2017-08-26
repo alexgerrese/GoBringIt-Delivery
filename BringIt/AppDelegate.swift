@@ -10,14 +10,14 @@ import UIKit
 import IQKeyboardManagerSwift
 import Stripe
 import SendGrid
-
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
         // Set up keyboard manager
         IQKeyboardManager.sharedManager().enable = true
@@ -37,12 +37,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "BrandonGrotesque-Medium", size: 17)!, NSForegroundColorAttributeName: Constants.darkGray] // font color
         UINavigationBar.appearance().tintColor = UIColor.darkGray // button color
         UINavigationBar.appearance().barTintColor = UIColor.white // bar color
-//        UINavigationBar.appearance().isOpaque = true // bar translucency
-//        UINavigationBar.appearance().layer.shadowColor = Constants.lightGray.cgColor // shadow color
-//        UINavigationBar.appearance().layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-//        UINavigationBar.appearance().layer.shadowRadius = 4.0
-//        UINavigationBar.appearance().layer.shadowOpacity = 1.0
-//        UINavigationBar.appearance().layer.masksToBounds = false
+        
+        print("Setting Realm schema and performing migrations.")
+        
+        // Configure Realm migrations
+        let config = Realm.Configuration(
+            // Set the new schema version. This must be greater than the previously used
+            // version (if you've never set a schema version before, the version is 0).
+            schemaVersion: 2,
+            
+            // Set the block which will be called automatically when opening a Realm with
+            // a schema version lower than the one set above
+            migrationBlock: { migration, oldSchemaVersion in
+                if (oldSchemaVersion < 2) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["email"] = ""
+                    }
+                }
+        })
+        
+        // Tell Realm to use this new configuration object for the default Realm
+        Realm.Configuration.defaultConfiguration = config
+        
+        // Now that we've told Realm how to handle the schema change, opening the file
+        // will automatically perform the migration
+        let realm = try! Realm()
         
         return true
     }

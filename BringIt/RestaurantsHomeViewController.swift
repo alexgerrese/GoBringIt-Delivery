@@ -332,7 +332,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == promotionsIndex {
-            return 150
+            return UIScreen.main.bounds.width*0.85*0.51
         } else if indexPath.section == restaurantsIndex {
             return 230
         } else {
@@ -358,7 +358,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
             
             let todaysHours = restaurant.restaurantHours.getOpenHoursString()
-            if (restaurant.isOpen() || todaysHours == "Data unavailable") {
+            if (restaurant.isOpen()) {
+                cell.openHours.text = "Open"
+            } else if todaysHours == "Hours unavailable" {
                 cell.openHours.text = todaysHours
             } else {
                 cell.openHours.text = "Closed"
@@ -445,9 +447,6 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Number of promotions: \(promotions.count)")
-//        if promotions.count > 2 {
-//            return 100
-//        }
         return promotions.count
     }
     
@@ -461,7 +460,6 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
 //        cell.promotionImage.layer.shadowColor = UIColor.black.cgColor
 //        cell.promotionImage.layer.shadowOpacity = 0.25
 //        cell.promotionImage.layer.masksToBounds = false
-        
         cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
         
         
@@ -484,7 +482,9 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
 //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 295, height: 150)
+        let width = UIScreen.main.bounds.width*0.85
+        let height = width*0.51
+        return CGSize(width: width, height: height)
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -494,7 +494,9 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
             let visibleIndexPaths = myTableView.indexPathsForVisibleRows
             let promotionsIndexPath = IndexPath(row: 0, section: promotionsIndex)
             
-            if (visibleIndexPaths?.contains(promotionsIndexPath))! {
+            if (visibleIndexPaths?.contains(promotionsIndexPath))! && myTableView.cellForRow(at: promotionsIndexPath) != nil {
+                
+                print(promotionsIndexPath)
                 
                 let cell = myTableView.cellForRow(at: promotionsIndexPath) as! PromotionsTableViewCell
                 

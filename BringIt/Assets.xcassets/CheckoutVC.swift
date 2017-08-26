@@ -40,6 +40,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var order = Order()
     var user = User()
     var selectedItem = MenuItem()
+    var restaurantEmail = ""
     let defaultButtonText = "Checkout"
     
     // Passed from previousVC
@@ -98,6 +99,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         order = filteredOrders.first!
         
+        // Query restaurant for printer email
+        let restaurants = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
+        restaurantEmail = restaurants.first!.email
     }
     
     func checkIfLoggedIn() {
@@ -222,7 +226,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             checkoutButton.setTitle("Checkout", for: .normal)
         }
         
-        // Check that the restaurant is open
+//         Check that the restaurant is open
         let filteredRestaurant = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
         if !filteredRestaurant.first!.isOpen() {
             checkoutButton.isEnabled = false

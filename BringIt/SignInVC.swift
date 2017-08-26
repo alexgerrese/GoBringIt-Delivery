@@ -143,8 +143,6 @@ class SignInVC: UIViewController, UITextFieldDelegate {
                         
                         print("About to dismiss.")
                         
-                        
-                        
                         // Rewind segue to Restaurants VC
                         self.dismiss(animated: true, completion: nil)
 
