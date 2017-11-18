@@ -30,7 +30,6 @@ class UpdateAccountInfoViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     let defaultButtonText = "Update Account Info"
     var returnKeyHandler: IQKeyboardReturnKeyHandler?
@@ -80,7 +79,9 @@ class UpdateAccountInfoViewController: UIViewController, UITextFieldDelegate {
     
     func setupRealm() {
         
-        let filteredUsers = self.realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
+        let realm = try! Realm() // Initialize Realm
+        
+        let filteredUsers = realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
         user = filteredUsers.first!
     }
     

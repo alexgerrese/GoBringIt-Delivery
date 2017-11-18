@@ -19,7 +19,6 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var user = User()
     var orders: Results<Order>!
@@ -56,9 +55,11 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func setupRealm() {
         
-        let numberOfUsers = self.realm.objects(User.self)
+        let realm = try! Realm() // Initialize Realm
+        
+        let numberOfUsers = realm.objects(User.self)
         if numberOfUsers != nil && numberOfUsers.count > 0 {
-            let filteredUsers = self.realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
+            let filteredUsers = realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
             if let user = filteredUsers.first {
                 orders = user.pastOrders.sorted(byKeyPath: "orderTime", ascending: false)
                 
@@ -99,6 +100,7 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let realm = try! Realm() // Initialize Realm
         let cell = tableView.dequeueReusableCell(withIdentifier: "pastOrderCell", for: indexPath) as! PastOrderTableViewCell
         
         // Format date components of order time
@@ -111,7 +113,7 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
         let day = formatter.string(from: order.orderTime! as Date)
         
         // Get restaurant name
-        let restaurantName = self.realm.object(ofType: Restaurant.self, forPrimaryKey: order.restaurantID)?.name
+        let restaurantName = realm.object(ofType: Restaurant.self, forPrimaryKey: order.restaurantID)?.name
         
         // Get order details
         let totalPrice = order.subtotal + order.deliveryFee

@@ -21,6 +21,7 @@ enum APICalls {
     case addOrder(uid: String, restaurantID: String, payingWithCC: String)
     //case fetchOrderHistory
     case fetchAccountInfo(uid: String)
+    case fetchAccountAddress(uid: String)
     case updateAccountInfo(uid: String, fullName: String, email: String, phoneNumber: String)
     case resetPassword(uid: String, oldPassword: String, newPassword: String)
     case fetchVersionNumber
@@ -28,6 +29,9 @@ enum APICalls {
 }
 
 extension APICalls : TargetType {
+    var headers: [String: String]? {
+        return ["Content-type": "application/json"]
+    }
     var baseURL: URL { return URL(string: "https://www.gobringit.com/includes/app")! }
     var path: String {
         switch self {
@@ -47,6 +51,8 @@ extension APICalls : TargetType {
             return "/addOrder.php"
         case .fetchAccountInfo(_):
             return "/fetchAccountInfo.php"
+        case .fetchAccountAddress(_):
+            return "/fetchAccountAddress.php"
         case .updateAccountInfo(_,_,_,_):
             return "/updateAccountInfo.php"
         case .resetPassword(_,_,_):
@@ -62,7 +68,7 @@ extension APICalls : TargetType {
         switch self {
         case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
             return .get
-        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo:
+        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo, .fetchAccountAddress:
             return .post
         }
     }
@@ -102,6 +108,8 @@ extension APICalls : TargetType {
         //case fetchOrderHistory
         case .fetchAccountInfo(let uid):
             return ["uid": uid]
+        case .fetchAccountAddress(let uid):
+            return ["uid": uid]
         case .updateAccountInfo(let uid, let fullName, let email, let phoneNumber):
             return ["uid": uid,
                     "name": fullName,
@@ -125,7 +133,7 @@ extension APICalls : TargetType {
     }
     
     var task: Task {
-        return .request
+        return .requestPlain
     }
 }
 

@@ -35,7 +35,6 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     // MARK: Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     let defaultButtonText = "Sign in"
     var returnKeyHandler: IQKeyboardReturnKeyHandler?
@@ -88,6 +87,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
      */
     @IBAction func signInButtonTapped(_ sender: UIButton) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Check that all fields are filled and correctly formatted, else return
         if !checkFields() {
             return
@@ -122,17 +123,21 @@ class SignInVC: UIViewController, UITextFieldDelegate {
                         
                         // Check if user already exists in Realm
                         let predicate = NSPredicate(format: "id = %@", (retrievedUser["id"] as? String)!)
-                        let userExists = self.realm.objects(User.self).filter(predicate).count > 0
+                        let userExists = realm.objects(User.self).filter(predicate).count > 0
                         
                         if userExists {
                             
                             print("User exists")
                             
                             // User exists, retrieve from Realm and set to current user
-                            let user = self.realm.objects(User.self).filter(predicate).first!
-                            try! self.realm.write {
+                            let user = realm.objects(User.self).filter(predicate).first!
+                            try! realm.write {
                                 user.isCurrent = true
                             }
+                            
+                            // Check if user has address on file
+                            self.fetchExistingAddress(user: user)
+                            
                         } else {
                             
                             print("User doesn't exist")
@@ -169,6 +174,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
      */
     func createNewUser(retrievedUser: [String: Any]) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         let newUser = User()
         newUser.isCurrent = true
         newUser.id = (retrievedUser["id"] as? String)!
@@ -181,9 +188,68 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             newUser.isFirstOrder = true
         }
         
-        try! self.realm.write() {
-            self.realm.add(newUser)
+        try! realm.write() {
+            realm.add(newUser)
         }
+        
+        // Check if user has address on file
+        fetchExistingAddress(user: newUser)
+    }
+    
+    /*
+     * Checks database for an existing address and imports it if Realm doesn't already know it
+     */
+    func fetchExistingAddress(user: User) {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        print("Fetching existing address")
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.fetchAccountAddress(uid: user.id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let retrievedAddress = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    print("Retrieved Address: \(retrievedAddress)")
+                    
+                    if retrievedAddress["street"] != nil && retrievedAddress["apartment"] != nil {
+                        
+                        // Check if address already exists in Realm
+                        if realm.objects(DeliveryAddress.self).filter("userID = %@ && streetAddress = %@", user.id, retrievedAddress["streetAddress"] as! String).count == 0 {
+                            
+                            print("Address doesn't already exist")
+                            
+                            let newAddress = DeliveryAddress()
+                            newAddress.userID = user.id
+                            newAddress.streetAddress = retrievedAddress["streetAddress"] as! String
+                            newAddress.roomNumber = retrievedAddress["roomNumber"] as! String
+                            newAddress.campus = retrievedAddress["campus"] != nil ? retrievedAddress["campus"] as! String : ""
+                            
+                            try! realm.write() {
+                                user.addresses.append(newAddress)
+                            }
+
+                        }
+                        
+                    }
+                    
+                } catch {
+                    // Miscellaneous network error
+                    print("Miscellaneous network error")
+                }
+            case .failure(_):
+                // Connection failed
+                print("Connection failed")
+            }
+        }
+        
     }
     
     /* 

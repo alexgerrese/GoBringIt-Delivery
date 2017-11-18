@@ -34,7 +34,6 @@ class NewAddressVC: UIViewController {
 //    var passedUserID = ""
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     var user = User()
     
     override func viewDidLoad() {
@@ -68,9 +67,11 @@ class NewAddressVC: UIViewController {
     
     func setupRealm() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Get current User 
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-        user = self.realm.objects(User.self).filter(predicate).first!
+        user = realm.objects(User.self).filter(predicate).first!
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -90,13 +91,15 @@ class NewAddressVC: UIViewController {
      */
     func createNewAddress() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         let address = DeliveryAddress()
         address.userID = user.id
         address.campus = campus.text!
         address.streetAddress = streetAddress.text!
         address.roomNumber = roomNumber.text!
         
-        try! self.realm.write() {
+        try! realm.write() {
             user.addresses.append(address)
         }
     }

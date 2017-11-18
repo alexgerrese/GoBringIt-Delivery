@@ -1,8 +1,8 @@
 {
   "name": "SendGrid",
-  "version": "0.2.3",
-  "summary": "A library that allows you to easily send emails through SendGrid using Swift.",
-  "description": "A library that allows you to easily send emails through SendGrid's V3 Mail Send API using Swift.",
+  "version": "1.0.0",
+  "summary": "A library that allows you to easily make SendGrid V3 API calls.",
+  "description": "A library that allows you to easily make API calls via SendGrid's V3 API.",
   "homepage": "https://github.com/scottkawai/sendgrid-swift",
   "license": {
     "type": "MIT",
@@ -15,7 +15,7 @@
   },
   "source": {
     "git": "https://github.com/scottkawai/sendgrid-swift.git",
-    "tag": "0.2.3"
+    "tag": "1.0.0"
   },
   "source_files": "Sources/**/*.swift"
 }

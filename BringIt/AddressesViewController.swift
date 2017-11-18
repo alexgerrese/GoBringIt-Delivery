@@ -20,7 +20,6 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var addresses = List<DeliveryAddress>()
 
@@ -50,9 +49,11 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func setupRealm() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Check if addresses for current User already exists in Realm
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-        let user = self.realm.objects(User.self)
+        let user = realm.objects(User.self)
         if user != nil {
             let retrievedUser = user.filter(predicate).first
             if retrievedUser?.addresses != nil {
@@ -140,15 +141,17 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         for i in 0..<addresses.count {
             if i == indexPath.row {
-                try! self.realm.write() {
+                try! realm.write() {
                     
                     addresses[i].isCurrent = true
                     print("Selected \(addresses[i])")
                 }
             } else {
-                try! self.realm.write() {
+                try! realm.write() {
                     addresses[i].isCurrent = false
                     print("Deselected \(addresses[i])")
                 }
@@ -162,6 +165,9 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        let realm = try! Realm() // Initialize Realm
+        
         if editingStyle == .delete {
             
             // Delete the row from the data source

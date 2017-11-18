@@ -18,7 +18,6 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var user = User()
 
@@ -42,9 +41,11 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     func setupRealm() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Check if addresses for current User already exists in Realm
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-        user = self.realm.objects(User.self).filter(predicate).first!
+        user = realm.objects(User.self).filter(predicate).first!
         
         if !(user.paymentMethods.count > 0) {
             
@@ -130,16 +131,17 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let realm = try! Realm() // Initialize Realm
         
         for i in 0..<user.paymentMethods.count {
             if i == indexPath.row {
-                try! self.realm.write() {
+                try! realm.write() {
                     
                     user.paymentMethods[i].isSelected = true
                     print("Selected \(user.paymentMethods[i])")
                 }
             } else {
-                try! self.realm.write() {
+                try! realm.write() {
                     user.paymentMethods[i].isSelected = false
                     print("Deselected \(user.paymentMethods[i])")
                 }

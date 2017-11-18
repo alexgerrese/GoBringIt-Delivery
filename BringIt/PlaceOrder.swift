@@ -9,6 +9,7 @@
 import Foundation
 import Moya
 import Alamofire
+import RealmSwift
 
 extension CheckoutVC {
     
@@ -59,6 +60,8 @@ extension CheckoutVC {
     
     func addOrder() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         print("Adding to order")
         
         let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
@@ -79,7 +82,7 @@ extension CheckoutVC {
                         
                         print("Success adding order to database)!")
                         
-                        try! self.realm.write {
+                        try! realm.write {
                             self.order.id = response["orderID"] as! Int
                             self.order.isComplete = true
                             self.order.orderTime = NSDate()

@@ -23,7 +23,6 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var menuCategoryID = ""
     var restaurantID = ""
@@ -34,10 +33,9 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Get selected restaurant and menu categories
-        menuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategoryID)!
-        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
+        
+        // Setup Realm
+        setupRealm()
         
         // Setup UI
         setupUI()
@@ -71,6 +69,16 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         viewCartViewToBottom.constant = 60 // start offscreen
     }
     
+    func setupRealm() {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        // Get selected restaurant and menu categories
+        menuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategoryID)!
+        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
+        
+    }
+    
     func setupTableView() {
         
         // Set tableView cells to custom height and automatically resize if needed
@@ -82,6 +90,8 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func checkCart() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         let predicate = NSPredicate(format: "restaurantID = %@ AND isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)

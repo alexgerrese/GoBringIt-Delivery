@@ -19,7 +19,6 @@ class PromotionsViewController: UIViewController, UITableViewDelegate, UITableVi
     var promotion = Promotion()
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +42,8 @@ class PromotionsViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func setupRealm() {
         
-        promotion = self.realm.objects(Promotion.self).filter("id = %@", passedPromotionID).first!
+        let realm = try! Realm() // Initialize Realm
+        promotion = realm.objects(Promotion.self).filter("id = %@", passedPromotionID).first!
         
     }
     

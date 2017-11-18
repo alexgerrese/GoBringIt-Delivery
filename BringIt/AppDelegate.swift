@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 2,
+            schemaVersion: 4,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -54,6 +54,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newObject!["email"] = ""
                     }
                 }
+                if (oldSchemaVersion < 3) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["printerEmail"] = ""
+                    }
+                }
+                if (oldSchemaVersion < 4) {
+                    migration.enumerateObjects(ofType: MenuItem.className()) { oldObject, newObject in
+                        newObject!["isOfficialDescription"] = false
+                    }
+                    migration.enumerateObjects(ofType: Side.className()) { oldObject, newObject in
+                        newObject!["isOfficialDescription"] = false
+                    }
+                }
+                if (oldSchemaVersion < 5) {
+                   
+                }
         })
         
         // Tell Realm to use this new configuration object for the default Realm
@@ -61,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        let realm = try! Realm()
+        _ = try! Realm()
         
         return true
     }

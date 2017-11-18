@@ -8,10 +8,13 @@
 
 import Foundation
 import SendGrid
+import RealmSwift
 
 extension CheckoutVC {
     
     func sendUserConfirmationEmail() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Get first name
         let fullName    = user.fullName
@@ -90,21 +93,17 @@ extension CheckoutVC {
             content: contents,
             subject: nil
         )
-        email.mailSettings = [
-            Footer(
-                enable: true,
-                text: "Copyright 2017 GoBringIt",
-                html: "<p style=\"text-align:center\"><small>Copyright 2017 GoBringIt</small></p>"
-            )
-        ]
-        email.trackingSettings = [
-            ClickTracking(enable: true),
-            OpenTracking(enable: true)
-        ]
+        email.mailSettings.footer = Footer(
+            text: "Copyright 2017 GoBringIt",
+            html: "<p style=\"text-align:center\"><small>Copyright 2017 GoBringIt</small></p>"
+        )
+        
+        email.trackingSettings.clickTracking = ClickTracking(section: .htmlBody)
+        email.trackingSettings.openTracking = OpenTracking(location: .bottom)
+
         do {
-            try Session.shared.send(request: email) { (response, error) in
-                print(response?.stringValue ?? "Default value")
-                print("User email successfully sent!")
+            try Session.shared.send(request: email) { (response) in
+                print(response?.httpUrlResponse?.statusCode)
             }
         } catch {
             print(error)
@@ -116,6 +115,8 @@ extension CheckoutVC {
     }
     
     func sendRestaurantConfirmationEmail() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Get first name
         let fullName = user.fullName
@@ -176,10 +177,16 @@ extension CheckoutVC {
         let address = order.address
         let addressString = (address?.streetAddress)! + "<br>" + (address?.roomNumber)! + "<br>" + "Durham, NC"
         
-        // Send an advanced example
-        let recipient = Address(restaurantEmail)
+        // Set up recipients
+        var recipients = [Address(restaurantEmail)]
+        if restaurantPrinterEmail != "" {
+            recipients.append(Address(restaurantPrinterEmail))
+        }
+        
+        print("RECIPIENTS: \(recipients)")
+        
         let personalizations = Personalization(
-            to: [recipient],
+            to: recipients,
             cc: nil,
             bcc: nil,
             subject: "New GoBringIt Order! (#\(order.id))"
@@ -194,21 +201,14 @@ extension CheckoutVC {
             content: contents,
             subject: nil
         )
-        email.mailSettings = [
-            Footer(
-                enable: true,
-                text: "Copyright 2017 GoBringIt",
-                html: "<p style=\"text-align:center\"><small>Copyright 2017 GoBringIt</small></p>"
-            )
-        ]
-        email.trackingSettings = [
-            ClickTracking(enable: true),
-            OpenTracking(enable: true)
-        ]
+        email.mailSettings.footer = Footer(
+            text: "Copyright 2017 GoBringIt",
+            html: "<p style=\"text-align:center\"><small>Copyright 2017 GoBringIt</small></p>"
+        )
+        
         do {
-            try Session.shared.send(request: email) { (response, error) in
-                print(response?.stringValue ?? "Default value")
-                print("Restaurant email successfully sent!")
+            try Session.shared.send(request: email) { (response) in
+                print(response?.httpUrlResponse?.statusCode)
             }
         } catch {
             print(error)
@@ -218,6 +218,4 @@ extension CheckoutVC {
             }
         }
     }
-    
-    
 }

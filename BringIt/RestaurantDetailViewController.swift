@@ -23,7 +23,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var restaurantID = ""
     var restaurant = Restaurant()
@@ -43,9 +42,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Get selected restaurant and menu categories
-        restaurant = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)!
-        menuCategories = restaurant.menuCategories.sorted(byKeyPath: "name")
+        
         
         // Setup UI
         setupUI()
@@ -91,6 +88,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     func setupRealm() {
         
+        let realm = try! Realm() // Initialize Realm
+        
+        // Get selected restaurant and menu categories
+        restaurant = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)!
+        menuCategories = restaurant.menuCategories.sorted(byKeyPath: "name")
+        
         for menuCategory in menuCategories {
             
             let items = menuCategory.menuItems
@@ -121,6 +124,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func checkCart() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         let predicate = NSPredicate(format: "restaurantID = %@ AND isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)

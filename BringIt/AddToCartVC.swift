@@ -23,7 +23,6 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var cart = Order()
     var sides = List<Side>()
@@ -62,6 +61,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func setupRealm() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Get selected restaurant and menu categories
         if comingFromCheckout {
@@ -192,6 +193,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     /* Create shallow Realm copies to differentiate between the normal menu item and the item in the cart (necessary for future Realm queries), then add those copies to the order (if one exists, else create new order as well) */
     func addToCart() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Add haptic feedback
         if #available(iOS 10.0, *) {
             let notification = UINotificationFeedbackGenerator()
@@ -221,7 +224,6 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         }
 
         for side in sides {
-            
             
             let newSide = Side()
             newSide.id = side.id
@@ -295,6 +297,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     /* Delete all updated values in original MenuItem and Sides objects so it looks untouched */
     func cleanUpRealm() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         try! realm.write {
             
             menuItem.specialInstructions = ""
@@ -311,6 +315,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     @IBAction func addToCartButtonTapped(_ sender: UIButton) {
+        
+        let realm = try! Realm() // Initialize Realm
         
         if !comingFromCheckout {
             addToCart()
@@ -467,19 +473,21 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     /* Calculate what to do about cell selection based on section and the max number allowed to be selected */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         if sectionTitles[indexPath.section] != "Description" && sectionTitles[indexPath.section] != "Special Instructions" && sectionTitles[indexPath.section] != "Quantity" {
             
             if sectionTitles[indexPath.section] == "Extras" {
                 
                 for i in 0..<menuItem.extras.count {
                     if i == indexPath.row && menuItem.extras[i].isSelected {
-                        try! self.realm.write() {
+                        try! realm.write() {
                             
                             menuItem.extras[i].isSelected = false
                             print("Deselected \(menuItem.extras[i])")
                         }
                     } else if i == indexPath.row && !menuItem.extras[i].isSelected {
-                        try! self.realm.write() {
+                        try! realm.write() {
                             menuItem.extras[i].isSelected = true
                             print("Selected \(menuItem.extras[i])")
                         }
@@ -496,13 +504,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 
                 for i in 0..<filteredSides.count {
                     if i == indexPath.row {
-                        try! self.realm.write() {
+                        try! realm.write() {
                             
                             filteredSides[i].isSelected = true
                             print("Selected \(filteredSides[i])")
                         }
                     } else {
-                        try! self.realm.write() {
+                        try! realm.write() {
                             filteredSides[i].isSelected = false
                             print("Deselected \(filteredSides[i])")
                         }
@@ -531,14 +539,14 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 for i in 0..<filteredSides.count {
                     // If selected row is already selected, deselect it
                     if i == indexPath.row && filteredSides[i].isSelected {
-                        try! self.realm.write() {
+                        try! realm.write() {
                             filteredSides[i].isSelected = false
                             print("Deselected \(filteredSides[i])")
                         }
                     }
                     // Else if allowed to select row, select it
                     else if numToPick > numSelected && i == indexPath.row {
-                        try! self.realm.write() {
+                        try! realm.write() {
                             
                             filteredSides[i].isSelected = true
                             print("Selected \(filteredSides[i])")
@@ -570,6 +578,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
 extension AddToCartVC: QuantityCellDelegate {
     
     func minusButtonTapped(cell: QuantityTableViewCell) {
+        let realm = try! Realm() // Initialize Realm
         var value = menuItem.quantity
         if value > 1 {
             value -= 1
@@ -582,6 +591,7 @@ extension AddToCartVC: QuantityCellDelegate {
     }
     
     func plusButtonTapped(cell: QuantityTableViewCell) {
+        let realm = try! Realm() // Initialize Realm
         var value = menuItem.quantity
         value += 1
         try! realm.write {

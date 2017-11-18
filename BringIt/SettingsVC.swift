@@ -24,7 +24,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var sections = [SettingsSection]()
     var user = User()
@@ -89,9 +88,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func setupRealm() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         if checkIfLoggedIn() {
             
-            let filteredUsers = self.realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
+            let filteredUsers = realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
             user = filteredUsers.first!
         }
         
@@ -121,6 +122,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func signOutUser() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Update UserDefaults' "loggedIn" property to false
         self.defaults.set(false, forKey: "loggedIn")

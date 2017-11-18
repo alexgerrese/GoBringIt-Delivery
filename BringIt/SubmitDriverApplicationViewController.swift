@@ -38,7 +38,6 @@ class SubmitDriverApplicationViewController: UIViewController {
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,7 +99,7 @@ class SubmitDriverApplicationViewController: UIViewController {
             bcc: nil,
             subject: "Thanks for Applying to Be a Driver With GoBringIt"
         )
-        let contents = Content.emailContent(
+        let contents = Content.emailBody(
             plain: "<p>Thanks for applying to be a driver with GoBringIt! We love having hardworking members on our team and look forward to scheduling a follow-up meeting with you. You should expect that in the next couple of days--for now, sit tight and perhaps order some food :)<br><br>Here are your application details:<br><b>Full name: </b>\(fullName.text!)<br><b>Email: </b>\(emailAddress.text!)<br><b>Phone Number: </b>\(phoneNumber.text!)<br><b># of Available Hours/Week (Approx.): </b>\(hoursAvailable.text!)<br><b>Is Duke Student: </b>\(status)</p>",
             html: "<p>Thanks for applying to be a driver with GoBringIt! We love having hardworking members on our team and look forward to scheduling a follow-up meeting with you. You should expect that in the next couple of days--for now, sit tight and perhaps order some food :)<br><br>Here are your application details:<br><b>Full name: </b>\(fullName.text!)<br><b>Email: </b>\(emailAddress.text!)<br><b>Phone Number: </b>\(phoneNumber.text!)<br><b># of Available Hours/Week (Approx.): </b>\(hoursAvailable.text!)<br><b>Is Duke Student: </b>\(status)</p>"
         )
@@ -110,20 +109,15 @@ class SubmitDriverApplicationViewController: UIViewController {
             content: contents,
             subject: nil
         )
-        email.trackingSettings = [
-            ClickTracking(enable: true),
-            OpenTracking(enable: true)
-        ]
         do {
-            try Session.shared.send(request: email) { (response, error) in
-                print(response?.stringValue)
-                print("Email successfully sent!")
+            try Session.shared.send(request: email) { (response) in
+                print(response?.httpUrlResponse?.statusCode)
             }
         } catch {
             print(error)
             print("Email couldn't send.")
         }
-        
+
     }
     
     func sendApplicationEmail() {
@@ -143,7 +137,7 @@ class SubmitDriverApplicationViewController: UIViewController {
             bcc: nil,
             subject: "GoBringIt Driver Application: \(fullName.text!)"
         )
-        let contents = Content.emailContent(
+        let contents = Content.emailBody(
             plain: "<p>New driver application from \(fullName.text!)!<br><br>Details:<br><b>Full name: </b>\(fullName.text!)<br><b>Email: </b>\(emailAddress.text!)<br><b>Phone Number: </b>\(phoneNumber.text!)<br><b># of Available Hours/Week (Approx.): </b>\(hoursAvailable.text!)<br><b>Is Duke Student: </b>\(status)<br><br><b>NOTE: </b>Please alert restaurants of this application ASAP so they can schedule a follow-up meeting with the applicant. Thanks :)</p>",
             html: "<p>New driver application from \(fullName.text!)!<br><br>Details:<br><b>Full name: </b>\(fullName.text!)<br><b>Email: </b>\(emailAddress.text!)<br><b>Phone Number: </b>\(phoneNumber.text!)<br><b># of Available Hours/Week (Approx.): </b>\(hoursAvailable.text!)<br><b>Is Duke Student: </b>\(status)<br><br><b>NOTE: </b>Please alert restaurants of this application ASAP so they can schedule a follow-up meeting with the applicant. Thanks :)</p>"
         )
@@ -153,14 +147,9 @@ class SubmitDriverApplicationViewController: UIViewController {
             content: contents,
             subject: nil
         )
-        email.trackingSettings = [
-            ClickTracking(enable: true),
-            OpenTracking(enable: true)
-        ]
         do {
-            try Session.shared.send(request: email) { (response, error) in
-                print(response?.stringValue)
-                print("Email successfully sent!")
+            try Session.shared.send(request: email) { (response) in
+                print(response?.httpUrlResponse?.statusCode)
             }
         } catch {
             print(error)

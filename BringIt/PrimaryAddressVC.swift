@@ -42,7 +42,6 @@ class PrimaryAddressVC: UIViewController {
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,6 +147,8 @@ class PrimaryAddressVC: UIViewController {
      */
     func createNewUser(id: String, fullName: String, emailAddress: String, password: String, phoneNumber: String, campus: String, streetAddress: String, roomNumber: String) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         let newUser = User()
         newUser.isCurrent = true
         newUser.id = id
@@ -165,8 +166,8 @@ class PrimaryAddressVC: UIViewController {
         
         newUser.addresses.append(newAddress)
         
-        try! self.realm.write() {
-            self.realm.add(newUser)
+        try! realm.write() {
+            realm.add(newUser)
         }
     }
 

@@ -22,7 +22,6 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var order = Order()
     var user = User()
@@ -57,6 +56,8 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
     func setupRealm() {
         
         print("In setupRealm()")
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Query current order
 //        let predicate = NSPredicate(format: )
@@ -135,6 +136,8 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
     
     /* Create shallow Realm copies to differentiate between the normal menu item and the item in the cart (necessary for future Realm queries), then add those copies to the order (if one exists, else create new order as well) */
     func addToCart(menuItem: MenuItem) {
+        
+        let realm = try! Realm() // Initialize Realm
         
         // STEP 1: Create Realm copies for the cart
         

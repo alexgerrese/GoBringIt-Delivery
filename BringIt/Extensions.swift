@@ -252,7 +252,11 @@ extension String {
         let myCalendar = Calendar(identifier: .gregorian)
         let weekDay = myCalendar.component(.weekday, from: todayDate as Date)
         
-        return weekDay
+        if weekDay > 1 {
+            return weekDay - 1
+        } else {
+            return 6
+        }
     }
     
     func getDayOfWeek() -> String {

@@ -35,12 +35,12 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
     
     var order = Order()
     var user = User()
     var selectedItem = MenuItem()
     var restaurantEmail = ""
+    var restaurantPrinterEmail = ""
     let defaultButtonText = "Checkout"
     
     // Passed from previousVC
@@ -93,6 +93,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         checkIfLoggedIn()
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Query current order
         let predicate = NSPredicate(format: "restaurantID = %@ && isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)
@@ -102,9 +104,12 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Query restaurant for printer email
         let restaurants = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
         restaurantEmail = restaurants.first!.email
+        restaurantPrinterEmail = restaurants.first!.printerEmail
     }
     
     func checkIfLoggedIn() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         print("Checking if logged in")
         
@@ -125,7 +130,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             print("Logged in, querying user")
             // Check if user already exists in Realm
             let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-            user = self.realm.objects(User.self).filter(predicate).first!
+            user = realm.objects(User.self).filter(predicate).first!
         }
     }
     
@@ -187,6 +192,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // If there are items in the cart, and the address and payment method are defined, enable button
     func checkButtonStatus() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Check that there are items in the cart
         if !(order.menuItems.count > 0) {
             checkoutButton.isEnabled = false
@@ -196,7 +203,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Check that there is a selected address
-        let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+        let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
         
         if filteredAddresses.count > 0 {
             
@@ -298,12 +305,12 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     @IBAction func confirmButtonTapped(_ sender: UIButton) {
-        
         confirmOrder()
-
     }
     
     func confirmOrder() {
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Animate activity indicator
         myActivityIndicator.isHidden = false
@@ -321,7 +328,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Add final Realm details
         try! realm.write {
             
-            let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+            let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             order.address = filteredAddresses.first!
             
             let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
@@ -369,6 +376,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let realm = try! Realm() // Initialize Realm
+        
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "deliveryDetailCell", for: indexPath)
             
@@ -377,7 +387,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 
                 cell.textLabel?.text = "Deliver To"
 
-                let filteredAddresses = self.realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+                let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
                 
                 if filteredAddresses.count > 0 {
                     cell.detailTextLabel?.text = filteredAddresses.first!.streetAddress
@@ -533,11 +543,13 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         if indexPath.section == 1 {
             if editingStyle == .delete {
                 
                 // Delete the row from the data source
-                try! self.realm.write {
+                try! realm.write {
                     let item = self.order.menuItems[indexPath.row]
                     self.order.subtotal -= item.totalCost
                     realm.delete(item)

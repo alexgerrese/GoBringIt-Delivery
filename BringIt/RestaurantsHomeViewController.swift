@@ -55,10 +55,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     var selectedPromotionID = ""
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
-    let realm = try! Realm() // Initialize Realm
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let realm = try! Realm() // Initialize Realm
         
         // Set base index
         restaurantsIndex = 0
@@ -67,7 +68,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         setupUI()
         
         // Prepare data for TableView and CollectionView
-        restaurants = self.realm.objects(Restaurant.self)
+        restaurants = realm.objects(Restaurant.self)
         promotions = realm.objects(Promotion.self)
         
         // Setup TableView
@@ -198,8 +199,10 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     func checkForUpdates() {
         
+        let realm = try! Realm() // Initialize Realm
+        
         // Check if restaurant data already exists in Realm
-        let dataExists = self.realm.objects(Restaurant.self).count > 0
+        let dataExists = realm.objects(Restaurant.self).count > 0
         
         if !dataExists {
             
@@ -243,10 +246,10 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                     print("Version numbers do not match. Fetching updated restaurant data.")
                     
                     // Delete current promotions
-                    try! self.realm.write {
+                    try! realm.write {
                         
-                        let promotions = self.realm.objects(Promotion.self)
-                        self.realm.delete(promotions)
+                        let promotions = realm.objects(Promotion.self)
+                        realm.delete(promotions)
                         print("After deleting, there are \(promotions.count) promotions")
                     }
                     

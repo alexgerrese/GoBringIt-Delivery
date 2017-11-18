@@ -49,6 +49,7 @@ class PaymentMethod: Object {
 class Restaurant: Object {
     dynamic var id = ""
     dynamic var email = ""
+    dynamic var printerEmail = ""
     dynamic var image: NSData?
     dynamic var name = ""
     dynamic var cuisineType = ""
@@ -98,6 +99,8 @@ class MenuItem: Object {
     dynamic var totalCost = 0.0
     dynamic var isInCart = false
     
+    dynamic var isOfficialDescription = false
+    
     // TO-DO: Add a method to calculate and return total price??
     
 //    override static func primaryKey() -> String? {
@@ -114,6 +117,8 @@ class Side: Object {
     dynamic var price = 0.0 // TO-DO: Should this be a string or a Double?
     dynamic var isSelected = false
     dynamic var isInCart = false
+    
+    dynamic var isOfficialDescription = false
     
 //    override static func primaryKey() -> String? {
 //        return "id"

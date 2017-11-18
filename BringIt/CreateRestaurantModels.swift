@@ -70,6 +70,8 @@ extension RestaurantsHomeViewController {
     
     func fetchPromotions(completion: @escaping (_ result: Int) -> Void) {
         
+        let realm = try! Realm() // Initialize Realm
+        
         print("fetchPromotions() was called.")
         
         // Setup Moya provider and send network request
@@ -99,8 +101,8 @@ extension RestaurantsHomeViewController {
                         let imageData = NSData(contentsOf: url!)
                         promotion.image = imageData
                         
-                        try! self.realm.write {
-                            self.realm.create(Promotion.self, value: promotion, update: true)
+                        try! realm.write {
+                            realm.create(Promotion.self, value: promotion, update: true)
 //                            self.realm.add(promotion)
                         }
                     }
@@ -191,6 +193,10 @@ extension RestaurantsHomeViewController {
                 restaurant.deliveryFee = Double(retrievedRestaurant["deliveryFee"] as! String)!
                 restaurant.restaurantHours = retrievedRestaurant["restaurantHours"] as! String             
                 restaurant.phoneNumber = (retrievedRestaurant["phoneNumber"] as! String)
+                
+                // Check if printer email exists
+                let printerEmail = retrievedRestaurant["printerEmail"]
+                restaurant.printerEmail = printerEmail as? String ?? ""
                 
                 // Get image data
                 let imagePath = retrievedRestaurant["image"] as! String
@@ -284,9 +290,9 @@ extension RestaurantsHomeViewController {
                             
                             print("Side created - id: \(side.id), name: \(side.name)")
                             
-                            let predicate = NSPredicate(format: "id = %@", side.id)
-                            let count = realm.objects(Side.self).filter(predicate).count
-                            if count == 0 {
+                            let predicate = NSPredicate(format: "id = %@ && isOfficialDescription = true", side.id)
+                            if let existingSide = realm.objects(Side.self).filter(predicate).first {
+                                realm.delete(existingSide)
                                 realm.add(side)
                             }
                             
@@ -296,46 +302,28 @@ extension RestaurantsHomeViewController {
                                 menuItem.extras.append(side)
                             }
                             
-    //                        try! realm.write {
-    //                            realm.add(side, update: true)
-    //                            if let existingSide = realm.object(ofType: Side.self, forPrimaryKey: side.id) {
-    //                                if existingSide.isRequired && (existingSide.price == "0" || existingSide.price == "0.00") {
-    //                                    menuItem.sides.append(existingSide)
-    //                                } else {
-    //                                    menuItem.extras.append(existingSide)
-    //                                }
-    //                                
-    //                            }
-    //                        }
                         }
                         
-                        let predicate = NSPredicate(format: "id = %@", menuItem.id)
-                        let count = realm.objects(MenuItem.self).filter(predicate).count
-                        if count == 0 {
+                        let predicate = NSPredicate(format: "id = %@ && isOfficialDescription = true", menuItem.id)
+                        if let existingMenuItem = realm.objects(MenuItem.self).filter(predicate).first {
+                            realm.delete(existingMenuItem)
                             realm.add(menuItem)
                         }
                         
-//                        if let existingMenuItem = realm.object(ofType: MenuItem.self, forPrimaryKey: menuItem.id) {
-                            menuCategory.menuItems.append(menuItem)
-//                        }
-                        
-//                        try! realm.write {
-//                            realm.add(menuItem, update: true)
-//                            if let existingMenuItem = realm.object(ofType: MenuItem.self, forPrimaryKey: menuItem.id) {
-//                                menuCategory.menuItems.append(existingMenuItem)
-//                            }
-//                        }
+                        menuCategory.menuItems.append(menuItem)
                         
                     }
                     
-//                    try! realm.write {
                         realm.add(menuCategory, update: true)
                         if let existingMenuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategory.id) {
                             restaurant.menuCategories.append(existingMenuCategory)
                         }
+                    
+                        let savedRestaurant = realm.objects(Restaurant.self).filter("id =  %@", restaurant.id)
+                    print("Saved Restaurant hours: \(savedRestaurant.first?.restaurantHours ?? "Cant find hours")")
                         
                         realm.add(restaurant, update: true)
-//                    }
+                        print("Restaurant hours \(restaurant.restaurantHours)")
                 }
                 
             }
