@@ -42,8 +42,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         // Setup UI
         setupUI()
         
@@ -77,13 +75,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     func setupUI() {
         
         setCustomBackButton()
-        
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
-        viewCartView.layer.shadowColor = Constants.lightGray.cgColor
-        viewCartView.layer.shadowOpacity = 1
-        viewCartView.layer.shadowRadius = Constants.shadowRadius
-        viewCartView.layer.shadowOffset = CGSize.zero
-        viewCartViewToBottom.constant = 60 // start offscreen
+        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
+        viewCartView.backgroundColor = UIColor.white
+        self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
+        self.viewCartView.layer.shadowOpacity = 0.15
+        self.viewCartView.layer.shadowRadius = Constants.shadowRadius
     }
     
     func setupRealm() {
@@ -142,7 +139,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
             print("Cart does not exist. Hide View Cart button")
             
-            viewCartViewToBottom.constant = 60
+            viewCartViewToBottom.constant = viewCartView.frame.height
         }
         
         UIView.animate(withDuration: 0.4, animations: {
@@ -370,7 +367,6 @@ extension RestaurantDetailViewController: BannerCellDelegate {
     func cancelButtonTapped(cell: BannerTableViewCell) {
         self.dismiss(animated: true, completion: nil)
     }
-    
 
 }
 

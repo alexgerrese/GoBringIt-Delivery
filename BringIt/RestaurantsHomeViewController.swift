@@ -358,7 +358,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             
             cell.name.text = restaurant.name
             cell.cuisineType.text = restaurant.cuisineType
-            cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+            if let image = restaurant.image {
+                cell.bannerImage.image = UIImage(data: image as Data)
+            }
             
             let todaysHours = restaurant.restaurantHours.getOpenHoursString()
             if (restaurant.isOpen()) {

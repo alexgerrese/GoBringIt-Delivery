@@ -144,7 +144,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.title = "Checkout"
         checkoutButtonView.layer.cornerRadius = Constants.cornerRadius
         checkoutView.layer.shadowColor = Constants.lightGray.cgColor
-        checkoutView.layer.shadowOpacity = 1
+        checkoutView.layer.shadowOpacity = 0.15
         checkoutView.layer.shadowRadius = Constants.shadowRadius
         checkoutView.layer.shadowOffset = CGSize.zero
         myActivityIndicator.isHidden = true
@@ -333,8 +333,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
             
+            // NOTE: This has been disabled for now to allow people to select food points before 8pm.
             if self.isCreditCardHours() {
-                order.paymentMethod = "Credit Card"
+//                order.paymentMethod = "Credit Card"
+                order.paymentMethod = filteredPaymentMethods.first!.method // Delete this if re-enabled
             } else {
                 order.paymentMethod = filteredPaymentMethods.first!.method
             }
@@ -404,8 +406,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 if filteredPaymentMethods.count > 0 {
                     
                     // Check if currently in credit card hours
+                    // NOTE: This has been disabled for now to allow people to select food points before 8pm.
                     if self.isCreditCardHours() {
-                        cell.detailTextLabel?.text = "Credit Card"
+//                        cell.detailTextLabel?.text = "Credit Card"
+                        cell.detailTextLabel?.text = filteredPaymentMethods.first!.method // Delete this if re-enabled
                     } else {
                         cell.detailTextLabel?.text = filteredPaymentMethods.first!.method
                     }

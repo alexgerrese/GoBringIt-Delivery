@@ -62,11 +62,11 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         self.title = menuCategory.name
         
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
-//        viewCartView.layer.shadowColor = Constants.lightGray.cgColor
-//        viewCartView.layer.shadowOpacity = 1
-//        viewCartView.layer.shadowRadius = Constants.shadowRadius
-//        viewCartView.layer.shadowOffset = CGSize.zero
-        viewCartViewToBottom.constant = 60 // start offscreen
+        viewCartView.backgroundColor = UIColor.white
+        self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
+        self.viewCartView.layer.shadowOpacity = 0.15
+        self.viewCartView.layer.shadowRadius = Constants.shadowRadius
+        viewCartViewToBottom.constant = viewCartView.frame.height * 2 // start offscreen
     }
     
     func setupRealm() {
@@ -86,7 +86,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         self.myTableView.rowHeight = UITableViewAutomaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
-        viewCartViewToBottom.constant = 60
+//        viewCartViewToBottom.constant = 60
     }
     
     func checkCart() {
@@ -111,7 +111,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             
             print("Cart does not exist. Hide View Cart button")
             
-            viewCartViewToBottom.constant = 60
+            viewCartViewToBottom.constant = viewCartView.frame.height * 2
         }
 
         UIView.animate(withDuration: 0.4, animations: {

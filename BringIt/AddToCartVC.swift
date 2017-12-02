@@ -116,6 +116,10 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.title = menuItem.name
         
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
+        viewCartView.backgroundColor = UIColor.white
+        self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
+        self.viewCartView.layer.shadowOpacity = 0.15
+        self.viewCartView.layer.shadowRadius = Constants.shadowRadius
         
         checkButtonStatus()
     }

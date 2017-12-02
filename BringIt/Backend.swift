@@ -73,67 +73,60 @@ extension APICalls : TargetType {
         }
     }
     
-    var parameters: [String: Any]? {
-        switch self {
-        case .signInUser(let email, let password):
-            return ["email": email,
-                    "password": password]
-        case .signUpUser(let fullName, let email, let password, let phoneNumber, let campus, let streetAddress, let roomNumber):
-            return ["name": fullName,
-                "email": email,
-                "phone": phoneNumber,
-                "password": password,
-                "street": streetAddress,
-                "apartment": roomNumber, // NOTE: MISSING FIELD FOR CAMPUS
-                "city": "Durham", // Delete these from backend
-                "state": "NC", // Delete these from backend
-                "zip": "27705"] // Delete these from backend
-        case .updateCurrentAddress(let uid, let streetAddress, let roomNumber):
-            return ["account_id": uid,
-                    "street": streetAddress,
-                    "apartment": roomNumber,
-                    "city": "Durham",
-                    "state": "NC",
-                    "zip": "27705"]
-        case .addItemToCart(let uid, let quantity, let itemID, let sideIDs, let specialInstructions):
-            return ["uid": uid,
-                    "quantity": quantity,
-                    "item_id": itemID,
-                    "sides": sideIDs,
-                    "instructions": specialInstructions]
-        case .addOrder(let uid, let restaurantID, let payingWithCC):
-            return ["user_id": uid,
-                    "service_id": restaurantID,
-                    "payment_cc": payingWithCC]
-        //case fetchOrderHistory
-        case .fetchAccountInfo(let uid):
-            return ["uid": uid]
-        case .fetchAccountAddress(let uid):
-            return ["uid": uid]
-        case .updateAccountInfo(let uid, let fullName, let email, let phoneNumber):
-            return ["uid": uid,
-                    "name": fullName,
-                    "email": email,
-                    "phone": phoneNumber]
-        case .resetPassword(let uid, let oldPassword, let newPassword):
-            return ["uid": uid,
-                    "old_pass": oldPassword,
-                    "new_pass": newPassword]
-        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
-            return nil
-        }
-    }
-    
-    var parameterEncoding: ParameterEncoding {
-        return JSONEncoding.default // Send parameters as JSON in request body
-    }
-    
     var sampleData: Data {
         return Data()
     }
     
     var task: Task {
-        return .requestPlain
+        switch self {
+        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
+            return .requestPlain
+        case .signInUser(let email, let password):
+            return .requestParameters(parameters: ["email": email,
+            "password": password], encoding: JSONEncoding.default)
+        case .signUpUser(let fullName, let email, let password, let phoneNumber, let campus, let streetAddress, let roomNumber):
+            return .requestParameters(parameters: ["name": fullName,
+                    "email": email,
+                    "phone": phoneNumber,
+                    "password": password,
+                    "street": streetAddress,
+                    "apartment": roomNumber, // NOTE: MISSING FIELD FOR CAMPUS
+                "city": "Durham", // Delete these from backend
+                "state": "NC", // Delete these from backend
+                "zip": "27705"], encoding: JSONEncoding.default) // Delete these from backend
+        case .updateCurrentAddress(let uid, let streetAddress, let roomNumber):
+            return .requestParameters(parameters: ["account_id": uid,
+                    "street": streetAddress,
+                    "apartment": roomNumber,
+                    "city": "Durham",
+                    "state": "NC",
+                    "zip": "27705"], encoding: JSONEncoding.default)
+        case .addItemToCart(let uid, let quantity, let itemID, let sideIDs, let specialInstructions):
+            return .requestParameters(parameters: ["uid": uid,
+                    "quantity": quantity,
+                    "item_id": itemID,
+                    "sides": sideIDs,
+                    "instructions": specialInstructions], encoding: JSONEncoding.default)
+        case .addOrder(let uid, let restaurantID, let payingWithCC):
+            return .requestParameters(parameters: ["user_id": uid,
+                    "service_id": restaurantID,
+                    "payment_cc": payingWithCC], encoding: JSONEncoding.default)
+        //case fetchOrderHistory
+        case .fetchAccountInfo(let uid):
+            return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
+        case .fetchAccountAddress(let uid):
+            return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
+        case .updateAccountInfo(let uid, let fullName, let email, let phoneNumber):
+            return .requestParameters(parameters: ["uid": uid,
+                    "name": fullName,
+                    "email": email,
+                    "phone": phoneNumber], encoding: JSONEncoding.default)
+        case .resetPassword(let uid, let oldPassword, let newPassword):
+            return .requestParameters(parameters: ["uid": uid,
+                    "old_pass": oldPassword,
+                    "new_pass": newPassword], encoding: JSONEncoding.default)
+        
+        }
     }
 }
 
