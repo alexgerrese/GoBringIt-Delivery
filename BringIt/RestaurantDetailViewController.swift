@@ -99,7 +99,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             featuredDishes.append(contentsOf: filteredItems)
         }
         
-        
         if (featuredDishes.count) > 0 {
             featuredDishesIndex = 2
             dishesIndex = 3
@@ -134,7 +133,13 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
             
-            viewCartViewToBottom.constant = 0
+            // Check if iPhone X
+            if UIScreen.main.nativeBounds.height == 2436 {
+                viewCartViewToBottom.constant = 0
+            } else {
+                 viewCartViewToBottom.constant = 16
+            }
+           
         } else {
             
             print("Cart does not exist. Hide View Cart button")
@@ -213,7 +218,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             cell.delegate = self
             cell.restaurantName.text = restaurant.name
             cell.cuisineAndHours.text = restaurant.cuisineType + " • " + restaurant.restaurantHours.getOpenHoursString()
-            cell.bannerImage.image = UIImage(data: restaurant.image! as Data)
+            if let image = restaurant.image {
+                cell.bannerImage.image = UIImage(data: image as Data)
+            }
             
             return cell
 
@@ -339,7 +346,10 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
         
         let featuredDish = featuredDishes[indexPath.row]
         
-        cell.dishImage.image = UIImage(data: featuredDish.image! as Data)
+        if let image = featuredDish.image {
+            cell.dishImage.image = UIImage(data: image as Data)
+        }
+        
         cell.dishName.text = featuredDish.name
 //        cell.dishDescription.text = featuredDish.details
         cell.dishPrice.text = "$" + String(format: "%.2f", (featuredDish.price))

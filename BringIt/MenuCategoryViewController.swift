@@ -66,7 +66,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         self.viewCartView.layer.shadowOpacity = 0.15
         self.viewCartView.layer.shadowRadius = Constants.shadowRadius
-        viewCartViewToBottom.constant = viewCartView.frame.height * 2 // start offscreen
+        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
     }
     
     func setupRealm() {
@@ -106,12 +106,17 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
             
-            viewCartViewToBottom.constant = 0
+            // Check if iPhone X
+            if UIScreen.main.nativeBounds.height == 2436 {
+                viewCartViewToBottom.constant = 0
+            } else {
+                viewCartViewToBottom.constant = 16
+            }
         } else {
             
             print("Cart does not exist. Hide View Cart button")
             
-            viewCartViewToBottom.constant = viewCartView.frame.height * 2
+            viewCartViewToBottom.constant = viewCartView.frame.height
         }
 
         UIView.animate(withDuration: 0.4, animations: {

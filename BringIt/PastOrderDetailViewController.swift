@@ -18,6 +18,8 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var cartTotal: UILabel!
     @IBOutlet weak var reorderButtonView: UIView!
     @IBOutlet weak var reorderView: UIView!
+    @IBOutlet weak var reorderViewToBottom: NSLayoutConstraint!
+
     
     // MARK: - Variables
     
@@ -80,6 +82,13 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         dateFormatter.timeStyle = .none
         let orderDate = dateFormatter.string(from: order.orderTime! as Date)
         self.title = orderDate
+        
+        // Check if iPhone X
+        if UIScreen.main.nativeBounds.height == 2436 {
+            reorderViewToBottom.constant = 0
+        } else {
+            reorderViewToBottom.constant = 16
+        }
         
         reorderButtonView.layer.cornerRadius = Constants.cornerRadius
 //        reorderView.layer.shadowColor = Constants.lightGray.cgColor

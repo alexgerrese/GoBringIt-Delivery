@@ -22,6 +22,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var cartTotal: UILabel!
     @IBOutlet weak var checkoutButtonView: UIView!
     @IBOutlet weak var checkoutView: UIView!
+    @IBOutlet weak var checkoutViewToBottom: NSLayoutConstraint!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // Checking out view
@@ -148,6 +149,13 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         checkoutView.layer.shadowRadius = Constants.shadowRadius
         checkoutView.layer.shadowOffset = CGSize.zero
         myActivityIndicator.isHidden = true
+        
+        // Check if iPhone X
+        if UIScreen.main.nativeBounds.height == 2436 {
+            checkoutViewToBottom.constant = 0
+        } else {
+            checkoutViewToBottom.constant = 16
+        }
         
         // Setup checking out view
         checkingOutView.alpha = 0.0
