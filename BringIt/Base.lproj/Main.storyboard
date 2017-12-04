@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ITY-dH-zL0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ITY-dH-zL0">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13770"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -306,13 +306,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lOq-ZZ-ejO">
-                                                    <rect key="frame" x="19" y="0.0" width="337" height="170"/>
+                                                    <rect key="frame" x="12" y="0.0" width="351" height="170"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="170" id="PX0-Mv-nrw"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ojh-Eg-e6N">
-                                                    <rect key="frame" x="15" y="169" width="345" height="65"/>
+                                                    <rect key="frame" x="8" y="169" width="359" height="65"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A7I-CS-aTb">
                                                             <rect key="frame" x="6" y="4" width="210" height="26"/>
@@ -324,7 +324,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0H9-r1-I2z">
-                                                            <rect key="frame" x="209" y="4" width="131" height="25"/>
+                                                            <rect key="frame" x="223" y="4" width="131" height="25"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="131" id="fcJ-P7-jBQ"/>
                                                             </constraints>
@@ -333,7 +333,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCu-OG-yJ6">
-                                                            <rect key="frame" x="6" y="23" width="210" height="21.666666666666671"/>
+                                                            <rect key="frame" x="6" y="23" width="210" height="21.666666666666657"/>
                                                             <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="15"/>
                                                             <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -556,12 +556,12 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="promotionButtonCell" rowHeight="66" id="ngh-l7-0eS" customClass="ButtonTableViewCell" customModule="BringIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="276" width="375" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="ngh-l7-0eS" id="3v6-8R-c1n">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ngh-l7-0eS" id="3v6-8R-c1n">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="65.666666666666671"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YN-jh-my0">
-                                                    <rect key="frame" x="13" y="8" width="349" height="50"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8YN-jh-my0">
+                                                    <rect key="frame" x="6" y="8" width="363" height="50"/>
                                                     <color key="backgroundColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="cSZ-hJ-kof"/>
@@ -857,7 +857,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dep-fg-SfB">
-                                                    <rect key="frame" x="69" y="13" width="142" height="21"/>
+                                                    <rect key="frame" x="69" y="10" width="142" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="VVU-PO-cUE"/>
                                                         <constraint firstAttribute="width" constant="142" id="mer-DH-boW"/>
@@ -867,22 +867,22 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDk-13-5Ww">
-                                                    <rect key="frame" x="69" y="37" width="142" height="20.333333333333329"/>
+                                                    <rect key="frame" x="69" y="34" width="142" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="14"/>
                                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-nl-3Hs">
-                                                    <rect key="frame" x="17" y="15" width="38" height="38"/>
+                                                    <rect key="frame" x="10" y="12" width="45" height="45"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MAY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqs-3i-HXQ">
-                                                            <rect key="frame" x="2" y="0.0" width="35" height="18"/>
+                                                            <rect key="frame" x="2" y="0.0" width="42" height="25"/>
                                                             <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="12"/>
                                                             <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUa-BJ-hCH">
-                                                            <rect key="frame" x="2" y="18" width="35" height="28.333333333333329"/>
+                                                            <rect key="frame" x="2" y="18" width="42" height="28.333333333333329"/>
                                                             <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="17"/>
                                                             <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1041,25 +1041,25 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FiV-07-4wA">
-                                                    <rect key="frame" x="25" y="11" width="20" height="15"/>
+                                                    <rect key="frame" x="18" y="8" width="20" height="21"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="17"/>
                                                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu Item" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGc-9r-ER8">
-                                                    <rect key="frame" x="53" y="11" width="239" height="15"/>
+                                                    <rect key="frame" x="46" y="8" width="253" height="21"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pN6-US-JiQ">
-                                                    <rect key="frame" x="293" y="11" width="60" height="15"/>
+                                                    <rect key="frame" x="300" y="8" width="60" height="21"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="w/ Sides" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SzT-ly-jlW">
-                                                    <rect key="frame" x="53" y="31" width="239" height="20.666666666666671"/>
+                                                    <rect key="frame" x="46" y="34" width="253" height="20.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="14"/>
                                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1124,10 +1124,10 @@
                                 <rect key="frame" x="0.0" y="727" width="375" height="85"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IVN-JU-iCh">
-                                        <rect key="frame" x="12" y="10.000000000000004" width="350" height="49.333333333333343"/>
+                                        <rect key="frame" x="12" y="10" width="350" height="49.333333333333371"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="85U-us-rU7">
-                                                <rect key="frame" x="254" y="11.999999999999998" width="88" height="24.333333333333329"/>
+                                                <rect key="frame" x="254" y="12" width="88" height="24.333333333333371"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="88" id="9fY-5B-Fis"/>
                                                 </constraints>
@@ -1333,7 +1333,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will be able to edit these later." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PO8-q6-fr6">
-                                <rect key="frame" x="108.66666666666667" y="316" width="157.66666666666663" height="17.333333333333314"/>
+                                <rect key="frame" x="108.66666666666669" y="316" width="157.66666666666663" height="17.333333333333314"/>
                                 <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="12"/>
                                 <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1871,13 +1871,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="19U-wp-h06">
-                                                    <rect key="frame" x="0.0" y="47" width="375" height="129"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dwV-Ue-29Y">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restaurant Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17c-da-wuZ">
-                                                            <rect key="frame" x="94.333333333333314" y="60" width="188" height="34.333333333333343"/>
+                                                            <rect key="frame" x="94.333333333333314" y="59.999999999999993" width="188" height="34.333333333333321"/>
                                                             <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="24"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1963,7 +1963,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="DVR-5o-LT1">
-                                                    <rect key="frame" x="7" y="0.0" width="375" height="155"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="155"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="375" id="DWl-q5-Gsa"/>
                                                         <constraint firstAttribute="height" constant="155" id="nvg-Sd-k7e"/>
@@ -2184,13 +2184,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tuv-31-Vol">
-                                                    <rect key="frame" x="22" y="10.999999999999998" width="275" height="20.333333333333329"/>
+                                                    <rect key="frame" x="15" y="8" width="289" height="26"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="18"/>
                                                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2AV-2D-Zlo">
-                                                    <rect key="frame" x="293" y="6.9999999999999982" width="60" height="24.333333333333329"/>
+                                                    <rect key="frame" x="300" y="4" width="60" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="UKW-h9-qGG"/>
                                                     </constraints>
@@ -2199,7 +2199,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfJ-8U-KRU">
-                                                    <rect key="frame" x="22" y="34.333333333333336" width="301" height="22.666666666666664"/>
+                                                    <rect key="frame" x="15" y="37" width="315" height="23"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="16"/>
                                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2381,15 +2381,15 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="specialInstructionsCell" rowHeight="93" id="U8J-5A-5VS" customClass="SpecialInstructionsTableViewCell" customModule="BringIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="187.33333333333334" width="375" height="93"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="U8J-5A-5VS" id="l2c-qt-VfE">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U8J-5A-5VS" id="l2c-qt-VfE">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k8a-Fm-wZC">
-                                                    <rect key="frame" x="15" y="8" width="345" height="77"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k8a-Fm-wZC">
+                                                    <rect key="frame" x="8" y="8" width="359" height="77"/>
                                                     <subviews>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. Easy on the wasabi, add extra chopsticks…" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1Bk-40-oS6">
-                                                            <rect key="frame" x="8" y="8" width="329" height="61"/>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. Easy on the wasabi, add extra chopsticks…" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="1Bk-40-oS6">
+                                                            <rect key="frame" x="8" y="8" width="343" height="61"/>
                                                             <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2420,15 +2420,15 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="quantityCell" rowHeight="85" id="T5Z-F1-ZvZ" customClass="QuantityTableViewCell" customModule="BringIt" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="280.33333333333337" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="T5Z-F1-ZvZ" id="brW-aJ-hqx">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T5Z-F1-ZvZ" id="brW-aJ-hqx">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f9f-fI-eDb">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f9f-fI-eDb">
                                                     <rect key="frame" x="0.0" y="8" width="375" height="69"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q9s-of-HTu">
-                                                            <rect key="frame" x="166.33333333333334" y="17" width="42" height="34.333333333333343"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q9s-of-HTu">
+                                                            <rect key="frame" x="166.33333333333334" y="17.000000000000004" width="42" height="34.333333333333343"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="42" id="fus-OA-r6E"/>
                                                             </constraints>
@@ -2436,15 +2436,15 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QAk-qZ-uLa">
-                                                            <rect key="frame" x="113.33333333333331" y="10" width="48" height="48"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QAk-qZ-uLa">
+                                                            <rect key="frame" x="113.33333333333334" y="10" width="48.000000000000028" height="48"/>
                                                             <state key="normal" image="- Button"/>
                                                             <connections>
                                                                 <action selector="minusButtonTapped:" destination="T5Z-F1-ZvZ" eventType="touchUpInside" id="euf-Sl-nSC"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrN-vU-jE4">
-                                                            <rect key="frame" x="213.33333333333334" y="10" width="48.000000000000028" height="48"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrN-vU-jE4">
+                                                            <rect key="frame" x="213.33333333333331" y="10" width="47.999999999999943" height="48"/>
                                                             <state key="normal" image="+ Button"/>
                                                             <connections>
                                                                 <action selector="plusButtonTapped:" destination="T5Z-F1-ZvZ" eventType="touchUpInside" id="Oaj-Ei-Rh8"/>
@@ -2488,7 +2488,7 @@
                                         <rect key="frame" x="12" y="10" width="350" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZE-YI-byl">
-                                                <rect key="frame" x="254" y="14.000000000000002" width="88" height="20.666666666666671"/>
+                                                <rect key="frame" x="254" y="14" width="88" height="20.666666666666629"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="88" id="hwF-CP-7lc"/>
                                                 </constraints>
@@ -2608,25 +2608,25 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXK-J4-IdP">
-                                                    <rect key="frame" x="25" y="11" width="20" height="15.666666666666664"/>
+                                                    <rect key="frame" x="18" y="8.0000000000000018" width="20" height="21.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="17"/>
                                                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu Item" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2k2-A9-QoD">
-                                                    <rect key="frame" x="53" y="11" width="239" height="15.666666666666664"/>
+                                                    <rect key="frame" x="46" y="8.0000000000000018" width="253" height="21.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Lf-yJ-GLi">
-                                                    <rect key="frame" x="293" y="11" width="60" height="15.666666666666664"/>
+                                                    <rect key="frame" x="300" y="8.0000000000000018" width="60" height="21.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                     <color key="textColor" red="0.31372549020000001" green="0.82352941180000006" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="w/ Sides" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48e-kr-EH3">
-                                                    <rect key="frame" x="53" y="31.666666666666671" width="239" height="20.333333333333329"/>
+                                                    <rect key="frame" x="46" y="34.666666666666657" width="253" height="20.333333333333336"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="14"/>
                                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2691,10 +2691,10 @@
                                 <rect key="frame" x="0.0" y="728" width="375" height="84"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHJ-Vo-53v">
-                                        <rect key="frame" x="12" y="10.000000000000004" width="350" height="47.333333333333343"/>
+                                        <rect key="frame" x="12" y="10" width="350" height="47.333333333333371"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wws-oQ-5UV">
-                                                <rect key="frame" x="254" y="11.999999999999998" width="88" height="24.333333333333329"/>
+                                                <rect key="frame" x="254" y="12" width="88" height="24.333333333333371"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="88" id="maS-Fw-eTC"/>
                                                 </constraints>
