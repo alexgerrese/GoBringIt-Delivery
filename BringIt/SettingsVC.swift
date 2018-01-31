@@ -93,9 +93,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if checkIfLoggedIn() {
             
             let filteredUsers = realm.objects(User.self).filter("isCurrent = %@", NSNumber(booleanLiteral: true))
-            user = filteredUsers.first!
+            if let firstUser = filteredUsers.first {
+                user = firstUser
+            } else {
+                signOutUser()
+            }
         }
-        
     }
     
     func setupTableView() {

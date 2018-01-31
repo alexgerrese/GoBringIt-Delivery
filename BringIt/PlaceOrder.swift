@@ -99,8 +99,9 @@ extension CheckoutVC {
                         print(self.order.isComplete)
                         print(self.order.orderTime)
                         
-                        self.sendUserConfirmationEmail()
                         self.sendRestaurantConfirmationEmail()
+                        self.sendUserConfirmationEmail()
+                        self.dispatch_group.wait(timeout: .distantFuture)
                         
                         self.performSegue(withIdentifier: "toOrderPlaced", sender: self)
                     }

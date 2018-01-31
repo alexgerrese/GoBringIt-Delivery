@@ -193,6 +193,7 @@ extension RestaurantsHomeViewController {
                 restaurant.deliveryFee = Double(retrievedRestaurant["deliveryFee"] as! String)!
                 restaurant.restaurantHours = retrievedRestaurant["restaurantHours"] as! String             
                 restaurant.phoneNumber = (retrievedRestaurant["phoneNumber"] as! String)
+                restaurant.minimumPrice = Double(retrievedRestaurant["minimumPrice"] as! String)!
                 
                 // Check if printer email exists
                 let printerEmail = retrievedRestaurant["printerEmail"]

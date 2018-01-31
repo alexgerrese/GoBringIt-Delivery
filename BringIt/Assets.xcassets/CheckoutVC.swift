@@ -43,6 +43,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var restaurantEmail = ""
     var restaurantPrinterEmail = ""
     let defaultButtonText = "Checkout"
+    let dispatch_group = DispatchGroup()
     
     // Passed from previousVC
     var restaurantID = ""
@@ -73,17 +74,16 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         print("In viewWillAppear")
         
         // TO-DO: Check if coming from SignInVC
-        
         checkIfLoggedIn()
-        
+        calculateTotal()
         myTableView.reloadData()
-        
+        setupUI()
         checkButtonStatus()
     
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if checkingOutView.alpha == 1 {
+        if !checkingOutView.isHidden {
             checkingOutView.removeFromSuperview()
         }
     }
@@ -158,13 +158,13 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Setup checking out view
-        checkingOutView.alpha = 0.0
+        checkingOutView.isHidden = true
         confirmButton.layer.cornerRadius = Constants.cornerRadius
         tryAgainButton.layer.cornerRadius = Constants.cornerRadius
         cancelButton.layer.cornerRadius = Constants.cornerRadius
         cancelButton.layer.borderColor = UIColor.white.cgColor
         cancelButton.layer.borderWidth = Constants.borderWidth
-        tryAgainButton.alpha = 0
+        tryAgainButton.isHidden = true
         
         checkButtonStatus()
     }
@@ -185,8 +185,20 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     /* Iterate over menu items in cart and add their total costs to the subtotal */
     func calculateTotal() -> Double {
         
-        // Base cost is subtotal
-        var total = order.subtotal
+        let realm = try! Realm() // Initialize Realm
+        
+        // Base cost is 0.0
+        var total = 0.0
+        
+        // Add all menu item subtotals
+        for menuItem in order.menuItems {
+            total += menuItem.totalCost
+        }
+        
+        // Update order subtotal
+        try! realm.write {
+            order.subtotal = total
+        }
         
         // Add delivery fee
         total += order.deliveryFee
@@ -213,12 +225,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Check that there is a selected address
         let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
         
-        if filteredAddresses.count > 0 {
-            
-            checkoutButton.isEnabled = true
-            checkoutButtonView.backgroundColor = Constants.green
-            checkoutButton.setTitle("Checkout", for: .normal)
-        } else {
+        if filteredAddresses.count == 0 {
             
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
@@ -235,30 +242,43 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
             checkoutButton.setTitle("Please select a payment method", for: .normal)
-        } else {
-            checkoutButton.isEnabled = true
-            checkoutButtonView.backgroundColor = Constants.green
-            checkoutButton.setTitle("Checkout", for: .normal)
+            
+            return
         }
         
-//         Check that the restaurant is open
+        // Check that the restaurant is open
         let filteredRestaurant = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
         if !filteredRestaurant.first!.isOpen() {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
             checkoutButton.setTitle("This restaurant is currently closed", for: .normal)
-        } else {
-            checkoutButton.isEnabled = true
-            checkoutButtonView.backgroundColor = Constants.green
-            checkoutButton.setTitle("Checkout", for: .normal)
+
+            return
         }
+        
+        // Check that the total exceeds the minimum order price
+        let minimumPrice = filteredRestaurant.first!.minimumPrice
+        if order.subtotal < minimumPrice {
+            checkoutButton.isEnabled = false
+            checkoutButtonView.backgroundColor = Constants.red
+            cartTotal.isHidden = true
+            checkoutButton.setTitle("Order subtotal must be above $\(String(format: "%.2f", minimumPrice))", for: .normal)
+            
+            return
+        }
+        
+        // Enable button if all above tests pass
+        checkoutButton.isEnabled = true
+        checkoutButtonView.backgroundColor = Constants.green
+        checkoutButton.setTitle("Checkout", for: .normal)
+        cartTotal.isHidden = false
     }
 
     @IBAction func checkoutButtonTapped(_ sender: UIButton) {
         
         // Show checking out view
         UIView.animate(withDuration: 0.4, animations: {
-            self.checkingOutView.alpha = 1.0
+            self.checkingOutView.isHidden = false
         })
         
         // Add haptic feedback
@@ -272,22 +292,22 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func setupConfirmView() {
         
-        UIApplication.shared.keyWindow?.addSubview(checkingOutView)
+        //UIApplication.shared.keyWindow?.addSubview(checkingOutView) //TO-DO: CHANGE THIS TO REMOVE NAVBAR FROM CHECKOUTVIEW
+        self.view.layoutIfNeeded()
         
-        tryAgainButton.alpha = 0
-        confirmButton.alpha = 1
+        tryAgainButton.isHidden = true
+        confirmButton.isHidden = false
         confirmButton.isEnabled = true
         checkingOutView.backgroundColor = Constants.green
         checkingOutTitle.text = "Are you sure you want to checkout?"
         checkingOutDetails.text = "You will be charged $\(String(format: "%.2f", calculateTotal())) upon delivery."
-//        confirmButton.setTitle("Checkout", for: .normal)
         cancelButton.setTitle("Cancel", for: .normal)
     }
     
     func showConfirmViewError(errorTitle: String, errorMessage: String) {
         
-        tryAgainButton.alpha = 1
-        cancelButton.alpha = 1
+        tryAgainButton.isHidden = false
+        cancelButton.isHidden = false
         tryAgainButton.isEnabled = true
         cancelButton.isEnabled = true
         
@@ -299,7 +319,6 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     @IBAction func tryAgainButtonTapped(_ sender: UIButton) {
-        
         confirmOrder()
     }
     
@@ -308,7 +327,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Show checking out view
         UIView.animate(withDuration: 0.4, animations: {
-            self.checkingOutView.alpha = 0
+            self.checkingOutView.isHidden = true
         })
     }
     
@@ -328,8 +347,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         checkingOutView.backgroundColor = Constants.green
         checkingOutTitle.text = "Placing Order..."
         checkingOutDetails.text = ""
-        confirmButton.alpha = 0
-        cancelButton.alpha = 0
+        confirmButton.isHidden = true
+        cancelButton.isHidden = true
         confirmButton.isEnabled = false
         cancelButton.isEnabled = false
         
@@ -574,7 +593,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 myTableView.reloadData()
                 updateViewConstraints()
                 calculateTotal()
-                
+                checkButtonStatus()
             }
         }
     }

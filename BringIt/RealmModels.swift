@@ -56,6 +56,7 @@ class Restaurant: Object {
     dynamic var restaurantHours = ""
     dynamic var phoneNumber = ""
     dynamic var deliveryFee = 0.0
+    dynamic var minimumPrice = 0.0
     let promotions = List<Promotion>()
     let mostPopularDishes = List<MenuItem>()
     let menuCategories = List<MenuCategory>()

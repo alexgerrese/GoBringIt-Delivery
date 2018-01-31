@@ -16,6 +16,8 @@ extension CheckoutVC {
         
         let realm = try! Realm() // Initialize Realm
         
+        dispatch_group.enter()
+        
         // Get first name
         let fullName    = user.fullName
         let firstName = fullName.components(separatedBy: " ")[0]
@@ -104,11 +106,14 @@ extension CheckoutVC {
         do {
             try Session.shared.send(request: email) { (response) in
                 print(response?.httpUrlResponse?.statusCode)
+                print("USER EMAIL SENT")
+                
+                self.dispatch_group.leave()
             }
         } catch {
             print(error)
             print("USER EMAIL DIDN'T WORK, RETRYING...")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.sendUserConfirmationEmail()
             }
         }
@@ -117,6 +122,8 @@ extension CheckoutVC {
     func sendRestaurantConfirmationEmail() {
         
         let realm = try! Realm() // Initialize Realm
+        
+        dispatch_group.enter()
         
         // Get first name
         let fullName = user.fullName
@@ -179,9 +186,9 @@ extension CheckoutVC {
         
         // Set up recipients
         var recipients = [Address(restaurantEmail)]
-        if restaurantPrinterEmail != "" {
-            recipients.append(Address(restaurantPrinterEmail))
-        }
+//        if restaurantPrinterEmail != "" {
+//            recipients.append(Address(restaurantPrinterEmail))
+//        }
         
         print("RECIPIENTS: \(recipients)")
         
@@ -209,11 +216,14 @@ extension CheckoutVC {
         do {
             try Session.shared.send(request: email) { (response) in
                 print(response?.httpUrlResponse?.statusCode)
+                print("RESTAURANT EMAIL SENT")
+                
+                self.dispatch_group.leave()
             }
         } catch {
             print(error)
             print("RESTAURANT EMAIL DIDN'T WORK, RETRYING...")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.sendRestaurantConfirmationEmail()
             }
         }

@@ -204,6 +204,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     /* Create shallow Realm copies to differentiate between the normal menu item and the item in the cart (necessary for future Realm queries), then add those copies to the order (if one exists, else create new order as well) */
     func addToCart() {
         
+        print("In addToCart")
+        
         let realm = try! Realm() // Initialize Realm
         
         // Add haptic feedback
@@ -335,7 +337,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         } else {
             
             try! realm.write {
-//                menuItem.quantity = 
+                
+                // Update order total
+                let predicate = NSPredicate(format: "restaurantID = %@ && isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
+                let order = realm.objects(Order.self).filter(predicate).first
+                
+                // Update menu item subtotal
+                menuItem.totalCost = calculateSubtotal()
                 
                 // Retrieve special instructions if available
                 let indexPath = IndexPath(row: 0, section: sectionTitles.count - 2)
@@ -595,8 +603,8 @@ extension AddToCartVC: QuantityCellDelegate {
             value -= 1
             try! realm.write {
                 menuItem.quantity = value
+                menuItem.totalCost = calculateSubtotal()
             }
-            calculateSubtotal()
             cell.value.text = String(describing: value)
         }
     }
@@ -607,8 +615,8 @@ extension AddToCartVC: QuantityCellDelegate {
         value += 1
         try! realm.write {
             menuItem.quantity = value
+            menuItem.totalCost = calculateSubtotal()
         }
-        calculateSubtotal()
         cell.value.text = String(describing: value)
     }
 }
