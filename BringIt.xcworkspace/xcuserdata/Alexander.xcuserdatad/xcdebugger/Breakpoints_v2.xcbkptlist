@@ -264,13 +264,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/SendEmails.swift"
-            timestampString = "539099179.723471"
+            timestampString = "539747927.889524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
             endingLineNumber = "89"
-            landmarkName = "sendUserConfirmationEmail()"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -328,13 +328,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/AddToCartVC.swift"
-            timestampString = "537587977.516889"
+            timestampString = "539747927.8896199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "497"
-            endingLineNumber = "497"
-            landmarkName = "tableView(_:didSelectRowAt:)"
-            landmarkType = "7">
+            startingLineNumber = "499"
+            endingLineNumber = "499"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -1,20 +1,20 @@
 PODS:
-  - Alamofire (4.5.1)
+  - Alamofire (4.7.2)
   - EZSwiftExtensions (1.11)
-  - IQKeyboardManagerSwift (5.0.2)
-  - Moya (9.0.0):
-    - Moya/Core (= 9.0.0)
-  - Moya/Core (9.0.0):
+  - IQKeyboardManagerSwift (6.0.3)
+  - Moya (11.0.2):
+    - Moya/Core (= 11.0.2)
+  - Moya/Core (11.0.2):
     - Alamofire (~> 4.1)
     - Result (~> 3.0)
-  - Realm (2.10.2):
-    - Realm/Headers (= 2.10.2)
-  - Realm/Headers (2.10.2)
-  - RealmSwift (2.10.2):
-    - Realm (= 2.10.2)
+  - Realm (3.5.0):
+    - Realm/Headers (= 3.5.0)
+  - Realm/Headers (3.5.0)
+  - RealmSwift (3.5.0):
+    - Realm (= 3.5.0)
   - Result (3.2.4)
-  - SendGrid (1.0.0)
-  - Stripe (11.3.0)
+  - SendGrid (1.1.0)
+  - Stripe (13.0.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -31,19 +31,19 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SendGrid:
-    :commit: b21053cd9909cee6441097046735328274ac538f
+    :commit: f83833cd2ea00e07de3d851f8f77b5baacee689b
     :git: https://github.com/scottkawai/sendgrid-swift.git
 
 SPEC CHECKSUMS:
-  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   EZSwiftExtensions: 84000042202d9fd574f626cda3064143f27fa767
-  IQKeyboardManagerSwift: e580da046d804d2836ee84668cc17e43a850a35d
-  Moya: cf5e6ee93af526532f92614004b8ad2ea60fd845
-  Realm: 0ef72b837fb67e9f4b098bac771ddd72c7fdbb69
-  RealmSwift: 07a9ae0505091eda6b2ee7c190c3786d6e90a7b0
+  IQKeyboardManagerSwift: 04e8679f85e496bb2c474eeb9284052f1b3c391c
+  Moya: a725035953bc1c0eb1be505ab903984501d82440
+  Realm: 0378021c424e4e2bd6a0e63b27881e929d9b9ad1
+  RealmSwift: 3322562622fda2ad596985ead4d8d8be30cf838c
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
-  SendGrid: 68f670b6d3eb6e3f5014e4a540aaa0abfdfd6553
-  Stripe: 3c86dc18af21e59dd559aa15e83cb501248f9903
+  SendGrid: 1b2a3beb1f2b6df0ffba83c6d1b1f4587a51def0
+  Stripe: 542f2c4493ce31a99fa041fe4973206e8c868f29
 
 PODFILE CHECKSUM: 72135a011de3e7a62fec3d8f80373ab5a8e6e965
 

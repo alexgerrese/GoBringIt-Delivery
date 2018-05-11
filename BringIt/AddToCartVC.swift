@@ -350,10 +350,11 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 let cell = myTableView.cellForRow(at: indexPath) as! SpecialInstructionsTableViewCell!
                 if cell != nil && cell?.specialInstructions.text != nil {
                     menuItem.specialInstructions = (cell?.specialInstructions.text!)!
+                    print("Saving special instructions: \(menuItem.specialInstructions)!")
                 } else {
                     menuItem.specialInstructions = ""
+                    print("No special instructions saved.")
                 }
-                
             }
         }
         

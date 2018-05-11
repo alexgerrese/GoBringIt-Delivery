@@ -110,20 +110,6 @@ NS_ASSUME_NONNULL_BEGIN
                             statementDescriptor:(nullable NSString *)statementDescriptor;
 
 /**
- Creates params for a Bitcoin source.
- @see https://stripe.com/docs/bitcoin#creating-and-displaying-a-source-object
- 
- @param amount      The amount to charge the customer.
- @param currency    The currency the payment is being created in.
- @param email       The customer's email address.
- 
- @return an STPSourceParams object populated with the provided values.
- */
-+ (STPSourceParams *)bitcoinParamsWithAmount:(NSUInteger)amount
-                                    currency:(NSString *)currency
-                                       email:(NSString *)email;
-
-/**
  Creates params for a Card source.
  @see https://stripe.com/docs/sources/cards#create-source
  
@@ -255,6 +241,19 @@ NS_ASSUME_NONNULL_BEGIN
                                   returnURL:(NSString *)returnURL;
 
 /**
+ Creates params for a reusable Alipay source
+ @see https://stripe.com/docs/sources/alipay#create-source
+
+ @param currency    The currency the payment is being created in.
+ @param returnURL   The URL the customer should be redirected to after they have
+ successfully verified the payment.
+
+ @return An STPSourceParams object populated with the provided values
+ */
++ (STPSourceParams *)alipayReusableParamsWithCurrency:(NSString *)currency
+                                            returnURL:(NSString *)returnURL;
+
+/**
  Creates params for a P24 source
  @see https://stripe.com/docs/sources/p24#create-source
 
@@ -272,6 +271,34 @@ NS_ASSUME_NONNULL_BEGIN
                                    email:(NSString *)email
                                     name:(nullable NSString *)name
                                returnURL:(NSString *)returnURL;
+
+
+/**
+ Creates params for a card source created from Visa Checkout.
+ @see https://stripe.com/docs/visa-checkout
+
+ @note Creating an STPSource with these params will give you a
+ source with type == STPSourceTypeCard
+
+ @param callId The callId property from a `VisaCheckoutResult` object.
+ @return An STPSourceParams object populated with the provided values.
+ */
++ (STPSourceParams *)visaCheckoutParamsWithCallId:(NSString *)callId;
+
+
+/**
+ Creates params for a card source created from Masterpass.
+ @see https://stripe.com/docs/masterpass
+
+ @note Creating an STPSource with these params will give you a
+ source with type == STPSourceTypeCard
+
+ @param cartId The cartId from a `MCCCheckoutResponse` object.
+ @param transactionId The transactionid from a `MCCCheckoutResponse` object.
+ @return An STPSourceParams object populated with the provided values.
+ */
++ (STPSourceParams *)masterpassParamsWithCartId:(NSString *)cartId
+                                  transactionId:(NSString *)transactionId;
 
 @end
 

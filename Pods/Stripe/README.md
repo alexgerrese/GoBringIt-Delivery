@@ -18,17 +18,18 @@ The Stripe iOS SDK makes it quick and easy to build an excellent payment experie
 
 **Native UI**: We provide out-of-the-box native screens and elements so that you can get started quickly without having to think about designing the right interfaces. See our [Standard Integration Guide](https://stripe.com/docs/mobile/ios/standard) for the most hands off approach. Please see our [Custom Integration Guide](https://stripe.com/docs/mobile/ios/custom) if you want a little more control.
 
-**Card Scanning**: We support card scanning capabilities using card.io. See our [card.io](#cardio) section.
+**Card Scanning**: We support card scanning capabilities using card.io. See our [Card IO](#card-io) section.
 
 ## Releases
 
 We recommend that you install the Stripe iOS SDK using a package manager such as [Cocoapods or Carthage](https://stripe.com/docs/mobile/ios#getting-started). If you prefer to link the library manually, please use a version from our [releases](https://github.com/stripe/stripe-ios/releases) page because we consider the master branch to be unstable.
 
-If you're reading this on GitHub.com, please make sure you are looking at the [tagged version](https://github.com/stripe/stripe-ios/tags) that corresponds to the release you have installed. Otherwise, the instructions and example code may be mismatched with your copy. You can read the latest tagged version of this README and browse the associated code on GitHub using [this link](https://github.com/stripe/stripe-ios/tree/v11.3.0).
+If you're reading this on GitHub.com, please make sure you are looking at the [tagged version](https://github.com/stripe/stripe-ios/tags) that corresponds to the release you have installed. Otherwise, the instructions and example code may be mismatched with your copy. You can read the latest tagged version of this README and browse the associated code on GitHub using
+[this link](https://github.com/stripe/stripe-ios/tree/v13.0.0).
 
 ## Requirements
 
-The Stripe iOS SDK is compatible with apps supporting iOS 8 and above and requires Xcode 8 to build from source.
+The Stripe iOS SDK is compatible with apps supporting iOS 9 and above and requires Xcode 9 to build from source.
 
 ## Getting Started
 
@@ -54,7 +55,7 @@ To try out any of these examples, clone this repository, open `Stripe.xcworkspac
 
 After this is done, you can make test payments through the app and see them in your Stripe dashboard. Head to https://stripe.com/docs/testing#cards for a list of test card numbers.
 
-## card.io
+## Card IO
 
 To add card scanning capabilities to our prebuilt UI components, you can simply [install card.io](https://github.com/card-io/card.io-iOS-SDK#setup) alongside our SDK. You'll also need to set `NSCameraUsageDescription` in your application's plist, and provide a reason for accessing the camera (e.g. "To scan cards").
 
@@ -69,7 +70,7 @@ We welcome contributions of any kind including new features, bug fixes, and docu
 1. Install Carthage (if you have homebrew installed, `brew install carthage`)
 2. From the root of the repo, install test dependencies by running `carthage bootstrap --platform ios --configuration Release --no-use-binaries`
 3. Open Stripe.xcworkspace
-4. Choose the "StripeiOS" scheme with the iPhone 6, iOS 10.3 simulator (required for snapshot tests to pass)
+4. Choose the "StripeiOS" scheme with the iPhone 6, iOS 11.2 simulator (required for snapshot tests to pass)
 5. Run Product -> Test
 
 ## Migrating from Older Versions
