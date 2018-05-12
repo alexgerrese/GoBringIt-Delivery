@@ -11,14 +11,14 @@ import RealmSwift
 
 // User Model
 class User: Object {
-    dynamic var isCurrent = false
-    dynamic var id = ""
-    dynamic var fullName = ""
-    dynamic var email = ""
-    dynamic var password = "" // KEEP THIS???
-    dynamic var phoneNumber = ""
+    @objc dynamic var isCurrent = false
+    @objc dynamic var id = ""
+    @objc dynamic var fullName = ""
+    @objc dynamic var email = ""
+    @objc dynamic var password = "" // KEEP THIS???
+    @objc dynamic var phoneNumber = ""
     let addresses = List<DeliveryAddress>()
-    dynamic var isFirstOrder = false
+    @objc dynamic var isFirstOrder = false
     let pastOrders = List<Order>()
     let paymentMethods = List<PaymentMethod>()
     
@@ -31,32 +31,32 @@ class User: Object {
 
 // Address Model
 class DeliveryAddress: Object {
-    dynamic var userID = ""
-    dynamic var campus = ""
-    dynamic var streetAddress = ""
-    dynamic var roomNumber = ""
-    dynamic var isCurrent = false
+    @objc dynamic var userID = ""
+    @objc dynamic var campus = ""
+    @objc dynamic var streetAddress = ""
+    @objc dynamic var roomNumber = ""
+    @objc dynamic var isCurrent = false
 }
 
 // Payment Method Model
 class PaymentMethod: Object {
-    dynamic var userID = ""
-    dynamic var method = ""
-    dynamic var isSelected = false
+    @objc dynamic var userID = ""
+    @objc dynamic var method = ""
+    @objc dynamic var isSelected = false
 }
 
 // Restaurant Model
 class Restaurant: Object {
-    dynamic var id = ""
-    dynamic var email = ""
-    dynamic var printerEmail = ""
-    dynamic var image: NSData?
-    dynamic var name = ""
-    dynamic var cuisineType = ""
-    dynamic var restaurantHours = ""
-    dynamic var phoneNumber = ""
-    dynamic var deliveryFee = 0.0
-    dynamic var minimumPrice = 0.0
+    @objc dynamic var id = ""
+    @objc dynamic var email = ""
+    @objc dynamic var printerEmail = ""
+    @objc dynamic var image: NSData?
+    @objc dynamic var name = ""
+    @objc dynamic var cuisineType = ""
+    @objc dynamic var restaurantHours = ""
+    @objc dynamic var phoneNumber = ""
+    @objc dynamic var deliveryFee = 0.0
+    @objc dynamic var minimumPrice = 0.0
     let promotions = List<Promotion>()
     let mostPopularDishes = List<MenuItem>()
     let menuCategories = List<MenuCategory>()
@@ -72,8 +72,8 @@ class Restaurant: Object {
 
 // Menu Category Model
 class MenuCategory: Object {
-    dynamic var id = ""
-    dynamic var name = ""
+    @objc dynamic var id = ""
+    @objc dynamic var name = ""
     let menuItems = List<MenuItem>()
     
     override static func primaryKey() -> String? {
@@ -83,24 +83,24 @@ class MenuCategory: Object {
 
 // Menu Item Model
 class MenuItem: Object {
-    dynamic var id = ""
-    dynamic var isFeatured = false
-    dynamic var image: NSData?
-    dynamic var name = ""
-    dynamic var details = ""
-    dynamic var price = 0.0
-    dynamic var groupings = 0
-    dynamic var numRequiredSides = 0
+    @objc dynamic var id = ""
+    @objc dynamic var isFeatured = false
+    @objc dynamic var image: NSData?
+    @objc dynamic var name = ""
+    @objc dynamic var details = ""
+    @objc dynamic var price = 0.0
+    @objc dynamic var groupings = 0
+    @objc dynamic var numRequiredSides = 0
     let sides = List<Side>()
     let extras = List<Side>()
     
     // For Cart items only
-    dynamic var specialInstructions = ""
-    dynamic var quantity = 1
-    dynamic var totalCost = 0.0
-    dynamic var isInCart = false
+    @objc dynamic var specialInstructions = ""
+    @objc dynamic var quantity = 1
+    @objc dynamic var totalCost = 0.0
+    @objc dynamic var isInCart = false
     
-    dynamic var isOfficialDescription = false
+    @objc dynamic var isOfficialDescription = false
     
     // TO-DO: Add a method to calculate and return total price??
     
@@ -111,15 +111,15 @@ class MenuItem: Object {
 
 // Side Model
 class Side: Object {
-    dynamic var id = ""
-    dynamic var name = ""
-    dynamic var isRequired = false
-    dynamic var sideCategory = ""
-    dynamic var price = 0.0 // TO-DO: Should this be a string or a Double?
-    dynamic var isSelected = false
-    dynamic var isInCart = false
+    @objc dynamic var id = ""
+    @objc dynamic var name = ""
+    @objc dynamic var isRequired = false
+    @objc dynamic var sideCategory = ""
+    @objc dynamic var price = 0.0 // TO-DO: Should this be a string or a Double?
+    @objc dynamic var isSelected = false
+    @objc dynamic var isInCart = false
     
-    dynamic var isOfficialDescription = false
+    @objc dynamic var isOfficialDescription = false
     
 //    override static func primaryKey() -> String? {
 //        return "id"
@@ -128,10 +128,10 @@ class Side: Object {
 
 // Promotions Model
 class Promotion: Object {
-    dynamic var id = ""
-    dynamic var restaurantID = ""
-    dynamic var image: NSData?
-    dynamic var details = ""
+    @objc dynamic var id = ""
+    @objc dynamic var restaurantID = ""
+    @objc dynamic var image: NSData?
+    @objc dynamic var details = ""
     
     override static func primaryKey() -> String? {
         return "id"
@@ -140,13 +140,13 @@ class Promotion: Object {
 
 // Order Model
 class Order: Object {
-    dynamic var id = 0
-    dynamic var restaurantID = ""
-    dynamic var orderTime: NSDate?
-    dynamic var address: DeliveryAddress?
-    dynamic var paymentMethod = ""
+    @objc dynamic var id = 0
+    @objc dynamic var restaurantID = ""
+    @objc dynamic var orderTime: NSDate?
+    @objc dynamic var address: DeliveryAddress?
+    @objc dynamic var paymentMethod = ""
     let menuItems = List<MenuItem>()
-    dynamic var subtotal = 0.0 
-    dynamic var deliveryFee = 0.0
-    dynamic var isComplete = false
+    @objc dynamic var subtotal = 0.0 
+    @objc dynamic var deliveryFee = 0.0
+    @objc dynamic var isComplete = false
 }

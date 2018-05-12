@@ -147,6 +147,10 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         let price = menuItems[indexPath.row].price
         cell.price.text = "$" + String(format: "%.2f", price)
         
+        if let image = menuItems[indexPath.row].image {
+            cell.menuImage.image = UIImage(data: image as Data)
+        }
+        
         return cell
     }
     

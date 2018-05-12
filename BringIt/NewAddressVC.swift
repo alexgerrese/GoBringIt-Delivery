@@ -126,7 +126,7 @@ class NewAddressVC: UIViewController {
     
     // MARK: - TextField Delegate
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         checkFields()
     }
     

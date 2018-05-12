@@ -113,7 +113,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         refreshControl.addTarget(self, action: #selector(RestaurantsHomeViewController.refreshData(refreshControl:)), for: .valueChanged)
     }
     
-    func refreshData(refreshControl: UIRefreshControl) {
+    @objc func refreshData(refreshControl: UIRefreshControl) {
         checkForUpdates()
     }
     
@@ -333,13 +333,14 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
 
+    // TODO: ------------- DELETE THIS HARDCODED CRAP ---------------
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == promotionsIndex {
-            return UIScreen.main.bounds.width*0.85*0.51
+            return 221
         } else if indexPath.section == restaurantsIndex {
-            return 230
+            return 248
         } else {
-            return 60
+            return 80
         }
     }
     
@@ -394,7 +395,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == restaurantsIndex {
-            return "Restaurants"
+            return "All Restaurants"
         }
         return ""
         
@@ -405,7 +406,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Constants.headerFont
         header.textLabel?.textColor = Constants.darkGray
-        header.textLabel?.textAlignment = .center
+        header.textLabel?.textAlignment = .left
         header.backgroundView?.backgroundColor = UIColor.white
         header.textLabel?.text = header.textLabel?.text?.uppercased()
         
@@ -457,16 +458,8 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "promotionCell", for: indexPath) as! PromotionCollectionViewCell
-        
-        // TO-DO: UNCOMMENT FOR SHADOW
-        
-//        cell.promotionImage.layer.shadowOffset = CGSize(width: 0, height: 10)
-//        cell.promotionImage.layer.shadowRadius = 5
-//        cell.promotionImage.layer.shadowColor = UIColor.black.cgColor
-//        cell.promotionImage.layer.shadowOpacity = 0.25
-//        cell.promotionImage.layer.masksToBounds = false
+
         cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
-        
         
         return cell
     }
@@ -486,11 +479,10 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
 //        }
 //    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = UIScreen.main.bounds.width*0.85
-        let height = width*0.51
-        return CGSize(width: width, height: height)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let height = UIImage(data: promotions[indexPath.row].image! as Data)?.size.height
+//        return CGSize(width: view.frame.width, height: height!)
+//    }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         

@@ -278,7 +278,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     // MARK: - TextField Delegate
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         checkFields()
     }
     

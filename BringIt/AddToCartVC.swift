@@ -72,8 +72,11 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         } else {
             
             let predicate = NSPredicate(format: "id = %@", menuItemID)
+            print("COUNT OF MENU ITEMS: \(realm.objects(MenuItem.self).filter(predicate))")
             menuItem = realm.objects(MenuItem.self).filter(predicate).first!
         }
+        
+        // Section "Image" (Sometimes)
         
         // Section "Details" (Always)
         
@@ -95,7 +98,6 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         // Section "Special Instructions" (Always)
         
         // Section "Quantity" (Always)
-        
         
     }
     
@@ -141,6 +143,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.myTableView.layoutIfNeeded()
         
         // Set up tableview headers
+        if menuItem.image != nil {
+            sectionTitles.append("Image")
+        }
         sectionTitles.append("Description")
         if sideCategories.count > 0 {
             for sideCategory in sideCategories {
@@ -220,6 +225,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         newMenuItem.id = menuItem.id
         newMenuItem.name = menuItem.name
         newMenuItem.details = menuItem.details
+        newMenuItem.image = menuItem.image
         newMenuItem.price = menuItem.price
         newMenuItem.groupings = menuItem.groupings
         newMenuItem.numRequiredSides = menuItem.numRequiredSides
@@ -368,7 +374,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if sectionTitles[section] == "Description" {
+        if sectionTitles[section] == "Image" {
+            return 1
+        }else if sectionTitles[section] == "Description" {
             return 1
         } else if sectionTitles[section] == "Extras" {
             return extras.count
@@ -384,7 +392,17 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if sectionTitles[indexPath.section] == "Description" {
+        if sectionTitles[indexPath.section] == "Image" {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "menuItemImageCell", for: indexPath) as! MenuImageTableViewCell
+            
+            if let image = menuItem.image {
+                cell.menuItemImage.image = UIImage(data: image as Data)
+                print(image as Data)
+            }
+
+            return cell
+            
+        } else if sectionTitles[indexPath.section] == "Description" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath)
             
             if menuItem.details == "" {
@@ -460,7 +478,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if sectionTitles[section] != "Description" && sectionTitles[section] != "Special Instructions" && sectionTitles[section] != "Quantity" && sectionTitles[section] != "Extras" {
+        if sectionTitles[section] == "Image" {
+            return ""
+        } else if sectionTitles[section] != "Description" && sectionTitles[section] != "Special Instructions" && sectionTitles[section] != "Quantity" && sectionTitles[section] != "Extras" {
             
             if sectionTitles[section] != "Sides" {
                 return sectionTitles[section] + " (Pick 1)"
@@ -487,6 +507,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if sectionTitles[section] == "Image" {
+            return CGFloat.leastNormalMagnitude
+        }
         return Constants.headerHeight
     }
     

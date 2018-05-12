@@ -14,4 +14,6 @@ class FeaturedDishCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dishName: UITextView!
 //    @IBOutlet weak var dishDescription: UILabel!
     @IBOutlet weak var dishPrice: UILabel!
+    @IBOutlet weak var cardView: UIView!
+    
 }

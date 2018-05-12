@@ -206,7 +206,7 @@ class UpdateAccountInfoViewController: UIViewController, UITextFieldDelegate {
         return result
     }
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         checkFields()
     }
     

@@ -20,12 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
         // Set up keyboard manager
-        IQKeyboardManager.sharedManager().enable = true
-        IQKeyboardManager.sharedManager().keyboardDistanceFromTextField = CGFloat(80)
-        IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
-        IQKeyboardManager.sharedManager().enableAutoToolbar = true
-        IQKeyboardManager.sharedManager().preventShowingBottomBlankSpace = true
-        IQKeyboardManager.sharedManager().toolbarPreviousNextAllowedClasses.append(IQPreviousNextView.self)
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = CGFloat(80)
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+        IQKeyboardManager.shared.enableAutoToolbar = true
+        IQKeyboardManager.shared.toolbarPreviousNextAllowedClasses.append(IQPreviousNextView.self)
         
         // Stripe Configuration
         Stripe.setDefaultPublishableKey("pk_live_UGdTD7Uq8SdIYMhknwzoH3ER")
@@ -34,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().font = UIFont(name: "Avenir-Book", size: 17)!
         
         // Set default navigation bar attributes
-        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "BrandonGrotesque-Medium", size: 17)!, NSForegroundColorAttributeName: Constants.darkGray] // font color
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: UIFont(name: "BrandonGrotesque-Medium", size: 17)!, NSAttributedStringKey.foregroundColor: Constants.darkGray] // font color
         UINavigationBar.appearance().tintColor = UIColor.darkGray // button color
         UINavigationBar.appearance().barTintColor = UIColor.white // bar color
         

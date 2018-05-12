@@ -17,7 +17,7 @@ class QuantityTableViewCell: UITableViewCell {
 
     @IBOutlet weak var minusButton: UIButton!
     @IBOutlet weak var plusButton: UIButton!
-    @IBOutlet weak var value: UILabel!
+    @IBOutlet weak var value: UILabel!   
     
     var delegate: QuantityCellDelegate?
     

@@ -31,12 +31,15 @@
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
 		114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */; };
 		117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */; };
+		1180F35A20A5C9D800596187 /* Brandon_bld.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1180F35820A5C7B000596187 /* Brandon_bld.otf */; };
+		1180F35B20A5C9DA00596187 /* Brandon_bld_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1180F35920A5C7B000596187 /* Brandon_bld_it.otf */; };
 		1183F0061EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F0051EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift */; };
 		1183F0081EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F0071EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift */; };
 		1183F00B1EF8F97000FFCD02 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00A1EF8F97000FFCD02 /* PromotionsViewController.swift */; };
 		1183F00D1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00C1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift */; };
 		1183F00F1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */; };
 		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
+		1195C6E820A732B0002C3CB1 /* MenuImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */; };
 		1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */; };
 		1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0D1EC5149F00864200 /* Brandon_med.otf */; };
 		1198FA121EC5149F00864200 /* Brandon_reg_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */; };
@@ -127,12 +130,15 @@
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
 		114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedVC.swift; sourceTree = "<group>"; };
 		117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCategoryViewController.swift; sourceTree = "<group>"; };
+		1180F35820A5C7B000596187 /* Brandon_bld.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_bld.otf; sourceTree = "<group>"; };
+		1180F35920A5C7B000596187 /* Brandon_bld_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_bld_it.otf; sourceTree = "<group>"; };
 		1183F0051EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationSubmittedViewController.swift; sourceTree = "<group>"; };
 		1183F0071EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitDriverApplicationViewController.swift; sourceTree = "<group>"; };
 		1183F00A1EF8F97000FFCD02 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		1183F00C1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsTitleTableViewCell.swift; sourceTree = "<group>"; };
 		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuImageTableViewCell.swift; sourceTree = "<group>"; };
 		1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med_it.otf; sourceTree = "<group>"; };
 		1198FA0D1EC5149F00864200 /* Brandon_med.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med.otf; sourceTree = "<group>"; };
 		1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_reg_it.otf; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 				112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */,
 				112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */,
 				112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */,
+				1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */,
 			);
 			name = "Add To Cart";
 			sourceTree = "<group>";
@@ -347,6 +354,8 @@
 		1198FA141EC514AA00864200 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				1180F35920A5C7B000596187 /* Brandon_bld_it.otf */,
+				1180F35820A5C7B000596187 /* Brandon_bld.otf */,
 				1198FA151EC5151400864200 /* Brandon_blk_it.otf */,
 				1198FA161EC5151400864200 /* Brandon_blk.otf */,
 				1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */,
@@ -502,16 +511,16 @@
 					11021FF11CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = T95S69L6BP;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 					};
 					110220071CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 						TestTargetID = 11021FF11CE68A83003D82FB;
 					};
 					110220121CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 						TestTargetID = 11021FF11CE68A83003D82FB;
 					};
 				};
@@ -547,7 +556,9 @@
 				110220021CE68A83003D82FB /* LaunchScreen.storyboard in Resources */,
 				1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */,
 				1198FA121EC5149F00864200 /* Brandon_reg_it.otf in Resources */,
+				1180F35B20A5C9DA00596187 /* Brandon_bld_it.otf in Resources */,
 				11021FFF1CE68A83003D82FB /* Assets.xcassets in Resources */,
+				1180F35A20A5C9D800596187 /* Brandon_bld.otf in Resources */,
 				1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */,
 				11021FFD1CE68A83003D82FB /* Main.storyboard in Resources */,
 			);
@@ -750,6 +761,7 @@
 				112D6B1B1ECF1FE100396BA5 /* QuantityTableViewCell.swift in Sources */,
 				114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */,
 				1183F00B1EF8F97000FFCD02 /* PromotionsViewController.swift in Sources */,
+				1195C6E820A732B0002C3CB1 /* MenuImageTableViewCell.swift in Sources */,
 				11C9EA901ECE0D81004A4C1E /* RestaurantDetailViewController.swift in Sources */,
 				112D6B191ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift in Sources */,
 				112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */,
@@ -953,7 +965,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BringIt-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BringIt-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -973,7 +986,8 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "BringIt-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BringIt-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -986,7 +1000,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BringIt.app/BringIt";
 			};
 			name = Debug;
@@ -1000,7 +1015,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BringIt.app/BringIt";
 			};
 			name = Release;
@@ -1013,7 +1029,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = BringIt;
 			};
 			name = Debug;
@@ -1026,7 +1043,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexgerrese.BringItUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = BringIt;
 			};
 			name = Release;

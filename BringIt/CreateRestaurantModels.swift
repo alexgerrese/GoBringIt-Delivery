@@ -244,7 +244,7 @@ extension RestaurantsHomeViewController {
                         // Get image data
                         let imagePath = retrievedMenuItem["image"] as! String
                         if imagePath != "" {
-                            let urlString = Constants.imagesPath + imagePath
+                            let urlString = Constants.imagesPath + Constants.menuItemsPath + imagePath
                             let url = URL(string: urlString)
                             let imageData = NSData(contentsOf: url!)
                             menuItem.image = imageData

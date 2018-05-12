@@ -23,10 +23,9 @@ struct Constants {
     static let backgroungGray = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
     
     // Fonts
-    static let headerFont = UIFont(name: "BrandonGrotesque-Medium", size: 12)!
+    static let headerFont = UIFont(name: "BrandonGrotesque-Bold", size: 12)!
     static let mediumFont = UIFont(name: "BrandonGrotesque-Medium", size: 17)!
 
-    
     // Borders
     static let cornerRadius = CGFloat(3)
     static let borderWidth = CGFloat(1)
@@ -34,6 +33,7 @@ struct Constants {
     
     // Paths
     static let imagesPath = "https://www.gobringit.com/images/"
+    static let menuItemsPath = "MenuItemImages/"
     
     // Contact Info
     static let contactEmail = "info@campusenterprises.org"

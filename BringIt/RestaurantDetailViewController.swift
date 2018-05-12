@@ -203,9 +203,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
         if indexPath.section == bannerIndex {
-            return 178
+            return 346
         } else if indexPath.section == featuredDishesIndex {
-            return 155
+            return 202
         }
         return 45
     }
@@ -351,8 +351,12 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
         }
         
         cell.dishName.text = featuredDish.name
-//        cell.dishDescription.text = featuredDish.details
         cell.dishPrice.text = "$" + String(format: "%.2f", (featuredDish.price))
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 0.08
+        cell.layer.shadowRadius = 8
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cell.layer.masksToBounds = false
 
         print("returning collection view cell")
         
@@ -360,7 +364,7 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 200, height: 147)
+        return CGSize(width: 160, height: 174)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
