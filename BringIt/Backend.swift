@@ -15,7 +15,10 @@ enum APICalls {
     case signInUser(email: String, password: String)
     case signUpUser(fullName: String, email: String, password: String, phoneNumber: String, campus: String, streetAddress: String, roomNumber: String)
     case fetchPromotions
-    case fetchRestaurantData
+    case fetchRestaurantsInfo
+    case fetchFeaturedDishes(restaurantID: String)
+    case fetchMenuCategories(restaurantID: String)
+    case fetchMenuItems(categoryID: String)
     case updateCurrentAddress(uid: String, streetAddress: String, roomNumber: String)
     case addItemToCart(uid: String, quantity: Int, itemID: String, sideIDs: [String], specialInstructions: String)
     case addOrder(uid: String, restaurantID: String, payingWithCC: String)
@@ -41,8 +44,14 @@ extension APICalls : TargetType {
             return "/signUpUser.php"
         case .fetchPromotions:
             return "/fetchPromotions.php"
-        case .fetchRestaurantData:
-            return "/fetchRestaurantData.php"
+        case .fetchRestaurantsInfo:
+            return "/fetchRestaurantsInfo.php"
+        case .fetchFeaturedDishes(_):
+            return "/fetchFeaturedDishes.php"
+        case .fetchMenuCategories(_):
+            return "/fetchMenuCategories.php"
+        case .fetchMenuItems(_):
+            return "/fetchMenuItems.php"
         case .updateCurrentAddress(_,_,_):
             return "/updateCurrentAddress.php"
         case .addItemToCart(_,_,_,_,_):
@@ -66,9 +75,9 @@ extension APICalls : TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
+        case .fetchPromotions, .fetchRestaurantsInfo, .fetchVersionNumber, .fetchAPIKey:
             return .get
-        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo, .fetchAccountAddress:
+        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo, .fetchAccountAddress, .fetchFeaturedDishes, .fetchMenuCategories, .fetchMenuItems:
             return .post
         }
     }
@@ -79,7 +88,7 @@ extension APICalls : TargetType {
     
     var task: Task {
         switch self {
-        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
+        case .fetchPromotions, .fetchRestaurantsInfo, .fetchVersionNumber, .fetchAPIKey:
             return .requestPlain
         case .signInUser(let email, let password):
             return .requestParameters(parameters: ["email": email,
@@ -125,7 +134,12 @@ extension APICalls : TargetType {
             return .requestParameters(parameters: ["uid": uid,
                     "old_pass": oldPassword,
                     "new_pass": newPassword], encoding: JSONEncoding.default)
-        
+        case .fetchFeaturedDishes(let restaurantID):
+            return .requestParameters(parameters: ["restaurantID": restaurantID], encoding: JSONEncoding.default)
+        case .fetchMenuCategories(let restaurantID):
+            return .requestParameters(parameters: ["restaurantID": restaurantID], encoding: JSONEncoding.default)
+        case .fetchMenuItems(let categoryID):
+            return .requestParameters(parameters: ["categoryID": categoryID], encoding: JSONEncoding.default)
         }
     }
 }

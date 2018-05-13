@@ -19,6 +19,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var viewCartButtonView: UIView!
     @IBOutlet weak var viewCartView: UIView!
     @IBOutlet weak var viewCartViewToBottom: NSLayoutConstraint!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loadingLabel: UILabel!
+    
     
     // MARK: - Variables
     
@@ -27,9 +30,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     var restaurantID = ""
     var restaurant = Restaurant()
     var cart = Order()
-    var menuCategories: Results<MenuCategory>!
+    var menuCategories : Results<MenuCategory>!
     var selectedMenuCategoryID = ""
     var selectedMenuItemID = ""
+    var sectionTitles = [String]()
     
     // For collection view
     var featuredDishes = List<MenuItem>()
@@ -75,12 +79,15 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     func setupUI() {
         
         setCustomBackButton()
+        
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
         viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
         viewCartView.backgroundColor = UIColor.white
         self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         self.viewCartView.layer.shadowOpacity = 0.15
         self.viewCartView.layer.shadowRadius = Constants.shadowRadius
+        
+        myActivityIndicator.hidesWhenStopped = true
     }
     
     func setupRealm() {
@@ -89,25 +96,23 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         // Get selected restaurant and menu categories
         restaurant = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)!
-        menuCategories = restaurant.menuCategories.sorted(byKeyPath: "name")
         
-        for menuCategory in menuCategories {
-            
-            let items = menuCategory.menuItems
-            let filteredItems = items.filter("isFeatured = %@", true)
-            
-            featuredDishes.append(contentsOf: filteredItems)
-        }
+        self.downloadData()
         
+    }
+    
+    func updateIndices() {
         if (featuredDishes.count) > 0 {
-            featuredDishesIndex = 2
-            dishesIndex = 3
+            self.featuredDishesIndex = 2
+            self.dishesIndex = 3
         } else {
-            dishesIndex = 2
+            self.dishesIndex = 2
         }
-        
-        print("Number of featured dishes: \(featuredDishes.count)")
-        
+    }
+    
+    func downloadData() {
+        self.fetchFeaturedDishes()
+        self.fetchMenuCategories()
     }
     
     func setupTableView() {
@@ -165,13 +170,20 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
+        var count = 2 // Restaurant and phone number sections are required
+        
         if featuredDishes.count > 0 {
-            return 4
+            count += 1
         }
-        return 3
+        if menuCategories != nil && menuCategories.count > 0 {
+            count += 1
+        }
+        
+        return  count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if section == dishesIndex {
             return menuCategories.count
         }
@@ -239,7 +251,10 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         return cell 
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "featuredDishTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "featuredDishTableViewCell", for: indexPath) as! FeaturedDishTableViewCell
+        
+//        cell.myCollectionViewWidth.constant = UIScreen.main.bounds.width
+//        print("WIDTH: \(cell.myCollectionViewWidth.constant)")
         
         return cell
     }
@@ -337,7 +352,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
 extension RestaurantDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         return featuredDishes.count
     }
     
@@ -357,8 +371,6 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
         cell.layer.shadowRadius = 8
         cell.layer.shadowOffset = CGSize(width: 0, height: 2)
         cell.layer.masksToBounds = false
-
-        print("returning collection view cell")
         
         return cell
     }

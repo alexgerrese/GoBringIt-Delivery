@@ -40,6 +40,8 @@
 		1183F00F1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */; };
 		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
 		1195C6E820A732B0002C3CB1 /* MenuImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */; };
+		1195C6EA20A83ED8002C3CB1 /* CreateRestaurantDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195C6E920A83ED8002C3CB1 /* CreateRestaurantDetailModels.swift */; };
+		1195C6EE20A882FE002C3CB1 /* CreateMenuItemsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195C6ED20A882FE002C3CB1 /* CreateMenuItemsModels.swift */; };
 		1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */; };
 		1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0D1EC5149F00864200 /* Brandon_med.otf */; };
 		1198FA121EC5149F00864200 /* Brandon_reg_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */; };
@@ -139,6 +141,8 @@
 		1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsTitleTableViewCell.swift; sourceTree = "<group>"; };
 		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuImageTableViewCell.swift; sourceTree = "<group>"; };
+		1195C6E920A83ED8002C3CB1 /* CreateRestaurantDetailModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRestaurantDetailModels.swift; sourceTree = "<group>"; };
+		1195C6ED20A882FE002C3CB1 /* CreateMenuItemsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMenuItemsModels.swift; sourceTree = "<group>"; };
 		1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med_it.otf; sourceTree = "<group>"; };
 		1198FA0D1EC5149F00864200 /* Brandon_med.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med.otf; sourceTree = "<group>"; };
 		1198FA0E1EC5149F00864200 /* Brandon_reg_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_reg_it.otf; sourceTree = "<group>"; };
@@ -292,6 +296,7 @@
 			children = (
 				117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */,
 				112D6B121ECE4B7A00396BA5 /* MenuItemTableViewCell.swift */,
+				1195C6ED20A882FE002C3CB1 /* CreateMenuItemsModels.swift */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -300,9 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				11C9EA8F1ECE0D81004A4C1E /* RestaurantDetailViewController.swift */,
-				11BFEB571ED72A1300C2CEA8 /* BannerTableViewCell.swift */,
-				11BFEB511ED4711B00C2CEA8 /* FeaturedDishTableViewCell.swift */,
-				11BFEB531ED4736600C2CEA8 /* FeaturedDishCollectionViewCell.swift */,
+				1195C6E920A83ED8002C3CB1 /* CreateRestaurantDetailModels.swift */,
+				1195C6EB20A83F21002C3CB1 /* Cells */,
 			);
 			name = "Restaurant Detail";
 			sourceTree = "<group>";
@@ -311,9 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				112D6B141ECF1B9A00396BA5 /* AddToCartVC.swift */,
-				112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */,
-				112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */,
-				1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */,
+				1195C6EC20A83F2B002C3CB1 /* Cells */,
 			);
 			name = "Add To Cart";
 			sourceTree = "<group>";
@@ -349,6 +351,26 @@
 				1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */,
 			);
 			name = Promotions;
+			sourceTree = "<group>";
+		};
+		1195C6EB20A83F21002C3CB1 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				11BFEB571ED72A1300C2CEA8 /* BannerTableViewCell.swift */,
+				11BFEB511ED4711B00C2CEA8 /* FeaturedDishTableViewCell.swift */,
+				11BFEB531ED4736600C2CEA8 /* FeaturedDishCollectionViewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		1195C6EC20A83F2B002C3CB1 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				112D6B181ECF1F1F00396BA5 /* SpecialInstructionsTableViewCell.swift */,
+				112D6B1A1ECF1FE100396BA5 /* QuantityTableViewCell.swift */,
+				1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		1198FA141EC514AA00864200 /* Fonts */ = {
@@ -794,7 +816,9 @@
 				117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */,
 				11A25F951ED317820051324B /* PlaceOrder.swift in Sources */,
 				112D6B1E1ED0591E00396BA5 /* CheckoutVC.swift in Sources */,
+				1195C6EE20A882FE002C3CB1 /* CreateMenuItemsModels.swift in Sources */,
 				11BFEB601ED7565B00C2CEA8 /* SettingsVC.swift in Sources */,
+				1195C6EA20A83ED8002C3CB1 /* CreateRestaurantDetailModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

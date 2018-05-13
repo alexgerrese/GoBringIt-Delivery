@@ -62,7 +62,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         let realm = try! Realm() // Initialize Realm
         
         // Set base index
-        restaurantsIndex = 0
+//        restaurantsIndex = 0
         
         // Setup UI
         setupUI()
@@ -193,7 +193,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         } else {
             
             showDownloadingView()
-            self.fetchRestaurantData()
+            self.fetchRestaurantsInfo()
         }
     }
     
@@ -209,30 +209,30 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             print("No data exists. Fetching restaurant data.")
             
             // Retrieving backend number
-            getBackendVersionNumber() {
+            self.getBackendVersionNumber() {
                 (result: Int) in
             }
             
             // Retrieving promotions
-            fetchPromotions() {
+            self.fetchPromotions() {
                 (result: Int) in
-
+                
                 self.updateIndices()
                 self.myTableView.reloadData()
             }
             
             // Show loading view as empty state
-            showDownloadingView()
+//            self.showDownloadingView()
             
             // Create models from backend data
-            self.fetchRestaurantData()
+            self.fetchRestaurantsInfo()
             
         } else {
             
             print("Data exists. Checking version numbers.")
             
             let currentVersionNumber = self.defaults.integer(forKey: "currentVersion")
-            getBackendVersionNumber() {
+            self.getBackendVersionNumber() {
                 (result: Int) in
                 
                 print("Received backend version number via closure")
@@ -265,7 +265,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
                     self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
                     
                     // Create models from backend data
-                    self.fetchRestaurantData()
+                    self.fetchRestaurantsInfo()
                     
                 } else {
                     
@@ -284,13 +284,17 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        var count = 1
+        var count = 0
         
         if alertMessage != "" {
             count += 1
         }
         
-        if promotions.count > 0 {
+        if promotions != nil && promotions.count > 0 {
+            count += 1
+        }
+        
+        if restaurants != nil && restaurants.count > 0 {
             count += 1
         }
         

@@ -152,11 +152,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/Backend.swift"
-            timestampString = "533923903.837926"
+            timestampString = "547917074.677941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -215,56 +215,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BringIt/RestaurantsHomeViewController.swift"
-            timestampString = "547826330.036043"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
-            landmarkName = "checkForUpdates()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "BringIt.RestaurantsHomeViewController.checkForUpdates () -&gt; ()"
-                  moduleName = "BringIt"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Alexander/Documents/Campus%20Enterprises/BringIt/BringIt/RestaurantsHomeViewController.swift"
-                  timestampString = "516813345.223271"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "756">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "BringIt.RestaurantsHomeViewController.(checkForUpdates () -&gt; ()).(closure #1)"
-                  moduleName = "BringIt"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Alexander/Documents/Campus%20Enterprises/BringIt/BringIt/RestaurantsHomeViewController.swift"
-                  timestampString = "516813345.228964"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "88"
-                  endingLineNumber = "88"
-                  offsetFromSymbolStart = "240">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "BringIt/SendEmails.swift"
-            timestampString = "547856834.431224"
+            timestampString = "547917074.6780469"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
@@ -280,11 +232,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/RestaurantsHomeViewController.swift"
-            timestampString = "547826330.0365061"
+            timestampString = "547917074.678099"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
+            startingLineNumber = "478"
+            endingLineNumber = "478"
             landmarkName = "RestaurantsHomeViewController"
             landmarkType = "21">
          </BreakpointContent>
@@ -328,7 +280,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/AddToCartVC.swift"
-            timestampString = "547856834.431471"
+            timestampString = "547917074.678196"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "522"

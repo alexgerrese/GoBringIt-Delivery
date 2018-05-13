@@ -75,7 +75,9 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         
         // Get selected restaurant and menu categories
         menuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategoryID)!
-        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
+//        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
+        
+        fetchMenuItems()
         
     }
     
@@ -132,7 +134,10 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if menuItems != nil && menuItems.count > 0 {
+            return 1
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
