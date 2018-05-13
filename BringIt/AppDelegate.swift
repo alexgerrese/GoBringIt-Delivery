@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 5,
+            schemaVersion: 6,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -69,6 +69,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if (oldSchemaVersion < 5) {
                     migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
                         newObject!["minimumPrice"] = 0.0
+                    }
+                }
+                if (oldSchemaVersion < 6) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["imageURL"] = ""
+                    }
+                    migration.enumerateObjects(ofType: MenuItem.className()) { oldObject, newObject in
+                        newObject!["imageURL"] = ""
                     }
                 }
         })

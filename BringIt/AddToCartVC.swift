@@ -72,7 +72,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         } else {
             
             let predicate = NSPredicate(format: "id = %@", menuItemID)
-            print("COUNT OF MENU ITEMS: \(realm.objects(MenuItem.self).filter(predicate))")
+            print("COUNT OF MENU ITEMS: \(realm.objects(MenuItem.self).filter(predicate).count)")
             menuItem = realm.objects(MenuItem.self).filter(predicate).first!
         }
         

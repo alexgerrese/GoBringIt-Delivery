@@ -62,7 +62,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         let realm = try! Realm() // Initialize Realm
         
         // Set base index
-        restaurantsIndex = 0
+//        restaurantsIndex = 0
         
         // Setup UI
         setupUI()

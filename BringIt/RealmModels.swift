@@ -50,6 +50,7 @@ class Restaurant: Object {
     @objc dynamic var id = ""
     @objc dynamic var email = ""
     @objc dynamic var printerEmail = ""
+    @objc dynamic var imageURL = ""
     @objc dynamic var image: NSData?
     @objc dynamic var name = ""
     @objc dynamic var cuisineType = ""
@@ -85,6 +86,7 @@ class MenuCategory: Object {
 class MenuItem: Object {
     @objc dynamic var id = ""
     @objc dynamic var isFeatured = false
+    @objc dynamic var imageURL = ""
     @objc dynamic var image: NSData?
     @objc dynamic var name = ""
     @objc dynamic var details = ""

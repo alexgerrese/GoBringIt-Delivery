@@ -239,7 +239,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         return cell 
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "featuredDishTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "featuredDishTableViewCell", for: indexPath) 
         
         return cell
     }
@@ -346,10 +346,6 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
         
         let featuredDish = featuredDishes[indexPath.row]
         
-        if let image = featuredDish.image {
-            cell.dishImage.image = UIImage(data: image as Data)
-        }
-        
         cell.dishName.text = featuredDish.name
         cell.dishPrice.text = "$" + String(format: "%.2f", (featuredDish.price))
         cell.layer.shadowColor = UIColor.black.cgColor
@@ -357,8 +353,50 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
         cell.layer.shadowRadius = 8
         cell.layer.shadowOffset = CGSize(width: 0, height: 2)
         cell.layer.masksToBounds = false
-
-        print("returning collection view cell")
+        
+        if let image = featuredDish.image {
+            cell.dishImage.image = UIImage(data: image as Data)
+        }
+        
+        let image = featuredDish.image
+        if image != nil {
+            
+            print("Image is already saved at index: \(indexPath.row).")
+            
+            cell.dishImage.image = UIImage(data: image! as Data)
+        } else {
+            
+            let imageURL = featuredDish.imageURL
+            if imageURL != "" {
+                
+                print("Image is not yet saved. Downloading asynchronously.")
+                
+                DispatchQueue.global(qos: .background).async {
+                    let url = URL(string: imageURL)
+                    let imageData = NSData(contentsOf: url!)
+                    
+                    DispatchQueue.main.async {
+                        // Cache image
+                        let realm = try! Realm() // Initialize Realm
+                        try! realm.write {
+                            featuredDish.image = imageData
+                        }
+                        
+                        // Set image to downloaded asset only if cell is still visible
+                        cell.dishImage.alpha = 0
+                        if imageURL == featuredDish.imageURL {
+                            cell.dishImage.image = UIImage(data: imageData! as Data)
+                            UIView.animate(withDuration: 0.3) {
+                                cell.dishImage.alpha = 1
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("Image does not exist.")
+                cell.dishImage.image = nil
+            }
+        }
         
         return cell
     }

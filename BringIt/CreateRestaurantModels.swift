@@ -144,10 +144,10 @@ extension RestaurantsHomeViewController {
                     
                     let retrievedRestaurants = try moyaResponse.mapJSON() as! [AnyObject]
                     
-                    DispatchQueue.global(qos: .background).async {
-                        
+//                    DispatchQueue.global(qos: .background).async {
+                    
                          self.createRealmModels(retrievedRestaurants: retrievedRestaurants)
-                    }
+//                    }
                 } catch {
                     // Miscellaneous network error
                     
@@ -200,11 +200,11 @@ extension RestaurantsHomeViewController {
                 restaurant.printerEmail = printerEmail as? String ?? ""
                 
                 // Get image data
-                let imagePath = retrievedRestaurant["image"] as! String
-                let urlString = Constants.imagesPath + imagePath
-                let url = URL(string: urlString)
-                let imageData = NSData(contentsOf: url!)
-                restaurant.image = imageData
+                    let imagePath = retrievedRestaurant["image"] as! String
+                    let urlString = Constants.imagesPath + imagePath
+                    let url = URL(string: urlString)
+                    let imageData = NSData(contentsOf: url!)
+                    restaurant.image = imageData
                 
                 print("Restaurant created")
                 
@@ -234,6 +234,7 @@ extension RestaurantsHomeViewController {
                         menuItem.price = Double(retrievedMenuItem["price"] as! String)!
                         menuItem.groupings = Int(retrievedMenuItem["groupings"] as! String)!
                         menuItem.numRequiredSides = Int(retrievedMenuItem["numRequiredSides"] as! String)!
+                        menuItem.isOfficialDescription = true
                         
                         if retrievedMenuItem["isFeatured"] as! String == "1" {
                             menuItem.isFeatured = true
@@ -245,9 +246,10 @@ extension RestaurantsHomeViewController {
                         let imagePath = retrievedMenuItem["image"] as! String
                         if imagePath != "" {
                             let urlString = Constants.imagesPath + Constants.menuItemsPath + imagePath
-                            let url = URL(string: urlString)
-                            let imageData = NSData(contentsOf: url!)
-                            menuItem.image = imageData
+                            menuItem.imageURL = urlString
+//                            let url = URL(string: urlString)
+//                            let imageData = NSData(contentsOf: url!)
+//                            menuItem.image = imageData
                         }
                         
                         menuItemIDs.append(menuItem.id) // For cleanup
@@ -306,25 +308,20 @@ extension RestaurantsHomeViewController {
                         }
                         
                         let predicate = NSPredicate(format: "id = %@ && isOfficialDescription = true", menuItem.id)
-                        if let existingMenuItem = realm.objects(MenuItem.self).filter(predicate).first {
-                            realm.delete(existingMenuItem)
-                            realm.add(menuItem)
+                        let existingMenuItems = realm.objects(MenuItem.self).filter(predicate)
+                        if existingMenuItems.count > 0 {
+                            realm.delete(existingMenuItems)
                         }
                         
                         menuCategory.menuItems.append(menuItem)
-                        
                     }
                     
                         realm.add(menuCategory, update: true)
                         if let existingMenuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategory.id) {
                             restaurant.menuCategories.append(existingMenuCategory)
                         }
-                    
-                        let savedRestaurant = realm.objects(Restaurant.self).filter("id =  %@", restaurant.id)
-                    print("Saved Restaurant hours: \(savedRestaurant.first?.restaurantHours ?? "Cant find hours")")
                         
                         realm.add(restaurant, update: true)
-                        print("Restaurant hours \(restaurant.restaurantHours)")
                 }
                 
             }

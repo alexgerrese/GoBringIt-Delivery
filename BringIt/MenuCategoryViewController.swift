@@ -140,15 +140,55 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let realm = try! Realm() // Initialize Realm
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuItemCell", for: indexPath) as! MenuItemTableViewCell
         
         cell.name.text = menuItems[indexPath.row].name
         cell.details.text = menuItems[indexPath.row].details
         let price = menuItems[indexPath.row].price
         cell.price.text = "$" + String(format: "%.2f", price)
+        cell.tag = indexPath.row
         
-        if let image = menuItems[indexPath.row].image {
-            cell.menuImage.image = UIImage(data: image as Data)
+        let image = menuItems[indexPath.row].image
+        if image != nil {
+            
+            print("Image is already saved at index: \(indexPath.row).")
+            
+            cell.menuImage.image = UIImage(data: image! as Data)
+        } else {
+            
+            let imageURL = menuItems[indexPath.row].imageURL
+            if imageURL != "" {
+                
+                print("Image is not yet saved. Downloading asynchronously.")
+                
+                DispatchQueue.global(qos: .background).async {
+                    let url = URL(string: imageURL)
+                    let imageData = NSData(contentsOf: url!)
+                    
+                    DispatchQueue.main.async {
+                        // Cache image
+                        let realm = try! Realm() // Initialize Realm
+                        try! realm.write {
+                            self.menuItems[indexPath.row].image = imageData
+                        }
+                        
+                        // Set image to downloaded asset only if cell is still visible
+                        cell.menuImage.alpha = 0
+                        if imageURL == self.menuItems[indexPath.row].imageURL {
+                            cell.menuImage.image = UIImage(data: imageData! as Data)
+                            UIView.animate(withDuration: 0.3) {
+                                cell.menuImage.alpha = 1
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("Image does not exist.")
+                cell.menuImage.image = nil
+            }
         }
         
         return cell
@@ -160,10 +200,6 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         
         return indexPath
     }
-    
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-////        return "Dishes" //TO-DO: Change when dynamic
-//    }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
@@ -177,14 +213,11 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return Constants.headerHeight
         return CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         myTableView.deselectRow(at: indexPath, animated: true)
-        
         performSegue(withIdentifier: "toAddToCart", sender: self)
     }
 
@@ -204,8 +237,6 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             let checkoutVC = nav.topViewController as! CheckoutVC
             checkoutVC.restaurantID = restaurantID
         }
-        
-        
     }
 
 }
