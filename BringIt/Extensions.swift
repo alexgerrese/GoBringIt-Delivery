@@ -243,44 +243,50 @@ extension UIViewController {
  *      - Get the string of the day of the week
  *      - Format openHours to a certain day of the week
  */
-extension String {
+extension Date {
     
-    func getIndexOfWeek() -> Int {
-        let formatter  = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let todayDate = NSDate()
-        let myCalendar = Calendar(identifier: .gregorian)
-        let weekDay = myCalendar.component(.weekday, from: todayDate as Date)
+    /* Returns an integer from 0-6, with 0 being Monday and 6 being Sunday. */
+    func getIndexOfWeek() -> Int? {
+        // returns an integer from 1 - 7, with 1 being Sunday and 7 being Saturday
+        let rawIndex = Calendar.current.dateComponents([.weekday], from: self).weekday!
+        var updatedIndex = -1
         
-        if weekDay > 1 {
-            return weekDay - 1
+        if rawIndex > 1 {
+            updatedIndex = rawIndex - 2
         } else {
-            return 6
+            updatedIndex = 6
         }
+        
+        print("CURRENT INDEX OF THE WEEK: \(updatedIndex)")
+        return updatedIndex
+
     }
     
-    func getDayOfWeek() -> String {
+    func getDayOfWeek() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        print("CURRENT DAY OF THE WEEK: \(dateFormatter.string(from: self).capitalized)")
+        return dateFormatter.string(from: self).capitalized
+    }
+    
+}
+
+/* Date extension to:
+ *      - Get the index of the day of the week
+ *      - Get the string of the day of the week
+ *      - Format openHours to a certain day of the week
+ */
+extension String {
+    
+    func to24HourTime() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "h:mma"
         
-        let index = getIndexOfWeek()
-        
-        switch index {
-        case 1:
-            return "Monday"
-        case 2:
-            return "Tuesday"
-        case 3:
-            return "Wednesday"
-        case 4:
-            return "Thursday"
-        case 5:
-            return "Friday"
-        case 6:
-            return "Saturday"
-        case 7:
-            return "Sunday"
-        default:
-            return "Monday"
-        }
+        let date = dateFormatter.date(from: self)
+        dateFormatter.dateFormat = "HH:mm"
+
+        return dateFormatter.string(from: date!)
     }
     
     func getOpenHoursString() -> String {
@@ -296,14 +302,14 @@ extension String {
             }
             
             // Get correct index
-            // NOTE: The -1 is needed to avoid index out of range exceptions because dates are 1 indexed
-            let index = getIndexOfWeek() - 1
+            let index = Date().getIndexOfWeek()!
             if index < openHours.count {
                 
                 var todaysHours = openHours[index]
                 
                 // Clean out day of the week
-                todaysHours = todaysHours.replacingOccurrences(of: getDayOfWeek(), with: "")
+                todaysHours = todaysHours.replacingOccurrences(of: Date().getDayOfWeek()!, with: "")
+                print("TODAY'S HOURS: \(todaysHours)")
                 
                 return todaysHours
             }
@@ -322,41 +328,47 @@ extension String {
         // Separate into open and close times
         var openHours = self.components(separatedBy: "-")
         
-        // Flag am vs pm
-        var convertTo24HourFormat = [false, false]
-        
-        // Trim am and pm
+        // Convert to 24-hour time
         for i in 0..<openHours.count {
-            if openHours[i].contains("pm") && i < convertTo24HourFormat.count {
-                convertTo24HourFormat[i] = true
-            }
-            openHours[i] = openHours[i].replacingOccurrences(of: "am", with: "")
-            openHours[i] = openHours[i].replacingOccurrences(of: "pm", with: "")
+            openHours[i] = openHours[i].to24HourTime()!
         }
         
         // Separate into hours and minutes
         var open = openHours[0].components(separatedBy: ":")
         var closed = openHours[1].components(separatedBy: ":")
         
-        let calendar = Calendar.current
         let now = Date()
-        let openTime = calendar.date(
-            bySettingHour: convertTo24HourFormat[0] ? Int(open[0])! + 12 : Int(open[0])!,
-            minute: Int(open[1])!,
-            second: 0,
-            of: now)!
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(abbreviation: "EDT")!
         
-        let closeTime = calendar.date(
-            bySettingHour: convertTo24HourFormat[1] ? Int(closed[0])! + 12 : Int(closed[0])!,
-            minute: Int(closed[1])!,
-            second: 0,
-            of: now)!
+        // Set current time
+        let currentComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: now)
+        let currentTime = calendar.date(from: currentComponents)!
+        print("CURRENT TIME: \(currentTime)")
         
-        if now >= openTime &&
-            now <= closeTime {
+        // Set start time
+        var openComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: now)
+        openComponents.hour = Int(open[0])
+        openComponents.minute = Int(open[1])
+        let openTime = calendar.date(from: openComponents)!
+        print("OPEN TIME: \(openTime)")
+        
+        // Set close time
+        var closeComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: now)
+        closeComponents.day = Int(open[0])! > Int(closed[0])! ? closeComponents.day! + 1 : closeComponents.day // If close hour is smaller, it must be the next morning
+        closeComponents.hour = Int(closed[0])
+        closeComponents.minute = Int(closed[1])
+        let closeTime = calendar.date(from: closeComponents)!
+        print("CLOSE TIME: \(closeTime)")
+    
+        // Check if now is between start and close times
+        if currentTime >= openTime &&
+            currentTime <= closeTime {
+            print("RESTAURANT IS OPEN.")
             return true
         }
         
+        print("RESTAURANT IS CLOSED.")
         return false
     }
 }

@@ -15,6 +15,7 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
 
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var emptyStateView: UIView!
+    @IBOutlet weak var browseRestaurantsButton: UIButton!
     
     // MARK: - Variables
     
@@ -49,6 +50,11 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
         // Set title
         self.title = "Order History"
         
+        // Add border to Browse Restaurants button
+        browseRestaurantsButton.layer.borderColor = Constants.darkGray.cgColor
+        browseRestaurantsButton.layer.borderWidth = 1.6
+        browseRestaurantsButton.layer.cornerRadius = Constants.cornerRadius
+        
         setCustomBackButton()
 
     }
@@ -82,6 +88,11 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
     }
+    
+    @IBAction func browseRestaurantsButtonTapped(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     // MARK: - Table view data source
     

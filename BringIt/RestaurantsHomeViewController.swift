@@ -71,6 +71,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         restaurants = realm.objects(Restaurant.self)
         promotions = realm.objects(Promotion.self)
         
+        updateIndices()
+        
         // Setup TableView
         setupTableView()
         
@@ -122,13 +124,14 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         print("Showing downloading view")
         
         self.navigationController?.isNavigationBarHidden = true
+        downloadingView.layer.backgroundColor = Constants.green.cgColor
         
         myActivityIndicator.isHidden = false
         myActivityIndicator.startAnimating()
         downloadingView.alpha = 1
         downloadingImage.image = UIImage(named: "RestaurantDataImage")
         downloadingTitle.text = "Downloading restaurant data..."
-        downloadingDetails.text = "It’ll only take a few seconds, and once it’s done you’ll be able to use the app even offline (except ordering of course)!"
+        downloadingDetails.text = "This should only take a few seconds, and once it’s done you’ll be able to use most of the app even offline (except ordering of course)!"
         getStartedButton.alpha = 0
 
     }
@@ -137,6 +140,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         myActivityIndicator.stopAnimating()
         myActivityIndicator.isHidden = true
+        downloadingView.layer.backgroundColor = Constants.green.cgColor
         downloadingTitle.text = "Download Complete!"
         downloadingDetails.text = "You’re all set to use the GoBringIt Delivery app 🍣🍗🍔 Online or offline, you can always view our delicious menu and prepare your order 🎉"
         getStartedButton.alpha = 1
@@ -149,9 +153,11 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         myActivityIndicator.stopAnimating()
         myActivityIndicator.isHidden = true
+        downloadingView.layer.backgroundColor = Constants.red.cgColor
         downloadingImage.image = UIImage(named: "RestaurantDataErrorImage")
         downloadingTitle.text = "Network Error"
         downloadingDetails.text = "Something went wrong 😱 Make sure you’re connected to the internet and try again!"
+        getStartedButton.alpha = 1
         getStartedButton.setTitle("Try Again!", for: .normal)
         getStartedButton.setTitleColor(Constants.red, for: .normal)
         
@@ -338,7 +344,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         if indexPath.section == promotionsIndex {
             return 221
         } else if indexPath.section == restaurantsIndex {
-            return 248
+            return 255
         } else {
             return 80
         }

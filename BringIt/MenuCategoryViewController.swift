@@ -177,7 +177,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
                         
                         // Set image to downloaded asset only if cell is still visible
                         cell.menuImage.alpha = 0
-                        if imageURL == self.menuItems[indexPath.row].imageURL {
+                        if imageURL == self.menuItems[indexPath.row].imageURL && imageData != nil {
                             cell.menuImage.image = UIImage(data: imageData! as Data)
                             UIView.animate(withDuration: 0.3) {
                                 cell.menuImage.alpha = 1

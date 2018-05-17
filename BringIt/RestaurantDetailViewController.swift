@@ -384,7 +384,7 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
                         
                         // Set image to downloaded asset only if cell is still visible
                         cell.dishImage.alpha = 0
-                        if imageURL == featuredDish.imageURL {
+                        if imageURL == featuredDish.imageURL && imageData != nil {
                             cell.dishImage.image = UIImage(data: imageData! as Data)
                             UIView.animate(withDuration: 0.3) {
                                 cell.dishImage.alpha = 1
