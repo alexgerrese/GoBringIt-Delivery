@@ -279,14 +279,22 @@ extension Date {
 extension String {
     
     func to24HourTime() -> String? {
+        print(self)
+        
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "h:mma"
         
-        let date = dateFormatter.date(from: self)
-        dateFormatter.dateFormat = "HH:mm"
-
-        return dateFormatter.string(from: date!)
+        if let date = dateFormatter.date(from: self) {
+            dateFormatter.dateFormat = "HH:mm"
+            print(date)
+            print(dateFormatter.string(from: date))
+            
+            return dateFormatter.string(from: date)
+        }
+        
+        print("HOURS WERE UNAVAILABLE")
+        return "Hours unavailable"
     }
     
     func getOpenHoursString() -> String {
@@ -331,6 +339,9 @@ extension String {
         // Convert to 24-hour time
         for i in 0..<openHours.count {
             openHours[i] = openHours[i].to24HourTime()!
+            if openHours[i] == "Hours unavailable" {
+                return false
+            }
         }
         
         // Separate into hours and minutes
