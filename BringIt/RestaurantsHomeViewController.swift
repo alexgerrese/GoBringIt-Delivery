@@ -24,8 +24,9 @@ import UIKit
 import Alamofire
 import Moya
 import RealmSwift
+import SkeletonView
 
-class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SkeletonTableViewDataSource {
     
     // MARK: - IBOutlets
     
@@ -41,10 +42,10 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     
     let refreshControl = UIRefreshControl()
     
-    var restaurants: Results<Restaurant>!
+    var restaurants = [Restaurant]()
     var backendVersionNumber = -1
-    var selectedRestaurantID = ""
-    var promotions: Results<Promotion>!
+    var selectedRestaurant = Restaurant()
+    var promotions = [Promotion]()
     var storedOffsets = [Int: CGFloat]()
     var alertMessage = ""
     var alertMessageIndex = -1
@@ -59,7 +60,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let realm = try! Realm() // Initialize Realm
+//        let realm = try! Realm() // Initialize Realm
         
         // Set base index
 //        restaurantsIndex = 0
@@ -68,8 +69,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         setupUI()
         
         // Prepare data for TableView and CollectionView
-        restaurants = realm.objects(Restaurant.self)
-        promotions = realm.objects(Promotion.self)
+//        restaurants = realm.objects(Restaurant.self)
+//        promotions = realm.objects(Promotion.self)
         
         updateIndices()
         
@@ -92,6 +93,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         let imageView = UIImageView(image: logo)
         imageView.contentMode = .scaleAspectFit // set imageview's content mode
         self.navigationItem.titleView = imageView
+        
+        myTableView.isSkeletonable = true
+        myTableView.showAnimatedSkeleton()
         
         downloadingView.alpha = 0
         getStartedButton.layer.cornerRadius = Constants.cornerRadius
@@ -123,16 +127,16 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         print("Showing downloading view")
         
-        self.navigationController?.isNavigationBarHidden = true
-        downloadingView.layer.backgroundColor = Constants.green.cgColor
+//        self.navigationController?.isNavigationBarHidden = true
+//        downloadingView.layer.backgroundColor = Constants.green.cgColor
         
         myActivityIndicator.isHidden = false
         myActivityIndicator.startAnimating()
-        downloadingView.alpha = 1
-        downloadingImage.image = UIImage(named: "RestaurantDataImage")
-        downloadingTitle.text = "Downloading restaurant data..."
-        downloadingDetails.text = "This should only take a few seconds, and once it’s done you’ll be able to use most of the app even offline (except ordering of course)!"
-        getStartedButton.alpha = 0
+//        downloadingView.alpha = 1
+//        downloadingImage.image = UIImage(named: "RestaurantDataImage")
+//        downloadingTitle.text = "Downloading restaurant data..."
+//        downloadingDetails.text = "This should only take a few seconds, and once it’s done you’ll be able to use most of the app even offline (except ordering of course)!"
+//        getStartedButton.alpha = 0
 
     }
     
@@ -140,12 +144,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         myActivityIndicator.stopAnimating()
         myActivityIndicator.isHidden = true
-        downloadingView.layer.backgroundColor = Constants.green.cgColor
-        downloadingTitle.text = "Download Complete!"
-        downloadingDetails.text = "You’re all set to use the GoBringIt Delivery app 🍣🍗🍔 Online or offline, you can always view our delicious menu and prepare your order 🎉"
-        getStartedButton.alpha = 1
-        getStartedButton.setTitle("Get Started", for: .normal)
-        getStartedButton.setTitleColor(Constants.green, for: .normal)
+//        downloadingView.layer.backgroundColor = Constants.green.cgColor
+//        downloadingTitle.text = "Download Complete!"
+//        downloadingDetails.text = "You’re all set to use the GoBringIt Delivery app 🍣🍗🍔 Online or offline, you can always view our delicious menu and prepare your order 🎉"
+//        getStartedButton.alpha = 1
+//        getStartedButton.setTitle("Get Started", for: .normal)
+//        getStartedButton.setTitleColor(Constants.green, for: .normal)
         
     }
     
@@ -199,94 +203,125 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         } else {
             
             showDownloadingView()
-            self.fetchRestaurantData()
+//            self.fetchRestaurantData()
         }
     }
     
     func checkForUpdates() {
         
-        let realm = try! Realm() // Initialize Realm
-        
-        // Check if restaurant data already exists in Realm
-        let dataExists = realm.objects(Restaurant.self).count > 0
-        
-        if !dataExists {
-            
-            print("No data exists. Fetching restaurant data.")
-            
-            // Retrieving backend number
-            getBackendVersionNumber() {
-                (result: Int) in
-            }
-            
-            // Retrieving promotions
-            fetchPromotions() {
-                (result: Int) in
-
-                self.updateIndices()
-                self.myTableView.reloadData()
-            }
-            
-            // Show loading view as empty state
-            showDownloadingView()
-            
-            // Create models from backend data
-            self.fetchRestaurantData()
-            
-        } else {
-            
-            print("Data exists. Checking version numbers.")
-            
-            let currentVersionNumber = self.defaults.integer(forKey: "currentVersion")
-            getBackendVersionNumber() {
-                (result: Int) in
-                
-                print("Received backend version number via closure")
-                
-                self.backendVersionNumber = result
-                
-                print("Local version number: \(currentVersionNumber), Backend version number: \(self.backendVersionNumber)")
-                
-                if currentVersionNumber != self.backendVersionNumber {
-                    
-                    print("Version numbers do not match. Fetching updated restaurant data.")
-                    
-                    // Delete current promotions
-                    try! realm.write {
-                        
-                        let promotions = realm.objects(Promotion.self)
-                        realm.delete(promotions)
-                        print("After deleting, there are \(promotions.count) promotions")
-                    }
-                    
-                    // Update promotions
-                    self.fetchPromotions() {
-                        (result: Int) in
-                        
-                        self.updateIndices()
-                        self.myTableView.reloadData()
-                    }
-                    
-                    // Save new version number to UserDefaults
-                    self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
-                    
-                    // Create models from backend data
-                    self.fetchRestaurantData()
-                    
-                } else {
-                    
-                    print("Version numbers match. Loading UI.")
-                    
-                    self.updateIndices()
-                    self.myTableView.reloadData()
-                    
-                    self.refreshControl.endRefreshing()
-                }
-            }
+//        let realm = try! Realm() // Initialize Realm
+        getBackendVersionNumber() {
+            (result: Int) in
         }
+        fetchRestaurantsInfo()
+        fetchPromotions() {
+            (result: Int) in
+        }
+
+//        fetchMenuCategories(restaurantID: "1")
+//        fetchMenuItems()
+        
+        
+//        // Check if restaurant data already exists in Realm
+//        let dataExists = realm.objects(Restaurant.self).count > 0
+//
+//        if !dataExists {
+//
+//            print("No data exists. Fetching restaurant data.")
+//
+//            // Retrieving backend number
+//            getBackendVersionNumber() {
+//                (result: Int) in
+//            }
+//
+//            // Retrieving promotions
+//            fetchPromotions() {
+//                (result: Int) in
+//
+//                self.updateIndices()
+//                self.myTableView.reloadData()
+//            }
+//
+//            // Show loading view as empty state
+//            showDownloadingView()
+//
+//            // Create models from backend data
+////            self.fetchRestaurantData()
+//
+//        } else {
+//
+//            print("Data exists. Checking version numbers.")
+//
+//            let currentVersionNumber = self.defaults.integer(forKey: "currentVersion")
+//            getBackendVersionNumber() {
+//                (result: Int) in
+//
+//                print("Received backend version number via closure")
+//
+//                self.backendVersionNumber = result
+//
+//                print("Local version number: \(currentVersionNumber), Backend version number: \(self.backendVersionNumber)")
+//
+//                if currentVersionNumber != self.backendVersionNumber {
+//
+//                    print("Version numbers do not match. Fetching updated restaurant data.")
+//
+//                    // Delete current promotions
+//                    try! realm.write {
+//
+//                        let promotions = realm.objects(Promotion.self)
+//                        realm.delete(promotions)
+//                        print("After deleting, there are \(promotions.count) promotions")
+//                    }
+//
+//                    // Update promotions
+//                    self.fetchPromotions() {
+//                        (result: Int) in
+//
+//                        self.updateIndices()
+//                        self.myTableView.reloadData()
+//                    }
+//
+//                    // Save new version number to UserDefaults
+//                    self.defaults.set(self.backendVersionNumber, forKey: "currentVersion")
+//
+//                    // Create models from backend data
+////                    self.fetchRestaurantData()
+//
+//                } else {
+//
+//                    print("Version numbers match. Loading UI.")
+//
+//                    self.updateIndices()
+//                    self.myTableView.reloadData()
+//
+//                    self.refreshControl.endRefreshing()
+//                }
+//            }
+//        }
     }
     
     // MARK: - Table view data source
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 2
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 1
+        }
+        
+        return 2
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if indexPath.section == 0 {
+            return "promotionsCell"
+        }
+        
+        return "restaurantsCell"
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -313,6 +348,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        cell.hideSkeleton()
         
         if indexPath.section == promotionsIndex {
             guard let tableViewCell = cell as? PromotionsTableViewCell else { return }
@@ -365,10 +402,51 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             
             cell.name.text = restaurant.name
             cell.cuisineType.text = restaurant.cuisineType
-            if let image = restaurant.image {
-                cell.bannerImage.image = UIImage(data: image as Data)
-            }
             
+//            if let image = restaurant.image {
+//                cell.bannerImage.image = UIImage(data: image as Data)
+//            }
+            
+            let image = restaurant.image
+            if image != nil {
+                
+                print("Image is already saved at index: \(indexPath.row).")
+                
+                cell.bannerImage.image = UIImage(data: image! as Data)
+            } else {
+                
+                let imageURL = restaurant.imageURL
+                if imageURL != "" {
+                    
+                    print("Image is not yet saved. Downloading asynchronously.")
+                    
+                    DispatchQueue.global(qos: .background).async {
+                        let url = URL(string: imageURL)
+                        let imageData = NSData(contentsOf: url!)
+                        
+                        DispatchQueue.main.async {
+                            // Cache image
+                            let realm = try! Realm() // Initialize Realm
+                            try! realm.write {
+                                restaurant.image = imageData
+                            }
+                            
+                            // Set image to downloaded asset only if cell is still visible
+                            cell.bannerImage.alpha = 0
+                            if imageURL == restaurant.imageURL && imageData != nil {
+                                cell.bannerImage.image = UIImage(data: imageData! as Data)
+                                UIView.animate(withDuration: 0.3) {
+                                    cell.bannerImage.alpha = 1
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    print("Image does not exist.")
+                    cell.bannerImage.image = nil
+                }
+            }
+
             let todaysHours = restaurant.restaurantHours.getOpenHoursString()
             if (restaurant.isOpen()) {
                 cell.openHours.text = "Open"
@@ -393,7 +471,9 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         if indexPath.section == promotionsIndex {
             // TO-DO: Implement
         } else if indexPath.section == restaurantsIndex {
-            selectedRestaurantID = restaurants[indexPath.row].id
+            if restaurants[indexPath.row] != nil {
+                selectedRestaurant = restaurants[indexPath.row]
+            }
         }
 
         return indexPath
@@ -431,7 +511,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         myTableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.section == promotionsIndex {
-            performSegue(withIdentifier: "toPromotionVC", sender: self)
+//            performSegue(withIdentifier: "toPromotionVC", sender: self)
         } else if indexPath.section == restaurantsIndex {
             performSegue(withIdentifier: "toRestaurantDetail", sender: self)
         }
@@ -445,10 +525,13 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         if segue.identifier == "toRestaurantDetail" {
             let nav = segue.destination as! UINavigationController
             let detailVC = nav.topViewController as! RestaurantDetailViewController
-            detailVC.restaurantID = selectedRestaurantID
+            detailVC.restaurant = selectedRestaurant
         } else if segue.identifier == "toPromotionVC" {
             let promotionVC = segue.destination as! PromotionsViewController
             promotionVC.passedPromotionID = selectedPromotionID
+        } else if segue.identifier == "toPastOrdersVC" {
+            let pastOrdersVC = segue.destination as! PastOrdersViewController
+            pastOrdersVC.restaurants = restaurants
         }
         
     }
@@ -465,7 +548,48 @@ extension RestaurantsHomeViewController: UICollectionViewDataSource, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "promotionCell", for: indexPath) as! PromotionCollectionViewCell
 
-        cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
+        let promotion = promotions[indexPath.row]
+//        cell.promotionImage.image = UIImage(data: promotions[indexPath.row].image! as Data)
+        
+        let image = promotion.image
+        if image != nil {
+            
+            print("Image is already saved at index: \(indexPath.row).")
+            
+            cell.promotionImage.image = UIImage(data: image! as Data)
+        } else {
+            
+            let imageURL = promotion.imageURL
+            if imageURL != "" {
+                
+                print("Image is not yet saved. Downloading asynchronously.")
+                
+                DispatchQueue.global(qos: .background).async {
+                    let url = URL(string: imageURL)
+                    let imageData = NSData(contentsOf: url!)
+                    
+                    DispatchQueue.main.async {
+                        // Cache image
+                        let realm = try! Realm() // Initialize Realm
+                        try! realm.write {
+                            promotion.image = imageData
+                        }
+                        
+                        // Set image to downloaded asset only if cell is still visible
+                        cell.promotionImage.alpha = 0
+                        if imageURL == promotion.imageURL && imageData != nil {
+                            cell.promotionImage.image = UIImage(data: imageData! as Data)
+                            UIView.animate(withDuration: 0.3) {
+                                cell.promotionImage.alpha = 1
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("Image does not exist.")
+                cell.promotionImage.image = nil
+            }
+        }
         
         return cell
     }

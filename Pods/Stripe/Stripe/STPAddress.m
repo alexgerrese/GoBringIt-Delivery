@@ -169,6 +169,8 @@ STPContactField const STPContactFieldName = @"STPContactFieldName";
                                                              countryCode:self.country] == STPCardValidationStateValid);
         case STPBillingAddressFieldsFull:
             return [self hasValidPostalAddress];
+        case STPBillingAddressFieldsName:
+            return self.name.length > 0;
     }
     return containsFields;
 }
@@ -181,6 +183,8 @@ STPContactField const STPContactFieldName = @"STPContactFieldName";
             return self.postalCode.length > 0;
         case STPBillingAddressFieldsFull:
             return [self hasPartialPostalAddress];
+        case STPBillingAddressFieldsName:
+            return self.name.length > 0;
     }
 
     return NO;
@@ -242,6 +246,8 @@ STPContactField const STPContactFieldName = @"STPContactFieldName";
         case STPBillingAddressFieldsZip:
         case STPBillingAddressFieldsFull:
             return PKAddressFieldPostalAddress;
+        case STPBillingAddressFieldsName:
+            return PKAddressFieldName;
     }
 }
 
@@ -324,6 +330,32 @@ STPContactField const STPContactFieldName = @"STPContactFieldName";
              NSStringFromSelector(@selector(postalCode)): @"postal_code",
              NSStringFromSelector(@selector(country)): @"country",
              };
+}
+
+#pragma mark NSCopying
+
+- (id)copyWithZone:(__unused NSZone *)zone {
+    STPAddress *copyAddress = [self.class new];
+
+    // Name might be stored as full name in _name, or split between given/family name
+    // access ivars directly and explicitly copy the instances.
+    copyAddress->_name = [self->_name copy];
+    copyAddress->_givenName = [self->_givenName copy];
+    copyAddress->_familyName = [self->_familyName copy];
+
+    copyAddress.line1 = self.line1;
+    copyAddress.line2 = self.line2;
+    copyAddress.city = self.city;
+    copyAddress.state = self.state;
+    copyAddress.postalCode = self.postalCode;
+    copyAddress.country = self.country;
+
+    copyAddress.phone = self.phone;
+    copyAddress.email = self.email;
+
+    copyAddress.allResponseFields = self.allResponseFields;
+
+    return copyAddress;
 }
 
 @end

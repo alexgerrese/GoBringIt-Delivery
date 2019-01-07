@@ -23,7 +23,16 @@ extension CheckoutVC {
         let firstName = fullName.components(separatedBy: " ")[0]
         
         // Get restaurant name
-        let restaurantName = realm.objects(Restaurant.self).filter("id = %@", order.restaurantID).first!.name
+        let restaurantName = restaurant.name
+        
+        // Travel time message
+        if order.isDelivery {
+            if travelTimeMessage == "" {
+                travelTimeMessage = "Your order will arrive in 35-50 mins."
+            }
+        } else {
+            travelTimeMessage = ""
+        }
         
         // Get order time string
         let orderTime = order.orderTime
@@ -74,10 +83,30 @@ extension CheckoutVC {
         let total = calculateTotal()
         
         // Get formatted address string
-        let address = order.address
-        let addressString = (address?.streetAddress)! + "<br>" + (address?.roomNumber)! + "<br>" + "Durham, NC"
+        let address = order.address!
+        var addressString = ""
+        if order.isDelivery {
+            addressString = "<br><b>Delivery Address:</b><br>\(address.streetAddress)<br>\(address.roomNumber)<br>Durham, NC"
+        } else {
+            addressString = "<br><b>Pickup Address:</b><br>\(restaurant.address)"
+        }
         
-        // Send an advanced example
+        // Get formatted payment method string
+        var paymentMethodString = ""
+        if order.isDelivery {
+            paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod)"
+            if order.paymentMethod.contains("••••") {
+                paymentMethodString.append(" - Paid")
+            }
+        }
+        
+        // Get formatted delivery fee string
+        var deliveryFeeString = ""
+        if order.isDelivery {
+            deliveryFeeString = "<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))"
+        }
+        
+        // Email to the user
         let recipient = Address(email: user.email)
         let personalizations = Personalization(
             to: [recipient],
@@ -86,8 +115,8 @@ extension CheckoutVC {
             subject: "Your food is being prepared! (Order #\(order.id))"
         )
         let contents = Content.emailBody(
-            plain: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared!<br><br>Here is your order summary:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><b>Delivery Address:</b><br>\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) See you in 35-50 minutes!</p>",
-            html: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared!<br><br>Here is your order summary:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><b>Delivery Address:</b><br>\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) See you in 35-50 minutes!</p>"
+            plain: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared! \(travelTimeMessage)<br><br>Here is your order summary:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)\(addressString)\(paymentMethodString)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :)</p>",
+            html: "<p>Hi \(firstName),<br><br>Your order from \(restaurantName) is being prepared! \(travelTimeMessage)<br><br>Here is your order summary:<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)\(addressString)\(paymentMethodString)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :)</p>"
         )
         let email = Email(
             personalizations: [personalizations],
@@ -96,8 +125,8 @@ extension CheckoutVC {
             subject: nil
         )
         email.mailSettings.footer = Footer(
-            text: "Copyright 2018 GoBringIt",
-            html: "<p style=\"text-align:center\"><small>Copyright 2018 GoBringIt</small></p>"
+            text: "Copyright 2019 © GoBringIt",
+            html: "<p style=\"text-align:center\"><small>Copyright 2019 © GoBringIt</small></p>"
         )
         
         email.trackingSettings.clickTracking = ClickTracking(section: .htmlBody)
@@ -129,7 +158,7 @@ extension CheckoutVC {
         let fullName = user.fullName
         
         // Get restaurant name
-        let restaurantName = realm.objects(Restaurant.self).filter("id = %@", order.restaurantID).first!.name
+        let restaurantName = restaurant.name
         
         // Get order time string
         let orderTime = order.orderTime
@@ -181,7 +210,27 @@ extension CheckoutVC {
         
         // Get formatted address string
         let address = order.address
-        let addressString = (address?.streetAddress)! + "<br>" + (address?.roomNumber)! + "<br>" + "Durham, NC"
+        var addressString = ""
+        if order.address?.streetAddress != "" {
+            addressString = "<br><b>Delivery Address:</b><br>\(address?.streetAddress)<br>\(address?.roomNumber)<br>Durham, NC"
+        } else {
+            addressString = "<br><b>Pickup order"
+        }
+        
+        // Get formatted payment method string
+        var paymentMethodString = ""
+        if order.isDelivery {
+            paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod)"
+            if order.paymentMethod.contains("••••") {
+                paymentMethodString.append(" - Paid")
+            }
+        }
+        
+        // Get formatted delivery fee string
+        var deliveryFeeString = ""
+        if order.isDelivery {
+            deliveryFeeString = "<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))"
+        }
         
         // Set up recipients
         let recipients = [Address(email: restaurantEmail)]
@@ -198,8 +247,8 @@ extension CheckoutVC {
             subject: "New GoBringIt Order! (#\(order.id))"
         )
         let contents = Content.emailBody(
-            plain: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)<br><b>Delivery Address:</b><br>\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>",
-            html: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)<br><b>Delivery Address:</b><br>\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))<br><b>Delivery Fee:</b> $\(String(format: "%.2f", order.deliveryFee))<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>"
+            plain: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)\(addressString)\(paymentMethodString)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>",
+            html: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>"
         )
         let email = Email(
             personalizations: [personalizations],
@@ -208,8 +257,8 @@ extension CheckoutVC {
             subject: nil
         )
         email.mailSettings.footer = Footer(
-            text: "Copyright 2018 GoBringIt",
-            html: "<p style=\"text-align:center\"><small>Copyright 2018 GoBringIt</small></p>"
+            text: "Copyright 2019 © GoBringIt",
+            html: "<p style=\"text-align:center\"><small>Copyright 2019 © GoBringIt</small></p>"
         )
         
         do {

@@ -29,6 +29,7 @@
 		112D6B271ED19BEE00396BA5 /* PaymentMethodsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */; };
 		1132207F1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132207E1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift */; };
 		11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11423AF01EC89CC400011B4D /* RealmModels.swift */; };
+		1144B76721A74AF3003BBD8F /* MyAPIClient1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1144B76621A74AF3003BBD8F /* MyAPIClient1.swift */; };
 		114AE7A61ED233FF00FC9060 /* OrderPlacedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */; };
 		117F37E51ECE42C2004C18A9 /* MenuCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */; };
 		1180F35A20A5C9D800596187 /* Brandon_bld.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1180F35820A5C7B000596187 /* Brandon_bld.otf */; };
@@ -38,7 +39,8 @@
 		1183F00B1EF8F97000FFCD02 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00A1EF8F97000FFCD02 /* PromotionsViewController.swift */; };
 		1183F00D1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00C1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift */; };
 		1183F00F1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */; };
-		118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */; };
+		118816F921E29CA700E73E45 /* NewCreditCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118816F821E29CA700E73E45 /* NewCreditCardVC.swift */; };
+		118C0C1B1D6B71DA00035CC2 /* MyAPIClient2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118C0C1A1D6B71DA00035CC2 /* MyAPIClient2.swift */; };
 		1195C6E820A732B0002C3CB1 /* MenuImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */; };
 		1198FA101EC5149F00864200 /* Brandon_med_it.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */; };
 		1198FA111EC5149F00864200 /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1198FA0D1EC5149F00864200 /* Brandon_med.otf */; };
@@ -128,6 +130,7 @@
 		112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodsVC.swift; sourceTree = "<group>"; };
 		1132207E1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAccountInfoViewController.swift; sourceTree = "<group>"; };
 		11423AF01EC89CC400011B4D /* RealmModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmModels.swift; sourceTree = "<group>"; };
+		1144B76621A74AF3003BBD8F /* MyAPIClient1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAPIClient1.swift; sourceTree = "<group>"; };
 		114AE7A51ED233FF00FC9060 /* OrderPlacedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPlacedVC.swift; sourceTree = "<group>"; };
 		117F37E41ECE42C2004C18A9 /* MenuCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuCategoryViewController.swift; sourceTree = "<group>"; };
 		1180F35820A5C7B000596187 /* Brandon_bld.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_bld.otf; sourceTree = "<group>"; };
@@ -137,7 +140,8 @@
 		1183F00A1EF8F97000FFCD02 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		1183F00C1EF8F9FD00FFCD02 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		1183F00E1EF8FA0F00FFCD02 /* PromotionsTitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsTitleTableViewCell.swift; sourceTree = "<group>"; };
-		118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		118816F821E29CA700E73E45 /* NewCreditCardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCreditCardVC.swift; sourceTree = "<group>"; };
+		118C0C1A1D6B71DA00035CC2 /* MyAPIClient2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MyAPIClient2.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1195C6E720A732B0002C3CB1 /* MenuImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuImageTableViewCell.swift; sourceTree = "<group>"; };
 		1198FA0C1EC5149F00864200 /* Brandon_med_it.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med_it.otf; sourceTree = "<group>"; };
 		1198FA0D1EC5149F00864200 /* Brandon_med.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Brandon_med.otf; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 				11158DA91ECB25A700A88338 /* Extensions.swift */,
 				1198FA1B1EC7CE1800864200 /* Backend.swift */,
 				11423AF01EC89CC400011B4D /* RealmModels.swift */,
+				11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */,
 				11158DAD1ECB63DB00A88338 /* Sign In/Sign Up */,
 				11C9EA881ECCA3E6004A4C1E /* Restaurants Home */,
 				1183F0101EF8FA3B00FFCD02 /* Promotions */,
@@ -253,7 +258,8 @@
 				1198FA141EC514AA00864200 /* Fonts */,
 				110220001CE68A83003D82FB /* LaunchScreen.storyboard */,
 				11021FFE1CE68A83003D82FB /* Assets.xcassets */,
-				118C0C1A1D6B71DA00035CC2 /* MyAPIClient.swift */,
+				118C0C1A1D6B71DA00035CC2 /* MyAPIClient2.swift */,
+				1144B76621A74AF3003BBD8F /* MyAPIClient1.swift */,
 				110220031CE68A83003D82FB /* Info.plist */,
 			);
 			path = BringIt;
@@ -370,7 +376,6 @@
 			isa = PBXGroup;
 			children = (
 				11C9EA841ECC9415004A4C1E /* RestaurantsHomeViewController.swift */,
-				11C9EA8D1ECDB4BE004A4C1E /* CreateRestaurantModels.swift */,
 				1183F0091EF8F8A400FFCD02 /* Cells */,
 			);
 			name = "Restaurants Home";
@@ -393,6 +398,7 @@
 				112D6B221ED0D40E00396BA5 /* AddressesViewController.swift */,
 				112D6B241ED1984500396BA5 /* NewAddressVC.swift */,
 				112D6B261ED19BEE00396BA5 /* PaymentMethodsVC.swift */,
+				118816F821E29CA700E73E45 /* NewCreditCardVC.swift */,
 				1132207E1EE45DCE00F481F2 /* UpdateAccountInfoViewController.swift */,
 				11DBC59B1EE4C6FA0000A600 /* BecomeADriverVC.swift */,
 				1183F0051EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift */,
@@ -444,7 +450,6 @@
 				11021FEF1CE68A83003D82FB /* Frameworks */,
 				11021FF01CE68A83003D82FB /* Resources */,
 				B718A82B7254511D102664DF /* [CP] Embed Pods Frameworks */,
-				E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */,
 				11D4D0DC1D5D00CE00E19D9C /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -464,8 +469,6 @@
 				110220041CE68A83003D82FB /* Sources */,
 				110220051CE68A83003D82FB /* Frameworks */,
 				110220061CE68A83003D82FB /* Resources */,
-				0045021002990CB18D224269 /* [CP] Embed Pods Frameworks */,
-				6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -485,8 +488,6 @@
 				1102200F1CE68A83003D82FB /* Sources */,
 				110220101CE68A83003D82FB /* Frameworks */,
 				110220111CE68A83003D82FB /* Resources */,
-				49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */,
-				1796F068CDCDB29C48CC0B16 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -505,7 +506,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Campus Enterprises";
 				TargetAttributes = {
 					11021FF11CE68A83003D82FB = {
@@ -581,51 +582,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0045021002990CB18D224269 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1796F068CDCDB29C48CC0B16 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		49E4ED84F97608E3B3DB38AD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItUITests/Pods-BringItUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		650176CBFE8A86089C22DE88 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -642,21 +598,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6C8491E23EBF050DC80F0B70 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringItTests/Pods-BringItTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7D8FCC92878615CA9FAD458D /* [CP] Check Pods Manifest.lock */ = {
@@ -710,6 +651,7 @@
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SendGrid/SendGrid.framework",
+				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -722,26 +664,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SendGrid.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringIt/Pods-BringIt-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E243B62F19348DD74F38A5D2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BringIt/Pods-BringIt-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -782,10 +710,12 @@
 				11423AF11EC89CC400011B4D /* RealmModels.swift in Sources */,
 				11BFEB541ED4736600C2CEA8 /* FeaturedDishCollectionViewCell.swift in Sources */,
 				1183F0061EF8F6F700FFCD02 /* ApplicationSubmittedViewController.swift in Sources */,
+				1144B76721A74AF3003BBD8F /* MyAPIClient1.swift in Sources */,
 				11C9EA871ECCA3E1004A4C1E /* RestaurantTableViewCell.swift in Sources */,
 				11BFEB581ED72A1300C2CEA8 /* BannerTableViewCell.swift in Sources */,
 				11BFEB5C1ED732FC00C2CEA8 /* PastOrderTableViewCell.swift in Sources */,
-				118C0C1B1D6B71DA00035CC2 /* MyAPIClient.swift in Sources */,
+				118C0C1B1D6B71DA00035CC2 /* MyAPIClient2.swift in Sources */,
+				118816F921E29CA700E73E45 /* NewCreditCardVC.swift in Sources */,
 				11158DAF1ECB657100A88338 /* PrimaryAddressVC.swift in Sources */,
 				1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */,
 				11C9EA851ECC9415004A4C1E /* RestaurantsHomeViewController.swift in Sources */,
@@ -862,12 +792,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -900,6 +832,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -916,12 +849,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -948,6 +883,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -959,7 +895,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -978,7 +914,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BringIt/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt;

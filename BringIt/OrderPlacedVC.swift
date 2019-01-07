@@ -85,12 +85,12 @@ class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         if indexPath.row == 0 {
             
-            cell.textLabel?.text = "Total Spent"
+            cell.textLabel?.text = "Order Total"
             cell.detailTextLabel?.text = "$" + String(format: "%.2f", totalSpent)
             
         } else if indexPath.row == 1 {
             
-            cell.textLabel?.text = "Estimated Delivery Time"
+            cell.textLabel?.text = "ETA"
             cell.detailTextLabel?.text = ETA
             
             

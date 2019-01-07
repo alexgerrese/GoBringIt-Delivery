@@ -16,6 +16,10 @@ enum APICalls {
     case signUpUser(fullName: String, email: String, password: String, phoneNumber: String, campus: String, streetAddress: String, roomNumber: String)
     case fetchPromotions
     case fetchRestaurantData
+    case fetchRestaurantsInfo
+    case fetchMenuCategories(restaurantID: String)
+    case fetchFeaturedDishes(restaurantID: String)
+    case fetchMenuItems(categoryID: String)
     case updateCurrentAddress(uid: String, streetAddress: String, roomNumber: String)
     case addItemToCart(uid: String, quantity: Int, itemID: String, sideIDs: [String], specialInstructions: String)
     case addOrder(uid: String, restaurantID: String, payingWithCC: String)
@@ -26,6 +30,13 @@ enum APICalls {
     case resetPassword(uid: String, oldPassword: String, newPassword: String)
     case fetchVersionNumber
     case fetchAPIKey
+    case fetchWaitTime(restaurantID: String)
+    case stripeAddCard(userID: String, cardNumber: String, expMonth: String, expYear: String, CVC: String)
+    case stripeRetrieveCards(userID: String)
+    case stripeCharge(userID: String, restaurantID: String, amount: String, cardID: String)
+    case stripeEphemeralKeys(apiVersion: String, userID: String)
+    case verifyAddress(addressString: String)
+    case getDeliveryFee(addressString: String, restaurantID: String)
 }
 
 extension APICalls : TargetType {
@@ -43,6 +54,14 @@ extension APICalls : TargetType {
             return "/fetchPromotions.php"
         case .fetchRestaurantData:
             return "/fetchRestaurantData.php"
+        case .fetchRestaurantsInfo:
+            return "/fetchRestaurantsInfo.php"
+        case .fetchMenuCategories(_):
+            return "/fetchMenuCategories.php"
+        case .fetchFeaturedDishes(_):
+            return "/fetchFeaturedDishes.php"
+        case .fetchMenuItems(_):
+            return "/fetchMenuItems.php"
         case .updateCurrentAddress(_,_,_):
             return "/updateCurrentAddress.php"
         case .addItemToCart(_,_,_,_,_):
@@ -61,14 +80,28 @@ extension APICalls : TargetType {
             return "/fetchVersionNumber.php"
         case .fetchAPIKey:
             return "/fetchAPIKey.php"
+        case .fetchWaitTime(_):
+            return "/fetchWaitTime.php"
+        case .stripeCharge(_,_,_,_):
+            return "/stripeCharge.php"
+        case .stripeEphemeralKeys(_,_):
+            return "/stripeEphemeralKeys.php"
+        case .stripeAddCard(_,_,_,_,_):
+            return "/stripeAddCard.php"
+        case .stripeRetrieveCards(_):
+            return "/stripeRetrieveCards.php"
+        case .verifyAddress(_):
+            return "/verifyAddress.php"
+        case .getDeliveryFee(_,_):
+            return "/getDeliveryFee.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
+        case .fetchPromotions, .fetchRestaurantData, .fetchRestaurantsInfo, .fetchVersionNumber, .fetchAPIKey:
             return .get
-        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo, .fetchAccountAddress:
+        case .signInUser, .signUpUser, .updateCurrentAddress, .addItemToCart, .addOrder, .updateAccountInfo, .resetPassword, .fetchAccountInfo, .fetchAccountAddress, .fetchMenuCategories, .fetchFeaturedDishes, .fetchMenuItems, .fetchWaitTime, .stripeAddCard, .stripeRetrieveCards, .stripeCharge, .stripeEphemeralKeys, .verifyAddress, .getDeliveryFee:
             return .post
         }
     }
@@ -79,8 +112,14 @@ extension APICalls : TargetType {
     
     var task: Task {
         switch self {
-        case .fetchPromotions, .fetchRestaurantData, .fetchVersionNumber, .fetchAPIKey:
+        case .fetchPromotions, .fetchRestaurantData, .fetchRestaurantsInfo, .fetchVersionNumber, .fetchAPIKey:
             return .requestPlain
+        case .fetchMenuCategories(let restaurantID):
+            return .requestParameters(parameters: ["restaurantID": restaurantID], encoding: JSONEncoding.default)
+        case .fetchFeaturedDishes(let restaurantID):
+            return .requestParameters(parameters: ["restaurantID": restaurantID], encoding: JSONEncoding.default)
+        case .fetchMenuItems(let categoryID):
+            return .requestParameters(parameters: ["categoryID": categoryID], encoding: JSONEncoding.default)
         case .signInUser(let email, let password):
             return .requestParameters(parameters: ["email": email,
             "password": password], encoding: JSONEncoding.default)
@@ -116,6 +155,8 @@ extension APICalls : TargetType {
             return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
         case .fetchAccountAddress(let uid):
             return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
+        case .fetchWaitTime(let restaurantID):
+            return .requestParameters(parameters: ["restaurant_id": restaurantID], encoding: JSONEncoding.default)
         case .updateAccountInfo(let uid, let fullName, let email, let phoneNumber):
             return .requestParameters(parameters: ["uid": uid,
                     "name": fullName,
@@ -125,7 +166,27 @@ extension APICalls : TargetType {
             return .requestParameters(parameters: ["uid": uid,
                     "old_pass": oldPassword,
                     "new_pass": newPassword], encoding: JSONEncoding.default)
-        
+        case .stripeAddCard(let userID, let cardNumber, let expMonth, let expYear, let CVC):
+            return .requestParameters(parameters: ["user_id": userID,
+                                                  "card_number": cardNumber,
+                                                  "exp_month": expMonth,
+                                                  "exp_year": expYear,
+                                                  "cvc": CVC], encoding: JSONEncoding.default)
+        case .stripeRetrieveCards(let userID):
+            return .requestParameters(parameters: ["user_id": userID], encoding: JSONEncoding.default)
+        case .stripeCharge(let userID, let restaurantID, let amount, let cardID):
+            return .requestParameters(parameters: ["user_id": userID,
+                                                   "restaurant_id": restaurantID,
+                                                   "amount": amount,
+                                                   "card_id": cardID], encoding: JSONEncoding.default)
+        case .stripeEphemeralKeys(let apiVersion, let userID):
+            return .requestParameters(parameters: ["api_version": apiVersion,
+                                                   "user_id": userID], encoding: JSONEncoding.default)
+        case .verifyAddress(let addressString):
+            return .requestParameters(parameters: ["address_string": addressString], encoding: JSONEncoding.default)
+        case .getDeliveryFee(let addressString, let restaurantID):
+            return .requestParameters(parameters: ["user_address_string": addressString,
+                                                   "restaurant_id": restaurantID], encoding: JSONEncoding.default)
         }
     }
 }

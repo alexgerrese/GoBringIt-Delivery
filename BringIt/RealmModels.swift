@@ -41,8 +41,13 @@ class DeliveryAddress: Object {
 // Payment Method Model
 class PaymentMethod: Object {
     @objc dynamic var userID = ""
+    @objc dynamic var methodID = ""
     @objc dynamic var method = ""
     @objc dynamic var isSelected = false
+    
+    override static func primaryKey() -> String? {
+        return "methodID"
+    }
 }
 
 // Restaurant Model
@@ -58,28 +63,38 @@ class Restaurant: Object {
     @objc dynamic var phoneNumber = ""
     @objc dynamic var deliveryFee = 0.0
     @objc dynamic var minimumPrice = 0.0
+    @objc dynamic var announcement = ""
+    @objc dynamic var paymentOptions = ""
+    @objc dynamic var deliveryOnly = true
+    @objc dynamic var address = ""
     let promotions = List<Promotion>()
     let mostPopularDishes = List<MenuItem>()
-    let menuCategories = List<MenuCategory>()
+//    let menuCategories = List<MenuCategory>()
     
     override static func primaryKey() -> String? {
         return "id"
     }
     
     func isOpen() -> Bool {
-        return restaurantHours.getOpenHoursString().isRestaurantOpen()
+        return restaurantHours.isRestaurantOpen()
     }
 }
 
+//// Menu Category Model
+//class MenuCategory: Object {
+//    @objc dynamic var id = ""
+//    @objc dynamic var name = ""
+//    let menuItems = List<MenuItem>()
+//
+//    override static func primaryKey() -> String? {
+//        return "id"
+//    }
+//}
+
 // Menu Category Model
-class MenuCategory: Object {
-    @objc dynamic var id = ""
-    @objc dynamic var name = ""
-    let menuItems = List<MenuItem>()
-    
-    override static func primaryKey() -> String? {
-        return "id"
-    }
+class MenuCategory {
+    var id = ""
+    var name = ""
 }
 
 // Menu Item Model
@@ -133,6 +148,7 @@ class Promotion: Object {
     @objc dynamic var id = ""
     @objc dynamic var restaurantID = ""
     @objc dynamic var image: NSData?
+    @objc dynamic var imageURL = ""
     @objc dynamic var details = ""
     
     override static func primaryKey() -> String? {
@@ -151,4 +167,5 @@ class Order: Object {
     @objc dynamic var subtotal = 0.0 
     @objc dynamic var deliveryFee = 0.0
     @objc dynamic var isComplete = false
+    @objc dynamic var isDelivery = true
 }

@@ -152,13 +152,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/Backend.swift"
-            timestampString = "547917074.677941"
+            timestampString = "568552971.854461"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "path"
-            landmarkType = "24">
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "APICalls"
+            landmarkType = "13">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -200,13 +200,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/Extensions.swift"
-            timestampString = "548535105.420248"
+            timestampString = "568552971.854647"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "showError(button:activityIndicator:error:defaultButtonText:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/SendEmails.swift"
-            timestampString = "547917074.6780469"
+            timestampString = "568552971.854723"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "sendUserConfirmationEmail()"
             landmarkType = "7">
          </BreakpointContent>
@@ -232,11 +232,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/RestaurantsHomeViewController.swift"
-            timestampString = "548287090.523827"
+            timestampString = "568552971.8547879"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "484"
-            endingLineNumber = "484"
+            startingLineNumber = "608"
+            endingLineNumber = "608"
             landmarkName = "RestaurantsHomeViewController"
             landmarkType = "21">
          </BreakpointContent>
@@ -248,7 +248,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/PrimaryAddressVC.swift"
-            timestampString = "528353703.666559"
+            timestampString = "566954527.162527"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
@@ -280,28 +280,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BringIt/AddToCartVC.swift"
-            timestampString = "548287090.52393"
+            timestampString = "568485237.753206"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
+            startingLineNumber = "536"
+            endingLineNumber = "536"
             landmarkName = "tableView(_:didSelectRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BringIt/Assets.xcassets/CheckoutVC.swift"
-            timestampString = "539099179.723624"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
-            landmarkName = "checkButtonStatus()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

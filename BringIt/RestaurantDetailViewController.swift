@@ -8,8 +8,9 @@
 
 import UIKit
 import RealmSwift
+import SkeletonView
 
-class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SkeletonTableViewDataSource {
     
     // MARK: - IBOutlets
 
@@ -24,18 +25,20 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
     
-    var restaurantID = ""
+//    var restaurantID = ""
     var restaurant = Restaurant()
     var cart = Order()
-    var menuCategories: Results<MenuCategory>!
+    var menuCategories = [MenuCategory]()
     var selectedMenuCategoryID = ""
-    var selectedMenuItemID = ""
+    var selectedMenuCategoryName = ""
+    var selectedMenuItem = MenuItem()
     
     // For collection view
-    var featuredDishes = List<MenuItem>()
+    var featuredDishes = [MenuItem]()
     var storedOffsets = [Int: CGFloat]()
     var bannerIndex = 0
     var callRestaurantIndex = 1
+    var announcementIndex = -1
     var featuredDishesIndex = -1
     var dishesIndex = -1
 
@@ -85,45 +88,72 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     func setupRealm() {
         
-        let realm = try! Realm() // Initialize Realm
+//        let realm = try! Realm() // Initialize Realm
+        
+        fetchWaitTimeMessage(restaurantID: restaurant.id)
+        fetchFeaturedDishes(restaurantID: restaurant.id)
+        fetchMenuCategories(restaurantID: restaurant.id)
         
         // Get selected restaurant and menu categories
-        restaurant = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)!
-        menuCategories = restaurant.menuCategories.sorted(byKeyPath: "name")
+//        restaurant = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)!
+//        menuCategories = restaurant.menuCategories.sorted(byKeyPath: "name")
         
-        for menuCategory in menuCategories {
-            
-            let items = menuCategory.menuItems
-            let filteredItems = items.filter("isFeatured = %@", true)
-            
-            featuredDishes.append(contentsOf: filteredItems)
-        }
-        
-        if (featuredDishes.count) > 0 {
-            featuredDishesIndex = 2
-            dishesIndex = 3
-        } else {
-            dishesIndex = 2
-        }
-        
-        print("Number of featured dishes: \(featuredDishes.count)")
+//        for menuCategory in menuCategories {
+//
+//            let items = menuCategory.menuItems
+//            let filteredItems = items.filter("isFeatured = %@", true)
+//
+//            featuredDishes.append(contentsOf: filteredItems)
+//        }
+//
+//        if (featuredDishes.count) > 0 {
+//            featuredDishesIndex = 2
+//            dishesIndex = 3
+//        } else {
+//            dishesIndex = 2
+//        }
+//
+//        print("Number of featured dishes: \(featuredDishes.count)")
         
     }
     
     func setupTableView() {
         
+        self.myTableView.showAnimatedSkeleton()
+        
         // Set tableView cells to custom height and automatically resize if needed
-//        self.myTableView.estimatedRowHeight = 150
-//        self.myTableView.rowHeight = UITableViewAutomaticDimension
-//        self.myTableView.setNeedsLayout()
-//        self.myTableView.layoutIfNeeded()
+        self.myTableView.estimatedRowHeight = 150
+        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.setNeedsLayout()
+        self.myTableView.layoutIfNeeded()
+    }
+    
+    func updateIndices() {
+        
+        // Check if restaurant has an announcement
+        if restaurant.announcement != "" {
+            announcementIndex = 1
+        }
+        
+        // Check if restaurant has a valid phone number
+        if restaurant.phoneNumber != "" {
+            callRestaurantIndex = announcementIndex != -1 ? announcementIndex + 1 : 1
+        }
+        
+        // Check if restaurant has featured dishes
+        if featuredDishes.count > 0 {
+            featuredDishesIndex = callRestaurantIndex + 1
+            dishesIndex = featuredDishesIndex + 1
+        } else {
+            dishesIndex = callRestaurantIndex + 1
+        }
     }
     
     func checkCart() {
         
         let realm = try! Realm() // Initialize Realm
         
-        let predicate = NSPredicate(format: "restaurantID = %@ AND isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
+        let predicate = NSPredicate(format: "restaurantID = %@ AND isComplete = %@", restaurant.id, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)
         if filteredOrders.count > 0 {
             
@@ -133,11 +163,11 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
             
-            // Check if iPhone X
-            if UIScreen.main.nativeBounds.height == 2436 {
+            // Check if iPhone X or iPhone Xs Max
+            if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
                 viewCartViewToBottom.constant = 0
             } else {
-                 viewCartViewToBottom.constant = 16
+                viewCartViewToBottom.constant = 16
             }
            
         } else {
@@ -163,12 +193,43 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     // MARK: - Table view data source
     
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 4
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 3 {
+            return 10
+        }
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if indexPath.section == bannerIndex {
+            return "bannerCell"
+        } else if indexPath.section == announcementIndex {
+            return "announcementCell"
+        } else if indexPath.section == callRestaurantIndex {
+            return "callRestaurantCell"
+        } else if indexPath.section == featuredDishesIndex {
+            return "featuredDishTableViewCell"
+        }
+        
+        return "menuCategoryCell"
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if featuredDishes.count > 0 {
-            return 4
+        var count = 3
+        
+        if restaurant.announcement != "" {
+            count += 1
         }
-        return 3
+        if featuredDishes.count > 0 {
+            count += 1
+        }
+        
+        return count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -179,6 +240,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        cell.hideSkeleton()
         
         if indexPath.section == featuredDishesIndex {
             guard let tableViewCell = cell as? FeaturedDishTableViewCell else { return }
@@ -204,6 +267,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     {
         if indexPath.section == bannerIndex {
             return 346
+        } else if indexPath.section == announcementIndex {
+            return UITableViewAutomaticDimension
         } else if indexPath.section == featuredDishesIndex {
             return 202
         }
@@ -231,6 +296,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             cell.detailTextLabel?.text = formattedNumber
             
             return cell
+        } else if indexPath.section == announcementIndex {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "announcementCell", for: indexPath)
+            
+            cell.textLabel?.text = restaurant.announcement
+            
+            return cell
         } else if indexPath.section == dishesIndex {
            let cell = tableView.dequeueReusableCell(withIdentifier: "menuCategoryCell", for: indexPath)
         
@@ -253,13 +324,16 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
         } else if indexPath.section == dishesIndex {
             selectedMenuCategoryID = menuCategories[indexPath.row].id
+            selectedMenuCategoryName = menuCategories[indexPath.row].name
         }
         
         return indexPath
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == featuredDishesIndex {
+        if section == announcementIndex {
+            return "Restaurant Announcement 📣"
+        } else if section == featuredDishesIndex {
             return "Most Popular Dishes"
         } else if section == dishesIndex {
             return "Menu Categories"
@@ -303,7 +377,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
 
     }
     
-
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -312,19 +385,22 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         if segue.identifier == "toMenuCategory" {
             let menuCategoryVC = segue.destination as! MenuCategoryViewController
             menuCategoryVC.menuCategoryID = selectedMenuCategoryID
-            menuCategoryVC.restaurantID = restaurantID
+            menuCategoryVC.restaurantID = restaurant.id
+            menuCategoryVC.menuCategoryName = selectedMenuCategoryName
+            menuCategoryVC.restaurant = restaurant
         } else if segue.identifier == "toCheckoutFromRestaurantDetail" {
             
             let nav = segue.destination as! UINavigationController
             let checkoutVC = nav.topViewController as! CheckoutVC
-            checkoutVC.restaurantID = restaurantID
+//            checkoutVC.restaurantID = restaurant.id
+            checkoutVC.restaurant = restaurant
         } else if segue.identifier == "toAddToCartFromRestaurantDetail" {
             
             let nav = segue.destination as! UINavigationController
             let addToCartVC = nav.topViewController as! AddToCartVC
-            addToCartVC.menuItemID = selectedMenuItemID
-            addToCartVC.restaurantID = restaurantID
-
+            addToCartVC.menuItem = selectedMenuItem
+            addToCartVC.restaurantID = restaurant.id
+            addToCartVC.deliveryFee = restaurant.deliveryFee
         }
     }
     
@@ -337,8 +413,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
 extension RestaurantDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if featuredDishes.count != 0 {
+            return featuredDishes.count
+        }
 
-        return featuredDishes.count
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -407,7 +487,7 @@ extension RestaurantDetailViewController: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        selectedMenuItemID = featuredDishes[indexPath.row].id
+        selectedMenuItem = featuredDishes[indexPath.row]
         performSegue(withIdentifier: "toAddToCartFromRestaurantDetail", sender: self)
 
     }

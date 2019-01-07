@@ -1,6 +1,0 @@
-framework module Pods_BringIt_OneSignalNotificationServiceExtension {
-  umbrella header "Pods-BringIt-OneSignalNotificationServiceExtension-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -35,6 +35,11 @@ typedef NS_ENUM(NSUInteger, STPBillingAddressFields) {
      Request the user's full billing address
      */
     STPBillingAddressFieldsFull,
+
+    /**
+     Just request the user's billing name
+     */
+    STPBillingAddressFieldsName,
 };
 
 
@@ -66,7 +71,7 @@ extern STPContactField const STPContactFieldName;
 /**
  STPAddress Contains an address as represented by the Stripe API.
  */
-@interface STPAddress : NSObject<STPAPIResponseDecodable, STPFormEncodable>
+@interface STPAddress : NSObject<STPAPIResponseDecodable, STPFormEncodable, NSCopying>
 
 /**
  The user's full name (e.g. "Jane Doe")

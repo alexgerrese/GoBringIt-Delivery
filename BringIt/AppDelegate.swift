@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Stripe Configuration
         Stripe.setDefaultPublishableKey("pk_live_UGdTD7Uq8SdIYMhknwzoH3ER")
+        STPPaymentConfiguration.shared().publishableKey = "pk_live_UGdTD7Uq8SdIYMhknwzoH3ER"
         STPTheme.default().accentColor = Constants.green
         STPTheme.default().secondaryForegroundColor = UIColor.darkGray
         STPTheme.default().font = UIFont(name: "Avenir-Book", size: 17)!
@@ -40,10 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Setting Realm schema and performing migrations.")
         
         // Configure Realm migrations
-        let config = Realm.Configuration(
+        var config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 6,
+            schemaVersion: 16,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -79,7 +80,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         newObject!["imageURL"] = ""
                     }
                 }
+                if (oldSchemaVersion < 7) {
+                }
+                if (oldSchemaVersion < 8) {
+                }
+                if (oldSchemaVersion < 9) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["paymentOptions"] = ""
+                    }
+                }
+                if (oldSchemaVersion < 10) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["deliveryOnly"] = true
+                    }
+                }
+                if (oldSchemaVersion < 11) {
+                    migration.enumerateObjects(ofType: Order.className()) { oldObject, newObject in
+                        newObject!["isDelivery"] = true
+                    }
+                }
+                if (oldSchemaVersion < 12) {
+                    migration.enumerateObjects(ofType: PaymentMethod.className()) { oldObject, newObject in
+                        newObject!["methodID"] = ""
+                    }
+                }
+                if (oldSchemaVersion < 13) {
+                    migration.enumerateObjects(ofType: PaymentMethod.className()) { oldObject, newObject in
+                        newObject!["userID"] = ""
+                    }
+                }
+                if (oldSchemaVersion < 14) {
+                }
+                if (oldSchemaVersion < 15) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["address"] = ""
+                    }
+                }
+                if (oldSchemaVersion < 16) {
+                    migration.enumerateObjects(ofType: Restaurant.className()) { oldObject, newObject in
+                        newObject!["announcement"] = ""
+                    }
+                }
+                if (oldSchemaVersion < 17) {
+                    migration.enumerateObjects(ofType: Promotion.className()) { oldObject, newObject in
+                        newObject!["imageURL"] = ""
+                    }
+                }
         })
+        
+        config.deleteRealmIfMigrationNeeded = true
         
         // Tell Realm to use this new configuration object for the default Realm
         Realm.Configuration.defaultConfiguration = config

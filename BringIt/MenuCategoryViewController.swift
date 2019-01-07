@@ -8,8 +8,9 @@
 
 import UIKit
 import RealmSwift
+import SkeletonView
 
-class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SkeletonTableViewDataSource {
     
     // MARK: - IBOutlets
     
@@ -25,11 +26,14 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     let defaults = UserDefaults.standard // Initialize UserDefaults
     
     var menuCategoryID = ""
+    var menuCategoryName = ""
     var restaurantID = ""
+    var restaurant = Restaurant()
     var menuCategory = MenuCategory()
     var cart = Order()
-    var menuItems: Results<MenuItem>!
+    var menuItems = [MenuItem]()
     var selectedMenuItemID = ""
+    var selectedMenuItem = MenuItem()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +63,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         
         setCustomBackButton()
         
-        self.title = menuCategory.name
+        self.title = menuCategoryName
         
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
         viewCartView.backgroundColor = UIColor.white
@@ -71,11 +75,13 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     func setupRealm() {
         
-        let realm = try! Realm() // Initialize Realm
+//        let realm = try! Realm() // Initialize Realm
+        
+        fetchMenuItems(menuCategoryID: menuCategoryID)
         
         // Get selected restaurant and menu categories
-        menuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategoryID)!
-        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
+//        menuCategory = realm.object(ofType: MenuCategory.self, forPrimaryKey: menuCategoryID)!
+//        menuItems = menuCategory.menuItems.sorted(byKeyPath: "name")
         
     }
     
@@ -86,7 +92,9 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         self.myTableView.rowHeight = UITableViewAutomaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
-//        viewCartViewToBottom.constant = 60
+        
+        self.myTableView.startSkeletonAnimation()
+        self.myTableView.showAnimatedSkeleton()
     }
     
     func checkCart() {
@@ -106,8 +114,8 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
             
-            // Check if iPhone X
-            if UIScreen.main.nativeBounds.height == 2436 {
+            // Check if iPhone X or iPhone Xs Max
+            if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
                 viewCartViewToBottom.constant = 0
             } else {
                 viewCartViewToBottom.constant = 16
@@ -131,11 +139,27 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     // MARK: - Table view data source
     
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+
+        return "menuItemCell"
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        if menuItems != nil {
+//            return menuItems.count
+//        }
         return menuItems.count
     }
     
@@ -196,7 +220,8 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        selectedMenuItemID = menuItems[indexPath.row].id
+//        selectedMenuItemID = menuItems[indexPath.row].id
+        selectedMenuItem = menuItems[indexPath.row]
         
         return indexPath
     }
@@ -220,6 +245,10 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         myTableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "toAddToCart", sender: self)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.hideSkeleton()
+    }
 
     // MARK: - Navigation
 
@@ -231,11 +260,14 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             let addToCartVC = nav.topViewController as! AddToCartVC
             addToCartVC.menuItemID = selectedMenuItemID
             addToCartVC.restaurantID = restaurantID
+            addToCartVC.menuItem = selectedMenuItem
+            addToCartVC.deliveryFee = restaurant.deliveryFee
         } else if segue.identifier == "toCheckoutFromMenuCategory" {
             
             let nav = segue.destination as! UINavigationController
             let checkoutVC = nav.topViewController as! CheckoutVC
-            checkoutVC.restaurantID = restaurantID
+//            checkoutVC.restaurantID = restaurantID
+            checkoutVC.restaurant = restaurant
         }
     }
 

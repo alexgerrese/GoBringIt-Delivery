@@ -25,6 +25,7 @@ target 'BringIt' do
   pod 'Alamofire' # for better networking
   #pod 'ObjectMapper' # for JSON object mapping
   pod 'SendGrid', :git => 'https://github.com/scottkawai/sendgrid-swift.git' # for sending emails
+  pod 'SkeletonView' # For skeleton loading
 
 
 

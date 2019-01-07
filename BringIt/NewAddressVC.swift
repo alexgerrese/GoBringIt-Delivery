@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import IQKeyboardManagerSwift
+import Moya
 
 class NewAddressVC: UIViewController {
     
@@ -22,6 +23,9 @@ class NewAddressVC: UIViewController {
     
     @IBOutlet weak var roomNumberView: UIView!
     @IBOutlet weak var roomNumber: UITextField!
+    
+    @IBOutlet weak var cityView: UIView!
+    @IBOutlet weak var city: UITextField!
     
     @IBOutlet weak var saveButton: UIButton!
     
@@ -48,12 +52,14 @@ class NewAddressVC: UIViewController {
         campusView.layer.cornerRadius = Constants.cornerRadius
         streetAddressView.layer.cornerRadius = Constants.cornerRadius
         roomNumberView.layer.cornerRadius = Constants.cornerRadius
+        cityView.layer.cornerRadius = Constants.cornerRadius
         saveButton.layer.cornerRadius = Constants.cornerRadius
         
         // Set up targets for text fields
         campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         streetAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         roomNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        city.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         // Setup auto Next and Done buttons for keyboard
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
@@ -81,9 +87,54 @@ class NewAddressVC: UIViewController {
             return
         }
         
-        createNewAddress()
+        // Verifies address with Google Maps API. If valid, it creates the address
+        verifyAddress()
+    }
+    
+    func verifyAddress() {
         
-        navigationController?.popViewController(animated: true)
+        let addressString = "\(streetAddress.text!), \(city.text!), NC, USA"
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.verifyAddress(addressString: addressString)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    print(response)
+                    
+                    if let success = response["success"] {
+                        
+                        if success as! Int == 1 {
+                            
+                            print("Address is verified with Google Maps.")
+                            
+                            self.createNewAddress()
+                            
+                            self.navigationController?.popViewController(animated: true)
+                            
+                        } else {
+                            
+                            self.showError(button: self.saveButton, error: .incorrectAddress)
+                        }
+                    }
+                    
+            } catch {
+                    // Miscellaneous network error
+                    print("Network Error")
+                    self.showError(button: self.saveButton, error: .networkError, defaultButtonText: "Save and continue")
+                }
+            case .failure(_):
+                // Connection failed
+                print("Connection failed")
+                self.showError(button: self.saveButton, error: .connectionFailed, defaultButtonText: "Save and continue")
+            }
+        }
     }
     
     /*
@@ -96,7 +147,7 @@ class NewAddressVC: UIViewController {
         let address = DeliveryAddress()
         address.userID = user.id
         address.campus = campus.text!
-        address.streetAddress = streetAddress.text!
+        address.streetAddress = "\(streetAddress.text!), \(city.text!), NC" // TODO: Change from hardcoding to taking result from GMaps call?
         address.roomNumber = roomNumber.text!
         
         try! realm.write() {
@@ -114,10 +165,15 @@ class NewAddressVC: UIViewController {
         } else if (streetAddress.text?.isBlank)! {
             showError(button: saveButton, error: .fieldEmpty)
             return false
-        } else if (roomNumber.text?.isBlank)! {
+        } else if (city.text?.isBlank)! {
             showError(button: saveButton, error: .fieldEmpty)
             return false
         }
+        // The following has been commented out because we now support off-campus addresses and shouldn't require room/apartment numbers
+//        else if (roomNumber.text?.isBlank)! {
+//            showError(button: saveButton, error: .fieldEmpty)
+//            return false
+//        }
         
         hideError(button: saveButton, defaultButtonText: self.defaultButtonText)
         

@@ -34,9 +34,10 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var menuItem = MenuItem()
     var menuItemID = ""
     var restaurantID = ""
+    var deliveryFee = 0.00
     
     // Passed from Checkout
-    var passedMenuItemID = ""
+//    var passedMenuItem = MenuItem()
     var comingFromCheckout = false
     
     override func viewDidLoad() {
@@ -62,19 +63,19 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     func setupRealm() {
         
-        let realm = try! Realm() // Initialize Realm
+//        let realm = try! Realm() // Initialize Realm
         
         // Get selected restaurant and menu categories
-        if comingFromCheckout {
-            
-            let predicate = NSPredicate(format: "isInCart = %@ AND id = %@", NSNumber(booleanLiteral: true), passedMenuItemID)
-            menuItem = realm.objects(MenuItem.self).filter(predicate).first!
-        } else {
-            
-            let predicate = NSPredicate(format: "id = %@", menuItemID)
-            print("COUNT OF MENU ITEMS: \(realm.objects(MenuItem.self).filter(predicate).count)")
-            menuItem = realm.objects(MenuItem.self).filter(predicate).first!
-        }
+//        if comingFromCheckout {
+//
+//            let predicate = NSPredicate(format: "isInCart = %@ AND id = %@", NSNumber(booleanLiteral: true), passedMenuItemID)
+//            menuItem = realm.objects(MenuItem.self).filter(predicate).first!
+//        } else {
+//
+//            let predicate = NSPredicate(format: "id = %@", menuItemID)
+//            print("COUNT OF MENU ITEMS: \(realm.objects(MenuItem.self).filter(predicate).count)")
+//            menuItem = realm.objects(MenuItem.self).filter(predicate).first!
+//        }
         
         // Section "Image" (Sometimes)
         
@@ -123,8 +124,8 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.viewCartView.layer.shadowOpacity = 0.15
         self.viewCartView.layer.shadowRadius = Constants.shadowRadius
         
-        // Check if iPhone X
-        if UIScreen.main.nativeBounds.height == 2436 {
+        // Check if iPhone X or iPhone Xs Max
+        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
             viewCartViewToBottom.constant = 0
         } else {
             viewCartViewToBottom.constant = 16
@@ -298,13 +299,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 // Cart doesn't exist yet
                 print("Cart does not exist. Creating new one.")
                 
-                let deliveryFee = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)?.deliveryFee
+//                let deliveryFee = realm.object(ofType: Restaurant.self, forPrimaryKey: restaurantID)?.deliveryFee
                 
                 let order = Order()
                 order.restaurantID = restaurantID
                 order.menuItems.append(newMenuItem)
                 order.subtotal += newMenuItem.totalCost
-                order.deliveryFee = deliveryFee!
+                order.deliveryFee = deliveryFee
                 order.isComplete = false
                 
                 realm.add(order)
@@ -385,8 +386,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         } else if sectionTitles[section] == "Quantity" {
             return 1
         } else {
-            let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[section])
-            return sides.filter(predicate).count
+            var count = 0
+            for side in sides {
+                if side.sideCategory == sectionTitles[section] {
+                    count += 1
+                }
+            }
+            return count
         }
     }
     
@@ -457,8 +463,16 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sidesCell", for: indexPath)
             
-            let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
-            let filteredSide = sides.filter(predicate)[indexPath.row]
+            var filteredSides = [Side]()
+            for side in sides {
+                if side.sideCategory == sectionTitles[indexPath.section] {
+                    filteredSides.append(side)
+                }
+            }
+            let filteredSide = filteredSides[indexPath.row]
+            
+//            let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
+//            let filteredSide = sides.filter(predicate)[indexPath.row]
             
             cell.textLabel?.text = filteredSide.name
             
@@ -542,8 +556,15 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             } else if !sectionTitles[indexPath.section].contains("Sides") {
                 print("Selecting row in \(sectionTitles[indexPath.section]) (NOT in sides)")
                 
-                let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
-                let filteredSides = sides.filter(predicate)
+                var filteredSides = [Side]()
+                for side in sides {
+                    if side.sideCategory == sectionTitles[indexPath.section] {
+                        filteredSides.append(side)
+                    }
+                }
+                
+//                let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
+//                let filteredSides = sides.filter(predicate)
                 
                 for i in 0..<filteredSides.count {
                     if i == indexPath.row {
@@ -564,8 +585,15 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 
                 print("Selecting row in \(sectionTitles[indexPath.section])")
                 
-                let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
-                let filteredSides = sides.filter(predicate)
+//                let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
+//                let filteredSides = sides.filter(predicate)
+                
+                var filteredSides = [Side]()
+                for side in sides {
+                    if side.sideCategory == sectionTitles[indexPath.section] {
+                        filteredSides.append(side)
+                    }
+                }
                 
                 let numToPick = menuItem.numRequiredSides - sideCategories.count + 1
                 var numSelected = 0

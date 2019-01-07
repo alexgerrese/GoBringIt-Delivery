@@ -12,8 +12,9 @@ import Moya
 import Alamofire
 import AudioToolbox
 import SendGrid
+import Stripe
 
-class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {    
     
     // MARK: - IBOutlets
     
@@ -24,6 +25,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var checkoutView: UIView!
     @IBOutlet weak var checkoutViewToBottom: NSLayoutConstraint!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var deliveryOrPickup: UISegmentedControl!
+
+    @IBOutlet weak var deliveryOrPickupToTop: NSLayoutConstraint!
     
     // Checking out view
     @IBOutlet weak var checkingOutView: UIView!
@@ -43,10 +47,25 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var restaurantEmail = ""
     var restaurantPrinterEmail = ""
     let defaultButtonText = "Checkout"
+    var travelTimeMessage = ""
     let dispatch_group = DispatchGroup()
     
+    // Section Indices
+    var deliveryDetailsIndex = 0
+    var menuItemsIndex = 1
+    var totalIndex = 2
+    
+    // Row Indices
+    var subtotalIndex = 0
+    var deliveryFeeIndex = 1
+    var totalCostIndex = 2
+    
+    var paymentContext = STPPaymentContext()
+    let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
+    
     // Passed from previousVC
-    var restaurantID = ""
+//    var restaurantID = ""
+    var restaurant = Restaurant()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +79,12 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Setup tableview
         setupTableView()
         
-        // Calculate initial item price
-        calculateTotal()
+        // Set up Stripe
+        setupStripe()
+        
+        // Calculate delivery fee
+        calculateDeliveryFee()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,9 +98,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // TO-DO: Check if coming from SignInVC
         checkIfLoggedIn()
+        calculateDeliveryFee()
         calculateTotal()
-        myTableView.reloadData()
         setupUI()
+        myTableView.reloadData()
         checkButtonStatus()
     
     }
@@ -97,15 +121,22 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let realm = try! Realm() // Initialize Realm
         
         // Query current order
-        let predicate = NSPredicate(format: "restaurantID = %@ && isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
+        let predicate = NSPredicate(format: "restaurantID = %@ && isComplete = %@", restaurant.id, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)
         
         order = filteredOrders.first!
         
         // Query restaurant for printer email
-        let restaurants = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
-        restaurantEmail = restaurants.first!.email
-        restaurantPrinterEmail = restaurants.first!.printerEmail
+//        let restaurants = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
+        restaurantEmail = restaurant.email
+        restaurantPrinterEmail = restaurant.printerEmail
+    }
+    
+    func setupStripe() {
+        self.paymentContext = STPPaymentContext(customerContext: customerContext)
+        //        self.paymentContext.delegate = self // TODO: Uncomment
+        self.paymentContext.hostViewController = self
+        self.paymentContext.paymentAmount = Int(calculateTotal()*100.0)
     }
     
     func checkIfLoggedIn() {
@@ -142,6 +173,21 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         setCustomBackButton()
         
+        // Check if pickup option is available
+        if restaurant.deliveryOnly {
+            deliveryOrPickupToTop.constant = -44
+        } else {
+            deliveryOrPickupToTop.constant = 0
+            myTableView.reloadData()
+            
+            // Check if correct segmented control index is selected
+            if order.isDelivery {
+                deliverySelected()
+            } else {
+                pickupSelected()
+            }
+        }
+        
         self.title = "Checkout"
         checkoutButtonView.layer.cornerRadius = Constants.cornerRadius
         checkoutView.layer.shadowColor = Constants.lightGray.cgColor
@@ -150,8 +196,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         checkoutView.layer.shadowOffset = CGSize.zero
         myActivityIndicator.isHidden = true
         
-        // Check if iPhone X
-        if UIScreen.main.nativeBounds.height == 2436 {
+        // Check if iPhone X or iPhone Xs Max
+        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
             checkoutViewToBottom.constant = 0
         } else {
             checkoutViewToBottom.constant = 16
@@ -182,6 +228,71 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    /* Calculate delivery fee based on database. Some will be constant, some will depend on distance. */
+    func calculateDeliveryFee(){
+        
+        print("Calculating delivery fee")
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        if !order.isDelivery {
+            print("Pickup order. No delivery fee necessary.")
+            return
+        }
+        
+//        if order.deliveryFee != -1.00 {
+//            print("Delivery fee is constant: \(order.deliveryFee)")
+//            return
+//        }
+        
+        // If no address is selected, show temporary TBD label
+        let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
+        
+        if filteredAddresses.count == 0 {
+            print("Delivery fee is dynamic but can't be calculated becaues no delivery address has been selected.")
+            return
+        }
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.getDeliveryFee(addressString: (filteredAddresses.first?.streetAddress)!, restaurantID: restaurant.id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    print(response)
+                    
+                    if let success = response["success"] {
+                        if (success as! Int) == 0 {
+                            return
+                        }
+                    }
+                    
+                    if let deliveryFee = response["delivery_fee"] {
+                        try! realm.write {
+                            self.order.deliveryFee = deliveryFee as! Double
+                        }
+                        print("Successfully calculated dynamic delivery fee: \(self.order.deliveryFee)")
+                        self.travelTimeMessage = response["travel_time_message"] as! String
+                        print("TRAVEL TIME MESSAGE: \(self.travelTimeMessage)")
+                        self.myTableView.reloadData()
+                    }
+                    
+                } catch {
+                    // Miscellaneous network error
+                    print("Network Error")
+                }
+            case .failure(_):
+                // Connection failed
+                print("Connection failed.")
+            }
+        }
+    }
+    
     /* Iterate over menu items in cart and add their total costs to the subtotal */
     func calculateTotal() -> Double {
         
@@ -201,7 +312,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Add delivery fee
-        total += order.deliveryFee
+        if deliveryOrPickup.selectedSegmentIndex == 0 {
+            total += order.deliveryFee >= 0.00 ? order.deliveryFee : 0.00
+        }
         
         // Display total price
         cartTotal.text = "$" + String(format: "%.2f", total)
@@ -235,9 +348,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Check that there is a payment method selected
-        let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
-
-        if filteredPaymentMethods.count < 0 {
+        if order.paymentMethod == "" && order.isDelivery {
             
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
@@ -247,8 +358,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Check that the restaurant is open
-        let filteredRestaurant = realm.objects(Restaurant.self).filter("id = %@", restaurantID)
-        if !filteredRestaurant.first!.isOpen() {
+        if !restaurant.isOpen() {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
             checkoutButton.setTitle("This restaurant is currently closed", for: .normal)
@@ -257,12 +367,23 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Check that the total exceeds the minimum order price
-        let minimumPrice = filteredRestaurant.first!.minimumPrice
+        let minimumPrice = restaurant.minimumPrice
         if order.subtotal < minimumPrice {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
             cartTotal.isHidden = true
             checkoutButton.setTitle("Order subtotal must be above $\(String(format: "%.2f", minimumPrice))", for: .normal)
+            
+            return
+        }
+        
+        // Check that a valid delivery fee has been calculated
+        if order.isDelivery && order.deliveryFee == -1.00 {
+            checkoutButton.isEnabled = false
+            checkoutButtonView.backgroundColor = Constants.red
+            cartTotal.isHidden = true
+            checkoutButton.setTitle("Failed to calculate delivery fee.", for: .normal)
+            calculateDeliveryFee()
             
             return
         }
@@ -274,6 +395,64 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cartTotal.isHidden = false
     }
 
+    @IBAction func deliveryOrPickupTapped(_ sender: Any) {
+        
+        // Delivery is selected
+        if deliveryOrPickup.selectedSegmentIndex == 0 {
+            deliverySelected()
+        }
+        // Pickup is selected
+        else {
+            pickupSelected()
+        }
+        
+        calculateTotal()
+        
+        UIView.transition(with: myTableView,
+                          duration: 0.1,
+                          options: .transitionCrossDissolve,
+                          animations: { self.myTableView.reloadData() })
+        
+        checkButtonStatus()
+        
+    }
+    
+    func deliverySelected() {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        try! realm.write {
+            order.isDelivery = true
+        }
+        
+        deliveryOrPickup.selectedSegmentIndex = 0
+        
+        deliveryDetailsIndex = 0
+        menuItemsIndex = 1
+        totalIndex = 2
+        subtotalIndex = 0
+        deliveryFeeIndex = 1
+        totalCostIndex = 2
+    }
+    
+    func pickupSelected() {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        try! realm.write {
+            order.isDelivery = false
+        }
+        
+        deliveryOrPickup.selectedSegmentIndex = 1
+        
+        deliveryDetailsIndex = -1
+        menuItemsIndex = 0
+        totalIndex = 1
+        subtotalIndex = 0
+        deliveryFeeIndex = -1
+        totalCostIndex = 1
+    }
+    
     @IBAction func checkoutButtonTapped(_ sender: UIButton) {
         
         // Show checking out view
@@ -300,7 +479,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         confirmButton.isEnabled = true
         checkingOutView.backgroundColor = Constants.green
         checkingOutTitle.text = "Are you sure you want to checkout?"
-        checkingOutDetails.text = "You will be charged $\(String(format: "%.2f", calculateTotal())) upon delivery."
+        checkingOutDetails.text = "Your order total is $\(String(format: "%.2f", calculateTotal()))."
         cancelButton.setTitle("Cancel", for: .normal)
     }
     
@@ -338,6 +517,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func confirmOrder() {
         
         let realm = try! Realm() // Initialize Realm
+        var paymentMethod = ""
         
         // Animate activity indicator
         myActivityIndicator.isHidden = false
@@ -357,18 +537,22 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             order.address = filteredAddresses.first!
-            
-            let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
-            
-            // NOTE: This has been disabled for now to allow people to select food points before 8pm.
-            if self.isCreditCardHours() {
-//                order.paymentMethod = "Credit Card"
-                order.paymentMethod = filteredPaymentMethods.first!.method // Delete this if re-enabled
-            } else {
-                order.paymentMethod = filteredPaymentMethods.first!.method
-            }
-            
+                
         }
+        
+        // If paying via credit card, charge card first before placing order
+        if order.paymentMethod.contains("••••") {
+            checkoutButton.isEnabled = false
+            checkoutButtonView.backgroundColor = Constants.red
+            checkoutButton.setTitle("Stripe credit card functionality coming soon.", for: .normal)
+//            self.paymentContext.requestPayment()
+        } else {
+            placeOrder()
+        }
+    }
+    
+    /* Places actual order once all preliminary checks and confirmations have been successfully completed. */
+    func placeOrder() {
         
         var count = 0
         
@@ -391,24 +575,35 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Table view data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        // Pickup is selected
+        if deliveryOrPickup.selectedSegmentIndex == 1 {
+            return 2
+        }
+        
+        // Default: Delivery is selected
         return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        
+        if section == deliveryDetailsIndex {
             return 2
-        } else if section == 1 {
+        } else if section == menuItemsIndex {
             return order.menuItems.count
         } else {
-            return 3 // The 3 extra are Subtotal + Delivery Fee + Total
+            if deliveryOrPickup.selectedSegmentIndex == 0 {
+                return 3 // The 3 extra are Subtotal + Delivery Fee + Total
+            }
+            return 2
         }
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let realm = try! Realm() // Initialize Realm
         
-        if indexPath.section == 0 {
+        if indexPath.section == deliveryDetailsIndex {
             let cell = tableView.dequeueReusableCell(withIdentifier: "deliveryDetailCell", for: indexPath)
             
             // Delivery To
@@ -428,26 +623,18 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 
                 cell.textLabel?.text = "Paying With"
                 
-                let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
+                if order.paymentMethod != "" {
                 
-                if filteredPaymentMethods.count > 0 {
-                    
-                    // Check if currently in credit card hours
-                    // NOTE: This has been disabled for now to allow people to select food points before 8pm.
-                    if self.isCreditCardHours() {
-//                        cell.detailTextLabel?.text = "Credit Card"
-                        cell.detailTextLabel?.text = filteredPaymentMethods.first!.method // Delete this if re-enabled
-                    } else {
-                        cell.detailTextLabel?.text = filteredPaymentMethods.first!.method
-                    }
+                    cell.detailTextLabel?.text = order.paymentMethod
                     
                 } else {
                     cell.detailTextLabel?.text = "Please select a payment method"
                 }
+                
             }
             
             return cell
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == menuItemsIndex {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "orderCell", for: indexPath) as! OrderTableViewCell
             
@@ -483,7 +670,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else {
             
             // Subtotal
-            if indexPath.row == 0 {
+            if indexPath.row == subtotalIndex {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
                 
@@ -493,17 +680,21 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 return cell
             }
             // Delivery Fee
-            else if indexPath.row == 1 {
+            else if indexPath.row == deliveryFeeIndex {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
                 
                 cell.textLabel?.text = "Delivery Fee"
-                cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
+                if order.deliveryFee != -1.00 {
+                    cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
+                } else {
+                    cell.detailTextLabel?.text = "TBD"
+                }
                 
                 return cell
             }
             // Total
-            else if indexPath.row == 2 {
+            else if indexPath.row == totalCostIndex {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
                 
@@ -523,9 +714,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
+        if section == deliveryDetailsIndex {
             return "Delivery Details"
-        } else if section == 1 {
+        } else if section == menuItemsIndex {
             return "Order Summary"
         } else {
             return ""
@@ -544,7 +735,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 {
+        if section == totalIndex {
             return CGFloat.leastNormalMagnitude
         }
         return Constants.headerHeight
@@ -552,7 +743,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.section == 0 {
+        if indexPath.section == deliveryDetailsIndex {
             
             if indexPath.row == 0 {
                 
@@ -561,7 +752,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 
                 performSegue(withIdentifier: "toPaymentMethodsFromCheckout", sender: self)
             }
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == menuItemsIndex {
             
             selectedItem = order.menuItems[indexPath.row]
             performSegue(withIdentifier: "toAddToCartFromCheckout", sender: self)
@@ -571,12 +762,20 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == menuItemsIndex {
+            return true
+        }
+        
+        return false
+    }
+    
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         let realm = try! Realm() // Initialize Realm
         
-        if indexPath.section == 1 {
+        if indexPath.section == menuItemsIndex {
             if editingStyle == .delete {
                 
                 // Delete the row from the data source
@@ -606,7 +805,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if segue.identifier == "toAddToCartFromCheckout" {
             let nav = segue.destination as! UINavigationController
             let addToCartVC = nav.topViewController as! AddToCartVC
-            addToCartVC.passedMenuItemID = selectedItem.id
+            addToCartVC.menuItem = selectedItem
             addToCartVC.comingFromCheckout = true
         } else if segue.identifier == "toOrderPlaced" {
             
@@ -617,25 +816,27 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             orderPlacedVC.streetAddress = (order.address?.streetAddress)!
             
             // Calculate ETA range and format to String
-            let calendar = Calendar.current
-            let orderTime = order.orderTime
-            let formatter = DateFormatter()
-            formatter.timeStyle = .short
-            formatter.dateStyle = .none
+//            let calendar = Calendar.current
+//            let orderTime = order.orderTime
+//            let formatter = DateFormatter()
+//            formatter.timeStyle = .short
+//            formatter.dateStyle = .none
+//
+//            // Lower ETA
+//            let lowerETA = orderTime?.addingTimeInterval(35.0 * 60.0)
+////            let lowerHour = calendar.component(.hour, from: lowerETA! as Date)
+////            let lowerMinutes = calendar.component(.minute, from: lowerETA! as Date)
+//
+//            // Upper ETA
+//            let upperETA = orderTime?.addingTimeInterval(55.0 * 60.0)
+////            let upperHour = calendar.component(.hour, from: upperETA! as Date)
+////            let upperMinutes = calendar.component(.minute, from: upperETA! as Date)
+//
+////            orderPlacedVC.ETA = "\(lowerHour):\(lowerMinutes)-\(upperHour):\(upperMinutes)"
+//
+//            orderPlacedVC.ETA = formatter.string(from: lowerETA! as Date) + "-" + formatter.string(from: upperETA as! Date)
             
-            // Lower ETA
-            let lowerETA = orderTime?.addingTimeInterval(35.0 * 60.0)
-//            let lowerHour = calendar.component(.hour, from: lowerETA! as Date)
-//            let lowerMinutes = calendar.component(.minute, from: lowerETA! as Date)
-            
-            // Upper ETA
-            let upperETA = orderTime?.addingTimeInterval(55.0 * 60.0)
-//            let upperHour = calendar.component(.hour, from: upperETA! as Date)
-//            let upperMinutes = calendar.component(.minute, from: upperETA! as Date)
-            
-//            orderPlacedVC.ETA = "\(lowerHour):\(lowerMinutes)-\(upperHour):\(upperMinutes)"
-            
-            orderPlacedVC.ETA = formatter.string(from: lowerETA! as Date) + "-" + formatter.string(from: upperETA as! Date)
+            orderPlacedVC.ETA = travelTimeMessage
             
             print("Finished preparing for toOrderPlaced segue")
         } else if segue.identifier == "toSignIn" {
@@ -643,6 +844,17 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let signInVC = nav.topViewController as! SignInVC
             signInVC.comingFromCheckout = true
         }
+        else if segue.identifier == "toPaymentMethodsFromCheckout" {
+            let paymentMethodsVC = segue.destination as! PaymentMethodsVC
+            paymentMethodsVC.paymentOptions = restaurant.paymentOptions
+            paymentMethodsVC.comingFromCheckout = true
+            paymentMethodsVC.order = order
+        }
+        else if segue.identifier == "toAddresses" {
+            let addressesVC = segue.destination as! AddressesViewController
+            addressesVC.order = order
+        }
+
 
     }
 

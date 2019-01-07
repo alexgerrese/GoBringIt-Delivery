@@ -25,6 +25,9 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     var orders: Results<Order>!
     
     var selectedOrderID = 0
+    var selectedRestaurant = Restaurant()
+    var restaurants = [Restaurant]()
+    var deliveryFee = 0.00
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,7 +127,13 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
         let day = formatter.string(from: order.orderTime! as Date)
         
         // Get restaurant name
-        let restaurantName = realm.object(ofType: Restaurant.self, forPrimaryKey: order.restaurantID)?.name
+        var restaurantName = ""
+        for restaurant in restaurants {
+            if restaurant.id == order.restaurantID {
+                restaurantName = restaurant.name
+            }
+        }
+//        let restaurantName = realm.object(ofType: Restaurant.self, forPrimaryKey: order.restaurantID)?.name
         
         // Get order details
         let totalPrice = order.subtotal + order.deliveryFee
@@ -166,6 +175,11 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         selectedOrderID = orders[indexPath.row].id
+        for restaurant in restaurants {
+            if restaurant.id == orders[indexPath.row].restaurantID {
+                selectedRestaurant = restaurant
+            }
+        }
         
         myTableView.deselectRow(at: indexPath, animated: true)
         
@@ -180,6 +194,7 @@ class PastOrdersViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let pastOrderDetailVC = segue.destination as! PastOrderDetailViewController
         pastOrderDetailVC.orderID = selectedOrderID
+        pastOrderDetailVC.restaurant = selectedRestaurant
         
     }
 

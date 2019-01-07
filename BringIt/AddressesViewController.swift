@@ -22,7 +22,8 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     let defaults = UserDefaults.standard // Initialize UserDefaults
     
     var addresses = List<DeliveryAddress>()
-
+    var canPickup = Bool()
+    var order = Order()
 
     override func viewDidLoad() {
         super.viewDidLoad()

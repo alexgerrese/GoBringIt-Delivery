@@ -15,17 +15,20 @@
 
 #import "NSBundle+Stripe_AppName.h"
 #import "NSError+Stripe.h"
-#import "STPAPIRequest.h"
+#import "NSMutableURLRequest+Stripe.h"
 #import "STPAnalyticsClient.h"
+#import "STPAPIRequest.h"
 #import "STPBankAccount.h"
 #import "STPCard.h"
 #import "STPDispatchFunctions.h"
 #import "STPEphemeralKey.h"
 #import "STPFormEncoder.h"
+#import "STPGenericStripeObject.h"
 #import "STPMultipartFormDataEncoder.h"
 #import "STPMultipartFormDataPart.h"
-#import "NSMutableURLRequest+Stripe.h"
 #import "STPPaymentConfiguration.h"
+#import "STPPaymentIntent+Private.h"
+#import "STPPaymentIntentParams.h"
 #import "STPSource+Private.h"
 #import "STPSourceParams.h"
 #import "STPSourceParams+Private.h"
@@ -49,6 +52,7 @@ static NSString * const APIEndpointToken = @"tokens";
 static NSString * const APIEndpointSources = @"sources";
 static NSString * const APIEndpointCustomers = @"customers";
 static NSString * const FileUploadURL = @"https://uploads.stripe.com/v1/files";
+static NSString * const APIEndpointPaymentIntents = @"payment_intents";
 
 #pragma mark - Stripe
 
@@ -124,27 +128,26 @@ static NSString * const FileUploadURL = @"https://uploads.stripe.com/v1/files";
         _stripeAccount = configuration.stripeAccount;
         _sourcePollers = [NSMutableDictionary dictionary];
         _sourcePollersQueue = dispatch_queue_create("com.stripe.sourcepollers", DISPATCH_QUEUE_SERIAL);
-        _urlSession = [NSURLSession sessionWithConfiguration:[self sessionConfiguration]];
+        _urlSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     }
     return self;
 }
 
-- (NSURLSessionConfiguration *)sessionConfiguration {
+- (NSMutableURLRequest *)configuredRequestForURL:(NSURL *)url {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [[self defaultHeaders] enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, NSString *  _Nonnull obj, __unused BOOL * _Nonnull stop) {
+        [request setValue:obj forHTTPHeaderField:key];
+    }];
+    return request;
+}
+
+- (NSDictionary<NSString *, NSString *> *)defaultHeaders {
     NSMutableDictionary *additionalHeaders = [NSMutableDictionary new];
     additionalHeaders[@"X-Stripe-User-Agent"] = [self.class stripeUserAgentDetails];
     additionalHeaders[@"Stripe-Version"] = APIVersion;
     additionalHeaders[@"Authorization"] = [@"Bearer " stringByAppendingString:self.apiKey ?: @""];
     additionalHeaders[@"Stripe-Account"] = self.stripeAccount;
-    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    sessionConfiguration.HTTPAdditionalHeaders = additionalHeaders;
-    return sessionConfiguration;
-}
-
-- (void)setApiKey:(NSString *)apiKey {
-    _apiKey = apiKey;
-
-    // Regenerate url session configuration
-    self.urlSession = [NSURLSession sessionWithConfiguration:[self sessionConfiguration]];
+    return [additionalHeaders copy];
 }
 
 - (void)setPublishableKey:(NSString *)publishableKey {
@@ -154,13 +157,6 @@ static NSString * const FileUploadURL = @"https://uploads.stripe.com/v1/files";
 
 - (NSString *)publishableKey {
     return self.configuration.publishableKey;
-}
-
-- (void)setStripeAccount:(NSString *)stripeAccount {
-    _stripeAccount = stripeAccount;
-
-    // Regenerate url session configuration
-    self.urlSession = [NSURLSession sessionWithConfiguration:[self sessionConfiguration]];
 }
 
 - (void)createTokenWithParameters:(NSDictionary *)parameters
@@ -342,7 +338,7 @@ static NSString * const FileUploadURL = @"https://uploads.stripe.com/v1/files";
     NSString *boundary = [STPMultipartFormDataEncoder generateBoundary];
     NSData *data = [STPMultipartFormDataEncoder multipartFormDataForParts:@[purposePart, imagePart] boundary:boundary];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:FileUploadURL]];
+    NSMutableURLRequest *request = [self configuredRequestForURL:[NSURL URLWithString:FileUploadURL]];
     [request setHTTPMethod:@"POST"];
     [request stp_setMultipartFormData:data boundary:boundary];
 
@@ -455,9 +451,9 @@ static NSString * const FileUploadURL = @"https://uploads.stripe.com/v1/files";
 }
 
 - (void)retrieveSourceWithId:(NSString *)identifier clientSecret:(NSString *)secret completion:(STPSourceCompletionBlock)completion {
-    NSCAssert(identifier != nil, @"'identifier' is required to create a source");
-    NSCAssert(secret != nil, @"'secret' is required to create a source");
-    NSCAssert(completion != nil, @"'completion' is required to use the source that is created");
+    NSCAssert(identifier != nil, @"'identifier' is required to retrieve a source");
+    NSCAssert(secret != nil, @"'secret' is required to retrieve a source");
+    NSCAssert(completion != nil, @"'completion' is required to use the source that is retrieved");
     [self retrieveSourceWithId:identifier clientSecret:secret responseCompletion:^(STPSource * object, __unused NSHTTPURLResponse *response, NSError *error) {
         completion(object, error);
     }];
@@ -547,16 +543,65 @@ toCustomerUsingKey:(STPEphemeralKey *)ephemeralKey
                                              }];
 }
 
-+ (void)deleteSource:(NSString *)sourceID fromCustomerUsingKey:(STPEphemeralKey *)ephemeralKey completion:(STPSourceProtocolCompletionBlock)completion {
++ (void)deleteSource:(NSString *)sourceID fromCustomerUsingKey:(STPEphemeralKey *)ephemeralKey completion:(STPErrorBlock)completion {
     STPAPIClient *client = [self apiClientWithEphemeralKey:ephemeralKey];
     NSString *endpoint = [NSString stringWithFormat:@"%@/%@/%@/%@", APIEndpointCustomers, ephemeralKey.customerID, APIEndpointSources, sourceID];
     [STPAPIRequest<STPSourceProtocol> deleteWithAPIClient:client
                                                  endpoint:endpoint
                                                parameters:nil
-                                            deserializers:@[[STPCard new], [STPSource new]]
-                                               completion:^(id object, __unused NSHTTPURLResponse *response, NSError *error) {
-                                                   completion(object, error);
+                                            deserializers:@[[STPGenericStripeObject new]]
+                                               completion:^(__unused STPGenericStripeObject *object, __unused NSHTTPURLResponse *response, NSError *error) {
+                                                   completion(error);
                                                }];
+}
+
+@end
+
+#pragma mark - Payment Intents
+
+@implementation STPAPIClient (PaymentIntents)
+
+- (void)retrievePaymentIntentWithClientSecret:(NSString *)secret
+                                   completion:(STPPaymentIntentCompletionBlock)completion {
+    NSCAssert(secret != nil, @"'secret' is required to retrieve a PaymentIntent");
+    NSCAssert(completion != nil, @"'completion' is required to use the PaymentIntent that is retrieved");
+    NSString *identifier = [STPPaymentIntent idFromClientSecret:secret];
+
+    NSString *endpoint = [NSString stringWithFormat:@"%@/%@", APIEndpointPaymentIntents, identifier];
+
+    [STPAPIRequest<STPPaymentIntent *> getWithAPIClient:self
+                                               endpoint:endpoint
+                                             parameters:@{ @"client_secret": secret }
+                                           deserializer:[STPPaymentIntent new]
+                                             completion:^(STPPaymentIntent *paymentIntent, __unused NSHTTPURLResponse *response, NSError *error) {
+                                                 completion(paymentIntent, error);
+                                             }];
+}
+
+- (void)confirmPaymentIntentWithParams:(STPPaymentIntentParams *)paymentIntentParams
+                            completion:(STPPaymentIntentCompletionBlock)completion {
+    NSCAssert(paymentIntentParams.clientSecret != nil, @"'clientSecret' is required to confirm a PaymentIntent");
+    NSString *identifier = paymentIntentParams.stripeId;
+    NSString *sourceType = [STPSource stringFromType:paymentIntentParams.sourceParams.type];
+    [[STPAnalyticsClient sharedClient] logPaymentIntentConfirmationAttemptWithConfiguration:self.configuration
+                                                                                 sourceType:sourceType];
+
+    NSString *endpoint = [NSString stringWithFormat:@"%@/%@/confirm", APIEndpointPaymentIntents, identifier];
+
+    NSMutableDictionary *params = [[STPFormEncoder dictionaryForObject:paymentIntentParams] mutableCopy];
+    if ([params[@"source_data"] isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *sourceParamsDict = [params[@"source_data"] mutableCopy];
+        [[STPTelemetryClient sharedInstance] addTelemetryFieldsToParams:sourceParamsDict];
+        params[@"source_data"] = [sourceParamsDict copy];
+    }
+
+    [STPAPIRequest<STPPaymentIntent *> postWithAPIClient:self
+                                                endpoint:endpoint
+                                              parameters:[params copy]
+                                            deserializer:[STPPaymentIntent new]
+                                              completion:^(STPPaymentIntent *paymentIntent, __unused NSHTTPURLResponse *response, NSError *error) {
+                                                  completion(paymentIntent, error);
+                                              }];
 }
 
 @end

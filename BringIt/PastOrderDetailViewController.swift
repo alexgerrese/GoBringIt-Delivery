@@ -32,7 +32,7 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
     
     // Passed from PastOrderVC
     var orderID = 0
-
+    var restaurant = Restaurant()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,8 +83,8 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         let orderDate = dateFormatter.string(from: order.orderTime! as Date)
         self.title = orderDate
         
-        // Check if iPhone X
-        if UIScreen.main.nativeBounds.height == 2436 {
+        // Check if iPhone X or iPhone Xs Max
+        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
             reorderViewToBottom.constant = 0
         } else {
             reorderViewToBottom.constant = 16
@@ -118,7 +118,9 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         var total = order.subtotal
         
         // Add delivery fee
-        total += order.deliveryFee
+        if order.isDelivery {
+            total += order.deliveryFee
+        }
         
         // Display total price
         cartTotal.text = "$" + String(format: "%.2f", total)
@@ -218,13 +220,13 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
                 // Cart doesn't exist yet
                 print("Cart does not exist. Creating new one.")
                 
-                let deliveryFee = realm.object(ofType: Restaurant.self, forPrimaryKey: order.restaurantID)?.deliveryFee
+//                let deliveryFee = realm.object(ofType: Restaurant.self, forPrimaryKey: order.restaurantID)?.deliveryFee
                 
                 let newOrder = Order()
                 newOrder.restaurantID = order.restaurantID
                 newOrder.menuItems.append(newMenuItem)
                 newOrder.subtotal += newMenuItem.totalCost
-                newOrder.deliveryFee = deliveryFee!
+                newOrder.deliveryFee = restaurant.deliveryFee
                 newOrder.isComplete = false
                 newOrder.address = order.address
                 newOrder.paymentMethod = order.paymentMethod
@@ -271,12 +273,22 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
             if indexPath.row == 0 {
                 
                 cell.textLabel?.text = "Delivered To"
-                cell.detailTextLabel?.text = order.address?.streetAddress
+                if order.isDelivery {
+                    cell.detailTextLabel?.text = order.address?.streetAddress
+                } else {
+                    cell.detailTextLabel?.text = "Pickup order"
+                }
+                
                 
             } else {
                 
                 cell.textLabel?.text = "Paid With"
-                cell.detailTextLabel?.text = order.paymentMethod
+                if order.isDelivery {
+                    cell.detailTextLabel?.text = order.paymentMethod
+                } else {
+                    cell.detailTextLabel?.text = "N/A"
+                }
+                
             }
             
             return cell
@@ -331,7 +343,11 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
                 let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
                 
                 cell.textLabel?.text = "Delivery Fee"
-                cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
+                if !order.isDelivery {
+                    cell.detailTextLabel?.text = "N/A"
+                } else {
+                    cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
+                }
                 
                 return cell
             }
@@ -387,9 +403,7 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         
         let nav = segue.destination as! UINavigationController
         let checkoutVC = nav.topViewController as! CheckoutVC
-        checkoutVC.restaurantID = order.restaurantID
+        checkoutVC.restaurant = restaurant
 
     }
- 
-
 }

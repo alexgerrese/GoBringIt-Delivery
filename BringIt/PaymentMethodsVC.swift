@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import Moya
 
 class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -18,6 +19,12 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - Variables
     
     let defaults = UserDefaults.standard // Initialize UserDefaults
+    var paymentOptions = ""
+    var comingFromCheckout = false
+    var availablePaymentOptions: Results<PaymentMethod>!
+    var paymentMethods: Results<PaymentMethod>!
+    var selectedPaymentMethod = ""
+    var order = Order()
     
     var user = User()
 
@@ -27,8 +34,15 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         // Setup Realm
         setupRealm()
         
+        // Setup available payment options
+        if comingFromCheckout {
+            setUpPaymentOptions()
+        }
+        
         // Setup UI
         setupUI()
+        
+        retrieveCreditCards()
         
         // Setup tableview
         setupTableView()
@@ -47,23 +61,133 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
         user = realm.objects(User.self).filter(predicate).first!
         
-        if !(user.paymentMethods.count > 0) {
-            
+        paymentMethods = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "userID = %@", user.id))
+        
+        populatePaymentMethods()
+    }
+    
+    func retrieveCreditCards() {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.stripeRetrieveCards(userID: user.id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    print(response)
+                    
+                    if let success = response["success"] {
+                        
+                        if success as! Int == 1 {
+                            
+                            let creditCards = response["cards"] as! [AnyObject]
+                            print("CREDIT CARDS: \(creditCards)")
+                            
+                            for card in creditCards {
+                                print(card)
+                                
+                                let creditCard = PaymentMethod()
+                                creditCard.userID = self.user.id
+                                creditCard.methodID = card["cardID"] as! String
+                                creditCard.method = "\(card["brand"] as! String) •••• \(card["lastFour"] as! String)"
+                                
+                                print(creditCard)
+                                
+                                try! realm.write {
+                                    realm.add(creditCard, update: true)
+                                }
+                                
+                                self.myTableView.reloadData()
+                            }
+                        }
+                    }
+                    
+                } catch {
+                    // Miscellaneous network error
+                    print("Network Error")
+                }
+            case .failure(_):
+                // Connection failed
+                print("Connection failed")
+            }
+        }
+        
+    }
+    
+    func populatePaymentMethods() {
+        let realm = try! Realm() // Initialize Realm
+        
+        print("CURRENT PAYMENT METHODS: \(paymentMethods)")
+        for paymentMethod in paymentMethods {
+            if paymentMethod.userID == "" || paymentMethod.methodID == "" {
+                try! realm.write {
+                    realm.delete(paymentMethod)
+                }
+            }
+        }
+        print("NEW PAYMENT METHODS: \(paymentMethods)")
+        
+        let hasFoodPoints = paymentMethods.filter(NSPredicate(format: "methodID = %@", "duke-food-points")).count > 0
+        if !hasFoodPoints {
             let foodPoints = PaymentMethod()
             foodPoints.userID = user.id
+            foodPoints.methodID = "duke-food-points"
             foodPoints.method = "Food Points"
             
+            try! realm.write {
+                realm.add(foodPoints, update: true)
+            }
+        }
+        
+        let hasCredit = paymentMethods.filter(NSPredicate(format: "methodID = %@", "credit")).count > 0
+        if !hasCredit {
             let creditCard = PaymentMethod()
             creditCard.userID = user.id
-            creditCard.method = "Credit Card"
+            creditCard.methodID = "credit"
+            creditCard.method = "Credit Card (Pay at the door)"
             
             try! realm.write {
-                user.paymentMethods.append(foodPoints)
-                user.paymentMethods.append(creditCard)
+                realm.add(creditCard, update: true)
             }
-
-            
         }
+        
+        let hasCash = paymentMethods.filter(NSPredicate(format: "methodID = %@", "cash")).count > 0
+        if !hasCash {
+            let cash = PaymentMethod()
+            cash.userID = user.id
+            cash.methodID = "cash"
+            cash.method = "Cash"
+            
+            try! realm.write {
+                realm.add(cash, update: true)
+            }
+        }
+    }
+    
+    func setUpPaymentOptions() {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
+        user = realm.objects(User.self).filter(predicate).first!
+        
+        let paymentOptionsArray = paymentOptions.split(separator: ",")
+        print("PAYMENT OPTIONS ARRAY: \(paymentOptionsArray)")
+        
+        if paymentOptionsArray.contains("stripe-credit") {
+            availablePaymentOptions = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "methodID IN %@ OR methodID CONTAINS %@ AND userID = %@", paymentOptionsArray, "card_", user.id)).sorted(byKeyPath: "method")
+        } else {
+            availablePaymentOptions = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "methodID IN %@ AND userID = %@", paymentOptionsArray, user.id)).sorted(byKeyPath: "method")
+        }
+        
+        print("AVAILABLE PAYMENT OPTIONS: \(availablePaymentOptions)")
     }
     
     /* Do initial UI setup */
@@ -88,29 +212,53 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return user.paymentMethods.count
+        if comingFromCheckout {
+            return availablePaymentOptions.count
+        }
+        return paymentMethods.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentMethodCell", for: indexPath)
         
-        let paymentMethod = user.paymentMethods[indexPath.row]
-        cell.textLabel?.text = paymentMethod.method
-        
-        // Change checkmark color
-        cell.tintColor = Constants.green
-        
-        if paymentMethod.isSelected {
-            cell.accessoryType = .checkmark
+        if comingFromCheckout {
+            let paymentMethod = availablePaymentOptions[indexPath.row]
+            cell.textLabel?.text = paymentMethod.method
+            
+            // Change checkmark color
+            cell.tintColor = Constants.green
+            
+            if paymentMethod.method == order.paymentMethod {
+                cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
+            }
+            
+            return cell
+            
         } else {
-            cell.accessoryType = .none
+            let paymentMethod = paymentMethods[indexPath.row]
+            cell.textLabel?.text = paymentMethod.method
+            
+            // Change checkmark color
+            cell.tintColor = Constants.green
+            
+            if paymentMethod.method == order.paymentMethod {
+                cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
+            }
+            
+            return cell
         }
         
-        return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if comingFromCheckout {
+            return "Available Payment Methods"
+        }
         return "Default Payment Method"
     }
     
@@ -133,25 +281,47 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         let realm = try! Realm() // Initialize Realm
         
-        for i in 0..<user.paymentMethods.count {
-            if i == indexPath.row {
-                try! realm.write() {
-                    
-                    user.paymentMethods[i].isSelected = true
-                    print("Selected \(user.paymentMethods[i])")
-                }
-            } else {
-                try! realm.write() {
-                    user.paymentMethods[i].isSelected = false
-                    print("Deselected \(user.paymentMethods[i])")
-                }
+        if comingFromCheckout {
+            try! realm.write {
+                order.paymentMethod = availablePaymentOptions[indexPath.row].method
             }
         }
+        
+        
+//        for i in 0..<availablePaymentOptions.count {
+//            if i == indexPath.row {
+//                try! realm.write() {
+//
+//                    availablePaymentOptions[i].isSelected = true
+//                    print("Selected \(availablePaymentOptions[i])")
+//                }
+//            } else {
+//                try! realm.write() {
+//                    availablePaymentOptions[i].isSelected = false
+//                    print("Deselected \(availablePaymentOptions[i])")
+//                }
+//            }
+//        }
+        
+//        deselectAllPaymentMethods()
         
         myTableView.deselectRow(at: indexPath, animated: true)
         myTableView.reloadData()
         
     }
+    
+//    func deselectAllPaymentMethods() {
+//
+//        let realm = try! Realm() // Initialize Realm
+//        
+//        for paymentMethod in paymentMethods {
+//            if paymentMethod.methodID != selectedPaymentMethod {
+//                try! realm.write() {
+//                    paymentMethod.isSelected = false
+//                }
+//            }
+//        }
+//    }
 
 
 }
