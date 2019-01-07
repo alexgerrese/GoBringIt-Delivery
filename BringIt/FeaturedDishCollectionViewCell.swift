@@ -16,4 +16,14 @@ class FeaturedDishCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dishPrice: UILabel!
     @IBOutlet weak var cardView: UIView!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        
+        cardView.layer.cornerRadius = Constants.cornerRadius
+        dishImage.clipsToBounds = true
+        dishImage.layer.cornerRadius = Constants.cornerRadius
+        dishImage.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
+    }
 }
