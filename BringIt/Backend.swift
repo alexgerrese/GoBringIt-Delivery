@@ -13,7 +13,7 @@ import Moya
 
 enum APICalls {
     case signInUser(email: String, password: String)
-    case signUpUser(fullName: String, email: String, password: String, phoneNumber: String, campus: String, streetAddress: String, roomNumber: String)
+    case signUpUser(fullName: String, email: String, password: String, phoneNumber: String)
     case fetchPromotions
     case fetchRestaurantData
     case fetchRestaurantsInfo
@@ -22,7 +22,7 @@ enum APICalls {
     case fetchMenuItems(categoryID: String)
     case updateCurrentAddress(uid: String, streetAddress: String, roomNumber: String)
     case addItemToCart(uid: String, quantity: Int, itemID: String, sideIDs: [String], specialInstructions: String)
-    case addOrder(uid: String, restaurantID: String, payingWithCC: String)
+    case addOrder(uid: String, restaurantID: String, payingWithCC: String, deliveryFee: String)
     //case fetchOrderHistory
     case fetchAccountInfo(uid: String)
     case fetchAccountAddress(uid: String)
@@ -48,7 +48,7 @@ extension APICalls : TargetType {
         switch self {
         case .signInUser(_,_):
             return "/signInUser.php"
-        case .signUpUser(_,_,_,_,_,_,_):
+        case .signUpUser(_,_,_,_):
             return "/signUpUser.php"
         case .fetchPromotions:
             return "/fetchPromotions.php"
@@ -66,7 +66,7 @@ extension APICalls : TargetType {
             return "/updateCurrentAddress.php"
         case .addItemToCart(_,_,_,_,_):
             return "/addItemToCart.php"
-        case .addOrder(_,_,_):
+        case .addOrder(_,_,_,_):
             return "/addOrder.php"
         case .fetchAccountInfo(_):
             return "/fetchAccountInfo.php"
@@ -123,16 +123,11 @@ extension APICalls : TargetType {
         case .signInUser(let email, let password):
             return .requestParameters(parameters: ["email": email,
             "password": password], encoding: JSONEncoding.default)
-        case .signUpUser(let fullName, let email, let password, let phoneNumber, let campus, let streetAddress, let roomNumber):
+        case .signUpUser(let fullName, let email, let password, let phoneNumber):
             return .requestParameters(parameters: ["name": fullName,
                     "email": email,
                     "phone": phoneNumber,
-                    "password": password,
-                    "street": streetAddress,
-                    "apartment": roomNumber, // NOTE: MISSING FIELD FOR CAMPUS
-                "city": "Durham", // Delete these from backend
-                "state": "NC", // Delete these from backend
-                "zip": "27705"], encoding: JSONEncoding.default) // Delete these from backend
+                    "password": password], encoding: JSONEncoding.default) // Delete these from backend
         case .updateCurrentAddress(let uid, let streetAddress, let roomNumber):
             return .requestParameters(parameters: ["account_id": uid,
                     "street": streetAddress,
@@ -146,10 +141,11 @@ extension APICalls : TargetType {
                     "item_id": itemID,
                     "sides": sideIDs,
                     "instructions": specialInstructions], encoding: JSONEncoding.default)
-        case .addOrder(let uid, let restaurantID, let payingWithCC):
+        case .addOrder(let uid, let restaurantID, let payingWithCC, let deliveryFee):
             return .requestParameters(parameters: ["user_id": uid,
                     "service_id": restaurantID,
-                    "payment_cc": payingWithCC], encoding: JSONEncoding.default)
+                    "payment_cc": payingWithCC,
+                    "delivery_fee": deliveryFee], encoding: JSONEncoding.default)
         //case fetchOrderHistory
         case .fetchAccountInfo(let uid):
             return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)

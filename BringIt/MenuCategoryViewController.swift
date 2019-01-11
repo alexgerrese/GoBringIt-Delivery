@@ -220,8 +220,12 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
+        print("MENU ITEMS: \(menuItems)")
+        
 //        selectedMenuItemID = menuItems[indexPath.row].id
-        selectedMenuItem = menuItems[indexPath.row]
+        if menuItems.count > 0 {
+            selectedMenuItem = menuItems[indexPath.row]
+        }
         
         return indexPath
     }
@@ -242,8 +246,11 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         myTableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: "toAddToCart", sender: self)
+        if menuItems.count > 0 {
+            performSegue(withIdentifier: "toAddToCart", sender: self)
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

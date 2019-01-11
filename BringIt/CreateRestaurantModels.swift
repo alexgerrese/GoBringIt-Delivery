@@ -27,7 +27,7 @@ extension RestaurantsHomeViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for getBackendVersionNumber(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
@@ -81,7 +81,7 @@ extension RestaurantsHomeViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for fetchPromotions(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let retrievedPromotions = try moyaResponse.mapJSON() as! [AnyObject]
@@ -152,7 +152,7 @@ extension RestaurantsHomeViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for fetchRestaurantsInfo(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let retrievedRestaurantsInfo = try moyaResponse.mapJSON() as! [AnyObject]
@@ -735,7 +735,7 @@ extension RestaurantDetailViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for fetchWaitTimeMessage(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
@@ -785,7 +785,7 @@ extension RestaurantDetailViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for fetchMenuCategories(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let retrievedMenuCategories = try moyaResponse.mapJSON() as! [AnyObject]
@@ -847,7 +847,7 @@ extension RestaurantDetailViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for fetchFeaturedDishes(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let retrievedFeaturedDishes = try moyaResponse.mapJSON() as! [AnyObject]
@@ -975,7 +975,7 @@ extension MenuCategoryViewController {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for fetchMenuItems(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let retrievedMenuItems = try moyaResponse.mapJSON() as! [AnyObject]

@@ -28,6 +28,7 @@ class NewAddressVC: UIViewController {
     @IBOutlet weak var city: UITextField!
     
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // MARK: - Variables
     
@@ -54,6 +55,7 @@ class NewAddressVC: UIViewController {
         roomNumberView.layer.cornerRadius = Constants.cornerRadius
         cityView.layer.cornerRadius = Constants.cornerRadius
         saveButton.layer.cornerRadius = Constants.cornerRadius
+        myActivityIndicator.isHidden = true
         
         // Set up targets for text fields
         campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -93,6 +95,9 @@ class NewAddressVC: UIViewController {
     
     func verifyAddress() {
         
+        // Animate activity indicator
+        startAnimating(activityIndicator: myActivityIndicator, button: saveButton)
+        
         let addressString = "\(streetAddress.text!), \(city.text!), NC, USA"
         
         // Setup Moya provider and send network request
@@ -120,19 +125,20 @@ class NewAddressVC: UIViewController {
                             
                         } else {
                             
-                            self.showError(button: self.saveButton, error: .incorrectAddress)
+                            self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .incorrectAddress, defaultButtonText: "Save and finish")
                         }
                     }
                     
             } catch {
                     // Miscellaneous network error
                     print("Network Error")
-                    self.showError(button: self.saveButton, error: .networkError, defaultButtonText: "Save and continue")
+                    self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: "Save and finish")
+
                 }
             case .failure(_):
                 // Connection failed
                 print("Connection failed")
-                self.showError(button: self.saveButton, error: .connectionFailed, defaultButtonText: "Save and continue")
+                self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: "Save and finish")
             }
         }
     }

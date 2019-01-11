@@ -233,7 +233,13 @@ extension CheckoutVC {
         }
         
         // Set up recipients
-        let recipients = [Address(email: restaurantEmail)]
+        var recipients = [Address]()
+        let emails = restaurant.email.components(separatedBy: ",")
+        for email in emails {
+            recipients.append(Address(email: email))
+        }
+        
+        //        let recipients = [Address(email: restaurantEmail)]
 //        if restaurantPrinterEmail != "" {
 //            recipients.append(Address(restaurantPrinterEmail))
 //        }
@@ -265,7 +271,7 @@ extension CheckoutVC {
             try Session.shared.send(request: email) { (response) in
                 print(response?.httpUrlResponse?.statusCode)
                 print("RESTAURANT EMAIL SENT")
-                
+
                 self.dispatch_group.leave()
             }
         } catch {

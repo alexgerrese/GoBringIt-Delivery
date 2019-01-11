@@ -22,10 +22,14 @@ extension CheckoutVC {
             
             var sideIDs = [String]()
             for side in item.sides {
-                sideIDs.append(side.id)
+                if side.isSelected {
+                    sideIDs.append(side.id)
+                }
             }
             for extra in item.extras {
-                sideIDs.append(extra.id)
+                if extra.isSelected {
+                    sideIDs.append(extra.id)
+                }
             }
             
             // Setup Moya provider and send network request
@@ -35,7 +39,7 @@ extension CheckoutVC {
                 case let .success(moyaResponse):
                     do {
                         
-                        print("Status code: \(moyaResponse.statusCode)")
+                        print("Status code for addAllToCart(): \(moyaResponse.statusCode)")
                         try moyaResponse.filterSuccessfulStatusCodes()
                         
                         let response = try moyaResponse.mapJSON() as! [String: Any]
@@ -65,16 +69,20 @@ extension CheckoutVC {
         
         print("Adding to order")
         
-        let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
+//        let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
+        var payingWithCC = "0"
+        if order.paymentMethod.contains("••••") || order.paymentMethod.contains("Credit") {
+            payingWithCC = "1"
+        }
         
         // Setup Moya provider and send network request
         let provider = MoyaProvider<APICalls>()
-        provider.request(.addOrder(uid: user.id, restaurantID: order.restaurantID, payingWithCC: filteredPaymentMethods.first!.method)) { result in
+        provider.request(.addOrder(uid: user.id, restaurantID: order.restaurantID, payingWithCC: payingWithCC, deliveryFee: "\(order.deliveryFee)")) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for addOrder(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
@@ -135,19 +143,20 @@ extension CheckoutVC {
         
         let cardID = paymentMethod.first!.methodID
         
-        print("ABOUT TO CHARGE CREDIT CARD: \(cardID). AMOUNT = \(calculateTotal() * 100.00)")
+        print("ABOUT TO CHARGE CREDIT CARD: \(cardID). AMOUNT = \(Int(calculateTotal() * 100))")
         
         // Setup Moya provider and send network request
         let provider = MoyaProvider<APICalls>()
-        provider.request(.stripeCharge(userID: user.id, restaurantID: restaurant.id, amount: "\(calculateTotal() * 100.00)", cardID: cardID)) { result in
+        provider.request(.stripeCharge(userID: user.id, restaurantID: restaurant.id, amount: "\(Int(calculateTotal() * 100))", cardID: cardID)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for chargeCard(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
+                    print("RESPONSE FROM CHARGE: \(response)")
                     
                     if response["success"] as! Int == 1 {
                         
@@ -155,22 +164,32 @@ extension CheckoutVC {
                         
                         // Actually place order
                         self.placeOrder()
+                        
+                    } else if response["success"] as! Int == 0 {
+                        
+                        print("Card could not be charged.")
+                        
+                        self.showConfirmViewError(errorTitle: "Credit Card Error", errorMessage: "Something went wrong 😱 Your card could not be charged, please try again.")
+                        
+                        return
+                        
+                    } else if response["success"] as! Int == -1 {
+                        
+                        print("Card was declined.")
+                        
+                        self.showConfirmViewError(errorTitle: "Credit Card Declined", errorMessage: "Something went wrong 😱 Please add a new credit card and please try again.")
+                        
+                        return
                     }
                 } catch {
                     // Miscellaneous network error
-                    self.checkoutButton.isEnabled = false
-                    self.checkoutButtonView.backgroundColor = Constants.red
-                    self.cartTotal.isHidden = true
-                    self.checkoutButton.setTitle("Network Error. Please try again.", for: .normal)
+                   self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
                     
                     return
                 }
             case .failure(_):
                 // Connection failed
-                self.checkoutButton.isEnabled = false
-                self.checkoutButtonView.backgroundColor = Constants.red
-                self.cartTotal.isHidden = true
-                self.checkoutButton.setTitle("Connection Failed. Please try again.", for: .normal)
+                self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
                 
                 return
             }

@@ -41,11 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Setting Realm schema and performing migrations.")
         
         // Configure Realm migrations
+//        var config = Realm.Configuration()
+//        config.deleteRealmIfMigrationNeeded = true
+//        Realm.Configuration.defaultConfiguration = config
         var config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
             schemaVersion: 16,
-            
+
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
@@ -127,9 +130,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
         })
-        
+
         config.deleteRealmIfMigrationNeeded = true
-        
+
         // Tell Realm to use this new configuration object for the default Realm
         Realm.Configuration.defaultConfiguration = config
         

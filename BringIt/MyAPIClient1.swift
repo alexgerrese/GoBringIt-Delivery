@@ -28,7 +28,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for APIClient completeCharge(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
@@ -76,7 +76,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for APIClient createCustomerKey(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]

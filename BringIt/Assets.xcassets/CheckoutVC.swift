@@ -12,7 +12,6 @@ import Moya
 import Alamofire
 import AudioToolbox
 import SendGrid
-import Stripe
 
 class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {    
     
@@ -60,9 +59,6 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var deliveryFeeIndex = 1
     var totalCostIndex = 2
     
-    var paymentContext = STPPaymentContext()
-    let customerContext = STPCustomerContext(keyProvider: MyAPIClient.sharedClient)
-    
     // Passed from previousVC
 //    var restaurantID = ""
     var restaurant = Restaurant()
@@ -78,9 +74,6 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Setup tableview
         setupTableView()
-        
-        // Set up Stripe
-        setupStripe()
         
         // Calculate delivery fee
         calculateDeliveryFee()
@@ -132,12 +125,12 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         restaurantPrinterEmail = restaurant.printerEmail
     }
     
-    func setupStripe() {
-        self.paymentContext = STPPaymentContext(customerContext: customerContext)
-        //        self.paymentContext.delegate = self // TODO: Uncomment
-        self.paymentContext.hostViewController = self
-        self.paymentContext.paymentAmount = Int(calculateTotal()*100.0)
-    }
+//    func setupStripe() {
+//        self.paymentContext = STPPaymentContext(customerContext: customerContext)
+//        //        self.paymentContext.delegate = self // TODO: Uncomment
+//        self.paymentContext.hostViewController = self
+//        self.paymentContext.paymentAmount = Int(calculateTotal()*100.0)
+//    }
     
     func checkIfLoggedIn() {
         
@@ -162,7 +155,18 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             print("Logged in, querying user")
             // Check if user already exists in Realm
             let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-            user = realm.objects(User.self).filter(predicate).first!
+            let users = realm.objects(User.self).filter(predicate)
+            if users.count > 0 {
+                user = users.first!
+            } else {
+                print("Couldn't retrieve user, going to SignInVC")
+                
+                // Set up UserDefaults
+                self.defaults.set(false, forKey: "loggedIn")
+                
+                performSegue(withIdentifier: "toSignIn", sender: self)
+            }
+            
         }
     }
     
@@ -260,7 +264,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             case let .success(moyaResponse):
                 do {
                     
-                    print("Status code: \(moyaResponse.statusCode)")
+                    print("Status code for calculateDeliveryFee(): \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
                     
                     let response = try moyaResponse.mapJSON() as! [String: Any]
@@ -268,6 +272,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                     if let success = response["success"] {
                         if (success as! Int) == 0 {
+                            self.travelTimeMessage = response["travel_time_message"] as! String
+                            print("TRAVEL TIME MESSAGE: \(self.travelTimeMessage)")
+                            self.myTableView.reloadData()
+                            
                             return
                         }
                     }
@@ -336,15 +344,17 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Check that there is a selected address
-        let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
-        
-        if filteredAddresses.count == 0 {
+        if order.isDelivery {
+            let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             
-            checkoutButton.isEnabled = false
-            checkoutButtonView.backgroundColor = Constants.red
-            checkoutButton.setTitle("Please select a delivery address", for: .normal)
-            
-            return
+            if filteredAddresses.count == 0 {
+                
+                checkoutButton.isEnabled = false
+                checkoutButtonView.backgroundColor = Constants.red
+                checkoutButton.setTitle("Please select a delivery address", for: .normal)
+                
+                return
+            }
         }
         
         // Check that there is a payment method selected
@@ -542,11 +552,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // If paying via credit card, charge card first before placing order
         if order.paymentMethod.contains("••••") {
-            checkoutButton.isEnabled = false
-            checkoutButtonView.backgroundColor = Constants.red
-            checkoutButton.setTitle("Stripe credit card functionality coming soon.", for: .normal)
-//            self.paymentContext.requestPayment()
+            print("PAYING WITH STRIPE CREDIT CARD")
+            chargeCard()
         } else {
+            print("NOT PAYING WITH STRIPE CREDIT CARD")
             placeOrder()
         }
     }

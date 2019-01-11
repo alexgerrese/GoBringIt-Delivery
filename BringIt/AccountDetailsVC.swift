@@ -8,6 +8,8 @@
 
 import UIKit
 import IQKeyboardManagerSwift
+import RealmSwift
+import Moya
 
 class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     
@@ -26,11 +28,13 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumber: UITextField!
     
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // MARK: - Variables
     
-    let defaultButtonText = "Continue"
+    let defaultButtonText = "Save and Create Account"
     
+    let defaults = UserDefaults.standard // Initialize UserDefaults
     var returnKeyHandler: IQKeyboardReturnKeyHandler?
     
     override func viewDidLoad() {
@@ -62,6 +66,7 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         emailAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         password.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         phoneNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        myActivityIndicator.isHidden = true
         
         // Set up custom back button
         setCustomBackButton()
@@ -72,8 +77,83 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func continueButtonTapped(_ sender: UIButton) {
-        if checkFields() {
-            performSegue(withIdentifier: "toPrimaryAddressVC", sender: self)
+        
+        // Check that all fields are filled and correctly formatted, else return
+        if !checkFields() {
+            return
+        }
+        
+        // Animate activity indicator
+        startAnimating(activityIndicator: myActivityIndicator, button: continueButton)
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<APICalls>()
+        provider.request(.signUpUser(fullName: fullName.text!, email: emailAddress.text!, password: password.text!, phoneNumber: phoneNumber.text!)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let retrievedUser = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    print("Retrieved User: \(retrievedUser)")
+                    
+                    // Check response from backend
+                    let successResponse = retrievedUser["success"] as? Int
+                    if successResponse == 1 {
+                        // Successfully received server response
+                        
+                        print("Successfully received server response")
+                        
+                        // Set up UserDefaults
+                        self.defaults.set(true, forKey: "loggedIn")
+                        
+                        // Shorten user ID to 32 characters (database limitation)
+                        let uid = (retrievedUser["uid"] as? String)!
+                        let index = uid.index(uid.startIndex, offsetBy: 32)
+                        
+                        // Create new user
+                        self.createNewUser(id: uid.substring(to: index), fullName: self.fullName.text!, emailAddress: self.emailAddress.text!, password: self.password.text!, phoneNumber: self.phoneNumber.text!)
+                        
+                        print("User created. About to dismiss.")
+                        
+                        // Rewind segue to Restaurants VC
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    } else if successResponse == 0 {
+                        // User already exists
+                        self.showError(button: self.continueButton, activityIndicator: self.myActivityIndicator, error: .userAlreadyExists)
+                    }
+                } catch {
+                    // Miscellaneous network error
+                    self.showError(button: self.continueButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: self.defaultButtonText)
+                }
+            case .failure(_):
+                // Connection failed
+                self.showError(button: self.continueButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: self.defaultButtonText)
+            }
+        }
+    }
+    
+    /*
+     * Create new Realm User
+     */
+    func createNewUser(id: String, fullName: String, emailAddress: String, password: String, phoneNumber: String) {
+        
+        let realm = try! Realm() // Initialize Realm
+        
+        let newUser = User()
+        newUser.isCurrent = true
+        newUser.id = id
+        newUser.fullName = fullName
+        newUser.email = emailAddress
+        newUser.phoneNumber = phoneNumber
+        newUser.isFirstOrder = true
+        
+        try! realm.write() {
+            realm.add(newUser)
         }
     }
     
@@ -132,19 +212,5 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         checkFields()
     }
-
-    
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        let addressVC = segue.destination as! PrimaryAddressVC
-        addressVC.fullName = fullName.text!
-        addressVC.emailAddress = emailAddress.text!
-        addressVC.password = password.text!
-        addressVC.phoneNumber = phoneNumber.text!
-        
-    }
-    
 
 }

@@ -15,6 +15,7 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - IBOutlets
     
     @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var addCardView: UIView!
     
     // MARK: - Variables
     
@@ -53,6 +54,10 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        retrieveCreditCards()
+    }
+    
     func setupRealm() {
         
         let realm = try! Realm() // Initialize Realm
@@ -87,6 +92,16 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         
                         if success as! Int == 1 {
                             
+                            // Delete saved cards
+                            let existingCards = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "methodID CONTAINS %@ AND userID = %@", "card_", self.user.id))
+                            
+                            for card in existingCards {
+                                try! realm.write {
+                                    realm.delete(card)
+                                }
+                            }
+                            
+                            // Add new cards
                             let creditCards = response["cards"] as! [AnyObject]
                             print("CREDIT CARDS: \(creditCards)")
                             
@@ -196,6 +211,14 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         setCustomBackButton()
         
         self.title = "Payment Methods"
+        
+        let paymentOptionsArray = paymentOptions.split(separator: ",")
+        
+        if !paymentOptionsArray.contains("stripe-credit") {
+            addCardView.isHidden = true
+        } else {
+            addCardView.isHidden = false
+        }
     }
     
     /* Customize tableView attributes */

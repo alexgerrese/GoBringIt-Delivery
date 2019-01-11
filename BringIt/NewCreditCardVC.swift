@@ -27,6 +27,7 @@ class NewCreditCardVC: UIViewController {
     @IBOutlet weak var CVC: UITextField!
     
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
     // MARK: - Variables
     var user = User()
@@ -47,6 +48,7 @@ class NewCreditCardVC: UIViewController {
         expYearView.layer.cornerRadius = Constants.cornerRadius
         CVCView.layer.cornerRadius = Constants.cornerRadius
         saveButton.layer.cornerRadius = Constants.cornerRadius
+        myActivityIndicator.isHidden = true
         
         // Set up targets for text fields
         cardNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -128,6 +130,9 @@ class NewCreditCardVC: UIViewController {
     
     func verifyCreditCard() {
         
+        // Animate activity indicator
+        startAnimating(activityIndicator: myActivityIndicator, button: saveButton)
+        
         // Setup Moya provider and send network request
         let provider = MoyaProvider<APICalls>()
         provider.request(.stripeAddCard(userID: user.id, cardNumber: cardNumber.text!, expMonth: expMonth.text!, expYear: expYear.text!, CVC: CVC.text!)) { result in
@@ -150,19 +155,19 @@ class NewCreditCardVC: UIViewController {
                             
                         } else {
                             
-                            self.showError(button: self.saveButton, error: .incorrectCreditCard)
+                            self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .incorrectCreditCard, defaultButtonText: "Save Credit Card")
                         }
                     }
                     
                 } catch {
                     // Miscellaneous network error
                     print("Network Error")
-                    self.showError(button: self.saveButton, error: .networkError, defaultButtonText: "Save Credit Card")
+                    self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: "Save Credit Card")
                 }
             case .failure(_):
                 // Connection failed
                 print("Connection failed")
-                self.showError(button: self.saveButton, error: .connectionFailed, defaultButtonText: "Save Credit Card")
+                self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: "Save Credit Card")
             }
         }
     }
