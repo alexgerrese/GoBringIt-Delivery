@@ -68,7 +68,7 @@ extension CheckoutVC {
                 }
                 
             } else {
-                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.characters.count - 2)
+                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.count - 2)
                 otherDetails = otherDetails.substring(to: index)
                 if menuItem.specialInstructions != "" {
                     otherDetails = otherDetails + " - $\(String(format: "%.2f", menuItem.totalCost)) <br>Special instructions: " + menuItem.specialInstructions
@@ -194,7 +194,7 @@ extension CheckoutVC {
                 }
                 
             } else {
-                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.characters.count - 2)
+                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.count - 2)
                 otherDetails = otherDetails.substring(to: index)
                 if menuItem.specialInstructions != "" {
                     otherDetails = otherDetails + " - $\(String(format: "%.2f", menuItem.totalCost)) <br>Special instructions: " + menuItem.specialInstructions

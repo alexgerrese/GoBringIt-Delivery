@@ -83,7 +83,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 50
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
         
@@ -165,7 +165,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         let realm = try! Realm() // Initialize Realm
         

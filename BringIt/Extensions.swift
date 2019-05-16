@@ -208,7 +208,7 @@ extension String {
     
     // Validate password length
     var isAcceptablePasswordLength: Bool {
-        return (self.characters.count >= 8)
+        return (self.count >= 8)
     }
     
     public func toPhoneNumber() -> String {
@@ -235,7 +235,7 @@ extension UITextField {
         let components = newString.components(separatedBy: CharacterSet.decimalDigits.inverted)
         
         let decimalString : String = components.joined(separator: "")
-        let length = decimalString.characters.count
+        let length = decimalString.count
         let decimalStr = decimalString as NSString
         let hasLeadingOne = length > 0 && decimalStr.character(at: 0) == (1 as unichar)
         
@@ -281,7 +281,7 @@ extension UIViewController {
     func setCustomBackButton() {
         self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "backButton")
         self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "backButton")
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
     }
     
 }

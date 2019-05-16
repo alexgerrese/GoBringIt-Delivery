@@ -108,7 +108,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 230
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         
         // Add refresh control capability
         if #available(iOS 10.0, *) {

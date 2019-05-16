@@ -1078,7 +1078,7 @@ extension MenuCategoryViewController {
                     //                    self.menuItems = realm.objects(MenuItem.self).sorted(byKeyPath: "name")
                     self.view.stopSkeletonAnimation()
                     self.view.hideSkeleton()
-                    self.myTableView.rowHeight = UITableViewAutomaticDimension
+                    self.myTableView.rowHeight = UITableView.automaticDimension
                     self.myTableView.setNeedsLayout()
                     self.myTableView.layoutIfNeeded()
                     self.myTableView.reloadData()

@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
         // Set up keyboard manager
         IQKeyboardManager.shared.enable = true
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         STPTheme.default().font = UIFont(name: "Avenir-Book", size: 17)!
         
         // Set default navigation bar attributes
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: UIFont(name: "BrandonGrotesque-Medium", size: 17)!, NSAttributedStringKey.foregroundColor: Constants.darkGray] // font color
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "BrandonGrotesque-Medium", size: 17)!, NSAttributedString.Key.foregroundColor: Constants.darkGray] // font color
         UINavigationBar.appearance().tintColor = UIColor.darkGray // button color
         UINavigationBar.appearance().barTintColor = UIColor.white // bar color
         

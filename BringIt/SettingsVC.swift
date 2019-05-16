@@ -105,7 +105,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 45
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
     }

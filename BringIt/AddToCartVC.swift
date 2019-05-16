@@ -139,7 +139,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 150
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
         
@@ -236,7 +236,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         // Retrieve special instructions if available
         let indexPath = IndexPath(row: 0, section: sectionTitles.count - 2)
-        let cell = myTableView.cellForRow(at: indexPath) as! SpecialInstructionsTableViewCell!
+        let cell = myTableView.cellForRow(at: indexPath) as! SpecialInstructionsTableViewCell?
         if cell != nil && cell?.specialInstructions.text != nil {
             newMenuItem.specialInstructions = (cell?.specialInstructions.text!)!
         } else {
@@ -354,7 +354,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 
                 // Retrieve special instructions if available
                 let indexPath = IndexPath(row: 0, section: sectionTitles.count - 2)
-                let cell = myTableView.cellForRow(at: indexPath) as! SpecialInstructionsTableViewCell!
+                let cell = myTableView.cellForRow(at: indexPath) as! SpecialInstructionsTableViewCell?
                 if cell != nil && cell?.specialInstructions.text != nil {
                     menuItem.specialInstructions = (cell?.specialInstructions.text!)!
                     print("Saving special instructions: \(menuItem.specialInstructions)!")

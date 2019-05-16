@@ -105,7 +105,7 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 150
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
         
@@ -317,7 +317,7 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
             if otherDetails == "w/ " {
                 otherDetails = menuItem.specialInstructions
             } else {
-                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.characters.count - 2)
+                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.count - 2)
                 otherDetails = otherDetails.substring(to: index)
                 otherDetails = otherDetails + "\n" + menuItem.specialInstructions
             }

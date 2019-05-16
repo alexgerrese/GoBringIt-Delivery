@@ -123,7 +123,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 150
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
     }
@@ -268,7 +268,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         if indexPath.section == bannerIndex {
             return 346
         } else if indexPath.section == announcementIndex {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         } else if indexPath.section == featuredDishesIndex {
             return 202
         }

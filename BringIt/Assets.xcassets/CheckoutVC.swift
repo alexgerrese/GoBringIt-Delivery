@@ -226,7 +226,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Set tableView cells to custom height and automatically resize if needed
         self.myTableView.estimatedRowHeight = 150
-        self.myTableView.rowHeight = UITableViewAutomaticDimension
+        self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()
         self.myTableView.layoutIfNeeded()
         
@@ -668,7 +668,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if otherDetails == "w/ " {
                 otherDetails = menuItem.specialInstructions
             } else {
-                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.characters.count - 2)
+                let index = otherDetails.index(otherDetails.startIndex, offsetBy: otherDetails.count - 2)
                 otherDetails = otherDetails.substring(to: index)
                 otherDetails = otherDetails + "\n" + menuItem.specialInstructions
             }
@@ -780,7 +780,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         let realm = try! Realm() // Initialize Realm
         
