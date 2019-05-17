@@ -1,0 +1,13 @@
+//
+//  Production.xcconfig
+//  BringIt
+//
+//  Created by Joshua Young on 5/16/19.
+//  Copyright © 2019 Campus Enterprises. All rights reserved.
+//
+
+#include "Pods/Target Support Files/Pods-BringIt/Pods-BringIt.release (production).xcconfig"
+
+BACKEND_URL = https:/$()/www.gobringit.com/includes/app
+APP_NAME = BringIt
+APP_BUNDLE_ID = com.alexgerrese.BringIt.test

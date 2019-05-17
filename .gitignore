@@ -69,6 +69,6 @@ SignedCertificate.p12
 
 /screenshots
 
-BringIt/Config/Test.xcconfig
-BringIt/Config/Production.xcconfig
+# BringIt/Config/Test.xcconfig
+# BringIt/Config/Production.xcconfig
 
