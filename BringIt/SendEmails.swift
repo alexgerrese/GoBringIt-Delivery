@@ -14,7 +14,7 @@ extension CheckoutVC {
     
     func sendUserConfirmationEmail() {
         
-        let realm = try! Realm() // Initialize Realm
+        _ = try! Realm() // Initialize Realm
         
         dispatch_group.enter()
         
@@ -132,20 +132,20 @@ extension CheckoutVC {
         email.trackingSettings.clickTracking = ClickTracking(section: .htmlBody)
         email.trackingSettings.openTracking = OpenTracking(location: .bottom)
 
-        do {
-            try Session.shared.send(request: email) { (response) in
-                print(response?.httpUrlResponse?.statusCode as Any)
-                print("USER EMAIL SENT")
-                
-                self.dispatch_group.leave()
-            }
-        } catch {
-            print(error)
-            print("USER EMAIL DIDN'T WORK, RETRYING...")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.sendUserConfirmationEmail()
-            }
-        }
+//        do {
+//            try Session.shared.send(request: email) { (response) in
+//                print(response.httpUrlResponse?.statusCode as Any)
+//                print("USER EMAIL SENT")
+//
+//                self.dispatch_group.leave()
+//            }
+//        } catch {
+//            print(error)
+//            print("USER EMAIL DIDN'T WORK, RETRYING...")
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                self.sendUserConfirmationEmail()
+//            }
+//        }
     }
     
     func sendRestaurantConfirmationEmail() {
@@ -267,19 +267,19 @@ extension CheckoutVC {
             html: "<p style=\"text-align:center\"><small>Copyright 2019 © GoBringIt</small></p>"
         )
         
-        do {
-            try Session.shared.send(request: email) { (response) in
-                print(response?.httpUrlResponse?.statusCode)
-                print("RESTAURANT EMAIL SENT")
-
-                self.dispatch_group.leave()
-            }
-        } catch {
-            print(error)
-            print("RESTAURANT EMAIL DIDN'T WORK, RETRYING...")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.sendRestaurantConfirmationEmail()
-            }
-        }
+//        do {
+//            try Session.shared.send(request: email) { (response) in
+//                print(response.httpUrlResponse?.statusCode)
+//                print("RESTAURANT EMAIL SENT")
+//
+//                self.dispatch_group.leave()
+//            }
+//        } catch {
+//            print(error)
+//            print("RESTAURANT EMAIL DIDN'T WORK, RETRYING...")
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                self.sendRestaurantConfirmationEmail()
+//            }
+//        }
     }
 }

@@ -1,0 +1,13 @@
+//
+//  Test.xcconfig
+//  BringIt
+//
+//  Created by Joshua Young on 5/16/19.
+//  Copyright © 2019 Campus Enterprises. All rights reserved.
+//
+
+#include "Pods/Target Support Files/Pods-BringIt/Pods-BringIt.release (test).xcconfig"
+
+BACKEND_URL = https:/$()/gobringit-test.herokuapp.com/includes/app
+APP_NAME = BringIt (Test)
+APP_BUNDLE_ID = com.alexgerrese.BringIt.test

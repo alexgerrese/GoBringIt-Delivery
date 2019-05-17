@@ -2,14 +2,14 @@
 //  BringIt-Bridging-Header.h
 //  BringIt
 //
-//  Created by Chad Nachiappan on 6/10/16.
+//  Created by Alexander's MacBook on 11/7/16.
 //  Copyright © 2016 Campus Enterprises. All rights reserved.
 //
 
 #ifndef BringIt_Bridging_Header_h
 #define BringIt_Bridging_Header_h
 
-#include <CommonCrypto/CommonDigest.h>
-#import <Stripe/Stripe.h>
-//#import <AFNetworking/AFNetworking.h>
+#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
+
 #endif /* BringIt_Bridging_Header_h */

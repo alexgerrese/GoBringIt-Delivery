@@ -43,7 +43,7 @@ extension APICalls : TargetType {
     var headers: [String: String]? {
         return ["Content-type": "application/json"]
     }
-    var baseURL: URL { return URL(string: "https://www.gobringit.com/includes/app")! }
+    var baseURL: URL { return URL(string: Environment.backendURL.absoluteString)! }
     var path: String {
         switch self {
         case .signInUser(_,_):

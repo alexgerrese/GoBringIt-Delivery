@@ -17,6 +17,7 @@ class User: Object {
     @objc dynamic var email = ""
     @objc dynamic var password = "" // KEEP THIS???
     @objc dynamic var phoneNumber = ""
+    @objc dynamic var gbiCredit = 0.0
     let addresses = List<DeliveryAddress>()
     @objc dynamic var isFirstOrder = false
     let pastOrders = List<Order>()
@@ -166,6 +167,7 @@ class Order: Object {
     let menuItems = List<MenuItem>()
     @objc dynamic var subtotal = 0.0 
     @objc dynamic var deliveryFee = 0.0
+    @objc dynamic var gbiCreditUsed = 0.0
     @objc dynamic var isComplete = false
     @objc dynamic var isDelivery = true
 }

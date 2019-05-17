@@ -9,7 +9,7 @@ target 'BringIt' do
   
   # Old Pods
   #pod 'B68UIFloatLabelTextField'
-  pod 'EZSwiftExtensions'
+  #pod 'EZSwiftExtensions'
   pod 'IQKeyboardManagerSwift'
   #pod 'IDZSwiftCommonCrypto'
   #pod 'CVCalendar'

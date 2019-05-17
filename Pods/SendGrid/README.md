@@ -1,15 +1,18 @@
 # SendGrid-Swift
 
-![swift4.2](https://img.shields.io/badge/swift-v4.2-green.svg) ![macOS](https://img.shields.io/badge/os-macOS-blue.svg) ![iOS](https://img.shields.io/badge/os-iOS-blue.svg) ![Linux\*](https://img.shields.io/badge/os-Linux\*-blue.svg)
+![swift5](https://img.shields.io/badge/swift-v5-green.svg) ![macOS](https://img.shields.io/badge/os-macOS-blue.svg) ![iOS](https://img.shields.io/badge/os-iOS-blue.svg) ![Linux\*](https://img.shields.io/badge/os-Linux\*-blue.svg)
 
 This library allows you to quickly and easily send emails through SendGrid using Swift.
 
-## Important: Version 1.0.0 Breaking Changes
+## Important: Version 2.0.0 Breaking Changes
 
-Versions 1.0.0 and higher have been migrated to Swift 4 and adds Linux support, which contains code-breaking API changes.
+Versions 2.0.0 and higher have been migrated to Swift 5. Some existing classes, properties, and functions have been renamed or removed. Deprecation warnings will populate where appropriate.
+
+Version 2 of this library re-architects how requests are sent. Previously a `Request` instance housed it's API parameters alongside other properties. Now, `Request` instances hold all their API-related parameters in a new `parameters` property. The `parameters` property is an `Encodable` instance, which simplifies how a request transforms its properties into the API parameters. In addition, the `Session` class's callback now utilize's Swift 5's `Result` enum to provide back either the API response or any errors that arose.
 
 **Previous Breaking Changes**
 
+- Versions 1.0.0 and higher have been migrated to Swift 4 and adds Linux support, which contains code-breaking API changes.
 - Versions 0.2.0 and higher uses Swift 3, which introduces breaking changes from previous versions.
 - Versions 0.1.0 and higher have been migrated over to use SendGrid's [V3 Mail Send Endpoint](https://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/index.html), which contains code-breaking changes.
 
@@ -42,7 +45,7 @@ Full documentation of the library is available [here](http://scottkawai.github.i
 Add the SendGrid module to the "dependencies" and "targets" sections of your Package.swift file like so:
 
 ```swift
-// swift-tools-version:4.0
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -51,7 +54,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/scottkawai/sendgrid-swift.git",
-            from: "1.1.1"
+            from: "2.0.0"
         )
     ],
     targets: [
@@ -120,23 +123,23 @@ All the available API calls are located in their own folders under the `./Source
     + [Category Stats](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Statistic/Category.html)
     + [Subuser Stats](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Statistic/Subuser.html)
 - Subuser API
-    + [Get](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Subuser/Get.html)
+    + [Retrieve](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Subuser/Get.html)
 - Suppressions
     + Blocks API
-        * [Get](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Block.html#/s:8SendGrid5BlockV3GetC)
+        * [Retrieve](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Block.html#/s:8SendGrid5BlockV3GetC)
         * [Delete](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Block/Delete.html)
     + Bounces API
-        * [Get](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Bounce.html#/s:8SendGrid6BounceV3GetC)
+        * [Retrieve](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Bounce.html#/s:8SendGrid6BounceV3GetC)
         * [Delete](http://scottkawai.github.io/sendgrid-swift/docs/Structs/Bounce/Delete.html)
     + Invalid Emails API
-        * [Get](http://scottkawai.github.io/sendgrid-swift/docs/Structs/InvalidEmail.html#/s:8SendGrid12InvalidEmailV3GetC)
+        * [Retrieve](http://scottkawai.github.io/sendgrid-swift/docs/Structs/InvalidEmail.html#/s:8SendGrid12InvalidEmailV3GetC)
         * [Delete](http://scottkawai.github.io/sendgrid-swift/docs/Structs/InvalidEmail/Delete.html)
     + Global Unsubscribes API
-        * [Get](http://scottkawai.github.io/sendgrid-swift/docs/Structs/GlobalUnsubscribe.html#/s:8SendGrid17GlobalUnsubscribeV3GetC)
+        * [Retrieve](http://scottkawai.github.io/sendgrid-swift/docs/Structs/GlobalUnsubscribe.html#/s:8SendGrid17GlobalUnsubscribeV3GetC)
         * [Add](http://scottkawai.github.io/sendgrid-swift/docs/Structs/GlobalUnsubscribe/Add.html)
         * [Delete](http://scottkawai.github.io/sendgrid-swift/docs/Structs/GlobalUnsubscribe/Delete.html)
     + Spam Reports API
-        * [Get](http://scottkawai.github.io/sendgrid-swift/docs/Structs/SpamReport.html#/s:8SendGrid10SpamReportV3GetC)
+        * [Retrieve](http://scottkawai.github.io/sendgrid-swift/docs/Structs/SpamReport.html#/s:8SendGrid10SpamReportV3GetC)
         * [Delete](http://scottkawai.github.io/sendgrid-swift/docs/Structs/SpamReport/Delete.html)
 - [Mail Send](http://scottkawai.github.io/sendgrid-swift/docs/Classes/Email.html)
 
@@ -149,7 +152,7 @@ cd /path/to/sendgrid-swift
 swift package generate-xcodeproj
 ```
 
-This project also contains a Dockerfile and a docker-compose.yml file which runs Ubuntu 16.04 with Swift 4 installed. Running `docker-compose up` will execute the `swift build` command in the Linux container. If you want to run other commands, you can run `docker-compose run --rm app <command>`.
+This project also contains a Dockerfile and a docker-compose.yml file which runs Swift 5. Running `docker-compose up` will execute the `swift build` command in the Linux container. If you want to run other commands, you can run `docker-compose run --rm app <command>`.
 
 ## Contributing
 
@@ -157,6 +160,6 @@ This project also contains a Dockerfile and a docker-compose.yml file which runs
 2. Create your feature branch (`git checkout -b my-fancy-new-feature`)
 3. Commit your changes (`git commit -am 'Added fancy new feature'`)
 4. Write tests for any changes and ensure existing tests pass
-    - **Note!** Be sure that your changes also work on Linux. You can use the Docker container to quickly test this by running `docker-compose run --rm app swift test`
+    - **Note!** Be sure that your changes also work on Linux. You can use the Docker container to quickly test this by running `swift test --generate-linuxmain && docker-compose run --rm app swift test`
 5. Push to the branch (`git push origin my-fancy-new-feature`)
 6. Create a new Pull Request

@@ -92,7 +92,7 @@ class SubmitDriverApplicationViewController: UIViewController {
         }
         
         // Send an advanced example
-        let recipient = Address(emailAddress.text!)
+        let recipient = Address(stringLiteral: emailAddress.text!)
         let personalizations = Personalization(
             to: [recipient],
             cc: nil,
@@ -109,14 +109,14 @@ class SubmitDriverApplicationViewController: UIViewController {
             content: contents,
             subject: nil
         )
-        do {
-            try Session.shared.send(request: email) { (response) in
-                print(response?.httpUrlResponse?.statusCode)
-            }
-        } catch {
-            print(error)
-            print("Email couldn't send.")
-        }
+//        do {
+//            try Session.shared.send(request: email) { (response) in
+//                print(response?.httpUrlResponse?.statusCode as Any)
+//            }
+//        } catch {
+//            print(error)
+//            print("Email couldn't send.")
+//        }
 
     }
     
@@ -130,7 +130,7 @@ class SubmitDriverApplicationViewController: UIViewController {
         }
         
         // Send an advanced example
-        let recipient = Address(Constants.contactEmail)
+        let recipient = Address(stringLiteral: Constants.contactEmail)
         let personalizations = Personalization(
             to: [recipient],
             cc: nil,
@@ -141,20 +141,20 @@ class SubmitDriverApplicationViewController: UIViewController {
             plain: "<p>New driver application from \(fullName.text!)!<br><br>Details:<br><b>Full name: </b>\(fullName.text!)<br><b>Email: </b>\(emailAddress.text!)<br><b>Phone Number: </b>\(phoneNumber.text!)<br><b># of Available Hours/Week (Approx.): </b>\(hoursAvailable.text!)<br><b>Is Duke Student: </b>\(status)<br><br><b>NOTE: </b>Please alert restaurants of this application ASAP so they can schedule a follow-up meeting with the applicant. Thanks :)</p>",
             html: "<p>New driver application from \(fullName.text!)!<br><br>Details:<br><b>Full name: </b>\(fullName.text!)<br><b>Email: </b>\(emailAddress.text!)<br><b>Phone Number: </b>\(phoneNumber.text!)<br><b># of Available Hours/Week (Approx.): </b>\(hoursAvailable.text!)<br><b>Is Duke Student: </b>\(status)<br><br><b>NOTE: </b>Please alert restaurants of this application ASAP so they can schedule a follow-up meeting with the applicant. Thanks :)</p>"
         )
-        let email = Email(
-            personalizations: [personalizations],
-            from: Address(emailAddress.text!),
-            content: contents,
-            subject: nil
-        )
-        do {
-            try Session.shared.send(request: email) { (response) in
-                print(response?.httpUrlResponse?.statusCode)
-            }
-        } catch {
-            print(error)
-            print("Email couldn't send.")
-        }
+//        let email = Email(
+//            personalizations: [personalizations],
+//            from: Address(stringLiteral: emailAddress.text!),
+//            content: contents,
+//            subject: nil
+//        )
+//        do {
+//            try Session.shared.send(request: email) { (response) in
+//                print(response?.httpUrlResponse?.statusCode)
+//            }
+//        } catch {
+//            print(error)
+//            print("Email couldn't send.")
+//        }
     }
     
     

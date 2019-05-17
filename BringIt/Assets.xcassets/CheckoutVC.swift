@@ -57,7 +57,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // Row Indices
     var subtotalIndex = 0
     var deliveryFeeIndex = 1
-    var totalCostIndex = 2
+    var goBringItCreditIndex = 2
+    var totalCostIndex = 3
     
     // Passed from previousVC
 //    var restaurantID = ""
@@ -324,6 +325,21 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             total += order.deliveryFee >= 0.00 ? order.deliveryFee : 0.00
         }
         
+        if (user.gbiCredit != 0){
+            if (total >= user.gbiCredit){
+                total -= user.gbiCredit
+                order.gbiCreditUsed = user.gbiCredit
+            }
+            else{
+                order.gbiCreditUsed = total
+                total = 0
+            }
+        }
+        else{
+            goBringItCreditIndex = -1
+            totalCostIndex -= 1
+        }
+        
         // Display total price
         cartTotal.text = "$" + String(format: "%.2f", total)
         
@@ -442,7 +458,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         totalIndex = 2
         subtotalIndex = 0
         deliveryFeeIndex = 1
-        totalCostIndex = 2
+        goBringItCreditIndex = 2
+        totalCostIndex = 3
     }
     
     func pickupSelected() {
@@ -460,7 +477,8 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         totalIndex = 1
         subtotalIndex = 0
         deliveryFeeIndex = -1
-        totalCostIndex = 1
+        goBringItCreditIndex = 1
+        totalCostIndex = 2
     }
     
     @IBAction func checkoutButtonTapped(_ sender: UIButton) {
@@ -527,7 +545,6 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func confirmOrder() {
         
         let realm = try! Realm() // Initialize Realm
-        var paymentMethod = ""
         
         // Animate activity indicator
         myActivityIndicator.isHidden = false
@@ -600,10 +617,14 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else if section == menuItemsIndex {
             return order.menuItems.count
         } else {
+            var segments = 2 // Subtotal + Total
             if deliveryOrPickup.selectedSegmentIndex == 0 {
-                return 3 // The 3 extra are Subtotal + Delivery Fee + Total
+                segments+=1 // Delivery Fee
             }
-            return 2
+            if order.gbiCreditUsed > 0 {
+                segments+=1 //GBI Credit
+            }
+            return segments
         }
 
     }
@@ -701,6 +722,18 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 return cell
+            }
+            // GoBringIt Credit
+            else if indexPath.row == goBringItCreditIndex {
+                
+                if order.gbiCreditUsed > 0 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "costCell", for: indexPath)
+                    
+                    cell.textLabel?.text = "GoBringIt Credit"
+                   
+                    cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
+                    return cell
+                }
             }
             // Total
             else if indexPath.row == totalCostIndex {
