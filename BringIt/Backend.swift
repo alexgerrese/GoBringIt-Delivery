@@ -23,7 +23,6 @@ enum APICalls {
     case updateCurrentAddress(uid: String, streetAddress: String, roomNumber: String)
     case addItemToCart(uid: String, quantity: Int, itemID: String, sideIDs: [String], specialInstructions: String)
     case addOrder(uid: String, restaurantID: String, payingWithCC: String, deliveryFee: String)
-    //case fetchOrderHistory
     case fetchAccountInfo(uid: String)
     case fetchAccountAddress(uid: String)
     case updateAccountInfo(uid: String, fullName: String, email: String, phoneNumber: String)
@@ -43,7 +42,7 @@ extension APICalls : TargetType {
     var headers: [String: String]? {
         return ["Content-type": "application/json"]
     }
-    var baseURL: URL { return URL(string: Environment.backendURL.absoluteString)! }
+    var baseURL: URL { return URL(string: Environment.appBackendURL.absoluteString)! }
     var path: String {
         switch self {
         case .signInUser(_,_):
@@ -146,7 +145,6 @@ extension APICalls : TargetType {
                     "service_id": restaurantID,
                     "payment_cc": payingWithCC,
                     "delivery_fee": deliveryFee], encoding: JSONEncoding.default)
-        //case fetchOrderHistory
         case .fetchAccountInfo(let uid):
             return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
         case .fetchAccountAddress(let uid):
@@ -186,6 +184,52 @@ extension APICalls : TargetType {
         }
     }
 }
+
+
+enum CombinedAPICalls {
+    case placeOrder(uid: String, restaurantID: String, payingWithCC: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String)
+}
+
+extension CombinedAPICalls : TargetType {
+    var headers: [String: String]? {
+        return ["Content-type": "application/json"]
+    }
+    var baseURL: URL { return URL(string: Environment.combinedBackendURL.absoluteString)! }
+    var path: String {
+        switch self {
+        case .placeOrder(_,_,_,_,_,_,_,_,_):
+            return "/placeOrder.php"
+        }
+    }
+    
+    var method: Moya.Method {
+        switch self {
+        case .placeOrder:
+            return .post
+        }
+    }
+    
+    var sampleData: Data {
+        return Data()
+    }
+    
+    var task: Task {
+        switch self {
+        case .placeOrder(let uid, let restaurantID, let payingWithCC, let isPickup, let amount, let deliveryFee, let creditUsed, let paymentType, let name):
+            return .requestParameters(parameters: ["uid": uid,
+                                                   "cid": restaurantID,
+                                                   "pmt": payingWithCC,
+                                                   "pORd": isPickup,
+                                                   "amount": amount,
+                                                   "fee": deliveryFee,
+                                                   "credit_used": creditUsed,
+                                                   "payment_type": paymentType,
+                                                   "name": name
+                ], encoding: JSONEncoding.default)
+        }
+    }
+}
+
 
 // MARK: - Helpers
 private extension String {

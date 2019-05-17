@@ -159,6 +159,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let users = realm.objects(User.self).filter(predicate)
             if users.count > 0 {
                 user = users.first!
+                Helper.app.updateUser(user: user)
             } else {
                 print("Couldn't retrieve user, going to SignInVC")
                 
@@ -315,10 +316,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             total += menuItem.totalCost
         }
         
-        // Update order subtotal
-        try! realm.write {
-            order.subtotal = total
-        }
+        var subtotal = total
+        
+        var gbiCreditUsed = 0.0;
         
         // Add delivery fee
         if deliveryOrPickup.selectedSegmentIndex == 0 {
@@ -328,16 +328,22 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if (user.gbiCredit != 0){
             if (total >= user.gbiCredit){
                 total -= user.gbiCredit
-                order.gbiCreditUsed = user.gbiCredit
+                gbiCreditUsed = user.gbiCredit
             }
             else{
-                order.gbiCreditUsed = total
+                gbiCreditUsed = total
                 total = 0
             }
         }
         else{
             goBringItCreditIndex = -1
             totalCostIndex -= 1
+        }
+        
+        // Update order subtotal
+        try! realm.write {
+            order.subtotal = subtotal
+            order.gbiCreditUsed = gbiCreditUsed
         }
         
         // Display total price
@@ -731,7 +737,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                     cell.textLabel?.text = "GoBringIt Credit"
                    
-                    cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.deliveryFee)
+                    cell.detailTextLabel?.text = "$" + String(format: "%.2f", order.gbiCreditUsed)
                     return cell
                 }
             }

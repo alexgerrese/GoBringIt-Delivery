@@ -65,7 +65,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>BACKEND_URL</key>
-	<string>$(BACKEND_URL)</string>
+	<key>APP_BACKEND_URL</key>
+	<string>$(APP_BACKEND_URL)</string>
+	<key>COMBINED_BACKEND_URL</key>
+	<string>$(COMBINED_BACKEND_URL)</string>
 </dict>
 </plist>

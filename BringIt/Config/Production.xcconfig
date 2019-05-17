@@ -8,6 +8,7 @@
 
 #include "Pods/Target Support Files/Pods-BringIt/Pods-BringIt.release (production).xcconfig"
 
-BACKEND_URL = https:/$()/www.gobringit.com/includes/app
+APP_BACKEND_URL = https:/$()/www.gobringit.com/includes/app
+COMBINED_BACKEND_URL = https:/$()/www.gobringit.com/includes/combinedBackend
 APP_NAME = BringIt
 APP_BUNDLE_ID = com.alexgerrese.BringIt.test

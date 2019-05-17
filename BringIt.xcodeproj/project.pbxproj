@@ -71,6 +71,7 @@
 		99941AA3228E24AD0002B5B6 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AA2228E24AD0002B5B6 /* Environment.swift */; };
 		99941AA5228E43BA0002B5B6 /* Production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 99941AA4228E43BA0002B5B6 /* Production.xcconfig */; };
 		99941AA6228E43CE0002B5B6 /* Test.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 99941A99228E206A0002B5B6 /* Test.xcconfig */; };
+		99941AAB228F54520002B5B6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAA228F54520002B5B6 /* Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +188,7 @@
 		99941A99228E206A0002B5B6 /* Test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Test.xcconfig; sourceTree = "<group>"; };
 		99941AA2228E24AD0002B5B6 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		99941AA4228E43BA0002B5B6 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
+		99941AAA228F54520002B5B6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		BB154EBA6110BBC9C1FC34F4 /* Pods-BringIt.release (production).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringIt.release (production).xcconfig"; path = "Target Support Files/Pods-BringIt/Pods-BringIt.release (production).xcconfig"; sourceTree = "<group>"; };
 		CF8A99CC43D4932F44039A8F /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52D6CAD0CD19E8EDCE9A118 /* Pods-BringItUITests.debug (test).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.debug (test).xcconfig"; path = "Target Support Files/Pods-BringItUITests/Pods-BringItUITests.debug (test).xcconfig"; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 		11021FF41CE68A83003D82FB /* BringIt */ = {
 			isa = PBXGroup;
 			children = (
+				99941AA9228F54420002B5B6 /* Helper */,
 				99941A96228E1FE20002B5B6 /* Config */,
 				11021FF51CE68A83003D82FB /* AppDelegate.swift */,
 				11158DA71ECB1B4700A88338 /* Constants.swift */,
@@ -451,7 +454,6 @@
 				42D163E2404522204C5767A7 /* Pods-BringItUITests.release (production).xcconfig */,
 				E5592B430BE5AB21639D7013 /* Pods-BringItUITests.release (test).xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -463,6 +465,14 @@
 				99941AA4228E43BA0002B5B6 /* Production.xcconfig */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		99941AA9228F54420002B5B6 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				99941AAA228F54520002B5B6 /* Helper.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -740,6 +750,7 @@
 				112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */,
 				11158DA81ECB1B4700A88338 /* Constants.swift in Sources */,
 				11DBC59C1EE4C6FA0000A600 /* BecomeADriverVC.swift in Sources */,
+				99941AAB228F54520002B5B6 /* Helper.swift in Sources */,
 				11A25F931ED3174C0051324B /* SendEmails.swift in Sources */,
 				11BFEB521ED4711B00C2CEA8 /* FeaturedDishTableViewCell.swift in Sources */,
 				112D6B231ED0D40E00396BA5 /* AddressesViewController.swift in Sources */,

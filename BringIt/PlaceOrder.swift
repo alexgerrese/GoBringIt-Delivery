@@ -74,10 +74,9 @@ extension CheckoutVC {
         if order.paymentMethod.contains("••••") || order.paymentMethod.contains("Credit") {
             payingWithCC = "1"
         }
-        
         // Setup Moya provider and send network request
-        let provider = MoyaProvider<APICalls>()
-        provider.request(.addOrder(uid: user.id, restaurantID: order.restaurantID, payingWithCC: payingWithCC, deliveryFee: "\(order.deliveryFee)")) { result in
+        let provider = MoyaProvider<CombinedAPICalls>()
+        provider.request(.placeOrder(uid: user.id, restaurantID: order.restaurantID, payingWithCC: payingWithCC, isPickup: order.isDelivery ? "0" : "1", amount: "\(order.subtotal*100)", deliveryFee: "\(order.deliveryFee*100)", creditUsed: "\(order.gbiCreditUsed*100)", paymentType: payingWithCC, name: user.fullName)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
@@ -108,9 +107,9 @@ extension CheckoutVC {
                         print(self.order.isComplete)
                         
                         // COMMENT NEXT LINE OUT TO TEST ORDERS (Won't be emailed to restaurant)
-                        self.sendRestaurantConfirmationEmail()
-                        self.sendUserConfirmationEmail()
-                        self.dispatch_group.wait(timeout: .distantFuture)
+//                        self.sendRestaurantConfirmationEmail()
+//                        self.sendUserConfirmationEmail()
+//                        self.dispatch_group.wait(timeout: .distantFuture)
                         
                         self.performSegue(withIdentifier: "toOrderPlaced", sender: self)
                     }

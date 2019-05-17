@@ -13,7 +13,8 @@ public enum Environment {
     // MARK: - Keys
     enum Keys {
         enum Plist {
-            static let backendURL = "BACKEND_URL"
+            static let appBackendURL = "APP_BACKEND_URL"
+            static let combinedBackendURL = "COMBINED_BACKEND_URL"
             static let apiKey = "API_KEY"
         }
     }
@@ -27,8 +28,18 @@ public enum Environment {
     }()
     
     // MARK: - Plist values
-    static let backendURL: URL = {
-        guard let backendURLstring = Environment.infoDictionary[Keys.Plist.backendURL] as? String else {
+    static let appBackendURL: URL = {
+        guard let backendURLstring = Environment.infoDictionary[Keys.Plist.appBackendURL] as? String else {
+            fatalError("Root URL not set in plist for this environment")
+        }
+        guard let url = URL(string: backendURLstring) else {
+            fatalError("Root URL is invalid")
+        }
+        return url
+    }()
+    
+    static let combinedBackendURL: URL = {
+        guard let backendURLstring = Environment.infoDictionary[Keys.Plist.combinedBackendURL] as? String else {
             fatalError("Root URL not set in plist for this environment")
         }
         guard let url = URL(string: backendURLstring) else {
