@@ -13,6 +13,8 @@ import Moya
 
 class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     
+    var phoneNum: String!
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var fullNameView: UIView!
@@ -26,6 +28,9 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumberView: UIView!
     @IBOutlet weak var phoneNumber: UITextField!
+    
+    @IBOutlet weak var graduationYearView: UIView!
+    @IBOutlet weak var graduationYear: UITextField!
     
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
@@ -59,13 +64,18 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         emailAddressView.layer.cornerRadius = Constants.cornerRadius
         passwordView.layer.cornerRadius = Constants.cornerRadius
         phoneNumberView.layer.cornerRadius = Constants.cornerRadius
+        graduationYearView.layer.cornerRadius = Constants.cornerRadius
         continueButton.layer.cornerRadius = Constants.cornerRadius
         
+        self.phoneNumber.text = phoneNum
+
         // Set up targets for text fields
         fullName.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         emailAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         password.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         phoneNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        graduationYear.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
         myActivityIndicator.isHidden = true
         
         // Set up custom back button
@@ -88,7 +98,7 @@ class AccountDetailsVC: UIViewController, UITextFieldDelegate {
         
         // Setup Moya provider and send network request
         let provider = MoyaProvider<APICalls>()
-        provider.request(.signUpUser(fullName: fullName.text!, email: emailAddress.text!, password: password.text!, phoneNumber: phoneNumber.text!)) { result in
+        provider.request(.signUpUser(fullName: fullName.text!, email: emailAddress.text!, password: password.text!, phoneNumber: phoneNumber.text!, gradYear: graduationYear.text!)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {

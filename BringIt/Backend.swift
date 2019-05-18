@@ -13,7 +13,7 @@ import Moya
 
 enum APICalls {
     case signInUser(email: String, password: String)
-    case signUpUser(fullName: String, email: String, password: String, phoneNumber: String)
+    case signUpUser(fullName: String, email: String, password: String, phoneNumber: String, gradYear: String)
     case fetchPromotions
     case fetchRestaurantData
     case fetchRestaurantsInfo
@@ -47,7 +47,7 @@ extension APICalls : TargetType {
         switch self {
         case .signInUser(_,_):
             return "/signInUser.php"
-        case .signUpUser(_,_,_,_):
+        case .signUpUser(_,_,_,_,_):
             return "/signUpUser.php"
         case .fetchPromotions:
             return "/fetchPromotions.php"
@@ -122,11 +122,12 @@ extension APICalls : TargetType {
         case .signInUser(let email, let password):
             return .requestParameters(parameters: ["email": email,
             "password": password], encoding: JSONEncoding.default)
-        case .signUpUser(let fullName, let email, let password, let phoneNumber):
+        case .signUpUser(let fullName, let email, let password, let phoneNumber, let gradYear):
             return .requestParameters(parameters: ["name": fullName,
                     "email": email,
                     "phone": phoneNumber,
-                    "password": password], encoding: JSONEncoding.default) // Delete these from backend
+                    "password": password,
+                    "grad_year": gradYear], encoding: JSONEncoding.default) // Delete these from backend
         case .updateCurrentAddress(let uid, let streetAddress, let roomNumber):
             return .requestParameters(parameters: ["account_id": uid,
                     "street": streetAddress,
@@ -188,6 +189,8 @@ extension APICalls : TargetType {
 
 enum CombinedAPICalls {
     case placeOrder(uid: String, restaurantID: String, payingWithCC: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String)
+    case sendPhoneVerification(phoneNumber: String)
+    case checkPhoneVerificationCode(phoneNumber: String, code: String)
 }
 
 extension CombinedAPICalls : TargetType {
@@ -199,14 +202,19 @@ extension CombinedAPICalls : TargetType {
         switch self {
         case .placeOrder(_,_,_,_,_,_,_,_,_):
             return "/placeOrder.php"
+        case .sendPhoneVerification(_):
+            return "/sendPhoneVerification.php"
+        case .checkPhoneVerificationCode(_,_):
+            return "/checkPhoneVerification.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .placeOrder:
+        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode:
             return .post
         }
+
     }
     
     var sampleData: Data {
@@ -226,6 +234,11 @@ extension CombinedAPICalls : TargetType {
                                                    "payment_type": paymentType,
                                                    "name": name
                 ], encoding: JSONEncoding.default)
+        case .sendPhoneVerification(let phoneNumber):
+            return .requestParameters(parameters: ["phoneNumber": phoneNumber], encoding: JSONEncoding.default)
+        case .checkPhoneVerificationCode(let phoneNumber, let code):
+            return .requestParameters(parameters: ["phoneNumber": phoneNumber,
+                                                   "verificationCode": code], encoding: JSONEncoding.default)
         }
     }
 }

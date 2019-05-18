@@ -33,6 +33,7 @@ extension UIViewController {
         case nonNumerical
         case invalidInput
         case incorrectCreditCard
+        case invalidVerificationCode
     }
     
     func showError(button: UIButton, activityIndicator: UIActivityIndicatorView?, error: Error, defaultButtonText: String?) {
@@ -79,6 +80,9 @@ extension UIViewController {
             button.isEnabled = false
         case .incorrectCreditCard:
             button.setTitle("Incorrect credit card details.", for: .normal)
+            button.isEnabled = false
+        case .invalidVerificationCode:
+            button.setTitle("Invalid verification code.", for: .normal)
             button.isEnabled = false
         }
     }
@@ -159,18 +163,22 @@ extension String {
     
     // Validate email address
     var isEmail: Bool {
-        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
-            return false
-        }
-        let range = NSMakeRange(0, NSString(string: self).length)
-        let allMatches = dataDetector.matches(in: self, options: [], range: range)
-        
-        if allMatches.count == 1,
-            allMatches.first?.url?.absoluteString.contains("mailto:") == true
-        {
-            return true
-        }
-        return false
+        let EMAIL_REGEX = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", EMAIL_REGEX)
+        let result =  emailTest.evaluate(with: self)
+        return result
+//        guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+//            return false
+//        }
+//        let range = NSMakeRange(0, NSString(string: self).length)
+//        let allMatches = dataDetector.matches(in: self, options: [], range: range)
+//
+//        if allMatches.count == 1,
+//            allMatches.first?.url?.absoluteString.contains("mailto:") == true
+//        {
+//            return true
+//        }
+//        return false
     }
     
     // Validate phone number

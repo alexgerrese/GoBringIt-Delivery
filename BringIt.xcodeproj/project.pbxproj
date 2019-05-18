@@ -72,6 +72,8 @@
 		99941AA5228E43BA0002B5B6 /* Production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 99941AA4228E43BA0002B5B6 /* Production.xcconfig */; };
 		99941AA6228E43CE0002B5B6 /* Test.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 99941A99228E206A0002B5B6 /* Test.xcconfig */; };
 		99941AAB228F54520002B5B6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAA228F54520002B5B6 /* Helper.swift */; };
+		99941AAD228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAC228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift */; };
+		99941AAF228FCB270002B5B6 /* CheckPhoneVerificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAE228FCB270002B5B6 /* CheckPhoneVerificationVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +191,8 @@
 		99941AA2228E24AD0002B5B6 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		99941AA4228E43BA0002B5B6 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
 		99941AAA228F54520002B5B6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		99941AAC228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPhoneVerificationVC.swift; sourceTree = "<group>"; };
+		99941AAE228FCB270002B5B6 /* CheckPhoneVerificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPhoneVerificationVC.swift; sourceTree = "<group>"; };
 		BB154EBA6110BBC9C1FC34F4 /* Pods-BringIt.release (production).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringIt.release (production).xcconfig"; path = "Target Support Files/Pods-BringIt/Pods-BringIt.release (production).xcconfig"; sourceTree = "<group>"; };
 		CF8A99CC43D4932F44039A8F /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52D6CAD0CD19E8EDCE9A118 /* Pods-BringItUITests.debug (test).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.debug (test).xcconfig"; path = "Target Support Files/Pods-BringItUITests/Pods-BringItUITests.debug (test).xcconfig"; sourceTree = "<group>"; };
@@ -302,6 +306,8 @@
 			children = (
 				1198FA191EC7C9D400864200 /* SignInVC.swift */,
 				11158DAB1ECB63D600A88338 /* AccountDetailsVC.swift */,
+				99941AAC228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift */,
+				99941AAE228FCB270002B5B6 /* CheckPhoneVerificationVC.swift */,
 			);
 			name = "Sign In/Sign Up";
 			sourceTree = "<group>";
@@ -759,6 +765,7 @@
 				11C9EA8A1ECCA607004A4C1E /* MessagesTableViewCell.swift in Sources */,
 				11C9EA8E1ECDB4BE004A4C1E /* CreateRestaurantModels.swift in Sources */,
 				1183F0081EF8F81100FFCD02 /* SubmitDriverApplicationViewController.swift in Sources */,
+				99941AAD228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift in Sources */,
 				11158DAC1ECB63D600A88338 /* AccountDetailsVC.swift in Sources */,
 				11021FF61CE68A83003D82FB /* AppDelegate.swift in Sources */,
 				11BFEB561ED5944E00C2CEA8 /* PromotionCollectionViewCell.swift in Sources */,
@@ -770,6 +777,7 @@
 				11C9EA871ECCA3E1004A4C1E /* RestaurantTableViewCell.swift in Sources */,
 				11BFEB581ED72A1300C2CEA8 /* BannerTableViewCell.swift in Sources */,
 				11BFEB5C1ED732FC00C2CEA8 /* PastOrderTableViewCell.swift in Sources */,
+				99941AAF228FCB270002B5B6 /* CheckPhoneVerificationVC.swift in Sources */,
 				118C0C1B1D6B71DA00035CC2 /* MyAPIClient2.swift in Sources */,
 				118816F921E29CA700E73E45 /* NewCreditCardVC.swift in Sources */,
 				1198FA1C1EC7CE1800864200 /* Backend.swift in Sources */,
