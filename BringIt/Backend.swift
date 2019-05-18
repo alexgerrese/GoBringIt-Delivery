@@ -232,7 +232,8 @@ extension CombinedAPICalls : TargetType {
                                                    "fee": deliveryFee,
                                                    "credit_used": creditUsed,
                                                    "payment_type": paymentType,
-                                                   "name": name
+                                                   "name": name,
+                                                   "mobile": "1"
                 ], encoding: JSONEncoding.default)
         case .sendPhoneVerification(let phoneNumber):
             return .requestParameters(parameters: ["phoneNumber": phoneNumber], encoding: JSONEncoding.default)

@@ -139,7 +139,7 @@
                                         <color key="highlightedColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BringIt Square Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ahg-Fj-vck">
-                                        <rect key="frame" x="24" y="108" width="82" height="89"/>
+                                        <rect key="frame" x="24" y="108" width="16" height="89"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="89" id="OzR-vK-e3K"/>
                                         </constraints>
@@ -2107,7 +2107,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Restaurant Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17c-da-wuZ">
-                                                    <rect key="frame" x="16" y="255.66666666666674" width="223" height="46"/>
+                                                    <rect key="frame" x="15.999999999999986" y="255.66666666666674" width="249.66666666666663" height="46"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Bold" family="Brandon Grotesque" pointSize="32"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2800,14 +2800,14 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QAk-qZ-uLa">
-                                                            <rect key="frame" x="113.66666666666669" y="10.666666666666671" width="48" height="48"/>
+                                                            <rect key="frame" x="145.66666666666666" y="23.666666666666671" width="16" height="22"/>
                                                             <state key="normal" image="- Button"/>
                                                             <connections>
                                                                 <action selector="minusButtonTapped:" destination="T5Z-F1-ZvZ" eventType="touchUpInside" id="euf-Sl-nSC"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LrN-vU-jE4">
-                                                            <rect key="frame" x="213.66666666666666" y="10.666666666666671" width="47.999999999999972" height="48"/>
+                                                            <rect key="frame" x="213.66666666666666" y="23.666666666666671" width="16" height="22"/>
                                                             <state key="normal" image="+ Button"/>
                                                             <connections>
                                                                 <action selector="plusButtonTapped:" destination="T5Z-F1-ZvZ" eventType="touchUpInside" id="Oaj-Ei-Rh8"/>
@@ -2936,7 +2936,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="65q-aG-f6M">
-                                <rect key="frame" x="0.0" y="131" width="375" height="599.33333333333337"/>
+                                <rect key="frame" x="0.0" y="131" width="375" height="595"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="deliveryDetailCell" textLabel="S6y-hQ-HaD" detailTextLabel="baj-Yt-9DC" style="IBUITableViewCellStyleValue1" id="H4D-MA-MnQ">
@@ -2989,7 +2989,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="w/ Sides" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48e-kr-EH3">
-                                                    <rect key="frame" x="53" y="31.666666666666671" width="239" height="16.333333333333329"/>
+                                                    <rect key="frame" x="53" y="31.666666666666671" width="239" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="14"/>
                                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -3075,13 +3075,13 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVa-W8-eRy">
-                                <rect key="frame" x="0.0" y="730.33333333333337" width="375" height="81.666666666666629"/>
+                                <rect key="frame" x="0.0" y="726" width="375" height="86"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHJ-Vo-53v">
-                                        <rect key="frame" x="12" y="10" width="350" height="45"/>
+                                        <rect key="frame" x="12" y="10.000000000000004" width="350" height="49.333333333333343"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$$$" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wws-oQ-5UV">
-                                                <rect key="frame" x="254" y="12" width="88" height="20"/>
+                                                <rect key="frame" x="254" y="11.999999999999998" width="88" height="24.333333333333329"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="88" id="maS-Fw-eTC"/>
                                                 </constraints>
@@ -3090,7 +3090,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OVR-jk-ByR">
-                                                <rect key="frame" x="0.0" y="-1" width="350" height="46"/>
+                                                <rect key="frame" x="0.0" y="-1" width="350" height="50.333333333333336"/>
                                                 <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
                                                 <state key="normal" title="Checkout">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3172,13 +3172,13 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to checkout?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MoB-Vt-eBN">
-                                        <rect key="frame" x="45" y="300" width="285" height="56"/>
+                                        <rect key="frame" x="45" y="300" width="285" height="68.666666666666686"/>
                                         <fontDescription key="fontDescription" name="BrandonGrotesque-Medium" family="Brandon Grotesque" pointSize="24"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will be charged $$$ upon delivery.You will be charged $$$ upon delivery." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTH-PM-mzu">
-                                        <rect key="frame" x="45" y="348" width="285" height="61"/>
+                                        <rect key="frame" x="45" y="360.66666666666669" width="285" height="61"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="61" id="WFE-zt-Ycc"/>
                                         </constraints>
@@ -3187,7 +3187,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ffk-Xe-UfO">
-                                        <rect key="frame" x="45" y="348.66666666666669" width="285" height="60"/>
+                                        <rect key="frame" x="45" y="361.33333333333331" width="285" height="60"/>
                                         <subviews>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Gu1-LL-tI7">
                                                 <rect key="frame" x="132.66666666666666" y="20" width="20" height="20"/>
@@ -3402,7 +3402,6 @@
         <!--Send Phone VerificationVC-->
         <scene sceneID="7zz-RJ-dOd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WLT-kI-3xV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="z1m-Wa-ppc" customClass="SendPhoneVerificationVC" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MNf-rU-p2o"/>
@@ -3494,6 +3493,7 @@
                         <segue destination="L9T-wD-N3L" kind="show" identifier="toCheckVerificationVC" id="mb0-af-dAh"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WLT-kI-3xV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3206" y="245"/>
         </scene>
@@ -3592,7 +3592,6 @@
         <!--Account DetailsVC-->
         <scene sceneID="QFk-lE-aWO">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7jJ-8i-hmv" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="fsc-XZ-pUf" customClass="AccountDetailsVC" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="78q-am-9QK"/>
@@ -3787,13 +3786,13 @@
                         <outlet property="phoneNumberView" destination="10T-HH-acj" id="3YA-Mv-nrH"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7jJ-8i-hmv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1364" y="245"/>
         </scene>
         <!--Check Phone VerificationVC-->
         <scene sceneID="q2j-W4-ux9">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Fkz-Ce-bak" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="L9T-wD-N3L" customClass="CheckPhoneVerificationVC" customModule="BringIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kDX-dm-pgy"/>
@@ -3911,6 +3910,7 @@
                         <segue destination="fsc-XZ-pUf" kind="show" identifier="toAccountDetailsVC" id="vWR-3k-YBL"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fkz-Ce-bak" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2334" y="245"/>
         </scene>
