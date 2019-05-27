@@ -74,6 +74,7 @@
 		99941AAB228F54520002B5B6 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAA228F54520002B5B6 /* Helper.swift */; };
 		99941AAD228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAC228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift */; };
 		99941AAF228FCB270002B5B6 /* CheckPhoneVerificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99941AAE228FCB270002B5B6 /* CheckPhoneVerificationVC.swift */; };
+		99BD1A2A229CA3C7000E6451 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BD1A29229CA3C7000E6451 /* UIColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +194,7 @@
 		99941AAA228F54520002B5B6 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		99941AAC228FBC0F0002B5B6 /* SendPhoneVerificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPhoneVerificationVC.swift; sourceTree = "<group>"; };
 		99941AAE228FCB270002B5B6 /* CheckPhoneVerificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPhoneVerificationVC.swift; sourceTree = "<group>"; };
+		99BD1A29229CA3C7000E6451 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		BB154EBA6110BBC9C1FC34F4 /* Pods-BringIt.release (production).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringIt.release (production).xcconfig"; path = "Target Support Files/Pods-BringIt/Pods-BringIt.release (production).xcconfig"; sourceTree = "<group>"; };
 		CF8A99CC43D4932F44039A8F /* Pods_BringItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BringItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52D6CAD0CD19E8EDCE9A118 /* Pods-BringItUITests.debug (test).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BringItUITests.debug (test).xcconfig"; path = "Target Support Files/Pods-BringItUITests/Pods-BringItUITests.debug (test).xcconfig"; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 			isa = PBXGroup;
 			children = (
 				99941AAA228F54520002B5B6 /* Helper.swift */,
+				99BD1A29229CA3C7000E6451 /* UIColorExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -756,6 +759,7 @@
 				112D6B151ECF1B9A00396BA5 /* AddToCartVC.swift in Sources */,
 				11158DA81ECB1B4700A88338 /* Constants.swift in Sources */,
 				11DBC59C1EE4C6FA0000A600 /* BecomeADriverVC.swift in Sources */,
+				99BD1A2A229CA3C7000E6451 /* UIColorExtension.swift in Sources */,
 				99941AAB228F54520002B5B6 /* Helper.swift in Sources */,
 				11A25F931ED3174C0051324B /* SendEmails.swift in Sources */,
 				11BFEB521ED4711B00C2CEA8 /* FeaturedDishTableViewCell.swift in Sources */,

@@ -191,7 +191,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         if numSelected < menuItem.numRequiredSides {
             
-            viewCartButton.isEnabled = true
+            viewCartButton.isEnabled = false
             viewCartButtonView.backgroundColor = Constants.red
             viewCartButton.setTitle("Please select all required sides.", for: .normal)
         } else {

@@ -14,6 +14,7 @@ class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var orderMessage: UILabel!
     
     // MARK: - Variables
     
@@ -29,6 +30,7 @@ class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         // Setup tableview
         setupTableView()
+        orderMessage.text = ETA
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,7 +78,7 @@ class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -87,12 +89,6 @@ class OrderPlacedVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             cell.textLabel?.text = "Order Total"
             cell.detailTextLabel?.text = "$" + String(format: "%.2f", totalSpent)
-            
-        } else if indexPath.row == 1 {
-            
-            cell.textLabel?.text = "ETA"
-            cell.detailTextLabel?.text = ETA
-            
             
         } else {
             

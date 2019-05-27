@@ -155,8 +155,12 @@ class NewAddressVC: UIViewController {
         address.campus = campus.text!
         address.streetAddress = "\(streetAddress.text!), \(city.text!), NC" // TODO: Change from hardcoding to taking result from GMaps call?
         address.roomNumber = roomNumber.text!
+        address.isCurrent = true
         
         try! realm.write() {
+            for add in user.addresses {
+                add.isCurrent = false;
+            }
             user.addresses.append(address)
         }
     }

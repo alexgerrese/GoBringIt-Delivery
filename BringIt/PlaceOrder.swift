@@ -13,6 +13,36 @@ import RealmSwift
 import Stripe
 
 extension CheckoutVC {
+    func clearCart(completion: @escaping (_ result: Int) -> Void) {
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<CombinedAPICalls>()
+        provider.request(.clearCart(uid: user.id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    
+                    print("Status code for clearCart(): \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    if response["success"] as! Int == 1 {
+                        
+                        print("Success clearing cart!")
+                    }
+                    
+                    completion(1)
+                    
+                } catch {
+                    // Miscellaneous network error
+                    self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
+                }
+            case .failure(_):
+                // Connection failed
+                self.showConfirmViewError(errorTitle: "Network Error", errorMessage: "Something went wrong 😱 Make sure you're connected to the internet and please try again.")
+            }
+        }
+    }
     
     func addAllToCart(completion: @escaping (_ result: Int) -> Void) {
         

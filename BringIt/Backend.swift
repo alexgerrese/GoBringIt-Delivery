@@ -191,6 +191,7 @@ enum CombinedAPICalls {
     case placeOrder(uid: String, restaurantID: String, payingWithCC: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String)
     case sendPhoneVerification(phoneNumber: String)
     case checkPhoneVerificationCode(phoneNumber: String, code: String)
+    case clearCart(uid: String)
 }
 
 extension CombinedAPICalls : TargetType {
@@ -206,12 +207,14 @@ extension CombinedAPICalls : TargetType {
             return "/sendPhoneVerification.php"
         case .checkPhoneVerificationCode(_,_):
             return "/checkPhoneVerification.php"
+        case .clearCart(_):
+            return "/clearCart.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode:
+        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart:
             return .post
         }
 
@@ -239,7 +242,9 @@ extension CombinedAPICalls : TargetType {
             return .requestParameters(parameters: ["phoneNumber": phoneNumber], encoding: JSONEncoding.default)
         case .checkPhoneVerificationCode(let phoneNumber, let code):
             return .requestParameters(parameters: ["phoneNumber": phoneNumber,
-                                                   "verificationCode": code], encoding: JSONEncoding.default)
+                                                "verificationCode": code], encoding: JSONEncoding.default)
+        case .clearCart(let uid):
+            return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
         }
     }
 }

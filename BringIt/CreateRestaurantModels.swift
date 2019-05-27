@@ -44,6 +44,14 @@ extension RestaurantsHomeViewController {
                     // Set alert message
                     if response["alertMessage"] as! String != "" {
                         self.alertMessage = response["alertMessage"] as! String
+                    
+                        if response["alertMessageColor"] as! String != "" {
+                            self.alertMessageColor = UIColor(hexString: (response["alertMessageColor"] as! String))
+                        }
+                        
+                        if response["alertMessageLink"] as! String != "" {
+                            self.alertMessageLink = response["alertMessageLink"] as! String
+                        }
                     }
                     
                     print("Retrieved Version Number: \(versionNumber)")

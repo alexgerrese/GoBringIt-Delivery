@@ -587,16 +587,20 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func placeOrder() {
         
         var count = 0
-        
-        addAllToCart() {
+        clearCart() {
             (result: Int) in
-            
-            count += 1
-            
-            print(count)
-            if count == self.order.menuItems.count {
-                self.addOrder()
-            }
+                if (result == 1){
+                    self.addAllToCart() {
+                        (result: Int) in
+                        
+                        count += 1
+                        
+                        print(count)
+                        if count == self.order.menuItems.count {
+                            self.addOrder()
+                        }
+                    }
+                }
         }
     }
 

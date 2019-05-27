@@ -48,6 +48,8 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     var promotions = [Promotion]()
     var storedOffsets = [Int: CGFloat]()
     var alertMessage = ""
+    var alertMessageColor = UIColor()
+    var alertMessageLink = ""
     var alertMessageIndex = -1
     var promotionsIndex = -1
     var restaurantsIndex = -1
@@ -393,6 +395,7 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
             let cell = tableView.dequeueReusableCell(withIdentifier: "alertMessageCell", for: indexPath)
             
             cell.textLabel?.text = alertMessage
+            cell.backgroundColor = alertMessageColor
             
             return cell
         } else if indexPath.section == restaurantsIndex {
@@ -509,8 +512,12 @@ class RestaurantsHomeViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         myTableView.deselectRow(at: indexPath, animated: true)
-        
-        if indexPath.section == promotionsIndex {
+        if indexPath.section == alertMessageIndex {
+            if let url = NSURL(string:alertMessageLink) {
+                UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+            }
+        }
+        else if indexPath.section == promotionsIndex {
 //            performSegue(withIdentifier: "toPromotionVC", sender: self)
         } else if indexPath.section == restaurantsIndex {
             performSegue(withIdentifier: "toRestaurantDetail", sender: self)
