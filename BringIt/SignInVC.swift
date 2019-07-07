@@ -182,7 +182,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         newUser.fullName = (retrievedUser["name"] as? String)!
         newUser.email = self.emailAddress.text!
         newUser.phoneNumber = (retrievedUser["phone"] as? String)!
-        newUser.gbiCredit = (retrievedUser["gbiCredit"] as? Double)!/100
+        newUser.gbiCredit = (Double(retrievedUser["gbi_credit"] as! String))!/100
         if (retrievedUser["already_ordered"] as? Int == 1) {
             newUser.isFirstOrder = false
         } else {

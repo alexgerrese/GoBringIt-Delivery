@@ -188,10 +188,12 @@ extension APICalls : TargetType {
 
 
 enum CombinedAPICalls {
-    case placeOrder(uid: String, restaurantID: String, payingWithCC: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String)
+    case placeOrder(uid: String, restaurantID: String, paymentValue: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String, rememberPayment: String)
     case sendPhoneVerification(phoneNumber: String)
     case checkPhoneVerificationCode(phoneNumber: String, code: String)
     case clearCart(uid: String)
+    case retrieveDukeCards(uid: String)
+    case deleteDukeCard(uid: String, cardId: String)
 }
 
 extension CombinedAPICalls : TargetType {
@@ -201,7 +203,7 @@ extension CombinedAPICalls : TargetType {
     var baseURL: URL { return URL(string: Environment.combinedBackendURL.absoluteString)! }
     var path: String {
         switch self {
-        case .placeOrder(_,_,_,_,_,_,_,_,_):
+        case .placeOrder(_,_,_,_,_,_,_,_,_,_):
             return "/placeOrder.php"
         case .sendPhoneVerification(_):
             return "/sendPhoneVerification.php"
@@ -209,12 +211,16 @@ extension CombinedAPICalls : TargetType {
             return "/checkPhoneVerification.php"
         case .clearCart(_):
             return "/clearCart.php"
+        case .retrieveDukeCards(_):
+            return "/retrieveDukeCards.php"
+        case .deleteDukeCard(_,_):
+            return "/deleteDukeCard.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart:
+        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart, .retrieveDukeCards, .deleteDukeCard:
             return .post
         }
 
@@ -226,7 +232,7 @@ extension CombinedAPICalls : TargetType {
     
     var task: Task {
         switch self {
-        case .placeOrder(let uid, let restaurantID, let payingWithCC, let isPickup, let amount, let deliveryFee, let creditUsed, let paymentType, let name):
+        case .placeOrder(let uid, let restaurantID, let payingWithCC, let isPickup, let amount, let deliveryFee, let creditUsed, let paymentType, let name, let rememberPayment):
             return .requestParameters(parameters: ["uid": uid,
                                                    "cid": restaurantID,
                                                    "pmt": payingWithCC,
@@ -236,7 +242,8 @@ extension CombinedAPICalls : TargetType {
                                                    "credit_used": creditUsed,
                                                    "payment_type": paymentType,
                                                    "name": name,
-                                                   "mobile": "1"
+                                                   "mobile": "1",
+                                                   "remember_payment": rememberPayment
                 ], encoding: JSONEncoding.default)
         case .sendPhoneVerification(let phoneNumber):
             return .requestParameters(parameters: ["phoneNumber": phoneNumber], encoding: JSONEncoding.default)
@@ -245,6 +252,10 @@ extension CombinedAPICalls : TargetType {
                                                 "verificationCode": code], encoding: JSONEncoding.default)
         case .clearCart(let uid):
             return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
+        case .retrieveDukeCards(let uid):
+            return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
+        case .deleteDukeCard(let uid, let cardId):
+            return .requestParameters(parameters: ["uid": uid, "cardId": cardId], encoding: JSONEncoding.default)
         }
     }
 }

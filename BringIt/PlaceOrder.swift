@@ -99,14 +99,25 @@ extension CheckoutVC {
         
         print("Adding to order")
         
-//        let filteredPaymentMethods = realm.objects(PaymentMethod.self).filter("userID = %@ AND isSelected = %@", user.id, NSNumber(booleanLiteral: true))
-        var payingWithCC = "0"
-        if order.paymentMethod.contains("••••") || order.paymentMethod.contains("Credit") {
-            payingWithCC = "1"
+        var paymentMethodValueString = order.paymentMethod!.paymentValue
+        if order.paymentMethod?.paymentMethodID == 0 || order.paymentMethod?.paymentMethodID == 5 {
+            paymentMethodValueString += "-" + order.paymentMethod!.paymentPin
         }
+        
         // Setup Moya provider and send network request
         let provider = MoyaProvider<CombinedAPICalls>()
-        provider.request(.placeOrder(uid: user.id, restaurantID: order.restaurantID, payingWithCC: payingWithCC, isPickup: order.isDelivery ? "0" : "1", amount: "\(order.subtotal*100)", deliveryFee: "\(order.deliveryFee*100)", creditUsed: "\(order.gbiCreditUsed*100)", paymentType: payingWithCC, name: user.fullName)) { result in
+        provider.request(.placeOrder(
+            uid: user.id,
+            restaurantID: order.restaurantID,
+            paymentValue: paymentMethodValueString,
+            isPickup: order.isDelivery ? "0" : "1",
+            amount: "\(order.subtotal*100)",
+            deliveryFee: "\(order.deliveryFee*100)",
+            creditUsed: "\(order.gbiCreditUsed*100)",
+            paymentType: "\(order.paymentMethod!.paymentMethodID)",
+            name: user.fullName,
+            rememberPayment: order.paymentMethod!.unsaved ? "1" : "-1"
+        )) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
@@ -131,10 +142,16 @@ extension CheckoutVC {
                         
                         print(self.order.id)
                         print(self.order.restaurantID)
-                        print(self.order.paymentMethod)
+                        print(self.order.paymentMethod!.paymentString)
                         print(self.order.subtotal)
                         print(self.order.deliveryFee)
                         print(self.order.isComplete)
+                        
+                        let paymentMethods = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "userID = %@", self.user.id))
+                        
+                        try! realm.write {
+                            realm.delete(paymentMethods)
+                        }
                         
                         // COMMENT NEXT LINE OUT TO TEST ORDERS (Won't be emailed to restaurant)
 //                        self.sendRestaurantConfirmationEmail()
@@ -160,7 +177,7 @@ extension CheckoutVC {
         
         let realm = try! Realm() // Initialize Realm
         
-        let paymentMethod = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "method = %@ AND userID = %@", order.paymentMethod, user.id))
+        let paymentMethod = realm.objects(PaymentMethod.self).filter(NSPredicate(format: "paymentValue = %@ AND userID = %@", order.paymentMethod!.paymentValue, user.id))
         if paymentMethod.count != 1 || paymentMethod.first == nil {
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
@@ -170,7 +187,7 @@ extension CheckoutVC {
             return
         }
         
-        let cardID = paymentMethod.first!.methodID
+        let cardID = paymentMethod.first!.paymentValue
         
         print("ABOUT TO CHARGE CREDIT CARD: \(cardID). AMOUNT = \(Int(calculateTotal() * 100))")
         

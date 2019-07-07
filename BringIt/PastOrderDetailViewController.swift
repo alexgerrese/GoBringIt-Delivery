@@ -284,7 +284,7 @@ class PastOrderDetailViewController: UIViewController, UITableViewDelegate, UITa
                 
                 cell.textLabel?.text = "Paid With"
                 if order.isDelivery {
-                    cell.detailTextLabel?.text = order.paymentMethod
+                    cell.detailTextLabel?.text = order.paidWithString
                 } else {
                     cell.detailTextLabel?.text = "N/A"
                 }

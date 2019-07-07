@@ -380,7 +380,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // Check that there is a payment method selected
-        if order.paymentMethod == "" && order.isDelivery {
+        if (order.paymentMethod == nil) && order.isDelivery {
             
             checkoutButton.isEnabled = false
             checkoutButtonView.backgroundColor = Constants.red
@@ -570,11 +570,11 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             order.address = filteredAddresses.first!
-                
+            order.paidWithString = order.paymentMethod?.paymentString ?? ""
         }
         
         // If paying via credit card, charge card first before placing order
-        if order.paymentMethod.contains("••••") {
+        if order.paymentMethod?.paymentMethodID == 2 {
             print("PAYING WITH STRIPE CREDIT CARD")
             chargeCard()
         } else {
@@ -663,9 +663,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 
                 cell.textLabel?.text = "Paying With"
                 
-                if order.paymentMethod != "" {
+                if order.paymentMethod != nil {
                 
-                    cell.detailTextLabel?.text = order.paymentMethod
+                    cell.detailTextLabel?.text = order.paymentMethod?.paymentString
+                    print(order.paymentMethod?.paymentPin)
                     
                 } else {
                     cell.detailTextLabel?.text = "Please select a payment method"
@@ -901,6 +902,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             paymentMethodsVC.paymentOptions = restaurant.paymentOptions
             paymentMethodsVC.comingFromCheckout = true
             paymentMethodsVC.order = order
+            paymentMethodsVC.selectedPaymentKey = order.paymentMethod?.compoundKey
         }
         else if segue.identifier == "toAddresses" {
             let addressesVC = segue.destination as! AddressesViewController

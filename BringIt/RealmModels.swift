@@ -41,13 +41,18 @@ class DeliveryAddress: Object {
 
 // Payment Method Model
 class PaymentMethod: Object {
-    @objc dynamic var userID = ""
-    @objc dynamic var methodID = ""
-    @objc dynamic var method = ""
-    @objc dynamic var isSelected = false
     
+    @objc dynamic var userID = ""
+    @objc dynamic var paymentValue = ""
+    @objc dynamic var paymentString = ""
+    @objc dynamic var paymentMethodID = -1
+    @objc dynamic var paymentPin = ""
+    @objc dynamic var isSelected = false
+    @objc dynamic var unsaved = false
+    @objc dynamic var compoundKey = ""
+
     override static func primaryKey() -> String? {
-        return "methodID"
+        return "compoundKey"
     }
 }
 
@@ -163,11 +168,12 @@ class Order: Object {
     @objc dynamic var restaurantID = ""
     @objc dynamic var orderTime: NSDate?
     @objc dynamic var address: DeliveryAddress?
-    @objc dynamic var paymentMethod = ""
+    @objc dynamic var paymentMethod: PaymentMethod?
     let menuItems = List<MenuItem>()
     @objc dynamic var subtotal = 0.0 
     @objc dynamic var deliveryFee = 0.0
     @objc dynamic var gbiCreditUsed = 0.0
     @objc dynamic var isComplete = false
     @objc dynamic var isDelivery = true
+    @objc dynamic var paidWithString = ""
 }

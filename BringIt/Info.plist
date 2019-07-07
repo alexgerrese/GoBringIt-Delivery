@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>APP_BACKEND_URL</key>
+	<string>$(APP_BACKEND_URL)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -22,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>2</string>
+	<key>COMBINED_BACKEND_URL</key>
+	<string>$(COMBINED_BACKEND_URL)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -65,9 +69,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>APP_BACKEND_URL</key>
-	<string>$(APP_BACKEND_URL)</string>
-	<key>COMBINED_BACKEND_URL</key>
-	<string>$(COMBINED_BACKEND_URL)</string>
 </dict>
 </plist>

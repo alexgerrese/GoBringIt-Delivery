@@ -94,8 +94,8 @@ extension CheckoutVC {
         // Get formatted payment method string
         var paymentMethodString = ""
         if order.isDelivery {
-            paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod)"
-            if order.paymentMethod.contains("••••") {
+            paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod?.paymentString)"
+            if order.paymentMethod?.paymentMethodID == 2 {
                 paymentMethodString.append(" - Paid")
             }
         }
@@ -221,7 +221,7 @@ extension CheckoutVC {
         var paymentMethodString = ""
         if order.isDelivery {
             paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod)"
-            if order.paymentMethod.contains("••••") {
+            if order.paymentMethod?.paymentMethodID == 2 {
                 paymentMethodString.append(" - Paid")
             }
         }
