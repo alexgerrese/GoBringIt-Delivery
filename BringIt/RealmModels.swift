@@ -32,11 +32,16 @@ class User: Object {
 
 // Address Model
 class DeliveryAddress: Object {
+    @objc dynamic var id = 0
     @objc dynamic var userID = ""
     @objc dynamic var campus = ""
     @objc dynamic var streetAddress = ""
     @objc dynamic var roomNumber = ""
     @objc dynamic var isCurrent = false
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 }
 
 // Payment Method Model

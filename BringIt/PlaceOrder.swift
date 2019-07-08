@@ -116,7 +116,8 @@ extension CheckoutVC {
             creditUsed: "\(order.gbiCreditUsed*100)",
             paymentType: "\(order.paymentMethod!.paymentMethodID)",
             name: user.fullName,
-            rememberPayment: order.paymentMethod!.unsaved ? "1" : "-1"
+            rememberPayment: order.paymentMethod!.unsaved ? "1" : "-1",
+            addressId:  "\(order.address!.id)"
         )) { result in
             switch result {
             case let .success(moyaResponse):

@@ -24,9 +24,6 @@ class NewAddressVC: UIViewController {
     @IBOutlet weak var roomNumberView: UIView!
     @IBOutlet weak var roomNumber: UITextField!
     
-    @IBOutlet weak var cityView: UIView!
-    @IBOutlet weak var city: UITextField!
-    
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var myActivityIndicator: UIActivityIndicatorView!
     
@@ -53,7 +50,6 @@ class NewAddressVC: UIViewController {
         campusView.layer.cornerRadius = Constants.cornerRadius
         streetAddressView.layer.cornerRadius = Constants.cornerRadius
         roomNumberView.layer.cornerRadius = Constants.cornerRadius
-        cityView.layer.cornerRadius = Constants.cornerRadius
         saveButton.layer.cornerRadius = Constants.cornerRadius
         myActivityIndicator.isHidden = true
         
@@ -61,7 +57,6 @@ class NewAddressVC: UIViewController {
         campus.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         streetAddress.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         roomNumber.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        city.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         // Setup auto Next and Done buttons for keyboard
         returnKeyHandler = IQKeyboardReturnKeyHandler(controller: self)
@@ -88,47 +83,108 @@ class NewAddressVC: UIViewController {
         if !checkFields() {
             return
         }
+        self.createNewAddress()
+        self.navigationController?.popViewController(animated: true)
+        
+        
         
         // Verifies address with Google Maps API. If valid, it creates the address
-        verifyAddress()
+//        verifyAddress()
     }
+//
+//    func verifyAddress() {
+//
+//        // Animate activity indicator
+//        startAnimating(activityIndicator: myActivityIndicator, button: saveButton)
+//
+//        let addressString = "\(streetAddress.text!), \(city.text!), NC, USA"
+//
+//        // Setup Moya provider and send network request
+//        let provider = MoyaProvider<APICalls>()
+//        provider.request(.verifyAddress(addressString: addressString)) { result in
+//            switch result {
+//            case let .success(moyaResponse):
+//                do {
+//
+//                    print("Status code: \(moyaResponse.statusCode)")
+//                    try moyaResponse.filterSuccessfulStatusCodes()
+//
+//                    let response = try moyaResponse.mapJSON() as! [String: Any]
+//                    print(response)
+//
+//                    if let success = response["success"] {
+//
+//                        if success as! Int == 1 {
+//
+//                            print("Address is verified with Google Maps.")
+//
+//                            self.createNewAddress()
+//
+//                            self.navigationController?.popViewController(animated: true)
+//
+//                        } else {
+//
+//                            self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .incorrectAddress, defaultButtonText: "Save and finish")
+//                        }
+//                    }
+//
+//            } catch {
+//                    // Miscellaneous network error
+//                    print("Network Error")
+//                    self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .networkError, defaultButtonText: "Save and finish")
+//
+//                }
+//            case .failure(_):
+//                // Connection failed
+//                print("Connection failed")
+//                self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: "Save and finish")
+//            }
+//        }
+//    }
     
-    func verifyAddress() {
+    /*
+     * Create new Realm Address
+     */
+    func createNewAddress() {
         
-        // Animate activity indicator
-        startAnimating(activityIndicator: myActivityIndicator, button: saveButton)
+        let realm = try! Realm() // Initialize Realm
         
-        let addressString = "\(streetAddress.text!), \(city.text!), NC, USA"
+        let address = DeliveryAddress()
+        address.userID = user.id
+        address.campus = campus.text!
+        address.streetAddress = "\(streetAddress.text!)" // TODO: Change from hardcoding to taking result from GMaps call?
+        address.roomNumber = roomNumber.text!
+        address.isCurrent = true
         
-        // Setup Moya provider and send network request
-        let provider = MoyaProvider<APICalls>()
-        provider.request(.verifyAddress(addressString: addressString)) { result in
+        let provider = MoyaProvider<CombinedAPICalls>()
+        provider.request(.addAddress(uid: user.id, address: address.streetAddress, apartment: address.roomNumber, campus: address.campus)) { result in
             switch result {
             case let .success(moyaResponse):
                 do {
-                    
+
                     print("Status code: \(moyaResponse.statusCode)")
                     try moyaResponse.filterSuccessfulStatusCodes()
-                    
+
                     let response = try moyaResponse.mapJSON() as! [String: Any]
                     print(response)
-                    
-                    if let success = response["success"] {
-                        
-                        if success as! Int == 1 {
-                            
-                            print("Address is verified with Google Maps.")
-                            
-                            self.createNewAddress()
-                            
-                            self.navigationController?.popViewController(animated: true)
-                            
+
+                    if let status = response["status"] as? String {
+
+                        if status == "success" {
+                            print("Saved Address")
+                            let addressId = response["address_id"] as? Int ?? 0
+                            try! realm.write() {
+                                for add in self.user.addresses {
+                                    add.isCurrent = false;
+                                }
+                                address.id = addressId
+                                self.user.addresses.append(address)
+                            }
                         } else {
-                            
                             self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .incorrectAddress, defaultButtonText: "Save and finish")
                         }
                     }
-                    
+
             } catch {
                     // Miscellaneous network error
                     print("Network Error")
@@ -141,28 +197,7 @@ class NewAddressVC: UIViewController {
                 self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .connectionFailed, defaultButtonText: "Save and finish")
             }
         }
-    }
     
-    /*
-     * Create new Realm Address
-     */
-    func createNewAddress() {
-        
-        let realm = try! Realm() // Initialize Realm
-        
-        let address = DeliveryAddress()
-        address.userID = user.id
-        address.campus = campus.text!
-        address.streetAddress = "\(streetAddress.text!), \(city.text!), NC" // TODO: Change from hardcoding to taking result from GMaps call?
-        address.roomNumber = roomNumber.text!
-        address.isCurrent = true
-        
-        try! realm.write() {
-            for add in user.addresses {
-                add.isCurrent = false;
-            }
-            user.addresses.append(address)
-        }
     }
     
     /*
@@ -173,9 +208,6 @@ class NewAddressVC: UIViewController {
             showError(button: saveButton, error: .fieldEmpty)
             return false
         } else if (streetAddress.text?.isBlank)! {
-            showError(button: saveButton, error: .fieldEmpty)
-            return false
-        } else if (city.text?.isBlank)! {
             showError(button: saveButton, error: .fieldEmpty)
             return false
         }

@@ -228,6 +228,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
                             print("Address doesn't already exist")
                             
                             let newAddress = DeliveryAddress()
+                            newAddress.id = (retrievedAddress["id"] as? Int) ?? 0
                             newAddress.userID = user.id
                             newAddress.streetAddress = retrievedAddress["streetAddress"] as! String
                             newAddress.roomNumber = retrievedAddress["roomNumber"] as! String

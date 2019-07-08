@@ -26,8 +26,7 @@ target 'BringIt' do
   #pod 'ObjectMapper' # for JSON object mapping
   pod 'SendGrid', :git => 'https://github.com/scottkawai/sendgrid-swift.git' # for sending emails
   pod 'SkeletonView' # For skeleton loading
-
-
+  pod 'Siren' # for forcing app updates
 
   target 'BringItTests' do
     inherit! :search_paths

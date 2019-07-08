@@ -188,12 +188,13 @@ extension APICalls : TargetType {
 
 
 enum CombinedAPICalls {
-    case placeOrder(uid: String, restaurantID: String, paymentValue: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String, rememberPayment: String)
+    case placeOrder(uid: String, restaurantID: String, paymentValue: String, isPickup: String, amount: String, deliveryFee: String, creditUsed: String, paymentType: String, name: String, rememberPayment: String, addressId: String)
     case sendPhoneVerification(phoneNumber: String)
     case checkPhoneVerificationCode(phoneNumber: String, code: String)
     case clearCart(uid: String)
     case retrieveDukeCards(uid: String)
     case deleteDukeCard(uid: String, cardId: String)
+    case addAddress(uid: String, address: String, apartment: String, campus: String)
 }
 
 extension CombinedAPICalls : TargetType {
@@ -203,7 +204,7 @@ extension CombinedAPICalls : TargetType {
     var baseURL: URL { return URL(string: Environment.combinedBackendURL.absoluteString)! }
     var path: String {
         switch self {
-        case .placeOrder(_,_,_,_,_,_,_,_,_,_):
+        case .placeOrder(_,_,_,_,_,_,_,_,_,_,_):
             return "/placeOrder.php"
         case .sendPhoneVerification(_):
             return "/sendPhoneVerification.php"
@@ -215,12 +216,14 @@ extension CombinedAPICalls : TargetType {
             return "/retrieveDukeCards.php"
         case .deleteDukeCard(_,_):
             return "/deleteDukeCard.php"
+        case .addAddress(_,_,_,_):
+            return "/addAddress.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart, .retrieveDukeCards, .deleteDukeCard:
+        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart, .retrieveDukeCards, .deleteDukeCard, .addAddress:
             return .post
         }
 
@@ -232,7 +235,7 @@ extension CombinedAPICalls : TargetType {
     
     var task: Task {
         switch self {
-        case .placeOrder(let uid, let restaurantID, let payingWithCC, let isPickup, let amount, let deliveryFee, let creditUsed, let paymentType, let name, let rememberPayment):
+        case .placeOrder(let uid, let restaurantID, let payingWithCC, let isPickup, let amount, let deliveryFee, let creditUsed, let paymentType, let name, let rememberPayment, let addressId):
             return .requestParameters(parameters: ["uid": uid,
                                                    "cid": restaurantID,
                                                    "pmt": payingWithCC,
@@ -243,7 +246,8 @@ extension CombinedAPICalls : TargetType {
                                                    "payment_type": paymentType,
                                                    "name": name,
                                                    "mobile": "1",
-                                                   "remember_payment": rememberPayment
+                                                   "remember_payment": rememberPayment,
+                                                   "address_id": addressId
                 ], encoding: JSONEncoding.default)
         case .sendPhoneVerification(let phoneNumber):
             return .requestParameters(parameters: ["phoneNumber": phoneNumber], encoding: JSONEncoding.default)
@@ -256,6 +260,12 @@ extension CombinedAPICalls : TargetType {
             return .requestParameters(parameters: ["uid": uid], encoding: JSONEncoding.default)
         case .deleteDukeCard(let uid, let cardId):
             return .requestParameters(parameters: ["uid": uid, "cardId": cardId], encoding: JSONEncoding.default)
+        case .addAddress(let uid, let address, let apartment, let campus):
+            return .requestParameters(parameters: ["uid" : uid,
+                                                   "address" : address,
+                                                   "apartment" : apartment,
+                                                   "campus" : campus
+                ], encoding: JSONEncoding.default)
         }
     }
 }

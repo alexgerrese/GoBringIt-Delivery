@@ -79,11 +79,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
         setCustomBackButton()
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
-        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
+//        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
         viewCartView.backgroundColor = UIColor.white
         self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         self.viewCartView.layer.shadowOpacity = 0.15
         self.viewCartView.layer.shadowRadius = Constants.shadowRadius
+        checkCart()
     }
     
     func setupRealm() {
@@ -163,18 +164,19 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
             
+            viewCartView.isHidden = false
             // Check if iPhone X or iPhone Xs Max
-            if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
-                viewCartViewToBottom.constant = 0
-            } else {
-                viewCartViewToBottom.constant = 16
-            }
+//            if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
+//                viewCartViewToBottom.constant = 0
+//            } else {
+//                viewCartViewToBottom.constant = 16
+//            }
            
         } else {
             
             print("Cart does not exist. Hide View Cart button")
-            
-            viewCartViewToBottom.constant = viewCartView.frame.height
+            viewCartView.isHidden = true
+//            viewCartViewToBottom.constant = viewCartView.frame.height
         }
         
         UIView.animate(withDuration: 0.4, animations: {

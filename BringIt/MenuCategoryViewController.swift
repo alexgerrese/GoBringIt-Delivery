@@ -70,7 +70,8 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         self.viewCartView.layer.shadowColor = Constants.lightGray.cgColor
         self.viewCartView.layer.shadowOpacity = 0.15
         self.viewCartView.layer.shadowRadius = Constants.shadowRadius
-        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
+        checkCart()
+//        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
     }
     
     func setupRealm() {
@@ -104,7 +105,7 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
         let predicate = NSPredicate(format: "restaurantID = %@ AND isComplete = %@", restaurantID, NSNumber(booleanLiteral: false))
         let filteredOrders = realm.objects(Order.self).filter(predicate)
         if filteredOrders.count > 0 {
-            
+            viewCartView.isHidden = false
             print("Cart exists. Showing View Cart button")
             
             cart = filteredOrders.first!
@@ -113,18 +114,12 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
             print(cart.menuItems)
             
             cartSubtotal.text = "$" + String(format: "%.2f", cart.subtotal)
-            
-            // Check if iPhone X or iPhone Xs Max
-            if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
-                viewCartViewToBottom.constant = 0
-            } else {
-                viewCartViewToBottom.constant = 16
-            }
+
         } else {
             
             print("Cart does not exist. Hide View Cart button")
-            
-            viewCartViewToBottom.constant = viewCartView.frame.height
+            viewCartView.isHidden = true
+//            viewCartViewToBottom.constant = viewCartView.frame.height
         }
 
         UIView.animate(withDuration: 0.4, animations: {
