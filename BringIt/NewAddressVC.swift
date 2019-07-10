@@ -84,8 +84,6 @@ class NewAddressVC: UIViewController {
             return
         }
         self.createNewAddress()
-        self.navigationController?.popViewController(animated: true)
-        
         
         
         // Verifies address with Google Maps API. If valid, it creates the address
@@ -179,6 +177,7 @@ class NewAddressVC: UIViewController {
                                 }
                                 address.id = addressId
                                 self.user.addresses.append(address)
+                                self.navigationController?.popViewController(animated: true)
                             }
                         } else {
                             self.showError(button: self.saveButton, activityIndicator: self.myActivityIndicator, error: .incorrectAddress, defaultButtonText: "Save and finish")

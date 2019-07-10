@@ -27,9 +27,6 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Setup Realm
-        setupRealm()
         
         // Setup UI
         setupUI()
