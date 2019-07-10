@@ -11,4 +11,4 @@
 APP_BACKEND_URL = https:/$()/gobringit-test.herokuapp.com/includes/app
 COMBINED_BACKEND_URL = https:/$()/gobringit-test.herokuapp.com/includes/combinedBackend
 APP_NAME = BringIt (Test)
-APP_BUNDLE_ID = com.alexgerrese.BringIt.test
+PRODUCT_BUNDLE_IDENTIFIER = com.alexgerrese.BringIt.test

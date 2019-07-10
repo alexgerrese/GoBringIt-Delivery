@@ -13,6 +13,7 @@ PODS:
     - Realm (= 3.16.0)
   - Result (4.1.0)
   - SendGrid (2.1.0)
+  - Siren (5.1.0)
   - SkeletonView (1.5)
   - Stripe (15.0.1)
 
@@ -22,6 +23,7 @@ DEPENDENCIES:
   - Moya
   - RealmSwift
   - SendGrid (from `https://github.com/scottkawai/sendgrid-swift.git`)
+  - Siren
   - SkeletonView
   - Stripe
 
@@ -33,6 +35,7 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - Result
+    - Siren
     - SkeletonView
     - Stripe
 
@@ -53,9 +56,10 @@ SPEC CHECKSUMS:
   RealmSwift: 2ee401dbcc188706261921326146f5a539d4d4a7
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   SendGrid: 07926b96696f2b2e3b05398be14ac951796a6364
+  Siren: 1dbdbd5dccd55865369a83f3d57c8eb818ac1556
   SkeletonView: 6cbb80f82f8bdee3f9093e2fa03b84819b4bd826
   Stripe: 2c4d0a88817361a102886315ff452d90f65e898b
 
-PODFILE CHECKSUM: 5e845434ca1f03da4c3ce2379c1072043d1784ac
+PODFILE CHECKSUM: 10c2ca170994b7202fbf78312a5d1093e2cae772
 
 COCOAPODS: 1.7.1

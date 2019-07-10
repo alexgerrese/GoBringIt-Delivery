@@ -11,6 +11,7 @@ import IQKeyboardManagerSwift
 import Stripe
 import SendGrid
 import RealmSwift
+import Siren
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        window?.makeKeyAndVisible()
+        
+        sirenAlert()
         
         // Set up keyboard manager
         IQKeyboardManager.shared.enable = true
@@ -163,6 +168,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    
+    // forces app update if user doesn't have latest version
+    // examples here https://github.com/ArtSabintsev/Siren/blob/master/Example/Example/AppDelegate.swift
+    /// An example on how to customize multiple managers at once.
+    func sirenAlert() {
+        let siren = Siren.shared
+        siren.presentationManager = PresentationManager(//alertTintColor: .black,
+                                                        appName: "GoBringIt",
+                                                        alertTitle: "Update Available",
+                                                        nextTimeButtonTitle: "Next time",
+                                                        skipButtonTitle: "Skip")
+        siren.rulesManager = RulesManager(majorUpdateRules: .critical,
+                                          minorUpdateRules: .annoying,
+                                          patchUpdateRules: .critical,
+                                          revisionUpdateRules: .relaxed)
+        
+        siren.wail { results in
+            switch results {
+            case .success(let updateResults):
+                print("AlertAction ", updateResults.alertAction)
+                print("Localization ", updateResults.localization)
+                print("Model ", updateResults.model)
+                print("UpdateType ", updateResults.updateType)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 
 }
