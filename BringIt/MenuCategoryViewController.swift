@@ -89,6 +89,8 @@ class MenuCategoryViewController: UIViewController, UITableViewDelegate, UITable
     func setupTableView() {
         
         // Set tableView cells to custom height and automatically resize if needed
+        self.myTableView.delegate = self
+        self.myTableView.dataSource = self
         self.myTableView.estimatedRowHeight = 150
         self.myTableView.rowHeight = UITableView.automaticDimension
         self.myTableView.setNeedsLayout()

@@ -1078,19 +1078,22 @@ extension MenuCategoryViewController {
 //                            realm.add(menuItem)
                         }
                         
+                        let sortedMenuItems = self.menuItems.sorted(by: {$0.name < $1.name})
                         
+                        self.menuItems = sortedMenuItems
                     }
                     
-                    let sortedMenuItems = self.menuItems.sorted(by: {$0.name < $1.name})
-                    self.menuItems = sortedMenuItems
+                   
+
                     //                    self.menuItems = realm.objects(MenuItem.self).sorted(byKeyPath: "name")
-                    self.view.stopSkeletonAnimation()
-                    self.view.hideSkeleton()
-                    self.myTableView.rowHeight = UITableView.automaticDimension
-                    self.myTableView.setNeedsLayout()
-                    self.myTableView.layoutIfNeeded()
-                    self.myTableView.reloadData()
-                    
+                    DispatchQueue.main.async{
+                        self.view.stopSkeletonAnimation()
+                        self.view.hideSkeleton()
+                        self.myTableView.rowHeight = UITableView.automaticDimension
+                        self.myTableView.setNeedsLayout()
+                        self.myTableView.layoutIfNeeded()
+                        self.myTableView.reloadData()
+                    }
                 } catch {
                     // Miscellaneous network error
                     print("Network error")

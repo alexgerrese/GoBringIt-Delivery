@@ -76,7 +76,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func setupUI() {
-        
         setCustomBackButton()
         viewCartButtonView.layer.cornerRadius = Constants.cornerRadius
 //        viewCartViewToBottom.constant = viewCartView.frame.height // start offscreen
