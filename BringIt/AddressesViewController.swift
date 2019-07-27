@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import IQKeyboardManagerSwift
+import Moya
 
 class AddressesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -24,6 +25,8 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     var addresses = List<DeliveryAddress>()
     var canPickup = Bool()
     var order = Order()
+    var user = User()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +54,9 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Check if addresses for current User already exists in Realm
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
-        let user = realm.objects(User.self)
-        if user != nil {
-            let retrievedUser = user.filter(predicate).first
-            if retrievedUser?.addresses != nil {
-                addresses = (retrievedUser?.addresses)!
-            }
-        }
+        user = realm.objects(User.self).filter(predicate).first!
+        
+        addresses = (user.addresses)
         
         if !(addresses.count > 0) {
             
@@ -171,6 +170,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
             // Delete the row from the data source
             try! realm.write {
                 let address = addresses[indexPath.row]
+                deleteAddress(id: address.id)
                 realm.delete(address)
             }
             
@@ -181,6 +181,30 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
             updateViewConstraints()
         }
     }
+    
+    func deleteAddress(id: String){
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<CombinedAPICalls>()
+        provider.request(.deleteAddress(uid: user.id, addressId: id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    print(response)
+                } catch {
+                    // Miscellaneous network error
+                    print("Network Error")
+                }
+            case .failure(_):
+                // Connection failed
+                print("Connection failed")
+            }
+        }
+    }
+    
     
     // MARK: - Navigation
 

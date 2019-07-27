@@ -195,6 +195,7 @@ enum CombinedAPICalls {
     case retrieveDukeCards(uid: String)
     case deleteDukeCard(uid: String, cardId: String)
     case addAddress(uid: String, address: String, apartment: String, campus: String)
+    case deleteAddress(uid: String, addressId: String)
 }
 
 extension CombinedAPICalls : TargetType {
@@ -218,12 +219,14 @@ extension CombinedAPICalls : TargetType {
             return "/deleteDukeCard.php"
         case .addAddress(_,_,_,_):
             return "/addAddress.php"
+        case .deleteAddress(_,_):
+            return "/deleteAddress.php"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart, .retrieveDukeCards, .deleteDukeCard, .addAddress:
+        case .placeOrder, .sendPhoneVerification, .checkPhoneVerificationCode, .clearCart, .retrieveDukeCards, .deleteDukeCard, .addAddress, .deleteAddress:
             return .post
         }
 
@@ -266,6 +269,8 @@ extension CombinedAPICalls : TargetType {
                                                    "apartment" : apartment,
                                                    "campus" : campus
                 ], encoding: JSONEncoding.default)
+        case .deleteAddress(let uid, let addressId):
+            return .requestParameters(parameters: ["uid": uid, "addressId": addressId], encoding: JSONEncoding.default)
         }
     }
 }
