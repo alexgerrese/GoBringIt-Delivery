@@ -129,8 +129,8 @@ extension CheckoutVC {
             html: "<p style=\"text-align:center\"><small>Copyright 2019 © GoBringIt</small></p>"
         )
         
-        email.trackingSettings.clickTracking = ClickTracking(section: .htmlBody)
-        email.trackingSettings.openTracking = OpenTracking(location: .bottom)
+        email.parameters?.trackingSettings.clickTracking = ClickTracking(section: .htmlBody)
+        email.parameters?.trackingSettings.openTracking = OpenTracking(location: .bottom)
 
 //        do {
 //            try Session.shared.send(request: email) { (response) in
@@ -212,7 +212,7 @@ extension CheckoutVC {
         let address = order.address
         var addressString = ""
         if order.address?.streetAddress != "" {
-            addressString = "<br><b>Delivery Address:</b><br>\(address?.streetAddress)<br>\(address?.roomNumber)<br>Durham, NC"
+            addressString = "<br><b>Delivery Address:</b><br>\(address?.streetAddress ?? "")<br>\(address?.roomNumber ?? "")<br>Durham, NC"
         } else {
             addressString = "<br><b>Pickup order"
         }
@@ -220,7 +220,7 @@ extension CheckoutVC {
         // Get formatted payment method string
         var paymentMethodString = ""
         if order.isDelivery {
-            paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod)"
+            paymentMethodString = "<br><b>Payment Method:</b> \(order.paymentMethod?.paymentString ?? "")"
             if order.paymentMethod?.paymentMethodID == 2 {
                 paymentMethodString.append(" - Paid")
             }
@@ -254,7 +254,7 @@ extension CheckoutVC {
         )
         let contents = Content.emailBody(
             plain: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)\(addressString)\(paymentMethodString)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>",
-            html: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod)<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>"
+            html: "<p>Receipt for \(restaurantName):<br><br><b>Order #:</b> \(order.id)<br><b>Order time:</b> \(orderTimeString)<br><br><b>Name:</b> \(fullName)<br><b>Phone number:</b><br>\(user.phoneNumber.toPhoneNumber())<br><b>Email address:</b><br>\(user.email)\(addressString)<br><b>Payment Method:</b> \(order.paymentMethod?.paymentString ?? "Not found")<br><br><b>Order Details:</b><br>\(dishesString)<br><b>Subtotal:</b> $\(String(format: "%.2f", order.subtotal))\(deliveryFeeString)<br><b>Total:</b> $\(String(format: "%.2f", total))<br><br>Thank you for using the GoBringIt app :) Don't forget to tip your driver!</p>"
         )
         let email = Email(
             personalizations: [personalizations],

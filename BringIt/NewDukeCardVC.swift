@@ -89,7 +89,7 @@ class NewDukeCardVC: UIViewController, UITextFieldDelegate {
         
         let realm = try! Realm() // Initialize Realm
 
-        var newPaymentFood = PaymentMethod()
+        let newPaymentFood = PaymentMethod()
         newPaymentFood.paymentString = "Duke Food Points •••• \(String(cardNumber.text!.suffix(4)))"
         newPaymentFood.paymentValue = cardNumber.text!
         newPaymentFood.userID = user.id
@@ -99,7 +99,7 @@ class NewDukeCardVC: UIViewController, UITextFieldDelegate {
         newPaymentFood.compoundKey = "\(newPaymentFood.paymentMethodID)-\(newPaymentFood.paymentValue)"
 
 
-        var newPaymentFlex = PaymentMethod()
+        let newPaymentFlex = PaymentMethod()
         newPaymentFlex.paymentString = "Duke Flex •••• \(String(cardNumber.text!.suffix(4)))"
         newPaymentFlex.paymentValue = cardNumber.text!
         newPaymentFlex.userID = user.id

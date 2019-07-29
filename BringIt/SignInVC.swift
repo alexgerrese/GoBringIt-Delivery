@@ -194,7 +194,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         }
         
         // Check if user has address on file
-        fetchExistingAddress(user: newUser)
+//        fetchExistingAddress(user: newUser)
     }
     
     /*
@@ -228,7 +228,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
                             print("Address doesn't already exist")
                             
                             let newAddress = DeliveryAddress()
-                            newAddress.id = (retrievedAddress["id"] as? Int) ?? 0
+                            newAddress.id = retrievedAddress["id"] as! String
                             newAddress.userID = user.id
                             newAddress.streetAddress = retrievedAddress["streetAddress"] as! String
                             newAddress.roomNumber = retrievedAddress["roomNumber"] as! String

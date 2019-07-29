@@ -32,7 +32,7 @@ class User: Object {
 
 // Address Model
 class DeliveryAddress: Object {
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     @objc dynamic var userID = ""
     @objc dynamic var campus = ""
     @objc dynamic var streetAddress = ""

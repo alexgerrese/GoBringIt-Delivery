@@ -26,7 +26,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
     var canPickup = Bool()
     var order = Order()
     var user = User()
-
+    var selectedAddressId = "-1"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +56,9 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
         let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
         user = realm.objects(User.self).filter(predicate).first!
         
-        addresses = (user.addresses)
-        
-        if !(addresses.count > 0) {
-            
-            // TO-DO: Handle empty state
-            
-        }
+        addresses = user.addresses
+        fetchExistingAddresss()
+
     }
     
     /* Do initial UI setup */
@@ -101,7 +97,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "addressCell", for: indexPath)
         
         let address = addresses[indexPath.row]
-        let addressString = address.streetAddress + "\n" + address.roomNumber + "\n" + "Durham, NC"
+        let addressString = address.streetAddress + " (" + address.roomNumber + "), campus: " + address.campus
         
         cell.textLabel?.text = addressString
         
@@ -204,6 +200,68 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
     }
+    
+    func fetchExistingAddresss() {
+        let realm = try! Realm() // Initialize Realm
+        
+        print("Fetching existing addresses")
+        
+        // Setup Moya provider and send network request
+        let provider = MoyaProvider<CombinedAPICalls>()
+        provider.request(.retrieveAddresses(uid: user.id)) { result in
+            switch result {
+            case let .success(moyaResponse):
+                do {
+                    print("Status code: \(moyaResponse.statusCode)")
+                    try moyaResponse.filterSuccessfulStatusCodes()
+                    
+                    let response = try moyaResponse.mapJSON() as! [String: Any]
+                    
+                    print("Retrieved Addresses: \(response)")
+                    
+                    if let success = response["success"] {
+                        
+                        if success as! Int == 1 {
+
+                            // Add addresses
+                            let addressesResponse = response["addresses"] as! [AnyObject]
+                            print("Addresses: \(addressesResponse)")
+                            let addressesToAdd = List<DeliveryAddress>()
+                            for retrievedAddress in addressesResponse {
+                                print(retrievedAddress)
+                                
+                                let newAddress = DeliveryAddress()
+                                newAddress.id = retrievedAddress["id"] as! String
+                                newAddress.userID = self.user.id
+                                newAddress.streetAddress = retrievedAddress["streetAddress"] as! String
+                                newAddress.roomNumber = retrievedAddress["roomNumber"] as! String
+                                newAddress.campus = (retrievedAddress["campus"] as! String) != "" ? retrievedAddress["campus"] as! String : "N/A"
+                                if (newAddress.id == self.selectedAddressId){
+                                    newAddress.isCurrent = true
+                                }
+                                addressesToAdd.append(newAddress)
+                            }
+                            try! realm.write() {
+                                realm.add(addressesToAdd, update: .modified)
+                                self.user.addresses.removeAll()
+                                self.user.addresses.append(objectsIn: addressesToAdd)
+                            }
+                            self.addresses = self.user.addresses
+
+                            self.myTableView.reloadData()
+                        }
+                    }
+                } catch {
+                    // Miscellaneous network error
+                    print("Miscellaneous network error")
+                }
+            case .failure(_):
+                // Connection failed
+                print("Connection failed")
+            }
+        }
+    }
+    
     
     
     // MARK: - Navigation

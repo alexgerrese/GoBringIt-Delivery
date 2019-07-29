@@ -1475,7 +1475,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRx-5y-8bG">
                                         <rect key="frame" x="0.0" y="116" width="355" height="50"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Apt/Room #" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OIb-OV-eHt">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Building/Dorm" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OIb-OV-eHt">
                                                 <rect key="frame" x="10" y="0.0" width="340" height="50"/>
                                                 <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="BrandonGrotesque-Regular" family="Brandon Grotesque" pointSize="17"/>
@@ -2042,7 +2042,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="706"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="bannerCell" rowHeight="346" id="8YO-hV-cDe" customClass="BannerTableViewCell" customModule="BringIt" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="bannerCell" rowHeight="346" id="8YO-hV-cDe" customClass="BannerTableViewCell" customModule="BringIt" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="346"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8YO-hV-cDe" id="TfJ-bO-4Jz">
@@ -2050,7 +2050,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="19U-wp-h06">
-                                                            <rect key="frame" x="0.0" y="0.0" width="415" height="239.66666666666666"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="239.66666666666666"/>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                             </userDefinedRuntimeAttributes>
@@ -2116,7 +2116,7 @@
                                                     <outlet property="restaurantName" destination="17c-da-wuZ" id="2lx-Rb-dZ2"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="callRestaurantCell" textLabel="zid-gX-q8a" detailTextLabel="A5t-jc-WPP" style="IBUITableViewCellStyleValue1" id="Ede-0y-WaE">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="callRestaurantCell" textLabel="zid-gX-q8a" detailTextLabel="A5t-jc-WPP" style="IBUITableViewCellStyleValue1" id="Ede-0y-WaE">
                                                 <rect key="frame" x="0.0" y="401.33333333333331" width="375" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ede-0y-WaE" id="iZv-I4-3UO">
@@ -2152,7 +2152,7 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="featuredDishTableViewCell" rowHeight="202" id="dIX-b9-Za3" customClass="FeaturedDishTableViewCell" customModule="BringIt" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="featuredDishTableViewCell" rowHeight="202" id="dIX-b9-Za3" customClass="FeaturedDishTableViewCell" customModule="BringIt" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="445.33333333333326" width="375" height="202"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dIX-b9-Za3" id="yjP-Sf-YLR" customClass="FeaturedDishTableViewCell" customModule="BringIt" customModuleProvider="target">
@@ -2271,7 +2271,7 @@
                                                     <outlet property="myCollectionViewWidth" destination="DWl-q5-Gsa" id="7UO-s0-3zN"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menuCategoryCell" textLabel="c6r-14-kW7" style="IBUITableViewCellStyleDefault" id="AXf-KW-AZ7">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menuCategoryCell" textLabel="c6r-14-kW7" style="IBUITableViewCellStyleDefault" id="AXf-KW-AZ7">
                                                 <rect key="frame" x="0.0" y="647.33333333333326" width="375" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AXf-KW-AZ7" id="tpP-Dd-tiK">
@@ -2297,7 +2297,7 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="announcementCell" textLabel="UAk-QN-YUF" style="IBUITableViewCellStyleDefault" id="qJU-TY-oFG">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="announcementCell" textLabel="UAk-QN-YUF" style="IBUITableViewCellStyleDefault" id="qJU-TY-oFG">
                                                 <rect key="frame" x="0.0" y="691.33333333333326" width="375" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qJU-TY-oFG" id="Mj5-Uj-pHY">

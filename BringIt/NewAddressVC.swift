@@ -170,7 +170,7 @@ class NewAddressVC: UIViewController {
 
                         if status == "success" {
                             print("Saved Address")
-                            let addressId = response["address_id"] as? Int ?? 0
+                            let addressId = response["address_id"] as! String
                             try! realm.write() {
                                 for add in self.user.addresses {
                                     add.isCurrent = false;

@@ -48,6 +48,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let defaultButtonText = "Checkout"
     var travelTimeMessage = ""
     let dispatch_group = DispatchGroup()
+    var addressId = -1
     
     // Section Indices
     var deliveryDetailsIndex = 0
@@ -369,6 +370,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if order.isDelivery {
             let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             
+            
             if filteredAddresses.count == 0 {
                 
                 checkoutButton.isEnabled = false
@@ -666,7 +668,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 if order.paymentMethod != nil {
                 
                     cell.detailTextLabel?.text = order.paymentMethod?.paymentString
-                    print(order.paymentMethod?.paymentPin)
+                    print(order.paymentMethod?.paymentPin ?? "couldn't print pin")
                     
                 } else {
                     cell.detailTextLabel?.text = "Please select a payment method"
@@ -904,11 +906,15 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             paymentMethodsVC.order = order
             paymentMethodsVC.selectedPaymentKey = order.paymentMethod?.compoundKey
         }
-        else if segue.identifier == "toAddresses" {
+        else if segue.identifier == "toAddressesFromCheckout" {
             let addressesVC = segue.destination as! AddressesViewController
+            let realm = try! Realm() // Initialize Realm
+            let filteredAddresses = realm.objects(DeliveryAddress.self).filter("userID = %@ AND isCurrent = %@", user.id, NSNumber(booleanLiteral: true))
             addressesVC.order = order
+            if filteredAddresses.count > 0 {
+                addressesVC.selectedAddressId = filteredAddresses.first!.id
+            }
         }
-
 
     }
 
