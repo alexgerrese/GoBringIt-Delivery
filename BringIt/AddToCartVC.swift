@@ -124,13 +124,13 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.viewCartView.layer.shadowOpacity = 0.15
         self.viewCartView.layer.shadowRadius = Constants.shadowRadius
         
-        // Check if iPhone X or iPhone Xs Max
-        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
-            viewCartViewToBottom.constant = 0
-        } else {
-            viewCartViewToBottom.constant = 16
-        }
-        
+//        // Check if iPhone X or iPhone Xs Max
+//        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
+//            viewCartViewToBottom.constant = 0
+//        } else {
+//            viewCartViewToBottom.constant = 16
+//        }
+//        
         checkButtonStatus()
     }
     

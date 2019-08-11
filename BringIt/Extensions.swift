@@ -222,7 +222,7 @@ extension String {
     
     // Validate password length
     var isAcceptablePasswordLength: Bool {
-        return (self.count >= 8)
+        return (self.count >= 4)
     }
     
     public func toPhoneNumber() -> String {

@@ -180,7 +180,7 @@ extension RestaurantsHomeViewController {
                             restaurant.email = retrievedRestaurantInfo["email"] as! String
                             restaurant.name = retrievedRestaurantInfo["name"] as! String
                             restaurant.cuisineType = retrievedRestaurantInfo["cuisineType"] as! String
-                            restaurant.restaurantHours = retrievedRestaurantInfo["restaurantHours"] as! String
+                            restaurant.restaurantHours = retrievedRestaurantInfo["restaurantHours"] as? String ?? ""
                             restaurant.phoneNumber = (retrievedRestaurantInfo["phoneNumber"] as! String)
                             restaurant.minimumPrice = Double(retrievedRestaurantInfo["minimumPrice"] as! String)!
                             restaurant.paymentOptions = retrievedRestaurantInfo["paymentOptions"] as! String

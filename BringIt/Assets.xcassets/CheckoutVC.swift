@@ -203,12 +203,12 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         checkoutView.layer.shadowOffset = CGSize.zero
         myActivityIndicator.isHidden = true
         
-        // Check if iPhone X or iPhone Xs Max
-        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
-            checkoutViewToBottom.constant = 0
-        } else {
-            checkoutViewToBottom.constant = 16
-        }
+//        // Check if iPhone X or iPhone Xs Max
+//        if UIScreen.main.nativeBounds.height == 2688 || UIScreen.main.nativeBounds.height == 2436 {
+//            checkoutViewToBottom.constant = 0
+//        } else {
+//            checkoutViewToBottom.constant = 16
+//        }
         
         // Setup checking out view
         checkingOutView.isHidden = true

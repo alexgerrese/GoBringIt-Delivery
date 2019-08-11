@@ -561,7 +561,7 @@
 				TargetAttributes = {
 					11021FF11CE68A83003D82FB = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = JVTS2SVU4G;
+						DevelopmentTeam = 3Y5399K9N5;
 						LastSwiftMigration = 0900;
 					};
 					110220071CE68A83003D82FB = {
@@ -965,7 +965,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JVTS2SVU4G;
+				DEVELOPMENT_TEAM = 3Y5399K9N5;
 				INFOPLIST_FILE = BringIt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -983,7 +983,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JVTS2SVU4G;
+				DEVELOPMENT_TEAM = 3Y5399K9N5;
 				INFOPLIST_FILE = BringIt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1120,7 +1120,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JVTS2SVU4G;
+				DEVELOPMENT_TEAM = 3Y5399K9N5;
 				INFOPLIST_FILE = BringIt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1220,7 +1220,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = JVTS2SVU4G;
+				DEVELOPMENT_TEAM = 3Y5399K9N5;
 				INFOPLIST_FILE = BringIt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -271,14 +271,14 @@ class PaymentMethodsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         self.title = "Payment Methods"
         
-        if paymentOptionsArray!.contains("stripe-credit") {
+        if paymentOptionsArray!.contains("stripe-credit") || !comingFromCheckout {
             addCreditCardButton.isHidden = false
             retrieveCreditCards()
         } else {
             addCreditCardButton.isHidden = true
         }
         
-        if paymentOptionsArray!.contains("duke-food-points") {
+        if paymentOptionsArray!.contains("duke-food-points") || !comingFromCheckout {
             addDukeCardButton.isHidden = false
             retrieveDukeCards()
         } else {
