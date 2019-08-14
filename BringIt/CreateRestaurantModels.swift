@@ -1059,7 +1059,7 @@ extension MenuCategoryViewController {
 //                                    realm.add(side)
 //                                }
                                 
-                                if side.isRequired && (side.price == 0 || side.price == 0.00) {
+                                if (side.isRequired) {
                                     menuItem.sides.append(side)
                                 } else {
                                     menuItem.extras.append(side)

@@ -173,6 +173,12 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             }
         }
         
+        for side in menuItem.sides {
+            if side.isSelected {
+                totalForSingleItem += side.price
+            }
+        }
+        
         // Multiply by quantity
         let subtotal = totalForSingleItem * Double(menuItem.quantity)
         cartSubtotal.text = "$" + String(format: "%.2f", subtotal)
@@ -475,6 +481,9 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
 //            let filteredSide = sides.filter(predicate)[indexPath.row]
             
             cell.textLabel?.text = filteredSide.name
+            let price = Double(filteredSide.price)
+            print(price)
+            cell.detailTextLabel?.text = "+$" + String(format: "%.2f", price)
             
             // Change checkmark color
             cell.tintColor = Constants.green
@@ -580,6 +589,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                         }
                     }
                 }
+                calculateSubtotal()
   
             } else {
                 
@@ -618,7 +628,6 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                     // Else if allowed to select row, select it
                     else if numToPick > numSelected && i == indexPath.row {
                         try! realm.write() {
-                            
                             filteredSides[i].isSelected = true
                             print("Selected \(filteredSides[i])")
                         }

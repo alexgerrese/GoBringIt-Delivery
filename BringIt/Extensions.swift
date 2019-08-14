@@ -64,7 +64,7 @@ extension UIViewController {
             button.setTitle("Please fill in all fields.", for: .normal)
             button.isEnabled = false
         case .unacceptablePasswordLength:
-            button.setTitle("Password must be at least 8 characters.", for: .normal)
+            button.setTitle("Password must be at least 4 characters.", for: .normal)
             button.isEnabled = false
         case .userAlreadyExists:
             button.setTitle("Email already connected to an account. ", for: .normal)

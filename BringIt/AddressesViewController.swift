@@ -97,7 +97,12 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "addressCell", for: indexPath)
         
         let address = addresses[indexPath.row]
-        let addressString = address.streetAddress + " (" + address.roomNumber + "), campus: " + address.campus
+        var addressString = ""
+        if (address.roomNumber != ""){
+            addressString = address.streetAddress + " (" + address.roomNumber + "), campus: " + address.campus
+        } else {
+            addressString = address.streetAddress + ", campus: " + address.campus
+        }
         
         cell.textLabel?.text = addressString
         
@@ -234,7 +239,7 @@ class AddressesViewController: UIViewController, UITableViewDelegate, UITableVie
                                 newAddress.id = retrievedAddress["id"] as! String
                                 newAddress.userID = self.user.id
                                 newAddress.streetAddress = retrievedAddress["streetAddress"] as! String
-                                newAddress.roomNumber = retrievedAddress["roomNumber"] as! String
+                                newAddress.roomNumber = retrievedAddress["roomNumber"] as? String ?? ""
                                 newAddress.campus = (retrievedAddress["campus"] as! String) != "" ? retrievedAddress["campus"] as! String : "N/A"
                                 if (newAddress.id == self.selectedAddressId){
                                     newAddress.isCurrent = true

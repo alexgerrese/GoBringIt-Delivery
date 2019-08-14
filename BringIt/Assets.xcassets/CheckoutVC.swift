@@ -110,9 +110,7 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func setupRealm() {
         
         print("In setupRealm()")
-        
-        checkIfLoggedIn()
-        
+                
         let realm = try! Realm() // Initialize Realm
         
         // Query current order
@@ -159,8 +157,10 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
             let users = realm.objects(User.self).filter(predicate)
             if users.count > 0 {
+                Helper.app.updateUser(user: users.first!)
+                let predicate = NSPredicate(format: "isCurrent = %@", NSNumber(booleanLiteral: true))
+                let users = realm.objects(User.self).filter(predicate)
                 user = users.first!
-                Helper.app.updateUser(user: user)
             } else {
                 print("Couldn't retrieve user, going to SignInVC")
                 
@@ -844,9 +844,9 @@ class CheckoutVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 myTableView.deleteRows(at: [indexPath], with: .automatic)
                 
                 // Reload tableview and adjust tableview height and recalculate costs
+                calculateTotal()
                 myTableView.reloadData()
                 updateViewConstraints()
-                calculateTotal()
                 checkButtonStatus()
             }
         }
