@@ -23,7 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>5</string>
+	<string>6</string>
 	<key>COMBINED_BACKEND_URL</key>
 	<string>$(COMBINED_BACKEND_URL)</string>
 	<key>LSRequiresIPhoneOS</key>

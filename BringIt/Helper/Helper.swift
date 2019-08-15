@@ -32,6 +32,9 @@ class Helper {
                     print("User ID: \(user.id)")
                     print("Retrieved Response: \(response)")
                     
+                    if (response["name"] is NSNull){
+                        return
+                    }
                     try! realm.write {
                         user.fullName = response["name"] as! String
                         user.email = response["email"] as! String
