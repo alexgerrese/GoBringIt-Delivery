@@ -1036,10 +1036,19 @@ extension MenuCategoryViewController {
                                 }
                                 
                                 if let sideCategory = retrievedSide["sideCategory"] as? String {
-                                    if sideCategory == "" {
-                                        side.sideCategory = "Sides"
-                                    } else {
-                                        side.sideCategory = sideCategory
+                                    if (side.isRequired){
+                                        if sideCategory == "" {
+                                            side.sideCategory = "Sides"
+                                        } else {
+                                            side.sideCategory = sideCategory
+                                        }
+                                    }
+                                    else{
+                                        if sideCategory == "" {
+                                            side.sideCategory = "Extras"
+                                        } else {
+                                            side.sideCategory = sideCategory
+                                        }
                                     }
                                 } else {
                                     side.sideCategory = "Sides"

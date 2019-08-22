@@ -28,6 +28,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var sides = List<Side>()
     var sideCategories = [String]()
     var extras = List<Side>()
+    var extraCategories = [String]()
     var sectionTitles = [String]()
     
     // Passed from MenuCategoryVC
@@ -94,6 +95,7 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             extras = menuItem.extras
             print("EXTRAS FOR \(menuItem.name):")
             print(menuItem.extras)
+            setupExtras()
         }
         
         // Section "Special Instructions" (Always)
@@ -111,6 +113,16 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 sideCategories.append(side.sideCategory)
             }
         }
+    }
+    
+    func setupExtras(){
+        
+        for extra in menuItem.extras {
+            if !extraCategories.contains(extra.sideCategory){
+                extraCategories.append(extra.sideCategory)
+            }
+        }
+        
     }
     
     /* Do initial UI setup */
@@ -151,12 +163,16 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         if sideCategories.count > 0 {
             for sideCategory in sideCategories {
                 // let numAllowed =
-                sectionTitles.append(sideCategory)// + "Pick \(numAllowed)"
+                sectionTitles.append(sideCategory) // + "Pick \(numAllowed)"
             }
         }
-        if extras.count > 0 {
-            sectionTitles.append("Extras")
+        if extraCategories.count > 0 {
+            for extraCategory in extraCategories {
+                // let numAllowed =
+                sectionTitles.append(extraCategory) // + "Pick \(numAllowed)"
+            }
         }
+
         sectionTitles.append("Special Instructions")
         sectionTitles.append("Quantity")
         
@@ -385,21 +401,31 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             return 1
         }else if sectionTitles[section] == "Description" {
             return 1
-        } else if sectionTitles[section] == "Extras" {
-            return extras.count
         } else if sectionTitles[section] == "Special Instructions" {
             return 1
         } else if sectionTitles[section] == "Quantity" {
             return 1
         } else {
-            var count = 0
-            for side in sides {
-                if side.sideCategory == sectionTitles[section] {
-                    count += 1
+            if (extraCategories.contains(sectionTitles[section])){
+                var count = 0
+                for extra in extras {
+                    if sectionTitles[section] == extra.sideCategory {
+                        count += 1
+                    }
                 }
+                return count
             }
-            return count
+            if (sideCategories.contains(sectionTitles[section])){
+                var count = 0
+                for side in sides {
+                    if side.sideCategory == sectionTitles[section] {
+                        count += 1
+                    }
+                }
+                return count
+            }
         }
+        return 0;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -425,30 +451,6 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             
             return cell
             
-        } else if sectionTitles[indexPath.section] == "Extras" {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "extrasCell", for: indexPath)
-            
-            cell.textLabel?.text = menuItem.extras[indexPath.row].name
-            let price = Double(menuItem.extras[indexPath.row].price)
-            print(price)
-            if price != 0.0 {
-                cell.detailTextLabel?.text = "+$" + String(format: "%.2f", price)
-            } else {
-                cell.detailTextLabel?.text = "Free"
-            }
-            
-            // Change checkmark color
-            cell.tintColor = Constants.green
-            
-            // Show checkmark if cell is selected
-            if menuItem.extras[indexPath.row].isSelected {
-                cell.accessoryType = .checkmark
-            } else {
-                cell.accessoryType = .none
-            }
-
-            return cell
-
         } else if sectionTitles[indexPath.section] == "Special Instructions" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "specialInstructionsCell", for: indexPath) as! SpecialInstructionsTableViewCell
             
@@ -467,6 +469,37 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             return cell
 
         } else {
+            if (extraCategories.contains(sectionTitles[indexPath.section])) {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "extrasCell", for: indexPath)
+                var filteredExtras = [Side]()
+                for extra in menuItem.extras {
+                    if extra.sideCategory == sectionTitles[indexPath.section] {
+                        filteredExtras.append(extra)
+                    }
+                }
+                let filteredExtra = filteredExtras[indexPath.row]
+                
+                cell.textLabel?.text = filteredExtra.name
+                let price = Double(filteredExtra.price)
+                print(price)
+                if price != 0.0 {
+                    cell.detailTextLabel?.text = "+$" + String(format: "%.2f", price)
+                } else {
+                    cell.detailTextLabel?.text = "Free"
+                }
+                
+                // Change checkmark color
+                cell.tintColor = Constants.green
+                
+                // Show checkmark if cell is selected
+                if filteredExtra.isSelected {
+                    cell.accessoryType = .checkmark
+                } else {
+                    cell.accessoryType = .none
+                }
+                
+                return cell
+            } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sidesCell", for: indexPath)
             
             var filteredSides = [Side]()
@@ -496,14 +529,14 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
             }
             
             return cell
-
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if sectionTitles[section] == "Image" {
             return ""
-        } else if sectionTitles[section] != "Description" && sectionTitles[section] != "Special Instructions" && sectionTitles[section] != "Quantity" && sectionTitles[section] != "Extras" {
+        } else if sectionTitles[section] != "Description" && sectionTitles[section] != "Special Instructions" && sectionTitles[section] != "Quantity" && !extraCategories.contains(sectionTitles[section]) {
             
             if sectionTitles[section] != "Sides" {
                 return sectionTitles[section] + " (Pick 1)"
@@ -542,27 +575,34 @@ class AddToCartVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let realm = try! Realm() // Initialize Realm
         
         if sectionTitles[indexPath.section] != "Description" && sectionTitles[indexPath.section] != "Special Instructions" && sectionTitles[indexPath.section] != "Quantity" {
-            
-            if sectionTitles[indexPath.section] == "Extras" {
+            if (extraCategories.contains(sectionTitles[indexPath.section])){
+                print("Selecting row in \(sectionTitles[indexPath.section])")
                 
-                for i in 0..<menuItem.extras.count {
-                    if i == indexPath.row && menuItem.extras[i].isSelected {
-                        try! realm.write() {
-                            
-                            menuItem.extras[i].isSelected = false
-                            print("Deselected \(menuItem.extras[i])")
-                        }
-                    } else if i == indexPath.row && !menuItem.extras[i].isSelected {
-                        try! realm.write() {
-                            menuItem.extras[i].isSelected = true
-                            print("Selected \(menuItem.extras[i])")
-                        }
+                //                let predicate = NSPredicate(format: "sideCategory = %@", sectionTitles[indexPath.section])
+                //                let filteredSides = sides.filter(predicate)
+                
+                var filteredExtras = [Side]()
+                for extra in menuItem.extras {
+                    if extra.sideCategory == sectionTitles[indexPath.section] {
+                        filteredExtras.append(extra)
+                    }
+                }
+
+                if filteredExtras[indexPath.row].isSelected {
+                    try! realm.write() {
+                        filteredExtras[indexPath.row].isSelected = false
+                        print("Deselected \(filteredExtras[indexPath.row])")
+                    }
+                } else {
+                    try! realm.write() {
+                        filteredExtras[indexPath.row].isSelected = true
+                        print("Selected \(filteredExtras[indexPath.row])")
                     }
                 }
                 
                 calculateSubtotal()
-                
-            } else if !sectionTitles[indexPath.section].contains("Sides") {
+            }
+            else if !sectionTitles[indexPath.section].contains("Sides") {
                 print("Selecting row in \(sectionTitles[indexPath.section]) (NOT in sides)")
                 
                 var filteredSides = [Side]()
