@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G26a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F71b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -15,22 +18,19 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launchscreen Logo" translatesAutoresizingMaskIntoConstraints="NO" id="cDF-O0-TYg">
-                                <rect key="frame" x="39" y="267" width="337" height="202"/>
+                                <rect key="frame" x="135" y="293" width="105" height="81"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="cDF-O0-TYg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="8dw-HU-aHb"/>
-                            <constraint firstItem="cDF-O0-TYg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Bbc-zy-z7L"/>
-                            <constraint firstItem="cDF-O0-TYg" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="19" id="ei7-aY-BOi"/>
-                            <constraint firstItem="cDF-O0-TYg" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="247" id="iS4-62-JvX"/>
+                            <constraint firstItem="cDF-O0-TYg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="5GC-x9-ruP"/>
+                            <constraint firstItem="cDF-O0-TYg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ldx-iN-aHA"/>
                         </constraints>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Launchscreen Logo" width="512" height="512"/>
+        <image name="Launchscreen Logo" width="105" height="81"/>
     </resources>
 </document>

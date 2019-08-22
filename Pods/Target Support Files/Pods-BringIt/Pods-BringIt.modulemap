@@ -1,6 +1,0 @@
-framework module Pods_BringIt {
-  umbrella header "Pods-BringIt-umbrella.h"
-
-  export *
-  module * { export * }
-}

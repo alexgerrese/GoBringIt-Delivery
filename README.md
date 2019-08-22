@@ -46,6 +46,9 @@ SCHEDULE DETAILS
 - Present the data (Alex)
 - EXTRA: Add order again functionality  (Alex and Chad)
 
+SETTINGS
+- <del>User can reset password</del>
+
 Questions:
 - figure out where in DB Credit Card info should go
 - only Sushi Love has restaurant hours in the DB; other restaurants do not

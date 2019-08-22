@@ -1,30 +1,65 @@
 PODS:
-  - B68UIFloatLabelTextField (0.1.2)
-  - CVCalendar (1.2.9)
-  - DLRadioButton (1.4.8)
-  - EZSwiftExtensions (1.5)
-  - GMStepper (1.2.0)
-  - IQKeyboardManagerSwift (4.0.3)
-  - Stripe (7.0.2)
+  - Alamofire (4.8.2)
+  - IQKeyboardManagerSwift (6.3.0)
+  - Moya (13.0.1):
+    - Moya/Core (= 13.0.1)
+  - Moya/Core (13.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.1)
+  - Realm (3.16.0):
+    - Realm/Headers (= 3.16.0)
+  - Realm/Headers (3.16.0)
+  - RealmSwift (3.16.0):
+    - Realm (= 3.16.0)
+  - Result (4.1.0)
+  - SendGrid (2.1.0)
+  - Siren (5.1.0)
+  - SkeletonView (1.5)
+  - Stripe (15.0.1)
 
 DEPENDENCIES:
-  - B68UIFloatLabelTextField (~> 0.1.0)
-  - CVCalendar (~> 1.2.9)
-  - DLRadioButton (~> 1.4)
-  - EZSwiftExtensions (~> 1.4)
-  - GMStepper
+  - Alamofire
   - IQKeyboardManagerSwift
+  - Moya
+  - RealmSwift
+  - SendGrid (from `https://github.com/scottkawai/sendgrid-swift.git`)
+  - Siren
+  - SkeletonView
   - Stripe
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - IQKeyboardManagerSwift
+    - Moya
+    - Realm
+    - RealmSwift
+    - Result
+    - Siren
+    - SkeletonView
+    - Stripe
+
+EXTERNAL SOURCES:
+  SendGrid:
+    :git: https://github.com/scottkawai/sendgrid-swift.git
+
+CHECKOUT OPTIONS:
+  SendGrid:
+    :commit: 9334fe6c6b0a996291b3379a783a173db02f7945
+    :git: https://github.com/scottkawai/sendgrid-swift.git
+
 SPEC CHECKSUMS:
-  B68UIFloatLabelTextField: 337894ff837df84e19636c99f3f5f88c4fad60d7
-  CVCalendar: 0799256e0bc3b43e83b7e86c0729ce9ff0624cb6
-  DLRadioButton: 8fe4865b3ea8a5236e1d114dd283dd0884d3dc46
-  EZSwiftExtensions: fe78d7d4ac34f5c8c36415d4acee49ba67c9732a
-  GMStepper: e743b5648ae5fe877e33d3b51b5aa2df432f179d
-  IQKeyboardManagerSwift: b6883b720b0e76473692fdc80828442566e1075f
-  Stripe: d1eae5522cf993590f962ac1829a56c2096cf486
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  IQKeyboardManagerSwift: a8228c257614af98743b4cd8584637025f36358f
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  Realm: 5ca1b8c472dfc532cd0ba0bfe2ce49f97130158f
+  RealmSwift: 2ee401dbcc188706261921326146f5a539d4d4a7
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  SendGrid: 07926b96696f2b2e3b05398be14ac951796a6364
+  Siren: 1dbdbd5dccd55865369a83f3d57c8eb818ac1556
+  SkeletonView: 6cbb80f82f8bdee3f9093e2fa03b84819b4bd826
+  Stripe: 2c4d0a88817361a102886315ff452d90f65e898b
 
-PODFILE CHECKSUM: ac49e2087d64d048c4bdae04628cd04f8c1e1c47
+PODFILE CHECKSUM: 462397398c4957eefeda84e5af34c66cb8956287
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.7.4
